@@ -1,0 +1,367 @@
+/* Professional 4-Deck DJ Interface */
+.four-deck-dj {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #2a2a2a 100%);
+  color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow: hidden;
+}
+
+/* DJ Header */
+.dj-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: rgba(0, 0, 0, 0.4);
+  border-bottom: 2px solid #00d9ff;
+  backdrop-filter: blur(15px);
+  z-index: 1000;
+  flex-shrink: 0;
+}
+
+.dj-title h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  background: linear-gradient(45deg, #00d9ff, #ffffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.dj-subtitle {
+  font-size: 12px;
+  color: #cccccc;
+  font-weight: 400;
+  display: block;
+  margin-top: 2px;
+}
+
+.header-controls {
+  display: flex;
+  gap: 12px;
+}
+
+.nav-btn {
+  padding: 8px 16px;
+  background: rgba(0, 217, 255, 0.1);
+  border: 1px solid rgba(0, 217, 255, 0.3);
+  border-radius: 8px;
+  color: #00d9ff;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+  background: rgba(0, 217, 255, 0.2);
+  border-color: #00d9ff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 217, 255, 0.3);
+}
+
+/* Deck Components */
+.deck-component {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.deck-component.deck-hidden {
+  display: none;
+}
+
+.deck-component.deck-minimized {
+  opacity: 0.6;
+  transform: scale(0.9);
+  pointer-events: none;
+}
+
+/* Mixer Component */
+.mixer-component {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* Track Browser */
+.track-browser {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.95) 100%);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  z-index: 900;
+  transition: transform 0.3s ease;
+}
+
+.track-browser:hover {
+  transform: translateY(-2px);
+}
+
+.browser-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.browser-header h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #00d9ff;
+}
+
+.track-count {
+  font-size: 11px;
+  color: #cccccc;
+}
+
+.browser-content {
+  display: flex;
+  height: calc(100% - 50px);
+}
+
+.selected-track {
+  width: 250px;
+  padding: 12px;
+  background: rgba(0, 217, 255, 0.1);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 11px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.track-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 4px;
+  align-content: start;
+}
+
+.track-item {
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto;
+  gap: 4px;
+}
+
+.track-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(0, 217, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.track-item.selected {
+  background: rgba(0, 217, 255, 0.2);
+  border-color: #00d9ff;
+}
+
+.track-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffffff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  grid-column: 1;
+}
+
+.track-artist {
+  font-size: 10px;
+  color: #cccccc;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  grid-column: 1;
+}
+
+.track-bpm {
+  font-size: 10px;
+  color: #00d9ff;
+  font-weight: 600;
+  grid-column: 2;
+  grid-row: 1 / 3;
+  display: flex;
+  align-items: center;
+}
+
+/* Responsive Design */
+@media (max-width: 1600px) {
+  .dj-header {
+    padding: 8px 16px;
+  }
+  
+  .dj-title h1 {
+    font-size: 20px;
+  }
+  
+  .track-browser {
+    height: 160px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .track-browser {
+    height: 140px;
+  }
+  
+  .track-list {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+  
+  .selected-track {
+    width: 200px;
+  }
+}
+
+@media (max-width: 900px) {
+  .dj-header {
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px 12px;
+  }
+  
+  .header-controls {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .track-browser {
+    height: 120px;
+  }
+  
+  .browser-content {
+    flex-direction: column;
+  }
+  
+  .selected-track {
+    width: 100%;
+    height: 40px;
+    padding: 8px 12px;
+  }
+  
+  .track-list {
+    height: calc(100% - 40px);
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Professional styling effects */
+.four-deck-dj::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 25% 25%, rgba(0, 217, 255, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(0, 217, 255, 0.03) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Loading states */
+.four-deck-dj.loading {
+  opacity: 0.8;
+}
+
+.four-deck-dj.loading::after {
+  content: "Initializing 4-Deck System...";
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.9);
+  color: #00d9ff;
+  padding: 20px 40px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  z-index: 10000;
+  border: 1px solid #00d9ff;
+}
+
+/* Scrollbar styling */
+.track-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.track-list::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.track-list::-webkit-scrollbar-thumb {
+  background: rgba(0, 217, 255, 0.3);
+  border-radius: 3px;
+}
+
+.track-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 217, 255, 0.5);
+}
+
+/* Deck interaction highlights */
+.deck-component:hover {
+  box-shadow: 0 0 20px rgba(0, 217, 255, 0.2);
+  border-radius: 12px;
+}
+
+.deck-component.loading-track {
+  position: relative;
+}
+
+.deck-component.loading-track::after {
+  content: "Loading Track...";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: #00d9ff;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 12px;
+  z-index: 10;
+}
+
+/* Animation for layout transitions */
+@keyframes deckSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.deck-component {
+  animation: deckSlideIn 0.3s ease-out;
+}

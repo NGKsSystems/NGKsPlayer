@@ -1,0 +1,128 @@
+#!/usr/bin/env python3
+"""
+Demucs Stem Separation CLI Wrapper
+Extracts vocals, drums, bass, and other instruments from audio files
+Uses Demucs v4 (better quality than Spleeter, Python 3.13 compatible)
+"""
+import sys
+import json
+import os
+import torch
+import numpy as np
+import librosa
+import soundfile as sf
+
+def main():
+    if len(sys.argv) < 4:
+        print(json.dumps({"error": "Usage: separate_stems.py <input_file> <output_dir> <stems_count>"}))
+        sys.exit(1)
+    
+    input_file = sys.argv[1]
+    output_dir = sys.argv[2]
+    stems_mode = sys.argv[3]  # "2stems" or "4stems" or "5stems"
+    
+    try:
+        # Progress: Initializing
+        print(json.dumps({"status": "initializing", "progress": 0}))
+        sys.stdout.flush()
+        
+        # Import Demucs
+        from demucs.pretrained import get_model
+        from demucs.apply import apply_model
+        from demucs.audio import save_audio
+        
+        print(json.dumps({"status": "initializing", "progress": 10}))
+        sys.stdout.flush()
+        
+        # Choose model based on stems count
+        # htdemucs = 4 stems (vocals, drums, bass, other)
+        # htdemucs_6s = 6 stems (adds piano, guitar)
+        if stems_mode == '5stems':
+            model_name = 'htdemucs_6s'
+        else:
+            model_name = 'htdemucs'
+        
+        # Load model (downloads ~300MB on first run)
+        model = get_model(model_name)
+        device = 'cuda' if torch.cuda.is_available() else 'cpu'
+        model.to(device)
+        
+        print(json.dumps({"status": "initializing", "progress": 30}))
+        sys.stdout.flush()
+        
+        # Load audio with soundfile backend to avoid torchcodec requirement
+        try:
+            torchaudio.set_audio_backend("soundfile")
+        except:
+            pass  # Ignore if backend already set or unavailable
+        wav, sr = torchaudio.load(input_file)
+        wav = wav.to(device)
+        
+        # Resample if needed
+        if sr != model.samplerate:
+            resampler = torchaudio.transforms.Resample(sr, model.samplerate).to(device)
+            wav = resampler(wav)
+        
+        print(json.dumps({"status": "separating", "progress": 40}))
+        sys.stdout.flush()
+        
+        # Apply model (this is the slow part)
+        sources = apply_model(model, wav.unsqueeze(0), device=device)[0]
+        
+        print(json.dumps({"status": "processing", "progress": 80}))
+        sys.stdout.flush()
+        
+        # Create output directory
+        os.makedirs(output_dir, exist_ok=True)
+        
+        # Save stems
+        stems_files = {}
+        stem_names = model.sources
+        
+        if stems_mode == '2stems':
+            # Combine non-vocal stems into accompaniment
+            vocals_idx = stem_names.index('vocals') if 'vocals' in stem_names else 0
+            vocals = sources[vocals_idx]
+            
+            # Sum all non-vocal stems
+            accompaniment = torch.zeros_like(vocals)
+            for i, name in enumerate(stem_names):
+                if name != 'vocals':
+                    accompaniment += sources[i]
+            
+            # Save vocals
+            vocals_path = os.path.join(output_dir, 'vocals.wav')
+            save_audio(vocals.cpu(), vocals_path, model.samplerate)
+            stems_files['vocals'] = vocals_path
+            
+            # Save accompaniment
+            accomp_path = os.path.join(output_dir, 'accompaniment.wav')
+            save_audio(accompaniment.cpu(), accomp_path, model.samplerate)
+            stems_files['accompaniment'] = accomp_path
+            stems_files['other'] = accomp_path  # Alias for UI compatibility
+        else:
+            # Save each stem separately
+            for i, name in enumerate(stem_names):
+                stem_path = os.path.join(output_dir, f'{name}.wav')
+                save_audio(sources[i].cpu(), stem_path, model.samplerate)
+                stems_files[name] = stem_path
+        
+        print(json.dumps({"status": "processing", "progress": 95}))
+        sys.stdout.flush()
+        
+        # Complete
+        print(json.dumps({
+            "status": "complete",
+            "progress": 100,
+            "stems": stems_files
+        }))
+        sys.stdout.flush()
+        
+    except Exception as e:
+        import traceback
+        error_details = f"{str(e)}\n{traceback.format_exc()}"
+        print(json.dumps({"status": "error", "error": error_details}))
+        sys.exit(1)
+
+if __name__ == "__main__":
+    main()

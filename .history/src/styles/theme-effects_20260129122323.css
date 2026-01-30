@@ -1,0 +1,109 @@
+/* Atari Theme Effects */
+
+/* Scanline overlay effect */
+html[data-scanlines="true"]::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.15),
+    rgba(0, 0, 0, 0.15) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.3;
+}
+
+/* Glow effect utilities */
+html[data-glow="true"] .glow-text {
+  text-shadow: var(--glow);
+}
+
+html[data-glow="true"] .glow-border {
+  box-shadow: var(--glow);
+}
+
+html[data-glow="true"] button:hover {
+  box-shadow: var(--glow);
+  transition: box-shadow 0.2s ease;
+}
+
+/* Pixelated rendering for retro feel */
+html[data-pixelated="true"] canvas {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* Beat pulse animation */
+@keyframes beat-pulse {
+  0%, 100% { 
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% { 
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+}
+
+.beat-pulse {
+  animation: beat-pulse 0.15s ease-out;
+}
+
+/* Scale utility for beat reactions */
+.scale-110 {
+  transform: scale(1.1);
+}
+
+/* Atari-style chunky buttons */
+.atari-button {
+  border: 2px solid var(--border-subtle);
+  background: var(--button-bg);
+  color: var(--text-primary);
+  font-family: var(--font-primary);
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: all 0.1s ease;
+}
+
+.atari-button:hover {
+  background: var(--button-hover);
+  border-color: var(--accent-primary);
+}
+
+.atari-button:active {
+  background: var(--button-active);
+  color: var(--bg-primary);
+}
+
+/* CRT screen curvature (optional, subtle) */
+html[data-scanlines="true"] #root {
+  /* Subtle vignette for CRT feel */
+  background: radial-gradient(ellipse at center, 
+    transparent 0%, 
+    rgba(0, 0, 0, 0.1) 100%
+  );
+}
+
+/* Retro pixel font scaling */
+html[data-pixelated="true"] {
+  font-smooth: never;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Theme transition smoothing */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Prevent transition on theme load */
+.no-transition * {
+  transition: none !important;
+}

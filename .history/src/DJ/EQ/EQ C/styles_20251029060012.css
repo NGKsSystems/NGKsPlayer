@@ -1,0 +1,292 @@
+/* EQ C Widget - Modern Dark Theme */
+.eq-c-widget {
+  background: linear-gradient(145deg, #252525, #2a2a2a);
+  border: 1px solid rgba(0, 200, 255, 0.3);
+  border-radius: 8px;
+  padding: 6px;
+  color: white;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  position: absolute !important;
+  min-width: 200px;
+}
+
+/* Subtle accent line at top */
+.eq-c-widget::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #00c8ff, transparent);
+  background-size: 200% 100%;
+  opacity: 0.7;
+  animation: flowRight 3s linear infinite;
+}
+
+@keyframes flowRight {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 200% 0%;
+  }
+}
+
+.eq-c-widget.dragging {
+  cursor: move;
+  z-index: 1000;
+}
+
+.eq-c-widget.resizing {
+  cursor: nw-resize;
+}
+
+.eq-c-header {
+  margin-bottom: 2px;
+  padding: 8px 12px 6px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: move;
+  background: linear-gradient(145deg, #3a3a3a, rgba(0, 200, 255, 0.05));
+  margin: -6px -6px 8px -6px;
+}
+
+.eq-c-header h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.widget-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.drag-handle {
+  font-size: 12px;
+  opacity: 0.6;
+  cursor: move;
+  user-select: none;
+}
+
+.resize-handle {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 12px;
+  height: 12px;
+  cursor: nw-resize;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  user-select: none;
+}
+
+.resize-handle:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.eq-content.eq-a {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 40px);
+}
+
+/* Compact Control Bar - Single row with preset and buttons */
+.eq-control-bar {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  margin-bottom: 4px;
+  padding: 2px 2px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+}
+
+.eq-preset-select-compact {
+  flex: 1;
+  padding: 2px 4px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  color: white;
+  font-size: 10px;
+  min-width: 60px;
+  height: 20px;
+}
+
+.eq-preset-select-compact option {
+  background: #333;
+  color: white;
+}
+
+.eq-bypass-btn-compact,
+.eq-reset-btn-compact {
+  padding: 2px 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  height: 20px;
+  min-width: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.eq-bypass-btn-compact:hover,
+.eq-reset-btn-compact:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.eq-bypass-btn-compact.active {
+  background: rgba(0, 200, 255, 0.2);
+  border-color: rgba(0, 200, 255, 0.4);
+  color: #00c8ff;
+  font-weight: bold;
+}
+
+/* EQ Bands Container - Scales to container size */
+.eq-bands-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  min-height: 120px;
+}
+
+.eq-bands {
+  display: flex;
+  gap: 0px;
+  height: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1px;
+  width: 100%;
+}
+
+.eq-band-vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  flex: 1;
+  min-width: 0;
+  gap: 1px;
+}
+
+.eq-gain-value {
+  font-size: 8px;
+  font-weight: bold;
+  color: #fff;
+  min-height: 12px;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 1px 1px;
+  border-radius: 2px;
+  width: 100%;
+  max-width: 30px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.eq-slider {
+  writing-mode: bt-lr; /* IE */
+  writing-mode: vertical-lr; /* Standard */
+  width: 50%;
+  max-width: 9px;
+  min-width: 6px;
+  height: 140px;
+  min-height: 100px;
+  background: linear-gradient(to top, 
+    #ff4444 0%, 
+    #ffaa00 25%, 
+    #00ff88 50%, 
+    #ffaa00 75%, 
+    #ff4444 100%);
+  outline: none;
+  cursor: pointer;
+  border-radius: 4px;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.eq-slider::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #2a2a2a, #000000);
+  border: 2px solid #fff;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(0, 0, 0, 0.8);
+  transition: all 0.1s ease;
+}
+
+.eq-slider::-webkit-slider-thumb:hover {
+  background: linear-gradient(145deg, #404040, #1a1a1a);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.7), 0 0 0 2px rgba(255, 255, 255, 0.8);
+  transform: scale(1.1);
+}
+
+.eq-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #2a2a2a, #000000);
+  border: 2px solid #fff;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(0, 0, 0, 0.8);
+}
+
+.eq-slider.bypassed {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.eq-frequency {
+  font-size: 6px;
+  font-weight: bold;
+  color: #fff;
+  text-align: center;
+  min-height: 8px;
+  transform: rotate(-45deg);
+  width: 100%;
+  max-width: 15px;
+  margin-top: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* EQ Cnalyzer - Minimized status bar */
+.eq-analyzer {
+  margin-top: 2px;
+  padding: 1px 2px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+  text-align: center;
+  min-height: 14px;
+}

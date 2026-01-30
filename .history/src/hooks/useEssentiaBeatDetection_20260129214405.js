@@ -1,0 +1,168 @@
+import { useEffect, useRef, useState } from 'react';
+
+/**
+ * Professional beat detection using Essentia.js WebAssembly
+ * Optimized for rock/country with genre-specific profiles and advanced tuning
+ */
+export const useEssentiaBeatDetection = ({ 
+  audioContext, 
+  sourceNode, 
+  enabled = true,
+  genre = 'rock',
+  // Advanced controls
+  onsetMethod = 'complex',
+  onsetThreshold = 0.08,
+  silenceThreshold = 0.10,
+  confidenceGate = 0.65,
+  lowFreqWeight = 1.8,
+  minBeatInterval = 350,
+  postProcessMode = 'none',
+  onBeat = () => {}
+}) => {
+  const essentiaRef = useRef(null);
+  const [isReady, setIsReady] = useState(false);
+  const lastBeatTimeRef = useRef(0);
+  const beatConfidenceRef = useRef(0);
+  const processorRef = useRef(null);
+  const beatGridRef = useRef({ bpm: 0, phase: 0, locked: false });
+
+  // Genre-specific tuning profiles
+  const genreProfiles = {
+    rock: {
+      onsetMethod: 'complex',       // Good for sharp transients
+      onsetThreshold: 0.10,          // Higher = fewer false positives from guitars
+      silenceThreshold: 0.12,
+      minInterval: 0.35,             // ~half beat at 122 BPM
+      frameSize: 1024,
+      hopSize: 512
+    },
+    country: {
+      onsetMethod: 'hfc',            // High-freq content better for snares
+      onsetThreshold: 0.08,
+      silenceThreshold: 0.08,
+      minInterval: 0.30,
+      frameSize: 1024,
+      hopSize: 512
+    },
+    electronic: {
+      onsetMethod: 'complex',
+      onsetThreshold: 0.05,
+      silenceThreshold: 0.05,
+      minInterval: 0.20,
+      frameSize: 2048,
+      hopSize: 1024
+    },
+    default: {
+      onsetMethod: 'complex',
+      onsetThreshold: 0.08,
+      silenceThreshold: 0.10,
+      minInterval: 0.30,
+      frameSize: 1024,
+      hopSize: 512
+    }
+  };
+
+  // Initialize Essentia WASM
+  useEffect(() => {
+  let mounted = true;
+
+  if (!essentiaRef.current) {
+    const init = async () => {
+      try {
+        const essentia = await loadEssentia();
+        if (mounted) {
+          essentiaRef.current = essentia;
+          setIsReady(true);
+          console.log('✅ Essentia ready for beat detection');
+        }
+      } catch (err) {
+        if (mounted) setIsReady(false);
+      }
+    };
+    init();
+  }
+
+  return () => { mounted = false; };
+}, []);
+  // Setup real-time audio processing
+  useEffect(() => {
+    if (!isReady || !enabled || !sourceNode || !audioContext) return;
+
+    const profile = genreProfiles[genre?.toLowerCase()] || genreProfiles.default;
+    const essentia = essentiaRef.current;
+
+    // Create ScriptProcessor for real-time analysis
+    // Note: This is deprecated but simpler than AudioWorklet
+    // TODO: Migrate to AudioWorklet for production
+    const processor = audioContext.createScriptProcessor(profile.frameSize, 1, 1);
+    
+    processor.onaudioprocess = (e) => {
+      if (!enabled) return;
+
+      const inputData = e.inputBuffer.getChannelData(0);
+      const currentTime = audioContext.currentTime;
+      
+      try {
+        // Convert Float32Array to Essentia vector
+        const signal = essentia.arrayToVector(inputData);
+        
+        // Compute spectrum for onset detection
+        const spectrum = essentia.Spectrum(signal, profile.frameSize);
+        
+        // Multiple onset detection methods available:
+        // 'energy', 'hfc', 'complex', 'flux', 'melflux', 'rms'
+        const onsetStrength = essentia.OnsetDetection(
+          spectrum,
+          profile.onsetMethod
+        ).onsetDetection;
+
+        // Beat detection logic
+        const timeSinceLastBeat = currentTime - lastBeatTimeRef.current;
+        
+        if (onsetStrength > profile.onsetThreshold && 
+            timeSinceLastBeat > profile.minInterval) {
+          
+          // Found a beat!
+          lastBeatTimeRef.current = currentTime;
+          beatConfidenceRef.current = onsetStrength;
+
+          // Trigger callback
+          onBeat({
+            time: currentTime,
+            strength: onsetStrength,
+            confidence: Math.min(onsetStrength / profile.onsetThreshold, 2.0)
+          });
+
+          console.log(`🥁 Beat detected | Time: ${currentTime.toFixed(2)}s | Strength: ${onsetStrength.toFixed(3)}`);
+        }
+
+        // Cleanup
+        signal.delete();
+        spectrum.delete();
+        
+      } catch (err) {
+        console.error('Essentia processing error:', err);
+      }
+    };
+
+    // Connect audio graph
+    sourceNode.connect(processor);
+    processor.connect(audioContext.destination);
+    processorRef.current = processor;
+
+    console.log(`🎵 Essentia beat detection active | Genre: ${genre} | Method: ${profile.onsetMethod}`);
+
+    return () => {
+      if (processor) {
+        processor.disconnect();
+        sourceNode.disconnect(processor);
+      }
+    };
+  }, [isReady, sourceNode, enabled, genre, audioContext, onBeat]);
+
+  return {
+    isReady,
+    lastBeatTime: lastBeatTimeRef.current,
+    beatConfidence: beatConfidenceRef.current
+  };
+};

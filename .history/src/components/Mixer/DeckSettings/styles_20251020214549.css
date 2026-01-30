@@ -1,0 +1,159 @@
+/* DeckSettings Widget Styles */
+.deck-settings-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 15px;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+  border: 1px solid #444;
+  border-radius: 8px;
+  min-width: 250px;
+  font-family: 'Arial', sans-serif;
+}
+
+.deck-settings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.deck-settings-header h4 {
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+.deck-selector {
+  display: flex;
+  gap: 2px;
+}
+
+.deck-btn {
+  padding: 4px 12px;
+  background: #333;
+  border: 1px solid #555;
+  border-radius: 4px;
+  color: #ccc;
+  font-size: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 24px;
+}
+
+.deck-btn:hover {
+  background: #404040;
+  border-color: #666;
+}
+
+.deck-btn.active {
+  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+  border-color: #ff6b35;
+  color: #fff;
+  box-shadow: 0 0 8px rgba(255, 107, 53, 0.4);
+}
+
+.deck-controls {
+  display: flex;
+  gap: 15px;
+  justify-content: space-between;
+}
+
+.control-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.control-label {
+  color: #ccc;
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+.toggle-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.toggle-btn {
+  padding: 6px 12px;
+  background: #333;
+  border: 1px solid #555;
+  border-radius: 4px;
+  color: #ccc;
+  font-size: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 70px;
+  text-align: center;
+}
+
+.toggle-btn:hover {
+  background: #404040;
+  border-color: #666;
+}
+
+.toggle-btn.active {
+  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+  border-color: #ff6b35;
+  color: #fff;
+  box-shadow: 0 0 8px rgba(255, 107, 53, 0.4);
+}
+
+.settings-status {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 8px;
+  background: #222;
+  border: 1px solid #333;
+  border-radius: 6px;
+  margin-top: 8px;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 9px;
+  color: #888;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #333;
+}
+
+.status-dot.active {
+  background: #ff6b35;
+  box-shadow: 0 0 4px rgba(255, 107, 53, 0.6);
+}
+
+/* Responsive Design */
+@media (max-width: 400px) {
+  .deck-settings-content {
+    min-width: 220px;
+    padding: 10px;
+  }
+  
+  .deck-controls {
+    gap: 10px;
+  }
+  
+  .toggle-btn {
+    min-width: 60px;
+    padding: 4px 8px;
+  }
+}

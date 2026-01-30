@@ -1,0 +1,224 @@
+/* Crossfader Widget Styles */
+.crossfader-widget {
+  min-width: 300px;
+  width: 300px;
+  min-height: 160px;
+  background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+  border: 1px solid #444;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated accent line */
+.crossfader-widget::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #ff8c00 0%, transparent 20%, #8b00ff 50%, transparent 80%, #ff8c00 100%);
+  background-size: 200% 100%;
+  opacity: 0.7;
+  animation: flowRight 4s linear infinite;
+}
+
+@keyframes flowRight {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 200% 0%;
+  }
+}
+
+.crossfader-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 12px;
+  gap: 12px;
+}
+
+.crossfader-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.deck-labels {
+  display: flex;
+  gap: 20px;
+}
+
+.deck-label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #666;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+
+.deck-label.active {
+  color: white;
+  background: rgba(255, 107, 53, 0.3);
+  box-shadow: 0 0 8px rgba(255, 107, 53, 0.3);
+}
+
+.reset-btn {
+  background: #333;
+  border: 1px solid #555;
+  color: white;
+  font-size: 14px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.reset-btn:hover {
+  background: #444;
+  transform: scale(1.1);
+}
+
+.crossfader-track {
+  position: relative;
+  margin: 8px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px; /* Add space between labels and slider */
+}
+
+.crossfader-slider {
+  width: 80%; /* Make slider span 80% of container width */
+  height: 40px;
+  background: linear-gradient(90deg, #ff6b35 0%, #333 50%, #2196f3 100%);
+  border-radius: 20px;
+  outline: none;
+  appearance: none;
+  cursor: pointer;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+  margin: 0 auto; /* Center the slider horizontally */
+  display: block; /* Ensure block display for centering */
+}
+
+.crossfader-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 32px;
+  height: 36px;
+  border-radius: 6px;
+  background: linear-gradient(145deg, #f0f0f0, #d0d0d0);
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  border: 2px solid #666;
+}
+
+.crossfader-slider::-webkit-slider-thumb:hover {
+  background: linear-gradient(145deg, #ffffff, #e0e0e0);
+  transform: scale(1.05);
+}
+
+.crossfader-markers {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  font-size: 10px;
+  color: #aaa;
+}
+
+.marker {
+  font-weight: bold;
+}
+
+.marker.center {
+  font-size: 12px;
+}
+
+.crossfader-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.curve-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.curve-selector label {
+  font-size: 10px;
+  color: #ccc;
+  font-weight: bold;
+}
+
+.curve-select {
+  background: #333;
+  border: 1px solid #555;
+  color: white;
+  font-size: 11px;
+  padding: 2px 4px;
+  border-radius: 3px;
+  outline: none;
+}
+
+.crossfader-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.cf-value {
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px 6px;
+  border-radius: 3px;
+  min-width: 50px;
+  text-align: center;
+}
+
+.cf-percentage {
+  font-size: 10px;
+  color: #aaa;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.blend-indicator {
+  margin-top: 4px;
+}
+
+.blend-bar {
+  position: relative;
+  height: 8px;
+  background: #222;
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+}
+
+.blend-fill-a {
+  background: linear-gradient(90deg, #ff6b35, rgba(255, 107, 53, 0.5));
+  height: 100%;
+  transition: all 0.3s;
+}
+
+.blend-fill-b {
+  background: linear-gradient(90deg, rgba(33, 150, 243, 0.5), #2196f3);
+  height: 100%;
+  transition: all 0.3s;
+}
+
+.blend-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  font-size: 9px;
+  color: #666;
+}

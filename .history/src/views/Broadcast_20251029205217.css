@@ -1,0 +1,328 @@
+/* Broadcast Output Styles - Optimized for OBS Capture */
+
+.broadcast-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  overflow: hidden;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   DEFAULT THEME - Professional Layout
+   ═══════════════════════════════════════════════════════════════ */
+
+.broadcast-default {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px;
+}
+
+.broadcast-main {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+}
+
+.broadcast-artwork {
+  width: 400px;
+  height: 400px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  flex-shrink: 0;
+}
+
+.broadcast-artwork img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.broadcast-info {
+  flex: 1;
+  color: white;
+}
+
+.broadcast-now-playing {
+  font-size: 24px;
+  font-weight: 600;
+  color: #00ff88;
+  letter-spacing: 3px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.broadcast-title {
+  font-size: 72px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  line-height: 1.2;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.broadcast-artist {
+  font-size: 48px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 15px;
+}
+
+.broadcast-album {
+  font-size: 32px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 30px;
+}
+
+.broadcast-meta {
+  display: flex;
+  gap: 40px;
+  font-size: 28px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.broadcast-bpm,
+.broadcast-key {
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  border: 2px solid rgba(0, 255, 136, 0.3);
+}
+
+.broadcast-progress-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  margin-top: 40px;
+  overflow: hidden;
+}
+
+.broadcast-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00ff88, #00d4ff);
+  transition: width 0.5s ease;
+}
+
+.broadcast-time {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  font-size: 24px;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: 'Courier New', monospace;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MINIMAL THEME - Just Text
+   ═══════════════════════════════════════════════════════════════ */
+
+.broadcast-minimal {
+  background: rgba(0, 0, 0, 0.8);
+  padding: 40px 60px;
+  border-radius: 15px;
+  text-align: center;
+}
+
+.minimal-title {
+  font-size: 56px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 15px;
+}
+
+.minimal-artist {
+  font-size: 36px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BAR THEME - Bottom Overlay Bar
+   ═══════════════════════════════════════════════════════════════ */
+
+.broadcast-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.7));
+  padding: 30px 50px;
+}
+
+.bar-content {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  position: relative;
+  z-index: 2;
+}
+
+.bar-art {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.bar-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.bar-title {
+  font-size: 32px;
+  font-weight: 600;
+  color: white;
+}
+
+.bar-artist {
+  font-size: 24px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.bar-meta {
+  display: flex;
+  gap: 20px;
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.bar-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #00ff88, #00d4ff);
+  transition: width 0.5s ease;
+  z-index: 1;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   VINYL THEME - Retro Record Player Style
+   ═══════════════════════════════════════════════════════════════ */
+
+.broadcast-vinyl {
+  display: flex;
+  gap: 60px;
+  align-items: center;
+  background: radial-gradient(circle at center, #2d1810, #1a0f0a);
+  width: 100%;
+  height: 100%;
+  padding: 60px;
+}
+
+.vinyl-disc {
+  position: relative;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: #1a1a1a;
+  box-shadow: 0 0 80px rgba(0, 0, 0, 0.8), inset 0 0 40px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.vinyl-disc img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  position: relative;
+  z-index: 2;
+}
+
+.vinyl-spin {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: repeating-conic-gradient(
+    from 0deg,
+    #1a1a1a 0deg 2deg,
+    #2a2a2a 2deg 4deg
+  );
+  z-index: 1;
+}
+
+.vinyl-spin.spinning {
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.vinyl-info {
+  flex: 1;
+  color: white;
+}
+
+.vinyl-label {
+  font-size: 28px;
+  font-weight: 600;
+  color: #ff6b35;
+  letter-spacing: 3px;
+  margin-bottom: 30px;
+  text-transform: uppercase;
+}
+
+.vinyl-title {
+  font-size: 64px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  line-height: 1.2;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.vinyl-artist {
+  font-size: 44px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 30px;
+}
+
+.vinyl-details {
+  display: flex;
+  gap: 30px;
+  font-size: 28px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.vinyl-details span {
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Responsive Adjustments
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (max-width: 1280px) {
+  .broadcast-title {
+    font-size: 56px;
+  }
+  
+  .broadcast-artist {
+    font-size: 36px;
+  }
+  
+  .vinyl-title {
+    font-size: 48px;
+  }
+}

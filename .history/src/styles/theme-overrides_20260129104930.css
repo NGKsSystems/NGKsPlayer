@@ -1,0 +1,158 @@
+/* Global theme overrides - Map Tailwind classes to CSS variables */
+
+/* Background colors */
+.bg-zinc-900, .bg-gray-900, .bg-slate-900 {
+  background-color: var(--bg-primary) !important;
+}
+
+.bg-zinc-800, .bg-gray-800, .bg-slate-800 {
+  background-color: var(--bg-secondary) !important;
+}
+
+.bg-zinc-700, .bg-gray-700, .bg-slate-700 {
+  background-color: var(--bg-tertiary) !important;
+}
+
+/* Text colors */
+.text-zinc-100, .text-gray-100, .text-white {
+  color: var(--text-primary) !important;
+}
+
+.text-zinc-400, .text-gray-400 {
+  color: var(--text-secondary) !important;
+}
+
+.text-zinc-500, .text-gray-500 {
+  color: var(--text-tertiary) !important;
+}
+
+/* Accent colors - Blues */
+.bg-blue-600, .bg-blue-700 {
+  background-color: var(--accent-primary) !important;
+}
+
+.bg-blue-500 {
+  background-color: var(--accent-primary) !important;
+  filter: brightness(1.1);
+}
+
+.text-blue-500, .text-blue-400, .text-blue-300 {
+  color: var(--accent-primary) !important;
+}
+
+.border-blue-600, .border-blue-500 {
+  border-color: var(--accent-primary) !important;
+}
+
+/* Accent colors - Purples */
+.bg-purple-600, .bg-purple-700 {
+  background-color: var(--accent-secondary) !important;
+}
+
+.text-purple-400, .text-purple-300 {
+  color: var(--accent-secondary) !important;
+}
+
+/* Success/Green */
+.bg-green-600, .bg-green-700, .bg-green-900 {
+  background-color: var(--accent-success) !important;
+  opacity: 0.9;
+}
+
+.text-green-400, .text-green-300, .text-green-200 {
+  color: var(--accent-success) !important;
+}
+
+.border-green-600 {
+  border-color: var(--accent-success) !important;
+}
+
+/* Warning/Orange */
+.bg-orange-600, .bg-orange-700, .bg-orange-900 {
+  background-color: var(--accent-warning) !important;
+  opacity: 0.9;
+}
+
+.text-orange-400, .text-orange-300, .text-orange-200 {
+  color: var(--accent-warning) !important;
+}
+
+.border-orange-600 {
+  border-color: var(--accent-warning) !important;
+}
+
+/* Error/Red */
+.bg-red-600, .bg-red-700, .bg-red-900 {
+  background-color: var(--accent-error) !important;
+  opacity: 0.9;
+}
+
+.text-red-400, .text-red-300, .text-red-200 {
+  color: var(--accent-error) !important;
+}
+
+.border-red-600 {
+  border-color: var(--accent-error) !important;
+}
+
+/* Buttons */
+button {
+  background-color: var(--button-bg);
+  color: var(--text-primary);
+}
+
+button:hover:not(:disabled) {
+  background-color: var(--button-hover);
+}
+
+/* Borders */
+.border-zinc-700, .border-gray-700 {
+  border-color: var(--border-subtle) !important;
+}
+
+/* Root background */
+body, #root {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* Apply glow to active elements */
+button:active,
+.active {
+  box-shadow: var(--glow);
+}
+
+/* Progress bars */
+input[type="range"] {
+  accent-color: var(--accent-primary);
+}
+
+/* Font family override for themed fonts */
+html[data-pixelated="true"] {
+  font-family: var(--font-primary);
+}
+
+/* Scale down Press Start 2P for readability */
+html[data-pixelated="true"] .text-2xl {
+  font-size: 0.8rem;
+}
+
+html[data-pixelated="true"] .text-xl {
+  font-size: 0.7rem;
+}
+
+html[data-pixelated="true"] .text-lg {
+  font-size: 0.6rem;
+}
+
+html[data-pixelated="true"] .text-base {
+  font-size: 0.5rem;
+}
+
+html[data-pixelated="true"] .text-sm {
+  font-size: 0.45rem;
+}
+
+html[data-pixelated="true"] .text-xs {
+  font-size: 0.4rem;
+}

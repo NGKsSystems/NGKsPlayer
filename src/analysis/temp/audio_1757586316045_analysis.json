@@ -1,0 +1,66 @@
+{
+  "file": "audio_1757586316045.wav",
+  "duration": 213.0,
+  "bpm": 89.1,
+  "key": "F major (7B)",
+  "energy": 5.4,
+  "lufs": -15.2,
+  "genre": "Country/Folk",
+  "danceability": 46.099998474121094,
+  "acousticness": 20.0,
+  "instrumentalness": 1.0,
+  "liveness": 50.0,
+  "confidence": {
+    "overall": 0.863,
+    "bpm": 1.0,
+    "key": 0.521,
+    "energy": 1.0,
+    "lufs": 0.9
+  },
+  "structure": [
+    {
+      "t": 0.0,
+      "label": "Intro"
+    },
+    {
+      "t": 19.4,
+      "label": "Verse 1"
+    },
+    {
+      "t": 38.7,
+      "label": "Verse 2"
+    },
+    {
+      "t": 58.1,
+      "label": "Verse 2"
+    },
+    {
+      "t": 77.5,
+      "label": "Verse 2"
+    },
+    {
+      "t": 96.8,
+      "label": "Verse 3"
+    },
+    {
+      "t": 116.2,
+      "label": "Verse 3"
+    },
+    {
+      "t": 135.6,
+      "label": "Verse 4"
+    },
+    {
+      "t": 154.9,
+      "label": "Verse 7"
+    },
+    {
+      "t": 174.3,
+      "label": "Verse 8"
+    },
+    {
+      "t": 193.7,
+      "label": "Final Chorus"
+    }
+  ]
+}

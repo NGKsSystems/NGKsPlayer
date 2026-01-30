@@ -1,0 +1,297 @@
+/* Professional Mixing Console Styles */
+
+.mixing-console {
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  color: #ffffff;
+  font-family: 'Roboto Mono', 'Consolas', monospace;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* Console Header */
+.console-header {
+  background: linear-gradient(90deg, #333333 0%, #404040 100%);
+  border-bottom: 2px solid #555;
+  padding: 8px 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.console-controls {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  justify-content: space-between;
+}
+
+.view-modes {
+  display: flex;
+  gap: 4px;
+}
+
+.view-modes button {
+  background: #444;
+  border: 1px solid #666;
+  color: #ccc;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.view-modes button:hover {
+  background: #555;
+  border-color: #777;
+}
+
+.view-modes button.active {
+  background: #0066cc;
+  border-color: #0088ff;
+  color: white;
+  box-shadow: 0 0 8px rgba(0, 102, 204, 0.3);
+}
+
+.automation-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.automation-controls label {
+  font-size: 11px;
+  font-weight: bold;
+  color: #aaa;
+}
+
+.automation-controls select {
+  background: #333;
+  border: 1px solid #555;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-size: 11px;
+}
+
+.console-options {
+  display: flex;
+  gap: 4px;
+}
+
+.console-options button {
+  background: #444;
+  border: 1px solid #666;
+  color: #ccc;
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-size: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.console-options button:hover {
+  background: #555;
+}
+
+.console-options button.active {
+  background: #ff6600;
+  border-color: #ff8833;
+  color: white;
+}
+
+.console-size select {
+  background: #333;
+  border: 1px solid #555;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-size: 11px;
+}
+
+/* Main Console Area */
+.console-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.mixer-view {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Channel Strips Container */
+.channel-strips-container {
+  flex: 1;
+  display: flex;
+  gap: 2px;
+  padding: 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  background: #1a1a1a;
+}
+
+.channel-row {
+  display: flex;
+  gap: 2px;
+}
+
+/* Responsive Console Sizes */
+.mixing-console.small .channel-strips-container {
+  gap: 1px;
+  padding: 4px;
+}
+
+.mixing-console.large .channel-strips-container {
+  gap: 4px;
+  padding: 12px;
+}
+
+/* Automation View */
+.automation-view {
+  flex: 1;
+  background: #222;
+  padding: 16px;
+}
+
+.automation-lanes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.automation-lane {
+  display: flex;
+  background: #333;
+  border-radius: 6px;
+  overflow: hidden;
+  min-height: 60px;
+}
+
+.lane-header {
+  width: 200px;
+  background: #444;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-right: 1px solid #555;
+}
+
+.lane-header span {
+  font-size: 12px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.lane-header select {
+  background: #333;
+  border: 1px solid #555;
+  color: #ccc;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 10px;
+}
+
+.automation-curve {
+  flex: 1;
+  background: #2a2a2a;
+  position: relative;
+  border: 1px solid #444;
+}
+
+/* Professional Color Scheme */
+.mixing-console {
+  --primary-bg: #1a1a1a;
+  --secondary-bg: #2d2d2d;
+  --accent-bg: #404040;
+  --border-color: #555;
+  --text-primary: #ffffff;
+  --text-secondary: #cccccc;
+  --text-muted: #aaaaaa;
+  --accent-blue: #0066cc;
+  --accent-orange: #ff6600;
+  --accent-red: #cc3333;
+  --accent-green: #33cc33;
+  --meter-green: #00ff00;
+  --meter-yellow: #ffff00;
+  --meter-red: #ff0000;
+}
+
+/* Professional Typography */
+.mixing-console {
+  font-feature-settings: "tnum";
+  font-variant-numeric: tabular-nums;
+}
+
+/* Scrollbars */
+.mixing-console ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.mixing-console ::-webkit-scrollbar-track {
+  background: #333;
+}
+
+.mixing-console ::-webkit-scrollbar-thumb {
+  background: #666;
+  border-radius: 4px;
+}
+
+.mixing-console ::-webkit-scrollbar-thumb:hover {
+  background: #777;
+}
+
+/* Focus Styles */
+.mixing-console button:focus,
+.mixing-console select:focus,
+.mixing-console input:focus {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 1px;
+}
+
+/* Animation Easing */
+.mixing-console * {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hardware-Style Elements */
+.mixing-console button,
+.mixing-console select {
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.mixing-console button:active {
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.3),
+    0 1px 2px rgba(0, 0, 0, 0.2);
+  transform: translateY(1px);
+}
+
+/* Professional Grid System */
+.mixing-console.small {
+  --channel-width: 60px;
+  --knob-size: 32px;
+  --fader-height: 200px;
+}
+
+.mixing-console.medium {
+  --channel-width: 80px;
+  --knob-size: 40px;
+  --fader-height: 300px;
+}
+
+.mixing-console.large {
+  --channel-width: 100px;
+  --knob-size: 48px;
+  --fader-height: 400px;
+}

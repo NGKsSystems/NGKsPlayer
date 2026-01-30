@@ -1,0 +1,429 @@
+/* Professional Knob Styles */
+
+.professional-knob {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  user-select: none;
+  position: relative;
+}
+
+/* Size Variations */
+.professional-knob.small {
+  width: 32px;
+}
+
+.professional-knob.medium {
+  width: 40px;
+}
+
+.professional-knob.large {
+  width: 48px;
+}
+
+/* Knob Label */
+.knob-label {
+  font-size: 7px;
+  font-weight: bold;
+  color: #888;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+  font-family: 'Roboto Mono', monospace;
+}
+
+/* Knob Container */
+.knob-container {
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.professional-knob.small .knob-container {
+  width: 32px;
+  height: 32px;
+}
+
+.professional-knob.medium .knob-container {
+  width: 40px;
+  height: 40px;
+}
+
+.professional-knob.large .knob-container {
+  width: 48px;
+  height: 48px;
+}
+
+.knob-container:hover {
+  transform: scale(1.05);
+}
+
+.knob-container.dragging {
+  transform: scale(1.1);
+  cursor: grabbing;
+}
+
+/* Background Ring */
+.knob-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 2px solid #444;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #555, #333, #222);
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.3),
+    0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.knob-container:hover .knob-ring {
+  border-color: #555;
+  background: radial-gradient(circle at 30% 30%, #666, #444, #333);
+}
+
+/* Range Indicator */
+.range-indicator {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  border: 1px solid #666;
+  border-radius: 50%;
+  background: 
+    conic-gradient(
+      from -135deg,
+      transparent 0deg,
+      rgba(0, 255, 0, 0.2) 270deg,
+      transparent 270deg
+    );
+}
+
+/* Center Detent Marker */
+.center-detent {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 6px;
+  background: #aaa;
+  border-radius: 1px;
+}
+
+/* Scale Marks */
+.scale-marks {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.scale-mark {
+  position: absolute;
+  top: 2px;
+  left: 50%;
+  transform-origin: 50% calc(100% - 2px);
+  width: 1px;
+  height: 4px;
+  background: #666;
+  border-radius: 0.5px;
+  transform: translateX(-50%) rotate(0deg);
+}
+
+.scale-mark.center {
+  height: 6px;
+  background: #aaa;
+  width: 2px;
+}
+
+/* Knob Body */
+.knob-body {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #888, #555, #333);
+  border: 1px solid #999;
+  cursor: grab;
+  transition: all 0.1s ease;
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.knob-container:hover .knob-body {
+  background: radial-gradient(circle at 30% 30%, #999, #666, #444);
+  border-color: #aaa;
+  box-shadow: 
+    0 3px 6px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.knob-container.dragging .knob-body {
+  cursor: grabbing;
+  background: radial-gradient(circle at 30% 30%, #aaa, #777, #555);
+  border-color: #bbb;
+  box-shadow: 
+    0 4px 8px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+/* Knob Indicator */
+.knob-indicator {
+  position: absolute;
+  top: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 8px;
+  background: #eee;
+  border-radius: 1px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.professional-knob.small .knob-indicator {
+  height: 6px;
+  width: 1.5px;
+}
+
+.professional-knob.large .knob-indicator {
+  height: 10px;
+  width: 2.5px;
+}
+
+.knob-container:hover .knob-indicator {
+  background: #fff;
+}
+
+/* Automation Dot */
+.automation-dot {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #666;
+  transition: all 0.2s ease;
+}
+
+.automation-dot.active {
+  background: #ff3333;
+  box-shadow: 0 0 6px rgba(255, 51, 51, 0.6);
+  animation: pulse-automation 1s infinite;
+}
+
+/* Value Arc */
+.value-arc {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.arc-fill {
+  stroke: #0066cc;
+  stroke-linecap: round;
+  transition: stroke-dasharray 0.1s ease;
+}
+
+.knob-container:hover .arc-fill {
+  stroke: #0088ff;
+  opacity: 1;
+}
+
+/* Value Display */
+.knob-value {
+  font-size: 8px;
+  font-weight: bold;
+  color: #ccc;
+  text-align: center;
+  background: #1a1a1a;
+  padding: 1px 3px;
+  border-radius: 2px;
+  border: 1px solid #333;
+  min-width: 24px;
+  font-family: 'Roboto Mono', monospace;
+  line-height: 1.2;
+  margin-top: 2px;
+}
+
+.professional-knob.small .knob-value {
+  font-size: 7px;
+  min-width: 20px;
+  padding: 1px 2px;
+}
+
+.professional-knob.large .knob-value {
+  font-size: 9px;
+  min-width: 28px;
+  padding: 2px 4px;
+}
+
+.value-unit {
+  font-size: 6px;
+  color: #888;
+  margin-left: 1px;
+}
+
+.professional-knob.large .value-unit {
+  font-size: 7px;
+}
+
+/* Automation Mode Indicator */
+.automation-mode-indicator {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  font-size: 6px;
+  font-weight: bold;
+  color: #888;
+  background: #222;
+  padding: 1px 2px;
+  border-radius: 2px;
+  border: 1px solid #444;
+  line-height: 1;
+}
+
+/* Automation States */
+.professional-knob.automation-read .knob-ring {
+  border-color: #33cc33;
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.3),
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    0 0 8px rgba(51, 204, 51, 0.3);
+}
+
+.professional-knob.automation-write .knob-ring {
+  border-color: #ff3333;
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.3),
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    0 0 8px rgba(255, 51, 51, 0.3);
+  animation: automation-write-glow 0.5s infinite alternate;
+}
+
+.professional-knob.automation-touch .knob-ring {
+  border-color: #ffaa00;
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.3),
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    0 0 8px rgba(255, 170, 0, 0.3);
+}
+
+.professional-knob.automation-touch-active .knob-ring {
+  border-color: #ff6600;
+  animation: automation-touch-glow 0.3s infinite alternate;
+}
+
+.professional-knob.automation-latch .knob-ring {
+  border-color: #6600ff;
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.3),
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    0 0 8px rgba(102, 0, 255, 0.3);
+}
+
+.professional-knob.automation-latch-active .knob-ring {
+  border-color: #8800ff;
+  animation: automation-latch-glow 0.7s infinite alternate;
+}
+
+@keyframes automation-write-glow {
+  0% { box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2), 0 0 8px rgba(255, 51, 51, 0.3); }
+  100% { box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2), 0 0 16px rgba(255, 51, 51, 0.6); }
+}
+
+@keyframes automation-touch-glow {
+  0% { box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2), 0 0 8px rgba(255, 102, 0, 0.3); }
+  100% { box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2), 0 0 16px rgba(255, 102, 0, 0.6); }
+}
+
+@keyframes automation-latch-glow {
+  0% { box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2), 0 0 8px rgba(136, 0, 255, 0.3); }
+  100% { box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2), 0 0 16px rgba(136, 0, 255, 0.6); }
+}
+
+/* Disabled State */
+.professional-knob.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.professional-knob.disabled .knob-body {
+  background: radial-gradient(circle at 30% 30%, #444, #333, #222);
+  border-color: #555;
+}
+
+.professional-knob.disabled .knob-indicator {
+  background: #666;
+}
+
+/* Focus States */
+.professional-knob:focus-within {
+  outline: 2px solid #0066cc;
+  outline-offset: 2px;
+  border-radius: 50%;
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .knob-ring {
+    border-color: #fff;
+  }
+  
+  .knob-body {
+    background: radial-gradient(circle at 30% 30%, #fff, #ccc, #999);
+    border-color: #fff;
+  }
+  
+  .knob-indicator {
+    background: #000;
+  }
+  
+  .scale-mark {
+    background: #fff;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .professional-knob * {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* High DPI Support */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .knob-ring {
+    border-width: 1px;
+  }
+  
+  .knob-body {
+    border-width: 0.5px;
+  }
+  
+  .knob-indicator {
+    width: 1.5px;
+  }
+  
+  .scale-mark {
+    width: 0.5px;
+  }
+  
+  .scale-mark.center {
+    width: 1px;
+  }
+}

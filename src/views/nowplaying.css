@@ -1,0 +1,128 @@
+/* ---------- Now Playing page layout ---------- */
+
+:root {
+    /* tweak once and the whole layout adapts */
+    --np-page-max: 1180px;
+    /* max width for the Now Playing content */
+    --np-queue-max: 980px;
+    /* max width for the queue list area */
+    --np-gap: 16px;
+    --np-radius: 12px;
+}
+
+/* Constrain the whole page */
+.np-page {
+    width: 100%;
+    max-width: var(--np-page-max);
+    margin: 0 auto;
+    padding: var(--np-gap);
+}
+
+/* EQ sections share the main max width */
+.np-eq {
+    width: 100%;
+    max-width: var(--np-page-max);
+    margin: 0 auto var(--np-gap);
+}
+
+/* Queue card/container */
+.np-queue {
+    width: 100%;
+    max-width: var(--np-queue-max);
+    margin: 0 auto;
+}
+
+/* Queue list: comfortable gaps, no bullets */
+.np-queue-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Queue row */
+.np-queue-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    /* title grows, actions stay compact */
+    align-items: center;
+    gap: 8px;
+    border-radius: var(--np-radius);
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, .03);
+    /* matches your dark theme */
+    border: 1px solid rgba(255, 255, 255, .06);
+}
+
+/* “Now” tag */
+.np-queue-item .tag-now {
+    font-size: 12px;
+    opacity: .8;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .06);
+    margin-left: 8px;
+}
+
+/* Selected row — keep a compact highlight, not full-screen */
+.np-queue-item.is-active {
+    background: #302a5c;
+    /* your purple selection look */
+}
+
+/* Right-side actions (kebab etc.) */
+.np-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Kebab button */
+.np-kebab {
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, .06);
+    border: 1px solid rgba(255, 255, 255, .08);
+    cursor: pointer;
+}
+
+/* Fixed context menu: appears exactly where you click */
+.np-cm {
+    position: fixed;
+    z-index: 9999;
+    min-width: 220px;
+    border-radius: 10px;
+    padding: 6px;
+    background: #11141a;
+    border: 1px solid rgba(255, 255, 255, .08);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .45);
+}
+
+/* Menu items */
+.np-cm button {
+    all: unset;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.np-cm button:hover {
+    background: rgba(255, 255, 255, .06);
+}
+
+/* Make sliders area breathe but stay inside page max */
+.np-track,
+.np-controls {
+    width: 100%;
+    max-width: var(--np-page-max);
+    margin: 0 auto var(--np-gap);
+}

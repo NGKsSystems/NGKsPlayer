@@ -1,0 +1,470 @@
+/* Professional Master Section Styles */
+
+.master-section {
+  width: 120px;
+  background: linear-gradient(180deg, #2a2a2a 0%, #1e1e1e 100%);
+  border: 2px solid #555;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  margin-left: 8px;
+}
+
+.master-section.small {
+  width: 100px;
+}
+
+.master-section.large {
+  width: 140px;
+}
+
+/* Master Chain */
+.master-chain {
+  padding: 8px;
+  border-bottom: 1px solid #333;
+  background: linear-gradient(90deg, #333 0%, #2a2a2a 100%);
+  border-radius: 6px 6px 0 0;
+}
+
+.chain-header {
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+.chain-header span {
+  font-size: 9px;
+  font-weight: bold;
+  color: #ccc;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.chain-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.chain-button {
+  background: #444;
+  border: 1px solid #555;
+  color: #aaa;
+  padding: 4px 6px;
+  border-radius: 3px;
+  font-size: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.chain-button:hover {
+  background: #555;
+  border-color: #666;
+  color: #ccc;
+}
+
+.chain-button.active {
+  background: var(--accent-blue, #0066cc);
+  border-color: #0088ff;
+  color: white;
+  box-shadow: 0 0 8px rgba(0, 102, 204, 0.4);
+}
+
+/* Monitor Controls */
+.monitor-controls {
+  padding: 8px;
+  border-bottom: 1px solid #333;
+}
+
+.monitor-header {
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+.monitor-header span {
+  font-size: 9px;
+  font-weight: bold;
+  color: #ccc;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.monitor-levels {
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.monitor-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.monitor-button {
+  background: #444;
+  border: 1px solid #555;
+  color: #aaa;
+  padding: 3px 4px;
+  border-radius: 2px;
+  font-size: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.monitor-button:hover {
+  background: #555;
+  border-color: #666;
+  color: #ccc;
+}
+
+.monitor-button.active {
+  background: var(--accent-orange, #ff6600);
+  border-color: #ff8833;
+  color: white;
+  box-shadow: 0 0 6px rgba(255, 102, 0, 0.4);
+}
+
+/* Master Pan */
+.master-pan {
+  padding: 8px;
+  border-bottom: 1px solid #333;
+  display: flex;
+  justify-content: center;
+}
+
+/* Master Metering */
+.master-metering {
+  padding: 8px;
+  border-bottom: 1px solid #333;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 200px;
+}
+
+.meter-header {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.meter-header span {
+  font-size: 10px;
+  font-weight: bold;
+  color: #ccc;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Stereo Level Meters */
+.stereo-meters {
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+  flex: 1;
+  margin-bottom: 8px;
+}
+
+.meter-scale {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-right: 4px;
+  font-size: 7px;
+  color: #666;
+  line-height: 1;
+  width: 20px;
+}
+
+.meter-mark {
+  transform: translateY(-50%);
+  text-align: right;
+}
+
+.level-bars {
+  display: flex;
+  gap: 2px;
+  flex: 1;
+  align-items: stretch;
+}
+
+.meter-bar {
+  flex: 1;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+  min-width: 12px;
+  max-width: 16px;
+}
+
+.meter-fill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(
+    to top,
+    var(--meter-green, #00ff00) 0%,
+    var(--meter-green, #00ff00) 50%,
+    var(--meter-yellow, #ffff00) 75%,
+    var(--meter-red, #ff0000) 90%,
+    var(--meter-red, #ff0000) 100%
+  );
+  transition: height 0.05s ease-out;
+}
+
+.meter-peak {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #fff;
+  opacity: 0.9;
+  transition: bottom 0.1s ease-out;
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.5);
+}
+
+.channel-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  padding: 0 1px;
+}
+
+.channel-labels span {
+  font-size: 8px;
+  font-weight: bold;
+  color: #888;
+  text-align: center;
+  flex: 1;
+}
+
+/* Advanced Metering */
+.advanced-metering {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.meter-readout {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1a1a1a;
+  padding: 3px 6px;
+  border-radius: 2px;
+  border: 1px solid #333;
+}
+
+.meter-label {
+  font-size: 7px;
+  font-weight: bold;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.meter-value {
+  font-size: 8px;
+  font-weight: bold;
+  color: #ccc;
+  font-family: 'Roboto Mono', monospace;
+  min-width: 32px;
+  text-align: right;
+}
+
+/* Transport Status */
+.transport-status {
+  padding: 6px 8px;
+  border-bottom: 1px solid #333;
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+}
+
+.status-indicator {
+  background: #333;
+  border: 1px solid #444;
+  color: #666;
+  padding: 2px 4px;
+  border-radius: 2px;
+  font-size: 7px;
+  font-weight: bold;
+  text-align: center;
+  min-width: 24px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-indicator.recording {
+  background: var(--accent-red, #cc3333);
+  border-color: #dd4444;
+  color: white;
+  box-shadow: 0 0 8px rgba(204, 51, 51, 0.4);
+  animation: pulse 1s infinite;
+}
+
+.status-indicator.playing {
+  background: var(--accent-green, #33cc33);
+  border-color: #44dd44;
+  color: white;
+  box-shadow: 0 0 8px rgba(51, 204, 51, 0.4);
+}
+
+/* Master Mute */
+.master-mute {
+  padding: 6px 8px;
+  border-bottom: 1px solid #333;
+}
+
+.mute-button.master {
+  width: 100%;
+  background: #444;
+  border: 2px solid #555;
+  color: #aaa;
+  padding: 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.mute-button.master:hover {
+  background: #555;
+  border-color: #666;
+  color: #ccc;
+}
+
+.mute-button.master.active {
+  background: var(--accent-red, #cc3333);
+  border-color: #dd4444;
+  color: white;
+  box-shadow: 0 0 12px rgba(204, 51, 51, 0.4);
+  animation: pulse 1s infinite;
+}
+
+/* Master Fader */
+.master-fader {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  min-height: 200px;
+}
+
+.fader-label {
+  font-size: 10px;
+  font-weight: bold;
+  color: #ccc;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: #1a1a1a;
+  padding: 3px 6px;
+  border-radius: 3px;
+  border: 1px solid #333;
+}
+
+.fader-readout {
+  font-size: 9px;
+  font-weight: bold;
+  color: #ccc;
+  text-align: center;
+  background: #1a1a1a;
+  padding: 3px 6px;
+  border-radius: 3px;
+  border: 1px solid #333;
+  min-width: 36px;
+  font-family: 'Roboto Mono', monospace;
+}
+
+/* Professional Hardware Look */
+.master-section {
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.master-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%);
+  pointer-events: none;
+  border-radius: 6px 6px 0 0;
+}
+
+/* Console Size Variations */
+.master-section.small .master-fader {
+  min-height: 160px;
+}
+
+.master-section.small .master-metering {
+  min-height: 160px;
+}
+
+.master-section.large .master-fader {
+  min-height: 240px;
+}
+
+.master-section.large .master-metering {
+  min-height: 240px;
+}
+
+/* Animations */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* Focus States */
+.master-section:focus-within {
+  outline: 2px solid var(--accent-blue, #0066cc);
+  outline-offset: 2px;
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .master-section {
+    border-color: #fff;
+  }
+  
+  .chain-button,
+  .monitor-button {
+    border-color: #fff;
+    color: #fff;
+  }
+  
+  .meter-bar {
+    border-color: #fff;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .master-section * {
+    transition: none;
+    animation: none;
+  }
+}

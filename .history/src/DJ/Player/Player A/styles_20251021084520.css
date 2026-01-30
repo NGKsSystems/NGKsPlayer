@@ -1,0 +1,13 @@
+.player-a-content {
+  padding: 20px;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  color: white;
+  text-align: center;
+}
+
+.player-a-content h3 {
+  margin: 0 0 10px 0;
+  color: #ff6b35;
+}

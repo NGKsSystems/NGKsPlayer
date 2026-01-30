@@ -1,0 +1,38 @@
+.sampler-widget {
+  background: linear-gradient(145deg, #4caf50, #66bb6a);
+  border-radius: 12px;
+  padding: 16px;
+  color: white;
+  box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+  border: 2px solid rgba(102, 187, 106, 0.5);
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sampler-header {
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.sampler-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.sampler-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sampler-content p {
+  margin: 0;
+  opacity: 0.8;
+  font-size: 14px;
+  text-align: center;
+}

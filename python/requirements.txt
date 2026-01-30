@@ -1,0 +1,7 @@
+# Demucs - Modern stem separation (Python 3.13 compatible)
+# Better quality than Spleeter, actively maintained
+demucs
+
+# OpenAI Whisper - State-of-the-art speech recognition
+# Provides word-level timestamps for karaoke/subtitles
+openai-whisper

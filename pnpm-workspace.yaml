@@ -1,0 +1,9 @@
+ignoredBuiltDependencies:
+  - better-sqlite3
+  - electron
+  - esbuild
+  - ffmpeg-static
+  - lzma-native
+  - speaker
+  - sqlite3
+  - unrs-resolver

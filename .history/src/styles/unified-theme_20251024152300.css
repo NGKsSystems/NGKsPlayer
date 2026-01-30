@@ -1,0 +1,194 @@
+/* Unified DJ Theme - Modern Dark with Accent Colors */
+
+:root {
+  /* Base Colors */
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2a2a2a;
+  --bg-tertiary: #3a3a3a;
+  --bg-card: #252525;
+  --bg-glass: rgba(255, 255, 255, 0.05);
+  
+  /* Accent Colors */
+  --accent-orange: #ff6b35;
+  --accent-orange-light: #ff8c42;
+  --accent-orange-subtle: rgba(255, 107, 53, 0.2);
+  --accent-blue: #2196f3;
+  --accent-blue-light: #42a5f5;
+  --accent-blue-subtle: rgba(33, 150, 243, 0.2);
+  
+  /* Text Colors */
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.8);
+  --text-muted: rgba(255, 255, 255, 0.6);
+  --text-subtle: rgba(255, 255, 255, 0.4);
+  
+  /* Border Colors */
+  --border-light: rgba(255, 255, 255, 0.1);
+  --border-medium: rgba(255, 255, 255, 0.2);
+  --border-accent: rgba(255, 255, 255, 0.3);
+  
+  /* Shadows */
+  --shadow-small: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-large: 0 8px 32px rgba(0, 0, 0, 0.5);
+  
+  /* Border Radius */
+  --radius-small: 6px;
+  --radius-medium: 8px;
+  --radius-large: 12px;
+  
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 24px;
+}
+
+/* Base Widget Styles */
+.widget-base {
+  background: linear-gradient(145deg, var(--bg-card), var(--bg-secondary));
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-medium);
+  box-shadow: var(--shadow-medium);
+  color: var(--text-primary);
+  overflow: hidden;
+  position: relative;
+}
+
+.widget-base::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--border-accent), transparent);
+  opacity: 0.5;
+}
+
+/* Widget Headers */
+.widget-header {
+  background: var(--bg-tertiary);
+  border-bottom: 1px solid var(--border-light);
+  padding: var(--spacing-sm) var(--spacing-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.widget-header h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Accent Variations */
+.widget-accent-orange {
+  border-color: var(--accent-orange-subtle);
+}
+
+.widget-accent-orange::before {
+  background: linear-gradient(90deg, transparent, var(--accent-orange), transparent);
+}
+
+.widget-accent-orange .widget-header {
+  background: linear-gradient(145deg, var(--bg-tertiary), rgba(255, 107, 53, 0.1));
+}
+
+.widget-accent-blue {
+  border-color: var(--accent-blue-subtle);
+}
+
+.widget-accent-blue::before {
+  background: linear-gradient(90deg, transparent, var(--accent-blue), transparent);
+}
+
+.widget-accent-blue .widget-header {
+  background: linear-gradient(145deg, var(--bg-tertiary), rgba(33, 150, 243, 0.1));
+}
+
+/* Controls and Buttons */
+.control-button {
+  background: var(--bg-glass);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-small);
+  color: var(--text-secondary);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.control-button:hover {
+  background: var(--border-light);
+  color: var(--text-primary);
+  border-color: var(--border-medium);
+}
+
+.control-button.active {
+  background: var(--accent-orange);
+  color: #000;
+  border-color: var(--accent-orange);
+}
+
+/* Input Fields */
+.input-field {
+  background: var(--bg-glass);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-small);
+  color: var(--text-primary);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: 12px;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--border-accent);
+  background: var(--bg-secondary);
+}
+
+.input-field::placeholder {
+  color: var(--text-subtle);
+}
+
+/* Track Lists */
+.track-list-item {
+  background: transparent;
+  border-bottom: 1px solid var(--border-light);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.track-list-item:hover {
+  background: var(--bg-glass);
+}
+
+.track-list-item.selected {
+  background: var(--accent-orange-subtle);
+  border-left: 3px solid var(--accent-orange);
+}
+
+/* Resize Handles */
+.resize-handle {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 12px;
+  height: 12px;
+  cursor: nw-resize;
+  color: var(--text-subtle);
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-glass);
+  border-radius: var(--radius-small);
+}
+
+.resize-handle:hover {
+  background: var(--border-light);
+  color: var(--text-secondary);
+}

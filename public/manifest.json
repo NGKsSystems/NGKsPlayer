@@ -1,0 +1,139 @@
+{
+  "name": "NGKs Player Mobile",
+  "short_name": "NGKs Mobile",
+  "description": "Revolutionary mobile DJ controller for NGKs Player",
+  "start_url": "/mobile",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#1f2937",
+  "background_color": "#111827",
+  "scope": "/",
+  "categories": ["music", "entertainment", "productivity"],
+  "lang": "en",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Quick Mix",
+      "short_name": "Mix",
+      "description": "Start mixing immediately",
+      "url": "/mobile?tab=mixer",
+      "icons": [{ "src": "/icons/shortcut-mix-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Browse Library",
+      "short_name": "Library",
+      "description": "Browse and search tracks",
+      "url": "/mobile?tab=library",
+      "icons": [{ "src": "/icons/shortcut-library-96x96.png", "sizes": "96x96" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/mobile-mixer.png",
+      "sizes": "375x667",
+      "type": "image/png",
+      "platform": "narrow",
+      "label": "Mobile mixer interface"
+    },
+    {
+      "src": "/screenshots/tablet-mixer.png",
+      "sizes": "768x1024",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "Tablet mixer interface"
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "https://ngksplayer.com/mobile"
+    }
+  ],
+  "prefer_related_applications": false,
+  "share_target": {
+    "action": "/mobile/share",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url",
+      "files": [
+        {
+          "name": "audio_files",
+          "accept": ["audio/*"]
+        }
+      ]
+    }
+  },
+  "file_handlers": [
+    {
+      "action": "/mobile/open-audio",
+      "accept": {
+        "audio/*": [".mp3", ".wav", ".flac", ".m4a", ".aac"]
+      }
+    }
+  ],
+  "protocol_handlers": [
+    {
+      "protocol": "ngks",
+      "url": "/mobile/handle?url=%s"
+    }
+  ],
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  }
+}

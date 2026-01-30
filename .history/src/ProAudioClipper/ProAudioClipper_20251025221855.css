@@ -1,0 +1,759 @@
+/* ProAudioClipper.css - Main application styles */
+
+.pro-audio-clipper {
+  height: 100vh;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Header Bar */
+.header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  z-index: 100;
+}
+
+.header-section {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.header-section h1 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #00d4ff;
+}
+
+.back-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.back-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: #00d4ff;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* Undo/Redo Controls */
+.undo-redo-controls {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.undo-btn, .redo-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  min-width: 70px;
+  justify-content: center;
+}
+
+.undo-btn.active:hover, .redo-btn.active:hover {
+  background: rgba(0, 212, 255, 0.3);
+  border-color: #00d4ff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
+}
+
+.undo-btn.disabled, .redo-btn.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+.undo-btn.disabled:hover, .redo-btn.disabled:hover {
+  transform: none;
+  box-shadow: none;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Professional styling for undo/redo states */
+.undo-btn.active {
+  border-color: rgba(34, 197, 94, 0.5);
+  background: rgba(34, 197, 94, 0.1);
+}
+
+.redo-btn.active {
+  border-color: rgba(59, 130, 246, 0.5);
+  background: rgba(59, 130, 246, 0.1);
+}
+
+/* Undo/Redo Status Display */
+.undo-status {
+  padding: 8px 16px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  margin: 8px 0;
+  backdrop-filter: blur(5px);
+}
+
+.undo-status-content {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  font-size: 13px;
+}
+
+.undo-info, .redo-info {
+  color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.undo-info strong, .redo-info strong {
+  color: #00d4ff;
+  font-weight: 600;
+}
+
+.header-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.header-btn:hover {
+  background: rgba(0, 212, 255, 0.2);
+  border-color: #00d4ff;
+}
+
+/* Main Layout - Multi-Track */
+.main-layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Left Panel - Track Headers */
+.left-panel {
+  width: 280px;
+  min-width: 280px;
+  background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  max-height: 100vh;
+}
+
+.import-section {
+  padding: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.import-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  border: none;
+  color: white;
+  padding: 12px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.import-btn:hover {
+  background: linear-gradient(135deg, #2980b9 0%, #3498db 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+}
+
+.tracks-container {
+  flex: 1;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.no-tracks {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: #95a5a6;
+  text-align: center;
+  padding: 20px;
+}
+
+.no-tracks p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* Master Controls */
+.master-controls {
+  padding: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.master-controls h3 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ecf0f1;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.master-volume {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.master-volume label {
+  font-size: 12px;
+  color: #95a5a6;
+  font-weight: 500;
+}
+
+.master-volume-slider {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: #34495e;
+  outline: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+}
+
+.master-volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #e74c3c;
+  cursor: pointer;
+  border: 2px solid #2c3e50;
+  transition: all 0.2s ease;
+}
+
+.master-volume-slider::-webkit-slider-thumb:hover {
+  background: #c0392b;
+  transform: scale(1.1);
+}
+
+.master-volume span {
+  font-size: 12px;
+  color: #95a5a6;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Center Panel - Timeline */
+.center-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, #34495e 0%, #2c3e50 100%);
+  overflow: hidden;
+}
+
+.timeline-container {
+  flex: 1;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  margin: 4px;
+  overflow: hidden;
+  min-height: 600px;
+  height: calc(100vh - 200px);
+}
+
+/* Selection Info Bar */
+.selection-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px;
+  background: rgba(52, 152, 219, 0.2);
+  border-top: 1px solid #3498db;
+  font-size: 13px;
+}
+
+.selection-info span {
+  color: #ecf0f1;
+  font-weight: 500;
+}
+
+.create-clip-btn,
+.clear-selection-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s ease;
+}
+
+.create-clip-btn:hover {
+  background: rgba(46, 204, 113, 0.3);
+  border-color: #2ecc71;
+}
+
+.clear-selection-btn:hover {
+  background: rgba(231, 76, 60, 0.3);
+  border-color: #e74c3c;
+}
+
+.selection-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.header-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.back-btn {
+  background: linear-gradient(135deg, #4CAF50, #45a049);
+  border-color: transparent;
+}
+
+.back-btn:hover {
+  background: linear-gradient(135deg, #45a049, #3d8b40);
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 1px;
+  background: #000;
+  overflow: hidden;
+}
+
+/* Left Panel */
+.left-panel {
+  background: #1e1e1e;
+  border-right: 1px solid #333;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.file-loader-section h3,
+.clips-section h3 {
+  margin: 0 0 12px 0;
+  color: #00d4ff;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.file-input {
+  width: 100%;
+  padding: 12px;
+  background: #2a2a2a;
+  border: 2px dashed #555;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.file-input:hover {
+  border-color: #00d4ff;
+  background: #333;
+}
+
+.supported-formats {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #888;
+}
+
+/* Center Panel */
+.center-panel {
+  background: #181818;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Selection Controls */
+.selection-controls {
+  background: rgba(33, 150, 243, 0.1);
+  border: 1px solid rgba(33, 150, 243, 0.3);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin: 0 16px 16px 16px;
+}
+
+.selection-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.selection-label {
+  font-weight: 600;
+  color: #2196f3;
+  font-size: 14px;
+}
+
+.selection-time {
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 13px;
+  color: #e0e0e0;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.preview-btn {
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.preview-btn:hover {
+  background: #45a049;
+}
+
+.selection-adjust {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.adjust-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.adjust-group label {
+  font-size: 12px;
+  color: #b0b0b0;
+  margin-right: 8px;
+  min-width: 60px;
+}
+
+.adjust-group button {
+  background: #333;
+  color: #e0e0e0;
+  border: 1px solid #555;
+  border-radius: 3px;
+  padding: 2px 6px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: monospace;
+}
+
+.adjust-group button:hover {
+  background: #444;
+  border-color: #666;
+}
+
+.clear-selection-btn {
+  background: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  margin-left: auto;
+}
+
+.clear-selection-btn:hover {
+  background: #d32f2f;
+}
+
+/* Clips Section */
+.clips-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.clips-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #444;
+}
+
+.clips-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.export-clips-btn, .delete-clips-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.export-clips-btn {
+  background: #16a085;
+  color: white;
+}
+
+.export-clips-btn:hover:not(:disabled) {
+  background: #1abc9c;
+}
+
+.delete-clips-btn {
+  background: #e74c3c;
+  color: white;
+}
+
+.delete-clips-btn:hover:not(:disabled) {
+  background: #c0392b;
+}
+
+.export-clips-btn:disabled, .delete-clips-btn:disabled {
+  background: #555;
+  color: #888;
+  cursor: not-allowed;
+}
+
+.clips-list {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 300px;
+}
+
+.clips-help {
+  padding: 16px;
+  background: rgba(0, 212, 255, 0.1);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  border-radius: 8px;
+  color: #e0e0e0;
+}
+
+.clips-help h4 {
+  margin: 0 0 12px 0;
+  color: #00d4ff;
+  font-size: 14px;
+}
+
+.clips-help ol {
+  margin: 0 0 12px 0;
+  padding-left: 20px;
+}
+
+.clips-help li {
+  margin-bottom: 6px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.clips-help kbd {
+  background: #333;
+  border: 1px solid #555;
+  border-radius: 3px;
+  padding: 2px 6px;
+  font-size: 11px;
+  color: #00d4ff;
+}
+
+.clips-help p {
+  margin: 0;
+  font-size: 12px;
+  color: #fbbf24;
+}
+
+.clip-item {
+  padding: 12px;
+  background: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.clip-item:hover {
+  background: #333;
+  border-color: #555;
+}
+
+.clip-item.selected {
+  background: #1e3a8a;
+  border-color: #3b82f6;
+}
+
+.clip-name {
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.clip-time {
+  font-size: 12px;
+  color: #00d4ff;
+  margin-bottom: 2px;
+}
+
+.clip-duration {
+  font-size: 11px;
+  color: #888;
+}
+
+.no-clips {
+  padding: 20px;
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  background: #222;
+  border-radius: 6px;
+  border: 1px dashed #444;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .main-content {
+    grid-template-columns: 280px 1fr;
+  }
+  
+  .left-panel {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+  
+  .left-panel {
+    order: 2;
+    max-height: 300px;
+  }
+  
+  .center-panel {
+    order: 1;
+  }
+  
+  .header-bar {
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px;
+  }
+  
+  .header-left,
+  .header-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+/* Scrollbar Styling */
+.clips-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.clips-list::-webkit-scrollbar-track {
+  background: #2a2a2a;
+}
+
+.clips-list::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 3px;
+}
+
+.clips-list::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}

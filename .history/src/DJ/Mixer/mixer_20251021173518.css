@@ -1,0 +1,251 @@
+.mixer-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+  border-radius: 8px;
+  padding: 20px;
+  gap: 20px;
+  position: relative;
+}
+
+.mixer-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  border: 2px solid #333;
+}
+
+.mixer-brand {
+  color: #ff6b6b;
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  text-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+}
+
+.mixer-model {
+  color: #ccc;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.mixer-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 2fr;
+  grid-template-areas: 
+    "channels center master effects";
+  gap: 20px;
+  flex: 1;
+  min-height: 350px;
+}
+
+.channel-strips {
+  grid-area: channels;
+  display: flex;
+  gap: 15px;
+  justify-content: space-between;
+}
+
+.center-section {
+  grid-area: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.right-section {
+  grid-area: master;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.effects-section {
+  grid-area: effects;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.mixer-status {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 15px;
+  background: linear-gradient(135deg, #222 0%, #111 100%);
+  border-radius: 8px;
+  border: 2px solid #333;
+  margin-top: auto;
+}
+
+.status-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.status-label {
+  color: #999;
+  font-size: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.status-value {
+  color: #00ff88;
+  font-size: 14px;
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+  background: rgba(0, 255, 136, 0.1);
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 255, 136, 0.3);
+  text-shadow: 0 0 8px rgba(0, 255, 136, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .mixer-layout {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: 
+      "channels center"
+      "master effects";
+    gap: 15px;
+  }
+  
+  .modular-mixer {
+    min-width: 600px;
+    min-height: 600px;
+  }
+}
+
+@media (max-width: 768px) {
+  .mixer-layout {
+    grid-template-columns: 1fr;
+    grid-template-areas: 
+      "channels"
+      "center"
+      "master"
+      "effects";
+    gap: 12px;
+  }
+  
+  .channel-strips {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .effects-section {
+    flex-direction: row;
+    gap: 10px;
+  }
+  
+  .modular-mixer {
+    min-width: 400px;
+    min-height: 800px;
+  }
+  
+  .mixer-container {
+    padding: 15px;
+  }
+  
+  .mixer-info {
+    flex-direction: column;
+    gap: 5px;
+    text-align: center;
+  }
+  
+  .mixer-brand {
+    font-size: 16px;
+  }
+  
+  .mixer-model {
+    font-size: 12px;
+  }
+}
+
+/* Animation Effects */
+.mixer-container {
+  animation: mixerPowerOn 0.8s ease-out;
+}
+
+@keyframes mixerPowerOn {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Sub-widget styling overrides */
+.mixer-container .mixer-sub-widget {
+  border: 2px solid #444;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+}
+
+.mixer-container .mixer-sub-widget:hover {
+  border-color: #555;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+  transform: translateY(-2px);
+}
+
+.mixer-container .mixer-sub-widget .widget-header {
+  font-size: 11px;
+  padding: 8px 12px;
+  text-align: center;
+  border-bottom: 1px solid #333;
+}
+
+/* Professional mixer styling touches */
+.mixer-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, 
+    #ff6b6b 0%, 
+    #4ecdc4 25%, 
+    #45b7d1 50%, 
+    #96ceb4 75%, 
+    #ffeaa7 100%
+  );
+  border-radius: 12px 12px 0 0;
+}
+
+.mixer-container::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    rgba(255, 107, 107, 0.3) 0%, 
+    rgba(78, 205, 196, 0.3) 25%, 
+    rgba(69, 183, 209, 0.3) 50%, 
+    rgba(150, 206, 180, 0.3) 75%, 
+    rgba(255, 234, 167, 0.3) 100%
+  );
+  border-radius: 0 0 12px 12px;
+}

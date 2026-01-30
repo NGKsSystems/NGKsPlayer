@@ -1,0 +1,214 @@
+<!-- markdownlint-disable MD001 MD004 MD009 MD012 MD022 MD024 MD026 MD032 MD047 MD031 MD033 MD034 MD036 MD040 MD041 MD058-->
+
+# Quick Start Guide - NGKs Player Pro
+
+## 🚀 Get Started in 5 Minutes
+
+Welcome to NGKs Player Pro! This guide will have you creating professional audio content in just a few minutes.
+
+## 📋 Prerequisites
+
+- Modern web browser (Chrome, Firefox, Safari, Edge)
+- Audio interface or built-in audio (for recording)
+- Basic familiarity with audio concepts
+
+## 🔧 Installation
+
+### Option 1: Web App
+1. Open your browser
+2. Navigate to NGKs Player Pro
+3. Allow microphone/audio permissions when prompted
+4. Start creating immediately!
+
+### Option 2: Desktop App
+1. Download the installer for your platform
+2. Run the installer
+3. Launch NGKs Player Pro
+4. Configure audio settings
+
+## 🎵 Your First Project
+
+### Step 1: Create a New Project
+```
+1. Click "New Project" button
+2. Choose your project template:
+   - Blank Project (start from scratch)
+   - Music Production (pre-configured for music)
+   - Podcast (optimized for voice)
+   - Sound Design (for creative audio)
+```
+
+### Step 2: Load Your First Audio
+```
+Drag & Drop Method:
+1. Drag audio files directly into the workspace
+2. Files are automatically analyzed and imported
+3. Waveforms appear instantly
+
+Upload Method:
+1. Click "Import Audio" button
+2. Select files from your computer
+3. Choose import settings if needed
+```
+
+### Step 3: Basic Editing
+```
+Timeline Navigation:
+- Scroll wheel: Zoom in/out
+- Click + drag: Move playhead
+- Space bar: Play/pause
+
+Basic Cuts:
+1. Position playhead where you want to cut
+2. Press 'S' key or click "Split" button
+3. Select unwanted segments
+4. Press Delete key
+```
+
+## 🎼 Essential Features Tour
+
+### Pro Audio Clipper
+**Perfect for creating seamless loops and clips**
+
+1. **Select Audio Region**
+   - Click and drag to select area
+   - Use Shift+click to extend selection
+
+2. **Open Pro Clipper**
+   - Right-click selection → "Open in Pro Clipper"
+   - Or use keyboard shortcut: `Ctrl+Shift+C`
+
+3. **Fine-tune Your Clip**
+   - Adjust start/end points with precision
+   - Use crossfade controls for smooth transitions
+   - Preview changes in real-time
+
+### Piano Roll MIDI Editor
+**Professional MIDI note editing**
+
+1. **Access MIDI Editor**
+   - Import MIDI file or create new MIDI track
+   - Double-click MIDI region → Opens Piano Roll
+
+2. **Edit Notes**
+   - Pencil tool: Add notes by clicking
+   - Select tool: Move and resize notes
+   - Velocity tool: Adjust note dynamics
+
+3. **Professional Features**
+   - Quantization: Snap notes to grid
+   - Scale constraints: Stay in key
+   - Velocity lanes: Visual dynamics editing
+
+## 🔊 Audio Formats Support
+
+### Supported Import Formats
+- **Standard**: WAV, MP3, FLAC, OGG
+- **Professional**: AIFF, BWF (Broadcast Wave)
+- **High-End**: DSD (Direct Stream Digital)
+
+### Export Options
+- **Web Ready**: MP3, OGG, WebM
+- **Professional**: WAV 24-bit, AIFF
+- **Broadcast**: BWF with metadata
+- **Mastering**: 32-bit float, 96kHz+
+
+## ⌨️ Essential Keyboard Shortcuts
+
+### Playback Control
+- `Space` - Play/Pause
+- `Home` - Go to beginning
+- `End` - Go to end
+- `←` `→` - Nudge playhead
+
+### Editing
+- `Ctrl+C` - Copy
+- `Ctrl+V` - Paste
+- `Ctrl+Z` - Undo
+- `Ctrl+Y` - Redo
+- `S` - Split at playhead
+- `Delete` - Delete selection
+
+### Professional Tools
+- `Ctrl+Shift+C` - Open Pro Clipper
+- `M` - Open MIDI Editor
+- `Ctrl+E` - Export audio
+- `Ctrl+S` - Save project
+
+## 🎯 Common Workflows
+
+### Podcast Editing Workflow
+```
+1. Import raw recordings
+2. Use Pro Clipper to remove "ums" and pauses
+3. Apply noise reduction filter
+4. Level audio with compressor
+5. Export to MP3 with metadata
+```
+
+### Music Production Workflow
+```
+1. Start with drum loop or backing track
+2. Use Piano Roll to add MIDI instruments
+3. Record live audio over the arrangement
+4. Apply professional effects and mixing
+5. Export to high-quality WAV/AIFF
+```
+
+### Sound Design Workflow
+```
+1. Import source sounds and field recordings
+2. Use advanced audio processing
+3. Layer and texture sounds creatively
+4. Export stems in professional formats
+5. Create master mix with spatial audio
+```
+
+## 🔧 Quick Setup Tips
+
+### Audio Interface Setup
+```
+1. Connect your audio interface
+2. Go to Settings → Audio
+3. Select your interface as input/output
+4. Set appropriate buffer size (128-512 samples)
+5. Test with built-in tone generator
+```
+
+### Performance Optimization
+```
+- Use 48kHz sample rate for most work
+- Enable hardware acceleration if available
+- Close unnecessary applications
+- Use SSD storage for best performance
+```
+
+## 🆘 Need Help?
+
+### Immediate Help
+- **F1 Key** - Context-sensitive help
+- **Tooltip System** - Hover over any control
+- **Status Bar** - Real-time feedback
+
+### Learning Resources
+- [Complete User Manual](./user-manual.md)
+- [Video Tutorial Library](../media/video-tutorials.md)
+- [Interactive Demos](../media/interactive-demos.md)
+
+### Support
+- [FAQ Section](../troubleshooting/faq.md)
+- [Community Forum](../support/forum.md)
+- [Contact Support](../support/contact.md)
+
+## 🎉 Next Steps
+
+Now that you're set up, explore these areas:
+
+1. **[Feature Tutorials](../tutorials/)** - Master specific features
+2. **[Advanced Audio Processing](../features/audio-processing.md)** - Professional techniques
+3. **[Keyboard Shortcuts Reference](../reference/keyboard-shortcuts.md)** - Work faster
+4. **[Sample Projects](../samples/)** - Learn from examples
+
+---
+
+**Ready to create? Your audio production journey starts now!** 🎵

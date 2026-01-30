@@ -1,0 +1,187 @@
+{
+  "C:\\Users\\suppo\\Music\\Blake Shelton - Boys Round Here.mp3": {
+    "file": "Blake Shelton - Boys Round Here.mp3",
+    "duration": 232.0,
+    "bpm": 83.0,
+    "key": "A major (11B)",
+    "energy": 4.2,
+    "lufs": -21.1,
+    "genre": "Rock/Pop",
+    "confidence": {
+      "overall": 0.695,
+      "bpm": 0.776,
+      "key": 0.758,
+      "energy": 0.847,
+      "lufs": 0.4
+    },
+    "structure": [
+      {
+        "t": 0.0,
+        "label": "Intro"
+      },
+      {
+        "t": 21.1,
+        "label": "Verse 1"
+      },
+      {
+        "t": 42.2,
+        "label": "Verse 2"
+      },
+      {
+        "t": 63.3,
+        "label": "Verse 2"
+      },
+      {
+        "t": 84.4,
+        "label": "Verse 2"
+      },
+      {
+        "t": 105.5,
+        "label": "Chorus 2"
+      },
+      {
+        "t": 126.6,
+        "label": "Verse 3"
+      },
+      {
+        "t": 147.6,
+        "label": "Verse 4"
+      },
+      {
+        "t": 168.7,
+        "label": "Final Chorus"
+      },
+      {
+        "t": 189.8,
+        "label": "Final Chorus"
+      },
+      {
+        "t": 210.9,
+        "label": "Outro"
+      }
+    ],
+    "analysis_time": 80.8
+  },
+  "C:\\Users\\suppo\\Music\\Brooks & Dunn - Brand New Man.mp3": {
+    "file": "Brooks & Dunn - Brand New Man.mp3",
+    "duration": 179.4,
+    "bpm": 65.4,
+    "key": "G major (9B)",
+    "energy": 4.6,
+    "lufs": -11.8,
+    "genre": "Rock/Pop",
+    "confidence": {
+      "overall": 0.741,
+      "bpm": 1.0,
+      "key": 0.833,
+      "energy": 0.729,
+      "lufs": 0.4
+    },
+    "structure": [
+      {
+        "t": 0.0,
+        "label": "Intro"
+      },
+      {
+        "t": 17.9,
+        "label": "Verse 1"
+      },
+      {
+        "t": 35.9,
+        "label": "Verse 2"
+      },
+      {
+        "t": 53.8,
+        "label": "Verse 2"
+      },
+      {
+        "t": 71.8,
+        "label": "Verse 2"
+      },
+      {
+        "t": 89.7,
+        "label": "Verse 3"
+      },
+      {
+        "t": 107.7,
+        "label": "Verse 3"
+      },
+      {
+        "t": 125.6,
+        "label": "Final Chorus"
+      },
+      {
+        "t": 143.5,
+        "label": "Final Chorus"
+      },
+      {
+        "t": 161.5,
+        "label": "Outro"
+      }
+    ],
+    "analysis_time": 62.21
+  },
+  "C:\\Users\\suppo\\Music\\Airbourne - Breakin' Outta Hell.mp3": {
+    "file": "Airbourne - Breakin' Outta Hell.mp3",
+    "duration": 230.1,
+    "bpm": 86.1,
+    "key": "D minor (7A)",
+    "energy": 6.8,
+    "lufs": -4.5,
+    "genre": "Rock/Pop",
+    "confidence": {
+      "overall": 0.659,
+      "bpm": 0.889,
+      "key": 0.625,
+      "energy": 0.723,
+      "lufs": 0.4
+    },
+    "structure": [
+      {
+        "t": 0.0,
+        "label": "Verse 1"
+      },
+      {
+        "t": 20.9,
+        "label": "Verse 1"
+      },
+      {
+        "t": 41.8,
+        "label": "Verse 2"
+      },
+      {
+        "t": 62.7,
+        "label": "Verse 2"
+      },
+      {
+        "t": 83.7,
+        "label": "Verse 2"
+      },
+      {
+        "t": 104.6,
+        "label": "Verse 3"
+      },
+      {
+        "t": 125.5,
+        "label": "Verse 3"
+      },
+      {
+        "t": 146.4,
+        "label": "Verse 4"
+      },
+      {
+        "t": 167.3,
+        "label": "Final Chorus"
+      },
+      {
+        "t": 188.2,
+        "label": "Final Chorus"
+      },
+      {
+        "t": 209.2,
+        "label": "Outro"
+      }
+    ],
+    "analysis_time": 88.45
+  }
+}

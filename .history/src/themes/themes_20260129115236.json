@@ -1,0 +1,212 @@
+{
+  "modernDark": {
+    "name": "Modern Dark",
+    "id": "modernDark",
+    "colors": {
+      "bg-primary": "#0a0a0a",
+      "bg-secondary": "#1a1a1a",
+      "bg-tertiary": "#2a2a2a",
+      "text-primary": "#ffffff",
+      "text-secondary": "#a0a0a0",
+      "text-tertiary": "#666666",
+      "accent-primary": "#3b82f6",
+      "accent-secondary": "#8b5cf6",
+      "accent-success": "#10b981",
+      "accent-warning": "#f59e0b",
+      "accent-error": "#ef4444",
+      "waveform-line": "#3b82f6",
+      "waveform-fill": "rgba(59, 130, 246, 0.3)",
+      "progress-bg": "#374151",
+      "progress-fill": "#3b82f6",
+      "button-bg": "#374151",
+      "button-hover": "#4b5563",
+      "button-active": "#3b82f6",
+      "border-subtle": "#374151",
+      "glow": "none"
+    },
+    "fonts": {
+      "primary": "system-ui, -apple-system, sans-serif",
+      "monospace": "ui-monospace, monospace"
+    },
+    "effects": {
+      "scanlines": false,
+      "glow": false,
+      "pixelated": false
+    }
+  },
+  "atariNight": {
+    "name": "Atari Night",
+    "id": "atariNight",
+    "colors": {
+      "bg-primary": "#000000",
+      "bg-secondary": "#0a001f",
+      "bg-tertiary": "#1a0a2f",
+      "text-primary": "#ffffff",
+      "text-secondary": "#00ff9f",
+      "text-tertiary": "#985c28",
+      "accent-primary": "#fc6323",
+      "accent-secondary": "#a03c88",
+      "accent-success": "#00ff9f",
+      "accent-warning": "#985c28",
+      "accent-error": "#b03c3c",
+      "waveform-line": "#fc6323",
+      "waveform-fill": "rgba(252, 99, 35, 0.4)",
+      "progress-bg": "#1a0a2f",
+      "progress-fill": "#fc6323",
+      "button-bg": "#1a0a2f",
+      "button-hover": "#2a1a3f",
+      "button-active": "#fc6323",
+      "border-subtle": "#387c64",
+      "glow": "0 0 10px rgba(252, 99, 35, 0.6)"
+    },
+    "fonts": {
+      "primary": "'Press Start 2P', 'Courier New', monospace",
+      "monospace": "'Press Start 2P', monospace"
+    },
+    "effects": {
+      "scanlines": true,
+      "glow": true,
+      "pixelated": true
+    }
+  },
+  "classicWinamp": {
+    "name": "Classic Winamp",
+    "id": "classicWinamp",
+    "colors": {
+      "bg-primary": "#000000",
+      "bg-secondary": "#1a1a1a",
+      "bg-tertiary": "#2a2a2a",
+      "text-primary": "#00ff00",
+      "text-secondary": "#00cc00",
+      "text-tertiary": "#009900",
+      "accent-primary": "#00ff00",
+      "accent-secondary": "#00cc00",
+      "accent-success": "#00ff00",
+      "accent-warning": "#ffff00",
+      "accent-error": "#ff0000",
+      "waveform-line": "#00ff00",
+      "waveform-fill": "rgba(0, 255, 0, 0.3)",
+      "progress-bg": "#1a1a1a",
+      "progress-fill": "#00ff00",
+      "button-bg": "#2a2a2a",
+      "button-hover": "#3a3a3a",
+      "button-active": "#00ff00",
+      "border-subtle": "#00ff00",
+      "glow": "0 0 8px rgba(0, 255, 0, 0.8)"
+    },
+    "fonts": {
+      "primary": "'Courier New', monospace",
+      "monospace": "'Courier New', monospace"
+    },
+    "effects": {
+      "scanlines": false,
+      "glow": true,
+      "pixelated": false
+    }
+  },
+  "windowsMediaPlayer": {
+    "name": "WMP Ambience",
+    "id": "windowsMediaPlayer",
+    "colors": {
+      "bg-primary": "#000814",
+      "bg-secondary": "#001d3d",
+      "bg-tertiary": "#003566",
+      "text-primary": "#caf0f8",
+      "text-secondary": "#90e0ef",
+      "text-tertiary": "#48cae4",
+      "accent-primary": "#0077b6",
+      "accent-secondary": "#00b4d8",
+      "accent-success": "#48cae4",
+      "accent-warning": "#ade8f4",
+      "accent-error": "#e63946",
+      "waveform-line": "#00b4d8",
+      "waveform-fill": "rgba(0, 180, 216, 0.4)",
+      "progress-bg": "#001d3d",
+      "progress-fill": "#00b4d8",
+      "button-bg": "#003566",
+      "button-hover": "#0077b6",
+      "button-active": "#00b4d8",
+      "border-subtle": "#0077b6",
+      "glow": "0 0 12px rgba(0, 180, 216, 0.6)"
+    },
+    "fonts": {
+      "primary": "system-ui, -apple-system, sans-serif",
+      "monospace": "ui-monospace, monospace"
+    },
+    "effects": {
+      "scanlines": false,
+      "glow": true,
+      "pixelated": false
+    }
+  },
+  "ipodClassic": {
+    "name": "iPod Classic",
+    "id": "ipodClassic",
+    "colors": {
+      "bg-primary": "#000000",
+      "bg-secondary": "#1a1a1a",
+      "bg-tertiary": "#2d2d2d",
+      "text-primary": "#ffffff",
+      "text-secondary": "#b8b8b8",
+      "text-tertiary": "#8a8a8a",
+      "accent-primary": "#ffffff",
+      "accent-secondary": "#d4d4d4",
+      "accent-success": "#4ade80",
+      "accent-warning": "#fbbf24",
+      "accent-error": "#ef4444",
+      "waveform-line": "#ffffff",
+      "waveform-fill": "rgba(255, 255, 255, 0.2)",
+      "progress-bg": "#2d2d2d",
+      "progress-fill": "#ffffff",
+      "button-bg": "#2d2d2d",
+      "button-hover": "#404040",
+      "button-active": "#ffffff",
+      "border-subtle": "#404040",
+      "glow": "0 0 8px rgba(255, 255, 255, 0.4)"
+    },
+    "fonts": {
+      "primary": "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+      "monospace": "'SF Mono', 'Monaco', monospace"
+    },
+    "effects": {
+      "scanlines": false,
+      "glow": false,
+      "pixelated": false
+    }
+  },
+  "crtPhosphor": {
+    "name": "CRT Phosphor",
+    "id": "crtPhosphor",
+    "colors": {
+      "bg-primary": "#0a0f0a",
+      "bg-secondary": "#0f1a0f",
+      "bg-tertiary": "#1a2a1a",
+      "text-primary": "#33ff33",
+      "text-secondary": "#22cc22",
+      "text-tertiary": "#118811",
+      "accent-primary": "#33ff33",
+      "accent-secondary": "#22cc22",
+      "accent-success": "#33ff33",
+      "accent-warning": "#ffcc00",
+      "accent-error": "#ff3333",
+      "waveform-line": "#33ff33",
+      "waveform-fill": "rgba(51, 255, 51, 0.2)",
+      "progress-bg": "#0f1a0f",
+      "progress-fill": "#33ff33",
+      "button-bg": "#1a2a1a",
+      "button-hover": "#2a3a2a",
+      "button-active": "#33ff33",
+      "border-subtle": "#22cc22",
+      "glow": "0 0 10px rgba(51, 255, 51, 0.8), 0 0 20px rgba(51, 255, 51, 0.4)"
+    },
+    "fonts": {
+      "primary": "'Courier New', 'VT323', monospace",
+      "monospace": "'Courier New', monospace"
+    },
+    "effects": {
+      "scanlines": true,
+      "glow": true,
+      "pixelated": false
+    }
+  }
+}

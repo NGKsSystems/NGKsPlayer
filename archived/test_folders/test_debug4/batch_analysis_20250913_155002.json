@@ -1,0 +1,191 @@
+{
+  "C:\\Users\\suppo\\Music\\Blake Shelton - Boys Round Here.mp3": {
+    "file": "Blake Shelton - Boys Round Here.mp3",
+    "duration": 232.0,
+    "bpm": 166.0,
+    "key": "A major (11B)",
+    "energy": 5.2,
+    "lufs": -21.1,
+    "genre": "Rock/Pop",
+    "confidence": {
+      "overall": 0.695,
+      "bpm": 0.776,
+      "key": 0.758,
+      "energy": 0.847,
+      "lufs": 0.4
+    },
+    "structure": [
+      {
+        "t": 0.0,
+        "label": "Intro"
+      },
+      {
+        "t": 21.1,
+        "label": "Verse 1"
+      },
+      {
+        "t": 42.2,
+        "label": "Verse 2"
+      },
+      {
+        "t": 63.3,
+        "label": "Verse 2"
+      },
+      {
+        "t": 84.4,
+        "label": "Verse 2"
+      },
+      {
+        "t": 105.5,
+        "label": "Chorus 2"
+      },
+      {
+        "t": 126.6,
+        "label": "Verse 3"
+      },
+      {
+        "t": 147.6,
+        "label": "Verse 4"
+      },
+      {
+        "t": 168.7,
+        "label": "Final Chorus"
+      },
+      {
+        "t": 189.8,
+        "label": "Final Chorus"
+      },
+      {
+        "t": 210.9,
+        "label": "Outro"
+      }
+    ],
+    "analysis_time": 91.65
+  },
+  "C:\\Users\\suppo\\Music\\Pink Floyd - Breathe .mp3": {
+    "file": "Pink Floyd - Breathe .mp3",
+    "duration": 446.2,
+    "bpm": 132.4,
+    "key": "B minor (10A)",
+    "energy": 4.1,
+    "lufs": -19.4,
+    "genre": "Rock/Pop",
+    "confidence": {
+      "overall": 0.575,
+      "bpm": 0.3,
+      "key": 0.683,
+      "energy": 0.882,
+      "lufs": 0.435
+    },
+    "structure": [
+      {
+        "t": 0.0,
+        "label": "Intro"
+      },
+      {
+        "t": 40.6,
+        "label": "Verse 1"
+      },
+      {
+        "t": 81.1,
+        "label": "Verse 2"
+      },
+      {
+        "t": 121.7,
+        "label": "Verse 2"
+      },
+      {
+        "t": 162.3,
+        "label": "Verse 2"
+      },
+      {
+        "t": 202.8,
+        "label": "Verse 3"
+      },
+      {
+        "t": 243.4,
+        "label": "Verse 3"
+      },
+      {
+        "t": 284.0,
+        "label": "Verse 4"
+      },
+      {
+        "t": 324.5,
+        "label": "Verse 7"
+      },
+      {
+        "t": 365.1,
+        "label": "Final Chorus"
+      },
+      {
+        "t": 405.7,
+        "label": "Outro"
+      }
+    ],
+    "analysis_time": 191.58
+  },
+  "C:\\Users\\suppo\\Music\\38 Special - Back Where You Belong.mp3": {
+    "file": "38 Special - Back Where You Belong.mp3",
+    "duration": 269.8,
+    "bpm": 161.5,
+    "key": "G major (9B)",
+    "energy": 10.0,
+    "lufs": -9.8,
+    "genre": "Electronic/Dance",
+    "confidence": {
+      "overall": 0.578,
+      "bpm": 0.3,
+      "key": 0.86,
+      "energy": 0.753,
+      "lufs": 0.4
+    },
+    "structure": [
+      {
+        "t": 0.0,
+        "label": "Verse 1"
+      },
+      {
+        "t": 24.5,
+        "label": "Verse 1"
+      },
+      {
+        "t": 49.0,
+        "label": "Verse 2"
+      },
+      {
+        "t": 73.6,
+        "label": "Verse 2"
+      },
+      {
+        "t": 98.1,
+        "label": "Verse 2"
+      },
+      {
+        "t": 122.6,
+        "label": "Verse 3"
+      },
+      {
+        "t": 147.1,
+        "label": "Verse 3"
+      },
+      {
+        "t": 171.7,
+        "label": "Verse 4"
+      },
+      {
+        "t": 196.2,
+        "label": "Final Chorus"
+      },
+      {
+        "t": 220.7,
+        "label": "Final Chorus"
+      },
+      {
+        "t": 245.2,
+        "label": "Outro"
+      }
+    ],
+    "analysis_time": 99.39
+  }
+}

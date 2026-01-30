@@ -1,0 +1,429 @@
+/* ===== DECK A MAIN WIDGET ===== */
+.deck-a-widget { /* Main container - the entire card */
+  background: linear-gradient(145deg, #1e293b, #334155); /* Diagonal shaded background */
+  border-radius: 12px; /* Rounded corners */
+  padding: 8px; /* Inner spacing */
+  color: white; /* Default text color */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Drop shadow */
+  border: 2px solid rgba(59, 130, 246, 0.5); /* Blue border */
+  display: flex; /* Use flexbox */
+  flex-direction: column; /* Stack items vertically */
+  height: 100%; /* Fill full height */
+  overflow: hidden; /* Don't scroll */
+  position: relative; /* Reference for absolute positioning */
+  cursor: move; /* Show draggable cursor */
+  user-select: none; /* Don't select text when clicking */
+}
+
+.deck-a-widget.dragging { /* When being dragged */
+  z-index: 1000; /* Bring to front */
+  opacity: 0.9; /* Slightly see-through */
+}
+
+.deck-a-header {
+  display: flex; /* Use flexbox layout */
+  justify-content: space-between; /* Put title on left, BPM/Key on right */
+  align-items: center; /* Vertically center items */
+  margin-bottom: 4px; /* Space below header */
+  padding-bottom: 4px; /* Space between border line and content */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Thin white line under header */
+}
+
+.deck-a-header h3 {
+  margin: 0; /* Remove default heading margins */
+  font-size: 16px; /* Title text size */
+  font-weight: 700; /* Bold text */
+  color: #3b82f6; /* Bright blue color */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); /* Subtle shadow behind text for readability */
+}
+
+.deck-info {
+  display: flex; /* Layout BPM and Key side by side */
+  gap: 12px; /* Space between BPM and Key text */
+  font-size: 12px; /* Small text size */
+  color: #94a3b8; /* Gray text color */
+  font-weight: 500; /* Medium weight */
+}
+
+.deck-a-content {
+  flex: 1; /* Take all available vertical space */
+  display: flex; /* Use flexbox layout */
+  flex-direction: column; /* Stack children vertically */
+  gap: 0px; /* No space between sections (0 vertical gap between items) */
+  overflow: hidden; /* Hide anything that overflows - prevents scrolling */
+  padding-right: 0px; /* No right padding */
+}
+
+.track-info {
+  text-align: center; /* Center the song name and time */
+  padding: 4px; /* Space inside the box around the text */
+  background: rgba(0, 0, 0, 0.3); /* Dark semi-transparent background */
+  border-radius: 6px; /* Slightly rounded corners */
+  width: 100%; /* Take full width */
+  box-sizing: border-box; /* Include padding in width calculation */
+  margin-bottom: 0px; /* No space below this section */
+}
+
+.track-title {
+  font-size: 14px; /* Song name text size */
+  font-weight: 600; /* Semi-bold */
+  color: white; /* White text */
+  margin-bottom: 2px; /* Small space below song name */
+  overflow: hidden; /* Hide text that's too long */
+  text-overflow: ellipsis; /* Show ... if text is cut off */
+  white-space: nowrap; /* Keep song name on one line */
+  width: 100%; /* Take full width */
+  max-width: 100%; /* Don't exceed container */
+}
+
+.track-time {
+  font-size: 12px; /* Small text size */
+  color: #64748b; /* Dark gray text */
+  font-family: 'JetBrains Mono', monospace; /* Monospace font for precise time display */
+}
+
+.progress-container {
+  padding: 1px; /* Minimal space around progress bar */
+  margin: 0px; /* No space outside container */
+}
+
+.progress-bar {
+  height: 8px; /* Thin horizontal bar height */
+  background: rgba(0, 0, 0, 0.4); /* Dark background for the bar */
+  border-radius: 4px; /* Rounded ends */
+  cursor: pointer; /* Show clickable cursor */
+  position: relative; /* Allow absolute positioning of handle inside */
+  overflow: hidden; /* Hide handle overflow */
+}
+
+.progress-fill {
+  height: 100%; /* Fill the entire bar height */
+  background: linear-gradient(90deg, #3b82f6, #1d4ed8); /* Blue gradient from left to right */
+  border-radius: 4px; /* Rounded ends to match bar */
+  transition: width 0.1s ease; /* Smooth animation when position changes */
+}
+
+.progress-handle {
+  position: absolute; /* Position over the progress bar */
+  top: -2px; /* Center vertically (slightly above middle) */
+  width: 12px; /* Circle diameter */
+  height: 12px; /* Circle diameter */
+  background: #3b82f6; /* Bright blue */
+  border-radius: 50%; /* Make it a circle */
+  border: 2px solid white; /* White outline */
+  transform: translateX(-50%); /* Center the handle horizontally on the current position */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Shadow for depth */
+}
+
+.transport-controls {
+  display: flex; /* Lay buttons out in a row */
+  justify-content: center; /* Center buttons horizontally */
+  align-items: center; /* Center buttons vertically */
+  gap: 4px; /* Small space between buttons */
+  padding: 2px; /* Space inside the container */
+  background: rgba(0, 0, 0, 0.2); /* Subtle dark background */
+  border-radius: 6px; /* Rounded corners */
+  margin: 0px; /* No space outside container */
+}
+
+.transport-btn {
+  width: 40px; /* Button width (circular) */
+  height: 40px; /* Button height (circular) */
+  border: none; /* No border */
+  border-radius: 50%; /* Make it a circle */
+  background: rgba(59, 130, 246, 0.2); /* Semi-transparent blue background */
+  color: #3b82f6; /* Blue icon color */
+  font-size: 16px; /* Icon size */
+  cursor: pointer; /* Show clickable cursor */
+  transition: all 0.2s ease; /* Smooth animation on hover/click */
+  display: flex; /* Center content inside button */
+  align-items: center; /* Vertically center icon */
+  justify-content: center; /* Horizontally center icon */
+}
+
+.transport-btn:hover {
+  background: rgba(59, 130, 246, 0.3); /* Brighter blue on hover */
+  transform: translateY(-1px); /* Slight lift effect */
+}
+
+.transport-btn.playing {
+  background: rgba(34, 197, 94, 0.3); /* Green background when song is playing */
+  color: #22c55e; /* Green icon color */
+}
+
+.transport-btn.cue-btn.active {
+  background: rgba(245, 158, 11, 0.3); /* Orange/yellow background when cue is active */
+  color: #f59e0b; /* Orange/yellow icon color */
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.4); /* Glowing effect around button */
+}
+
+.transport-btn.cue-btn {
+  font-size: 12px; /* Smaller text for CUE button */
+  font-weight: bold; /* Bold text */
+  letter-spacing: 0.5px; /* Slight spacing between letters */
+  width: 45px; /* Slightly wider than other buttons */
+  height: 40px; /* Same height */
+}
+
+.play-pause {
+  width: 50px; /* Slightly larger button */
+  height: 50px; /* Slightly larger button */
+  font-size: 20px; /* Larger icon */
+}
+
+.vu-waveform-container {
+  margin: 0px; /* No space outside container */
+  padding: 4px; /* Space inside container around VU meter and waveform */
+  background: rgba(0, 0, 0, 0.4); /* Dark semi-transparent background */
+  border-radius: 6px; /* Rounded corners */
+  border: 1px solid rgba(59, 130, 246, 0.3); /* Thin blue border */
+}
+
+.vu-waveform-label {
+  color: #3b82f6; /* Blue label text */
+  font-size: 11px; /* Small text */
+  font-weight: bold; /* Bold text */
+  margin-bottom: 2px; /* Space below label */
+  text-align: center; /* Center the text */
+  letter-spacing: 1px; /* Space between letters */
+}
+
+.vu-waveform-display {
+  display: flex; /* Put VU meter and waveform side by side */
+  align-items: end; /* Align both to bottom */
+  gap: 8px; /* Space between VU meter and waveform */
+  height: 60px; /* Fixed height for the visualization */
+}
+
+.vu-meter {
+  position: relative; /* Allow absolute positioning of the bar inside */
+  width: 30px !important; /* Fixed width (30 pixels) - !important overrides other rules */
+  min-width: 30px !important; /* Don't let it shrink below 30px */
+  max-width: 30px !important; /* Don't let it grow above 30px */
+  height: 100%; /* Fill the full visualization height */
+  background: rgba(0, 0, 0, 0.8); /* Dark background */
+  border-radius: 4px; /* Rounded corners */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle white border */
+  overflow: hidden; /* Hide the bar if it goes outside */
+  flex-shrink: 0; /* Don't let it shrink when space is tight */
+}
+
+.vu-meter-bar {
+  position: absolute; /* Position over the VU meter background */
+  bottom: 0; /* Start from the bottom */
+  left: 0; /* Full width */
+  right: 0; /* Full width */
+  transition: height 0.05s ease; /* Smooth animation when level changes */
+  border-radius: 0 0 3px 3px; /* Rounded bottom corners */
+}
+
+.waveform {
+  display: flex;
+  align-items: end;
+  height: 100%;
+  gap: 2px;
+  flex: 1;
+  padding: 0 5px;
+}
+
+.waveform-bar {
+  flex: 1;
+  min-height: 2px;
+  background: linear-gradient(to top, #3b82f6, #60a5fa);
+  border-radius: 1px;
+  transition: height 0.1s ease;
+}
+
+.quick-controls {
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+}
+
+.quick-btn {
+  flex: 1;
+  height: 32px;
+  border: none;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.3);
+  color: #94a3b8;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.quick-btn:hover {
+  background: rgba(59, 130, 246, 0.2);
+  color: #3b82f6;
+}
+
+.quick-btn:active {
+  background: rgba(59, 130, 246, 0.3);
+}
+
+/* Hotkeys Section Styles */
+.hotkeys-section {
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  margin: 8px 0;
+}
+
+.hotkeys-label {
+  font-size: 11px;
+  font-weight: bold;
+  color: #3b82f6;
+  text-align: center;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+}
+
+.hotkeys-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.hotkey-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  cursor: default;
+}
+
+.hotkey-item:hover {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.6);
+  transform: translateY(-1px);
+}
+
+.hotkey-key {
+  font-size: 14px;
+  font-weight: bold;
+  color: #60a5fa;
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: 4px;
+}
+
+.hotkey-label {
+  font-size: 10px;
+  color: #94a3b8;
+  text-align: center;
+  line-height: 1.2;
+}
+
+/* Fine-Tune Section Styles */
+.fine-tune-section {
+  padding: 4px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  margin: 0px;
+}
+
+.fine-tune-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2px;
+}
+
+.fine-tune-label {
+  font-size: 11px;
+  font-weight: bold;
+  color: #3b82f6;
+  letter-spacing: 1px;
+}
+
+.fine-tune-value {
+  font-size: 11px;
+  color: #60a5fa;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+}
+
+.fine-tune-slider {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(to right, #ef4444, #3b82f6, #22c55e);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.fine-tune-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  border: 2px solid rgba(59, 130, 246, 0.6);
+  transition: all 0.2s ease;
+}
+
+.fine-tune-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 3px 8px rgba(59, 130, 246, 0.5);
+}
+
+.fine-tune-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  border: 2px solid rgba(59, 130, 246, 0.6);
+  transition: all 0.2s ease;
+}
+
+.fine-tune-slider::-moz-range-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 3px 8px rgba(59, 130, 246, 0.5);
+}
+
+/* Quick Time Adjustment Buttons */
+.quick-adjustments {
+  display: flex;
+  gap: 2px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 2px 0;
+  margin: 0px;
+}
+
+.adjust-btn {
+  flex: 0 1 auto;
+  padding: 2px 6px;
+  font-size: 10px;
+  font-weight: 600;
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.adjust-btn:hover {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: rgba(59, 130, 246, 0.6);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+}
+
+.adjust-btn:active {
+  transform: translateY(0px);
+  background: rgba(59, 130, 246, 0.3);
+}

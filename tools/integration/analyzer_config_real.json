@@ -1,0 +1,3 @@
+{
+  "NGKsAnalyzerConfig": "{\"global\":{\"energyScalingFactor\":1,\"energyMaxCap\":100,\"silenceThresholdDb\":-60,\"teaseEnergyLevel\":0.15,\"mainEnergyJump\":0.45,\"fadeSlopeMin\":-0.03,\"reverbTailThreshold\":0.008,\"halfTimeConfidenceMin\":0.85,\"halfTimeRawRangeMin\":110,\"halfTimeRawRangeMax\":160,\"doubleTimeRawMin\":150,\"bpmCandidatePruneThreshold\":0.6,\"onsetSensitivity\":0.3,\"keyConfidenceMin\":0.85,\"chromaSmoothWindow\":8,\"relativeMinorBias\":0,\"commonKeyPreferenceBoost\":0.1,\"capoTranspositionCheck\":false,\"acousticnessBoost\":0,\"transitionSoftener\":4,\"introStrongMixableBonus\":4},\"overrides\":{},\"eraOverrides\":[],\"meta\":{\"history\":[]}}"
+}

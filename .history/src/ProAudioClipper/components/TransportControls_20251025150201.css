@@ -1,0 +1,307 @@
+/* TransportControls.css - Professional transport controls styles */
+
+.transport-controls {
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #2a2a2a 0%, #1e1e1e 100%);
+  border-bottom: 1px solid #444;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.transport-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* Main Controls */
+.main-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.transport-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  background: linear-gradient(135deg, #3a3a3a, #2a2a2a);
+  border: 1px solid #555;
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.transport-btn:hover {
+  background: linear-gradient(135deg, #4a4a4a, #3a3a3a);
+  border-color: #666;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.transport-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.play-pause-btn {
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, #4CAF50, #45a049);
+  border-color: #388e3c;
+}
+
+.play-pause-btn:hover {
+  background: linear-gradient(135deg, #45a049, #3d8b40);
+}
+
+.stop-btn {
+  background: linear-gradient(135deg, #f44336, #d32f2f);
+  border-color: #c62828;
+}
+
+.stop-btn:hover {
+  background: linear-gradient(135deg, #d32f2f, #b71c1c);
+}
+
+.skip-btn {
+  width: 44px;
+  height: 44px;
+}
+
+/* Time Display */
+.time-display {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 18px;
+  font-weight: 600;
+  color: #00d4ff;
+  background: rgba(0, 212, 255, 0.1);
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 212, 255, 0.3);
+}
+
+.current-time {
+  color: #00d4ff;
+}
+
+.time-separator {
+  color: #666;
+  margin: 0 4px;
+}
+
+.total-time {
+  color: #888;
+}
+
+/* Playback Rate */
+.playback-rate-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rate-label {
+  color: #b0b0b0;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.rate-buttons {
+  display: flex;
+  gap: 4px;
+}
+
+.rate-btn {
+  padding: 6px 10px;
+  background: #3a3a3a;
+  border: 1px solid #555;
+  border-radius: 4px;
+  color: #b0b0b0;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.rate-btn:hover {
+  background: #4a4a4a;
+  color: #fff;
+}
+
+.rate-btn.active {
+  background: linear-gradient(135deg, #2196F3, #1976D2);
+  border-color: #1565C0;
+  color: #fff;
+  box-shadow: 0 2px 4px rgba(33, 150, 243, 0.3);
+}
+
+/* Additional Controls */
+.additional-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.loop-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+}
+
+.volume-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #b0b0b0;
+}
+
+.volume-slider {
+  width: 80px;
+  height: 4px;
+  background: #444;
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #00d4ff;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.volume-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: #00d4ff;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Progress Bar */
+.progress-section {
+  width: 100%;
+}
+
+.progress-bar-container {
+  position: relative;
+  width: 100%;
+  height: 8px;
+  background: #333;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #4CAF50, #00d4ff);
+  transition: width 0.1s ease;
+  border-radius: 4px;
+}
+
+.seek-slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Shortcuts Info */
+.shortcuts-info {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #333;
+}
+
+.shortcuts-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 11px;
+  color: #666;
+}
+
+.shortcut {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .transport-section {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+  
+  .main-controls,
+  .additional-controls {
+    justify-content: center;
+  }
+  
+  .time-display {
+    justify-content: center;
+  }
+  
+  .shortcuts-list {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .transport-controls {
+    padding: 12px 16px;
+  }
+  
+  .time-display {
+    font-size: 16px;
+    padding: 6px 12px;
+  }
+  
+  .play-pause-btn {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .skip-btn {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .rate-buttons {
+    flex-wrap: wrap;
+  }
+  
+  .shortcuts-info {
+    display: none;
+  }
+}
+
+/* Animation for spinning loader */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.spinning {
+  animation: spin 1s linear infinite;
+}

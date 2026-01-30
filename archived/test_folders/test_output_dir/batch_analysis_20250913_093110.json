@@ -1,0 +1,313 @@
+{
+  "C:\\Users\\suppo\\Music\\Blake Shelton - Boys Round Here.mp3": {
+    "file": "Blake Shelton - Boys Round Here.mp3",
+    "duration": 232.0,
+    "bpm": 83.0,
+    "key": "A major (11B)",
+    "energy": 4.2,
+    "lufs": -21.1,
+    "genre": "Rock/Pop",
+    "confidence": {
+      "overall": 0.695,
+      "bpm": 0.776,
+      "key": 0.758,
+      "energy": 0.847,
+      "lufs": 0.4
+    },
+    "structure": [
+      {
+        "t": 0.0,
+        "label": "Intro"
+      },
+      {
+        "t": 21.1,
+        "label": "Verse 1"
+      },
+      {
+        "t": 42.2,
+        "label": "Verse 2"
+      },
+      {
+        "t": 63.3,
+        "label": "Verse 2"
+      },
+      {
+        "t": 84.4,
+        "label": "Verse 2"
+      },
+      {
+        "t": 105.5,
+        "label": "Chorus 2"
+      },
+      {
+        "t": 126.6,
+        "label": "Verse 3"
+      },
+      {
+        "t": 147.6,
+        "label": "Verse 4"
+      },
+      {
+        "t": 168.7,
+        "label": "Final Chorus"
+      },
+      {
+        "t": 189.8,
+        "label": "Final Chorus"
+      },
+      {
+        "t": 210.9,
+        "label": "Outro"
+      }
+    ],
+    "analysis_time": 108.33
+  },
+  "C:\\Users\\suppo\\Music\\Brooks & Dunn - Brand New Man.mp3": {
+    "file": "Brooks & Dunn - Brand New Man.mp3",
+    "duration": 179.4,
+    "bpm": 65.4,
+    "key": "G major (9B)",
+    "energy": 4.6,
+    "lufs": -11.8,
+    "genre": "Rock/Pop",
+    "confidence": {
+      "overall": 0.741,
+      "bpm": 1.0,
+      "key": 0.833,
+      "energy": 0.729,
+      "lufs": 0.4
+    },
+    "structure": [
+      {
+        "t": 0.0,
+        "label": "Intro"
+      },
+      {
+        "t": 17.9,
+        "label": "Verse 1"
+      },
+      {
+        "t": 35.9,
+        "label": "Verse 2"
+      },
+      {
+        "t": 53.8,
+        "label": "Verse 2"
+      },
+      {
+        "t": 71.8,
+        "label": "Verse 2"
+      },
+      {
+        "t": 89.7,
+        "label": "Verse 3"
+      },
+      {
+        "t": 107.7,
+        "label": "Verse 3"
+      },
+      {
+        "t": 125.6,
+        "label": "Final Chorus"
+      },
+      {
+        "t": 143.5,
+        "label": "Final Chorus"
+      },
+      {
+        "t": 161.5,
+        "label": "Outro"
+      }
+    ],
+    "analysis_time": 77.05
+  },
+  "C:\\Users\\suppo\\Music\\Airbourne - Breakin' Outta Hell.mp3": {
+    "file": "Airbourne - Breakin' Outta Hell.mp3",
+    "duration": 230.1,
+    "bpm": 86.1,
+    "key": "D minor (7A)",
+    "energy": 6.8,
+    "lufs": -4.5,
+    "genre": "Rock/Pop",
+    "confidence": {
+      "overall": 0.659,
+      "bpm": 0.889,
+      "key": 0.625,
+      "energy": 0.723,
+      "lufs": 0.4
+    },
+    "structure": [
+      {
+        "t": 0.0,
+        "label": "Verse 1"
+      },
+      {
+        "t": 20.9,
+        "label": "Verse 1"
+      },
+      {
+        "t": 41.8,
+        "label": "Verse 2"
+      },
+      {
+        "t": 62.7,
+        "label": "Verse 2"
+      },
+      {
+        "t": 83.7,
+        "label": "Verse 2"
+      },
+      {
+        "t": 104.6,
+        "label": "Verse 3"
+      },
+      {
+        "t": 125.5,
+        "label": "Verse 3"
+      },
+      {
+        "t": 146.4,
+        "label": "Verse 4"
+      },
+      {
+        "t": 167.3,
+        "label": "Final Chorus"
+      },
+      {
+        "t": 188.2,
+        "label": "Final Chorus"
+      },
+      {
+        "t": 209.2,
+        "label": "Outro"
+      }
+    ],
+    "analysis_time": 82.85
+  },
+  "C:\\Users\\suppo\\Music\\Pink Floyd - Breathe .mp3": {
+    "file": "Pink Floyd - Breathe .mp3",
+    "duration": 446.2,
+    "bpm": 66.2,
+    "key": "B minor (10A)",
+    "energy": 3.3,
+    "lufs": -19.4,
+    "genre": "Country/Folk",
+    "confidence": {
+      "overall": 0.575,
+      "bpm": 0.3,
+      "key": 0.683,
+      "energy": 0.882,
+      "lufs": 0.435
+    },
+    "structure": [
+      {
+        "t": 0.0,
+        "label": "Intro"
+      },
+      {
+        "t": 40.6,
+        "label": "Verse 1"
+      },
+      {
+        "t": 81.1,
+        "label": "Verse 2"
+      },
+      {
+        "t": 121.7,
+        "label": "Verse 2"
+      },
+      {
+        "t": 162.3,
+        "label": "Verse 2"
+      },
+      {
+        "t": 202.8,
+        "label": "Verse 3"
+      },
+      {
+        "t": 243.4,
+        "label": "Verse 3"
+      },
+      {
+        "t": 284.0,
+        "label": "Verse 4"
+      },
+      {
+        "t": 324.5,
+        "label": "Verse 7"
+      },
+      {
+        "t": 365.1,
+        "label": "Final Chorus"
+      },
+      {
+        "t": 405.7,
+        "label": "Outro"
+      }
+    ],
+    "analysis_time": 160.05
+  },
+  "C:\\Users\\suppo\\Music\\Shamans Harvest - Broken Dreams.mp3": {
+    "file": "Shamans Harvest - Broken Dreams.mp3",
+    "duration": 267.6,
+    "bpm": 81.0,
+    "key": "F# major (2B)",
+    "energy": 5.1,
+    "lufs": -11.0,
+    "genre": "Rock/Pop",
+    "confidence": {
+      "overall": 0.646,
+      "bpm": 0.6,
+      "key": 0.769,
+      "energy": 0.817,
+      "lufs": 0.4
+    },
+    "structure": [
+      {
+        "t": 0.0,
+        "label": "Verse 1"
+      },
+      {
+        "t": 24.3,
+        "label": "Verse 1"
+      },
+      {
+        "t": 48.7,
+        "label": "Verse 2"
+      },
+      {
+        "t": 73.0,
+        "label": "Verse 2"
+      },
+      {
+        "t": 97.3,
+        "label": "Bridge"
+      },
+      {
+        "t": 121.7,
+        "label": "Verse 3"
+      },
+      {
+        "t": 146.0,
+        "label": "Verse 3"
+      },
+      {
+        "t": 170.3,
+        "label": "Verse 4"
+      },
+      {
+        "t": 194.6,
+        "label": "Final Chorus"
+      },
+      {
+        "t": 219.0,
+        "label": "Final Chorus"
+      },
+      {
+        "t": 243.3,
+        "label": "Outro"
+      }
+    ],
+    "analysis_time": 94.6
+  }
+}

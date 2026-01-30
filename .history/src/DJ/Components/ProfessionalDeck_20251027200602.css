@@ -1,0 +1,438 @@
+/* Professional DJ Deck Component */
+.professional-deck {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(145deg, #2a2a2a 0%, #1e1e1e 100%);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 16px;
+  color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+  min-height: 500px;
+}
+
+/* Deck identification colors */
+.deck-a {
+  border-left: 3px solid #ff4444;
+}
+
+.deck-b {
+  border-left: 3px solid #4444ff;
+}
+
+.deck-c {
+  border-left: 3px solid #44ff44;
+}
+
+.deck-d {
+  border-left: 3px solid #ffff44;
+}
+
+/* Deck Header */
+.deck-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.deck-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: #00d9ff;
+  letter-spacing: 1px;
+}
+
+.deck-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.playing-indicator {
+  color: #00ff00;
+  font-size: 18px;
+  animation: pulse 1s infinite;
+}
+
+.cue-indicator,
+.sync-indicator {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(0, 217, 255, 0.2);
+  color: #00d9ff;
+}
+
+/* Track Info */
+.track-info {
+  margin-bottom: 16px;
+  text-align: center;
+  min-height: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.track-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.track-artist {
+  font-size: 12px;
+  color: #cccccc;
+  margin-bottom: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.track-bpm {
+  font-size: 11px;
+  color: #00d9ff;
+  font-weight: 600;
+}
+
+.no-track {
+  font-size: 12px;
+  color: #666666;
+  font-style: italic;
+}
+
+/* Waveform Container */
+.waveform-container {
+  position: relative;
+  height: 80px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+
+.waveform-canvas {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.playhead {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #00d9ff;
+  transition: left 0.1s ease;
+  z-index: 10;
+  box-shadow: 0 0 8px rgba(0, 217, 255, 0.6);
+}
+
+/* Time Display */
+.time-display {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: 'Courier New', monospace;
+}
+
+.current-time {
+  color: #00d9ff;
+}
+
+.remaining-time {
+  color: #cccccc;
+}
+
+/* Main Controls */
+.main-controls {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.control-btn {
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.control-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.control-btn.active {
+  background: rgba(0, 217, 255, 0.2);
+  border-color: #00d9ff;
+  color: #00d9ff;
+}
+
+.play-btn:hover {
+  background: rgba(0, 255, 0, 0.1);
+  border-color: rgba(0, 255, 0, 0.3);
+  color: #00ff00;
+}
+
+/* Hot Cues */
+.hot-cues {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.hot-cue-btn {
+  width: 100%;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.hot-cue-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.hot-cue-btn.set {
+  background: linear-gradient(45deg, #ff6b35 0%, #f7931e 100%);
+  color: #000000;
+  border-color: #ff6b35;
+}
+
+/* Volume Section */
+.volume-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.volume-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: #00d9ff;
+  margin-bottom: 8px;
+}
+
+.volume-fader {
+  width: 4px;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+  margin-bottom: 8px;
+  -webkit-appearance: slider-vertical;
+}
+
+.volume-fader::-webkit-slider-thumb {
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #00d9ff;
+  cursor: pointer;
+  box-shadow: 0 0 4px rgba(0, 217, 255, 0.5);
+}
+
+.volume-value {
+  font-size: 10px;
+  color: #cccccc;
+}
+
+/* Pitch Section */
+.pitch-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.pitch-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: #00d9ff;
+  margin-bottom: 8px;
+}
+
+.pitch-fader {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+  margin-bottom: 8px;
+}
+
+.pitch-fader::-webkit-slider-thumb {
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #00d9ff;
+  cursor: pointer;
+}
+
+.pitch-value {
+  font-size: 10px;
+  color: #cccccc;
+  margin-bottom: 4px;
+}
+
+.pitch-reset {
+  padding: 4px 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  color: #ffffff;
+  font-size: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pitch-reset:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* BPM Section */
+.bpm-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: auto;
+}
+
+.bpm-display {
+  font-size: 18px;
+  font-weight: 700;
+  color: #00d9ff;
+  font-family: 'Courier New', monospace;
+  margin-bottom: 8px;
+}
+
+.beat-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #00ff00;
+  transition: opacity 0.1s ease;
+}
+
+/* Compact Mode */
+.professional-deck.compact {
+  padding: 8px;
+  min-height: 300px;
+}
+
+.compact .deck-header {
+  margin-bottom: 8px;
+}
+
+.compact .track-info {
+  min-height: 40px;
+  margin-bottom: 8px;
+}
+
+.compact .track-title {
+  font-size: 12px;
+}
+
+.compact .track-artist {
+  font-size: 10px;
+}
+
+.compact .waveform-container {
+  height: 60px;
+  margin-bottom: 8px;
+}
+
+.compact .main-controls {
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.compact .control-btn {
+  padding: 6px;
+  font-size: 9px;
+}
+
+.compact .hot-cues {
+  grid-template-columns: repeat(8, 1fr);
+  gap: 2px;
+  margin-bottom: 8px;
+}
+
+.compact .hot-cue-btn {
+  height: 24px;
+  font-size: 9px;
+}
+
+/* Animations */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Professional styling touches */
+.professional-deck::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, #00d9ff 50%, transparent 100%);
+}
+
+/* Loading state */
+.professional-deck.loading {
+  opacity: 0.7;
+}
+
+.professional-deck.loading::after {
+  content: "Loading...";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: #00d9ff;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 12px;
+  z-index: 100;
+}

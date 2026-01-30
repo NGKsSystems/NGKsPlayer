@@ -1,0 +1,15 @@
+/**
+ * Reusable MenuItem component for context menus
+ */
+export const MenuItem = ({ children, onClick, disabled, danger }) => (
+  <div
+    className={`
+      px-3 py-2 text-sm cursor-pointer hover:bg-gray-700 
+      ${disabled ? 'opacity-50 cursor-not-allowed' : ''} 
+      ${danger ? 'text-red-400 hover:bg-red-900/30' : 'text-gray-200'}
+    `}
+    onClick={disabled ? undefined : onClick}
+  >
+    {children}
+  </div>
+)

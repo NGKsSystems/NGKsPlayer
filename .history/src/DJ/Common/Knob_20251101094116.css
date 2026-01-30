@@ -1,0 +1,136 @@
+.mixer-sub-widget .knob-container,
+.knob-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 15px 15px 15px;
+  background: linear-gradient(145deg, #252525, #2a2a2a) !important;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: 112px !important;
+  height: 144px !important;
+  gap: 5px;
+  overflow: visible;
+  position: relative;
+  margin: 0 !important;
+}
+
+.knob-label {
+  color: #ffffff;
+  font-size: 9px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.knob-label-top {
+  color: #888;
+  font-size: 8px;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 4px;
+  margin-top: -2px;
+}
+
+.knob-value-display {
+  color: #00ff00;
+  font-size: 11px;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 0 0 4px rgba(0, 255, 0, 0.5);
+  margin-bottom: 3px;
+  min-height: 14px;
+}
+
+.knob {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #4c4c4c, #1c1c1c);
+  border: 2px solid #666;
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.knob-label-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #ffffff;
+  font-size: 8px;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  pointer-events: none;
+  z-index: 100;
+  white-space: nowrap;
+}
+
+.knob:hover {
+  border-color: #888;
+  box-shadow: 0 0 8px rgba(255,255,255,0.1);
+}
+
+.knob.dragging {
+  box-shadow: 0 0 12px rgba(255,255,255,0.2);
+  border-color: #aaa;
+}
+
+.knob-indicator {
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform-origin: 50% calc(30px - 5px);
+  width: 4px;
+  height: 16px;
+  background: #ffffff;
+  border-radius: 2px;
+  box-shadow: 0 0 4px rgba(255,255,255,0.3);
+  transition: transform 0.1s ease;
+}
+
+.knob-controls-static {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+  pointer-events: all;
+}
+
+.knob-btn {
+  width: 20px;
+  height: 20px;
+  border: 1px solid #555;
+  border-radius: 3px;
+  background: linear-gradient(145deg, #3c3c3c, #1c1c1c);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  pointer-events: all;
+}
+
+.knob-btn:hover {
+  background: linear-gradient(145deg, #4c4c4c, #2c2c2c);
+  border-color: #777;
+  box-shadow: 0 0 4px rgba(255,255,255,0.1);
+}
+
+.knob-btn:active {
+  transform: scale(0.95);
+  box-shadow: inset 0 0 4px rgba(0,0,0,0.3);
+}

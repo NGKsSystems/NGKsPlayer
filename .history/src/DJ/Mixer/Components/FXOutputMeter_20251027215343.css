@@ -1,0 +1,90 @@
+/* FX Output Meter */
+.fx-output-meter {
+  margin-top: 12px;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+}
+
+.fx-meter-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 9px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.fx-meter-container {
+  position: relative;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.fx-meter-segments {
+  display: flex;
+  gap: 1px;
+  height: 100%;
+}
+
+.fx-meter-segment {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.1);
+  transition: background-color 0.05s ease;
+}
+
+.fx-meter-segment.active {
+  animation: meterPulse 0.3s ease;
+}
+
+@keyframes meterPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+.fx-meter-peak {
+  position: absolute;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  background: #ffffff;
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
+  animation: peakDecay 1.5s ease-out forwards;
+}
+
+@keyframes peakDecay {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.fx-meter-value {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'Courier New', monospace;
+}
+
+.fx-meter-clip {
+  font-size: 9px;
+  font-weight: 700;
+  color: #e74c3c;
+  background: rgba(231, 76, 60, 0.2);
+  padding: 2px 4px;
+  border-radius: 3px;
+  animation: clipBlink 0.5s infinite;
+}
+
+@keyframes clipBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}

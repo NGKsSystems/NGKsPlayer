@@ -1,0 +1,274 @@
+/* Professional Timeline Ruler Styles */
+.timeline-ruler {
+  position: relative;
+  height: 80px;
+  background: linear-gradient(to bottom, #2A2A2A, #1E1E1E);
+  border-bottom: 1px solid #444;
+  overflow-x: auto;
+  overflow-y: hidden;
+  cursor: crosshair;
+  user-select: none;
+}
+
+.ruler-background {
+  position: relative;
+  height: 100%;
+  min-width: 100%;
+}
+
+/* Tick Marks */
+.tick {
+  position: absolute;
+  top: 0;
+  border-left: 1px solid #555;
+  pointer-events: none;
+}
+
+.tick.major {
+  height: 20px;
+  border-left-color: #888;
+}
+
+.tick.minor {
+  height: 10px;
+  border-left-color: #555;
+}
+
+.tick-label {
+  position: absolute;
+  top: 22px;
+  left: 4px;
+  font-size: 11px;
+  color: #CCC;
+  font-family: 'Monaco', 'Menlo', monospace;
+  white-space: nowrap;
+}
+
+/* Playhead */
+.playhead {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.playhead-line {
+  width: 2px;
+  height: 100%;
+  background: #FF4444;
+  box-shadow: 0 0 4px rgba(255, 68, 68, 0.5);
+}
+
+.playhead-handle {
+  position: absolute;
+  top: -4px;
+  left: -6px;
+  width: 14px;
+  height: 14px;
+  background: #FF4444;
+  border: 2px solid #FFF;
+  border-radius: 50%;
+  cursor: ew-resize;
+  pointer-events: all;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.playhead-handle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 12px rgba(255, 68, 68, 0.4);
+}
+
+/* Markers */
+.marker {
+  position: absolute;
+  top: 25px;
+  width: 2px;
+  height: 30px;
+  z-index: 100;
+  cursor: ew-resize;
+}
+
+.marker-flag {
+  position: absolute;
+  top: -2px;
+  left: 2px;
+  min-width: 60px;
+  height: 20px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+.marker-name {
+  font-size: 10px;
+  color: white;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.marker.selected .marker-flag {
+  box-shadow: 0 0 0 2px #FFD700, 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.marker:hover .marker-flag {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Loop Regions */
+.loop-region {
+  position: absolute;
+  top: 55px;
+  height: 20px;
+  border: 2px solid;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  z-index: 50;
+  cursor: pointer;
+}
+
+.loop-region.selected {
+  box-shadow: 0 0 0 2px #FFD700;
+}
+
+.loop-region.active {
+  animation: loopPulse 1s ease-in-out infinite alternate;
+}
+
+@keyframes loopPulse {
+  from { opacity: 0.7; }
+  to { opacity: 1; }
+}
+
+.loop-label {
+  flex: 1;
+  padding: 0 8px;
+  font-size: 10px;
+  color: white;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+}
+
+.loop-handle {
+  position: absolute;
+  top: -2px;
+  width: 8px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.8);
+  cursor: ew-resize;
+  border-radius: 2px;
+}
+
+.loop-handle.loop-start {
+  left: -4px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.loop-handle.loop-end {
+  right: -4px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.loop-handle:hover {
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Loop Creation Preview */
+.loop-preview {
+  position: absolute;
+  top: 55px;
+  height: 20px;
+  background: rgba(78, 205, 196, 0.3);
+  border: 2px dashed #4ECDC4;
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+/* Instructions */
+.ruler-instructions {
+  position: absolute;
+  bottom: 2px;
+  right: 8px;
+  font-size: 9px;
+  color: #999;
+  font-family: 'Monaco', 'Menlo', monospace;
+  pointer-events: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .timeline-ruler {
+    height: 60px;
+  }
+  
+  .marker-flag {
+    min-width: 40px;
+    height: 16px;
+    padding: 1px 4px;
+  }
+  
+  .marker-name {
+    font-size: 9px;
+  }
+  
+  .loop-region {
+    height: 16px;
+    top: 40px;
+  }
+  
+  .loop-label {
+    font-size: 9px;
+  }
+  
+  .ruler-instructions {
+    font-size: 8px;
+  }
+}
+
+/* Dark Theme Optimizations */
+.timeline-ruler::-webkit-scrollbar {
+  height: 8px;
+}
+
+.timeline-ruler::-webkit-scrollbar-track {
+  background: #1A1A1A;
+}
+
+.timeline-ruler::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 4px;
+}
+
+.timeline-ruler::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Professional Color Schemes */
+.marker-flag.orange { background-color: #FF6B35; }
+.marker-flag.blue { background-color: #4ECDC4; }
+.marker-flag.purple { background-color: #9B59B6; }
+.marker-flag.green { background-color: #2ECC71; }
+.marker-flag.red { background-color: #E74C3C; }
+.marker-flag.yellow { background-color: #F39C12; }
+
+.loop-region.orange { border-color: #FF6B35; background-color: rgba(255, 107, 53, 0.2); }
+.loop-region.blue { border-color: #4ECDC4; background-color: rgba(78, 205, 196, 0.2); }
+.loop-region.purple { border-color: #9B59B6; background-color: rgba(155, 89, 182, 0.2); }
+.loop-region.green { border-color: #2ECC71; background-color: rgba(46, 204, 113, 0.2); }
+.loop-region.red { border-color: #E74C3C; background-color: rgba(231, 76, 60, 0.2); }
+.loop-region.yellow { border-color: #F39C12; background-color: rgba(243, 156, 18, 0.2); }
