@@ -143,7 +143,7 @@ export const ThemeProvider = ({ children }) => {
 
       // 5. If Chromatic Chaos is selected, load its effects
       if (themeId === 'chromaticChaos') {
-        import('../themes/chromaticChaos/index.js')
+        import('../themes/chromatic-chaos/index.js')
           .then(themeModule => {
             // Store the main effect function
             window.currentThemeEffect = themeModule.applyChromaticChaos;

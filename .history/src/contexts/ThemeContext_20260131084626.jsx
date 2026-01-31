@@ -58,6 +58,9 @@ export const ThemeProvider = ({ children }) => {
         root.style.setProperty(`--font-${key}`, value)
       })
 
+      // Apply theme data attribute for scoped CSS
+      root.setAttribute('data-theme', currentTheme)
+
       // Apply effect flags as data attributes
       root.dataset.scanlines = theme.effects.scanlines
       root.dataset.glow = theme.effects.glow
@@ -79,7 +82,7 @@ export const ThemeProvider = ({ children }) => {
         }
       }))
       
-      console.log('🎨 Theme applied:', currentTheme, 'Effects:', theme.effects)
+      console.log('🎨 Theme changed to:', currentTheme, 'Effects:', theme.effects)
 
       // Save to localStorage
       localStorage.setItem('ngks_theme', currentTheme)
@@ -87,78 +90,30 @@ export const ThemeProvider = ({ children }) => {
   }, [currentTheme, customThemes])
 
   const changeTheme = async (themeId) => {
-    // 1. Clear any previous theme effects (prevents bleeding)
-    window.currentThemeEffect = null;
+  // 1. Clear any previous theme effects (prevents bleeding)
+  window.currentThemeEffect = null;
 
-    // 2. RESET: Clear all animations/filters first to prevent bleeding
-    const root = document.documentElement;
-    root.classList.remove('animate-all', 'filter-active');
-    root.style.animation = 'none';
-    root.style.filter = 'none';
-    
-    // Clear any existing theme classes from body
-    document.body.className = document.body.className.replace(/\b\w+-\w+(-\w+)?\b/g, '');
+  // 2. Set the data-theme attribute immediately
+  document.documentElement.setAttribute('data-theme', themeId);
+  localStorage.setItem('theme', themeId);
+  
+  console.log(`Theme changed to: ${themeId}`);
 
-    // 3. Set the data-theme attribute immediately
-    root.setAttribute('data-theme', themeId);
-    localStorage.setItem('ngks_theme', themeId);
-    
-    console.log(`Theme changed to: ${themeId}`);
-
-    // 4. Small delay to force reflow and prevent bleeding
-    setTimeout(() => {
-      // Apply color variables
-      const theme = themes[themeId] || customThemes[themeId] || themes.modernDark;
-      Object.entries(theme.colors).forEach(([key, value]) => {
-        root.style.setProperty(`--${key}`, value);
-      });
-
-      // Apply font variables
-      Object.entries(theme.fonts).forEach(([key, value]) => {
-        root.style.setProperty(`--font-${key}`, value);
-      });
-
-      // Apply effect flags as data attributes
-      root.dataset.scanlines = theme.effects.scanlines;
-      root.dataset.glow = theme.effects.glow;
-      root.dataset.pixelated = theme.effects.pixelated;
+  // 3. If Chromatic Chaos is selected, load its effects
+  if (themeId === 'chromaticChaos') {
+    try {
+      const themeModule = await import('../themes/chromatic-chaos/index.js');
       
-      // Apply extreme effects
-      if (theme.effects.bloodRain) root.dataset.bloodRain = 'true';
-      if (theme.effects.screenShake) root.dataset.screenShake = 'true';  
-      if (theme.effects.chromatic) root.dataset.chromatic = 'true';
-
-      // Dispatch theme change event for extreme effects
-      window.dispatchEvent(new CustomEvent('themeChange', {
-        detail: {
-          theme: themeId,
-          effects: theme.effects,
-          particles: theme.effects.bloodRain || theme.effects.particles || false,
-          screenShake: theme.effects.screenShake || false,
-          chromatic: theme.effects.chromatic || false
-        }
-      }));
+      // Store the main effect function
+      window.currentThemeEffect = themeModule.applyChromaticChaos;
       
-      console.log('🎨 Theme applied:', themeId, 'Effects:', theme.effects);
-
-      // 5. If Chromatic Chaos is selected, load its effects
-      if (themeId === 'chromaticChaos') {
-        import('../themes/chromaticChaos/index.js')
-          .then(themeModule => {
-            // Store the main effect function
-            window.currentThemeEffect = themeModule.applyChromaticChaos;
-            
-            console.log('Chromatic Chaos effects loaded');
-          })
-          .catch(err => {
-            console.error('Failed to load Chromatic Chaos effects:', err);
-          });
-      }
-      // Add similar blocks for other themes later, e.g.:
-      // else if (themeId === 'hyperAurora') { ... }
-
-    }, 50); // Keep your delay for reflow
-  };
+      console.log('Chromatic Chaos effects loaded');
+    } catch (err) {
+      console.error('Failed to load Chromatic Chaos effects:', err);
+    }
+  }
+  // Add similar blocks for other themes later
+};
 
   const importTheme = (themeData) => {
     try {

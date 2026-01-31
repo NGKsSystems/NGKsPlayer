@@ -1,0 +1,12 @@
+{
+  "id": "chromaticChaos",
+  "name": "Chromatic Chaos",
+  "description": "Chaotic digital distortion with RGB tearing and feedback tunnels",
+  "previewImage": "chromatic-chaos-preview.png",
+  "effects": [
+    "chromatic",
+    "tearing",
+    "feedback",
+    "glitch"
+  ]
+}
