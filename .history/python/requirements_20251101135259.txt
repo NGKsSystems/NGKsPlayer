@@ -1,3 +1,0 @@
-# Demucs - Modern stem separation (Python 3.13 compatible)
-# Better quality than Spleeter, actively maintained
-demucs

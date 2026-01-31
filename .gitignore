@@ -18,6 +18,12 @@ electron.log
 dev.log
 vite_output.txt
 
+# Backup files and history
+backups/
+.history/
+*_20[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]*
+**/*_20[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]*
+
 # Environment variables
 .env*
 
