@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useTheme } from '../../contexts/ThemeContext';
 import { useNavigate } from 'react-router-dom'
 
@@ -6,8 +6,16 @@ const ThemeSettings = () => {
   const { currentTheme, changeTheme, themes, importTheme, exportTheme } = useTheme()
   const navigate = useNavigate()
   const [importError, setImportError] = useState('')
+  const [forceUpdate, setForceUpdate] = useState(0)
+
+  // Debug: Log currentTheme changes
+  useEffect(() => {
+    console.log('ThemeSettings: currentTheme changed to:', currentTheme)
+    setForceUpdate(prev => prev + 1) // Force component re-render
+  }, [currentTheme])
 
   const handleThemeChange = (themeId) => {
+    console.log('ThemeSettings: Changing theme to:', themeId)
     changeTheme(themeId)
   }
 
@@ -87,15 +95,15 @@ const ThemeSettings = () => {
               key={theme.id}
               onClick={() => handleThemeChange(theme.id)}
               className={`p-4 rounded-lg border-2 transition-all flex flex-col items-center justify-center min-h-[120px] ${
-                currentTheme === theme.id
+                selectedTheme === theme.id
                   ? 'glow-border border-[var(--accent-primary)] bg-[var(--button-active)] text-[var(--bg-primary)]'
                   : 'border-[var(--border-subtle)] bg-[var(--button-bg)] text-[var(--text-primary)] hover:glow-border'
               }`}
             >
               {/* Checkmark + Name */}
               <div className="font-bold mb-2 flex items-center gap-2">
-                {currentTheme === theme.id && <span className="text-lg">✓</span>}
-                <span>{theme.name}</span>
+                {selectedTheme === theme.id && <span className="text-lg">✓</span>}
+                {theme.name}
               </div>
 
               {/* Color preview swatches */}
@@ -148,19 +156,19 @@ const ThemeSettings = () => {
           <div className="p-3 rounded" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
             <div className="text-sm font-semibold mb-1">Scanlines</div>
             <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>
-              {themes[currentTheme]?.effects.scanlines ? '✅ Enabled' : '❌ Disabled'}
+              {themes[selectedTheme]?.effects.scanlines ? '✅ Enabled' : '❌ Disabled'}
             </div>
           </div>
           <div className="p-3 rounded" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
             <div className="text-sm font-semibold mb-1">Glow Effects</div>
             <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>
-              {themes[currentTheme]?.effects.glow ? '✅ Enabled' : '❌ Disabled'}
+              {themes[selectedTheme]?.effects.glow ? '✅ Enabled' : '❌ Disabled'}
             </div>
           </div>
           <div className="p-3 rounded" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
             <div className="text-sm font-semibold mb-1">Pixelated</div>
             <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>
-              {themes[currentTheme]?.effects.pixelated ? '✅ Enabled' : '❌ Disabled'}
+              {themes[selectedTheme]?.effects.pixelated ? '✅ Enabled' : '❌ Disabled'}
             </div>
           </div>
         </div>

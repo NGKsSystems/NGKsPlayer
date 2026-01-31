@@ -7,10 +7,6 @@ const ThemeSettings = () => {
   const navigate = useNavigate()
   const [importError, setImportError] = useState('')
 
-  const handleThemeChange = (themeId) => {
-    changeTheme(themeId)
-  }
-
   const handleImport = () => {
     const input = document.createElement('input')
     input.type = 'file'
@@ -79,13 +75,13 @@ const ThemeSettings = () => {
         </p>
       </div>
 
-      <div>
+      <div key={currentTheme}> {/* Force re-render of the whole list when currentTheme changes */}
         <h3 className="text-lg font-semibold mb-3">Select Theme</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {Object.values(themes).map((theme) => (
             <button
-              key={theme.id}
-              onClick={() => handleThemeChange(theme.id)}
+              key={currentTheme + theme.id} {/* Force button re-render */}
+              onClick={() => changeTheme(theme.id)}
               className={`p-4 rounded-lg border-2 transition-all flex flex-col items-center justify-center min-h-[120px] ${
                 currentTheme === theme.id
                   ? 'glow-border border-[var(--accent-primary)] bg-[var(--button-active)] text-[var(--bg-primary)]'
@@ -95,7 +91,7 @@ const ThemeSettings = () => {
               {/* Checkmark + Name */}
               <div className="font-bold mb-2 flex items-center gap-2">
                 {currentTheme === theme.id && <span className="text-lg">✓</span>}
-                <span>{theme.name}</span>
+                {theme.name}
               </div>
 
               {/* Color preview swatches */}

@@ -85,31 +85,11 @@ export const ThemeProvider = ({ children }) => {
     setCurrentTheme(themeId);
   };
 
-  const importTheme = (themeData) => {
-    // For now, just console log since we're transitioning to individual files
-    console.log('Import theme:', themeData);
-    return false;
-  };
-
-  const exportTheme = (themeId) => {
-    const theme = themeData || themes[themeId];
-    if (!theme) return null;
-    return JSON.stringify(theme, null, 2);
-  };
-
-  const getAllThemes = () => {
-    return themes;
-  };
-
   const value = {
     currentTheme,
     changeTheme,
     themeData,
-    currentThemeEffect,
-    themes: getAllThemes(),
-    importTheme,
-    exportTheme,
-    getAllThemes
+    currentThemeEffect
   };
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>

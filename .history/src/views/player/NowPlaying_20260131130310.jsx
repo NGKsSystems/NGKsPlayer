@@ -14,7 +14,7 @@ import '../styles/nowplaying.css'
 // Import extracted hooks
 import { useTracks } from '../../hooks/useTracks'
 import { useCurrentTrack } from '../../hooks/useCurrentTrack'
-import useWaveform from '../../hooks/useWaveform';
+import useWaveform from '../hooks/useWaveform';
 import { useBeatPulse } from '../../hooks/useBeatPulse'
 import { useAutoplay } from '../../hooks/useAutoplay'
 import { usePlaylists } from '../../hooks/usePlaylists'

@@ -84,7 +84,7 @@ const ThemeSettings = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {Object.values(themes).map((theme) => (
             <button
-              key={theme.id}
+              key={`${theme.id}-${forceUpdate}`}
               onClick={() => handleThemeChange(theme.id)}
               className={`p-4 rounded-lg border-2 transition-all flex flex-col items-center justify-center min-h-[120px] ${
                 currentTheme === theme.id
@@ -96,6 +96,7 @@ const ThemeSettings = () => {
               <div className="font-bold mb-2 flex items-center gap-2">
                 {currentTheme === theme.id && <span className="text-lg">✓</span>}
                 <span>{theme.name}</span>
+                <span style={{fontSize: '10px', color: 'red'}}>{currentTheme === theme.id ? 'ACTIVE' : ''}</span>
               </div>
 
               {/* Color preview swatches */}

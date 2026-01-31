@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useTheme } from '../../contexts/ThemeContext';
 import { useNavigate } from 'react-router-dom'
 
@@ -6,8 +6,16 @@ const ThemeSettings = () => {
   const { currentTheme, changeTheme, themes, importTheme, exportTheme } = useTheme()
   const navigate = useNavigate()
   const [importError, setImportError] = useState('')
+  const [forceUpdate, setForceUpdate] = useState(0)
+
+  // Debug: Log currentTheme changes
+  useEffect(() => {
+    console.log('ThemeSettings: currentTheme changed to:', currentTheme)
+    setForceUpdate(prev => prev + 1) // Force component re-render
+  }, [currentTheme])
 
   const handleThemeChange = (themeId) => {
+    console.log('ThemeSettings: Changing theme to:', themeId)
     changeTheme(themeId)
   }
 
@@ -84,7 +92,7 @@ const ThemeSettings = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {Object.values(themes).map((theme) => (
             <button
-              key={theme.id}
+              key={`${theme.id}-${forceUpdate}`}
               onClick={() => handleThemeChange(theme.id)}
               className={`p-4 rounded-lg border-2 transition-all flex flex-col items-center justify-center min-h-[120px] ${
                 currentTheme === theme.id
@@ -96,6 +104,7 @@ const ThemeSettings = () => {
               <div className="font-bold mb-2 flex items-center gap-2">
                 {currentTheme === theme.id && <span className="text-lg">✓</span>}
                 <span>{theme.name}</span>
+                <span style={{fontSize: '10px', color: 'red'}}>{currentTheme === theme.id ? 'ACTIVE' : ''}</span>
               </div>
 
               {/* Color preview swatches */}

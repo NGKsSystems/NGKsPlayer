@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useTheme } from '../../contexts/ThemeContext';
 import { useNavigate } from 'react-router-dom'
 
@@ -6,9 +6,16 @@ const ThemeSettings = () => {
   const { currentTheme, changeTheme, themes, importTheme, exportTheme } = useTheme()
   const navigate = useNavigate()
   const [importError, setImportError] = useState('')
+  const [selectedTheme, setSelectedTheme] = useState(currentTheme)
+
+  // Update selectedTheme when currentTheme changes
+  useEffect(() => {
+    setSelectedTheme(currentTheme)
+  }, [currentTheme])
 
   const handleThemeChange = (themeId) => {
     changeTheme(themeId)
+    setSelectedTheme(themeId)
   }
 
   const handleImport = () => {
@@ -85,7 +92,7 @@ const ThemeSettings = () => {
           {Object.values(themes).map((theme) => (
             <button
               key={theme.id}
-              onClick={() => handleThemeChange(theme.id)}
+              onClick={() => changeTheme(theme.id)}
               className={`p-4 rounded-lg border-2 transition-all flex flex-col items-center justify-center min-h-[120px] ${
                 currentTheme === theme.id
                   ? 'glow-border border-[var(--accent-primary)] bg-[var(--button-active)] text-[var(--bg-primary)]'
@@ -95,7 +102,7 @@ const ThemeSettings = () => {
               {/* Checkmark + Name */}
               <div className="font-bold mb-2 flex items-center gap-2">
                 {currentTheme === theme.id && <span className="text-lg">✓</span>}
-                <span>{theme.name}</span>
+                {theme.name}
               </div>
 
               {/* Color preview swatches */}

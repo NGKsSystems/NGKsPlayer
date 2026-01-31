@@ -6,7 +6,7 @@ const useWaveform = ({
   audioContext,
   sourceNode,
   enabled = true,
-  waveformType = 'line',
+  waveformType = 'line', // 'line', 'bars', 'circle', 'none'
   beatPulseEnabled = true,
   onBeat = () => {},
 }) => {
@@ -31,7 +31,7 @@ const useWaveform = ({
     const ctx = canvas.getContext('2d');
     const analyzer = analyzerRef.current;
 
-    // Resize canvas
+    // Resize canvas to match container
     const rect = canvas.getBoundingClientRect();
     if (canvas.width !== rect.width || canvas.height !== rect.height) {
       canvas.width = rect.width;
@@ -51,8 +51,8 @@ const useWaveform = ({
       analyzer.getByteTimeDomainData(dataArray);
       analyzer.getByteFrequencyData(frequencyData);
 
-      // Clear canvas
-      ctx.fillStyle = 'rgb(31, 41, 55)';
+      // Clear canvas with dark background
+      ctx.fillStyle = 'rgb(31, 41, 55)'; // gray-800
       ctx.fillRect(0, 0, width, height);
 
       if (!enabled || waveformType === 'none') {
@@ -60,22 +60,47 @@ const useWaveform = ({
         return;
       }
 
-      // NEW: Apply Chromatic Chaos effects if the theme is active
+      // Apply Chromatic Chaos effects if active (this is the new wiring)
       if (window.currentThemeEffect) {
         try {
           window.currentThemeEffect(
             canvas,
             ctx,
-            beatDetectionRef?.current?.beatStrength || 0,
-            peakRotation || false  // replace peakRotation with your actual super-peak variable if different
+            beatDetectionRef?.current?.beatStrength || 0,  // adjust ref if needed
+            peakRotation || false  // adjust flag if named differently
           );
         } catch (err) {
           console.warn('Chromatic Chaos effect failed:', err);
         }
       }
 
-      // Your existing waveform drawing (line, bars, circle, etc.)
-      // Add your current drawing code here if it's not already present
+      // Draw waveform based on type
+      if (waveformType === 'line') {
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = 'rgb(59, 130, 246)'; // blue-500
+        ctx.beginPath();
+
+        const sliceWidth = width / bufferLength;
+        let x = 0;
+
+        for (let i = 0; i < bufferLength; i++) {
+          const v = dataArray[i] / 128.0;
+          const y = (v * height) / 2;
+
+          if (i === 0) {
+            ctx.moveTo(x, y);
+          } else {
+            ctx.lineTo(x, y);
+          }
+
+          x += sliceWidth;
+        }
+
+        ctx.lineTo(width, height / 2);
+        ctx.stroke();
+      }
+
+      // ... add bars, circle, or other types here if needed
 
       animationFrameRef.current = requestAnimationFrame(draw);
     };
@@ -83,6 +108,7 @@ const useWaveform = ({
     draw();
   };
 
+  // Setup audio context and analyzer
   useEffect(() => {
     if (!audioContext || !sourceNode) return;
 
