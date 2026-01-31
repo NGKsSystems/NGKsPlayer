@@ -68,7 +68,7 @@ console.log('✅ DEBUG commands available! Type: __DEBUG__.help()');
 window.__DEBUG__.help();
 
 import "./styles.css";
-import "./views/styles/DJMixer.css";
+import "./views/DJMixer.css";
 import "./styles/theme-effects.css";
 import "./styles/theme-overrides.css";
 
@@ -78,22 +78,22 @@ import "./audio/professional-engine.js";
 // Theme System
 import { ThemeProvider } from "./contexts/ThemeContext.jsx";
 
-import Library from "./views/library/Library.jsx";
-import NowPlaying from "./views/player/NowPlaying.jsx";
-import DJInterface from "./views/player/DJInterface.jsx";
-import DJProfessional from "./views/player/DJProfessional.jsx";
-import DJSimple from "./views/player/DJSimple.jsx";
-import FourDeckDJ from "./views/player/FourDeckDJ.jsx";
-import TagEditor from "./views/library/TagEditor.jsx";
-import Settings from "./views/settings/Settings.jsx";
-import SettingsHome from "./views/settings/SettingsHome.jsx";
-import ThemeSettings from "./views/settings/ThemeSettings.jsx";
-import LayerRemover from "./views/player/LayerRemover.jsx";
+import Library from "./views/Library.jsx";
+import NowPlaying from "./views/NowPlaying.jsx";
+import NowPlayingDJ from "./views/NowPlayingDJ.jsx";
+import NowPlayingDJBasic from "./views/NowPlayingDJBasic.jsx";
+import DJSimple from "./views/DJSimple.jsx";
+import FourDeckDJ from "./views/FourDeckDJ.jsx";
+import TagEditor from "./views/TagEditor.jsx";
+import Settings from "./views/Settings.jsx";
+import SettingsHome from "./views/SettingsHome.jsx";
+import ThemeSettings from "./views/ThemeSettings.jsx";
+import LayerRemover from "./views/LayerRemover.jsx";
 import ProAudioClipper from "./ProAudioClipper/ProAudioClipper.jsx";
-import Broadcast from "./views/broadcast/Broadcast.jsx";
+import Broadcast from "./views/Broadcast.jsx";
 import StreamingInterface from "./streaming/StreamingInterface.jsx";
 import HardwareIntegration from "./hardware/HardwareIntegration.jsx";
-import AnalyzerSettingsPage from "./views/settings/AnalyzerSettingsPage.jsx";
+import AnalyzerSettingsPage from "./views/AnalyzerSettingsPage.jsx";
 import ErrorBoundary from "./DJ/Mixer/Common/ErrorBoundary";
 import AppWithSplash from "./AppWithSplash.jsx";
 

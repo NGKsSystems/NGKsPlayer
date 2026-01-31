@@ -68,7 +68,7 @@ console.log('✅ DEBUG commands available! Type: __DEBUG__.help()');
 window.__DEBUG__.help();
 
 import "./styles.css";
-import "./views/styles/DJMixer.css";
+import "./views/DJMixer.css";
 import "./styles/theme-effects.css";
 import "./styles/theme-overrides.css";
 
