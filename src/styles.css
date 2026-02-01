@@ -27,7 +27,8 @@ body {
    =============================================== */
 
 /* Dark Theme Foundation */
-:root {
+/* GATE: Theme colors only apply to player routes, not library/DJ */
+html:not(.dj-route):root {
     color-scheme: dark;
     --primary-bg: #1a1a1a;           /* Main background - ADJUST: Change base color */
     --secondary-bg: #2a2a2a;         /* Widget backgrounds - ADJUST: Widget base color */
@@ -902,7 +903,7 @@ body {
 }
 
 /* Crossfader - Special horizontal styling */
-.crossfader-slider {
+html:not(.dj-route) .crossfader-slider {
     -webkit-appearance: none;
     width: 180px;                       /* ADJUST: Crossfader width */
     height: 12px;                       /* ADJUST: Crossfader thickness - increased */
@@ -1452,7 +1453,7 @@ body {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-.setting-btn:hover {
+html:not(.dj-route) .setting-btn:hover {
     background: linear-gradient(145deg, #ff6600, #cc5500);
     color: #ffffff;
     border-color: #ff6600;
@@ -1486,7 +1487,7 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-.cue-btn:hover {
+html:not(.dj-route) .cue-btn:hover {
     background: linear-gradient(145deg, #ffaa00, #ff8800);
     color: #000000;
     border-color: #ffaa00;
@@ -1496,7 +1497,7 @@ body {
         0 0 12px rgba(255, 170, 0, 0.8);
 }
 
-.cue-btn.active {
+html:not(.dj-route) .cue-btn.active {
     background: linear-gradient(145deg, #ff4400, #dd3300);
     color: #ffffff;
     border-color: #ff4400;

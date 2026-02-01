@@ -62,14 +62,12 @@ export default function NowPlaying({ onNavigate }) {
   
   // ========== REFRESH FUNCTION ==========
   const handleLibraryRefresh = useCallback(async () => {
-    console.log('[Frontend] Manual library refresh triggered')
     setTracks([]) // Clear tracks immediately for visual feedback
     showToast('🔄 Rescanning music library...', 'info')
     
     try {
       // First try auto-scan to pick up file changes
       const scanResult = await window.api.invoke('library:autoScan', {})
-      console.log('[Frontend] Rescan result:', scanResult)
       
       if (scanResult.added > 0) {
         showToast(`✅ Library rescanned! Added ${scanResult.added} new tracks.`, 'success')
@@ -79,7 +77,6 @@ export default function NowPlaying({ onNavigate }) {
       
       // Then reload tracks
       await loadTracks()
-      console.log('[Frontend] Library refresh completed')
     } catch (err) {
       console.error('[Frontend] Library rescan failed:', err)
       showToast('❌ Library rescan failed', 'error')
@@ -176,9 +173,88 @@ export default function NowPlaying({ onNavigate }) {
   const essentiaSourceNodeRef = useRef(null)
   const audioRef = useRef(null)
   
+  // Helper functions for audio state debugging
+  const getReadyStateText = (readyState) => {
+    switch(readyState) {
+      case 0: return 'HAVE_NOTHING'
+      case 1: return 'HAVE_METADATA'  
+      case 2: return 'HAVE_CURRENT_DATA'
+      case 3: return 'HAVE_FUTURE_DATA'
+      case 4: return 'HAVE_ENOUGH_DATA'
+      default: return 'UNKNOWN'
+    }
+  }
+  
+  const getNetworkStateText = (networkState) => {
+    switch(networkState) {
+      case 0: return 'NETWORK_EMPTY'
+      case 1: return 'NETWORK_IDLE'
+      case 2: return 'NETWORK_LOADING'
+      case 3: return 'NETWORK_NO_SOURCE'
+      default: return 'UNKNOWN'
+    }
+  }
+  
   // ========== PLAYBACK FUNCTIONS ==========
   const playTrack = useCallback(async (track, index) => {
-    if (!track || !audioRef.current) return
+    console.log('🎵 playTrack called with:', track?.title, track?.filePath)
+    if (!track || !audioRef.current) {
+      console.log('❌ playTrack aborted:', !track ? 'no track' : 'no audioRef')
+      return
+    }
+    
+    // Check and resume existing AudioContext from useAudioAnalysis
+    // Don't create a new AudioContext since useAudioAnalysis already manages one
+    if (audioRef.current && audioRef.current.__ngksAudioAnalysisContext) {
+      const existingContext = audioRef.current.__ngksAudioAnalysisContext
+      
+      if (existingContext.state === 'closed') {
+        console.log('🔄 AudioContext is closed, creating new one...')
+        // Clear the closed context reference
+        audioRef.current.__ngksAudioAnalysisContext = null
+        audioRef.current.__ngksAudioAnalysisConnected = false
+        
+        // Create new AudioContext
+        audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)()
+        console.log('🎵 New AudioContext created:', audioContextRef.current.state)
+        
+        // Store new reference
+        audioRef.current.__ngksAudioAnalysisContext = audioContextRef.current
+      } else if (existingContext.state === 'suspended') {
+        try {
+          await existingContext.resume()
+          console.log('🎵 Resumed existing AudioContext:', existingContext.state)
+        } catch (error) {
+          console.error('❌ Failed to resume existing AudioContext:', error)
+        }
+      }
+      
+      console.log('🔊 Using AudioContext state:', (audioRef.current.__ngksAudioAnalysisContext || existingContext).state)
+    } else {
+      // Create AudioContext only if useAudioAnalysis hasn't created one yet
+      if (!audioContextRef.current) {
+        try {
+          audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)()
+          console.log('🎵 AudioContext created:', audioContextRef.current.state)
+          
+          // Store reference on audio element for coordination
+          if (audioRef.current) {
+            audioRef.current.__ngksAudioAnalysisContext = audioContextRef.current
+          }
+        } catch (error) {
+          console.error('❌ Failed to create AudioContext:', error)
+        }
+      }
+      
+      if (audioContextRef.current && audioContextRef.current.state === 'suspended') {
+        try {
+          await audioContextRef.current.resume()
+          console.log('🎵 AudioContext resumed:', audioContextRef.current.state)
+        } catch (error) {
+          console.error('❌ Failed to resume AudioContext:', error)
+        }
+      }
+    }
     
     updateCurrentTrack(track, index)
     
@@ -192,11 +268,107 @@ export default function NowPlaying({ onNavigate }) {
       audioSrc = `ngksplayer://${track.filePath}`;
     }
     
+    console.log('🎵 Setting audio source:', audioSrc)
+    
+    // Test audio context and system
+    console.log('🔊 Audio system check:', {
+      AudioContext: typeof window.AudioContext,
+      webkitAudioContext: typeof window.webkitAudioContext,
+      userAgent: navigator.userAgent
+    })
+    
+    // Set audio properties
     audioRef.current.src = audioSrc
     audioRef.current.volume = volume
+    audioRef.current.muted = false
     
+    // Check if audio element is connected to DOM
+    console.log('🔊 Audio element DOM state:', {
+      parentNode: !!audioRef.current.parentNode,
+      isConnected: audioRef.current.isConnected
+    })
+    
+    // Check AudioContext state
+    if (audioContextRef.current) {
+      console.log('🔊 AudioContext state:', {
+        state: audioContextRef.current.state,
+        sampleRate: audioContextRef.current.sampleRate,
+        baseLatency: audioContextRef.current.baseLatency
+      })
+    }
+
     try {
+      console.log('🎵 Attempting to play...')
+      
+      // CRITICAL: Resume AudioContext BEFORE calling play() (DJ AudioManager approach)
+      const context = audioRef.current.__ngksMainAudioContext || audioContextRef.current
+      if (context && context.state === 'suspended') {
+        console.log('🎵 Resuming AudioContext before play...')
+        await context.resume()
+        console.log('✅ AudioContext resumed:', context.state)
+      }
+      
+      console.log('🔊 Pre-play audio state:', {
+        src: audioRef.current.src,
+        currentTime: audioRef.current.currentTime,
+        duration: audioRef.current.duration,
+        volume: audioRef.current.volume,
+        muted: audioRef.current.muted,
+        paused: audioRef.current.paused,
+        readyState: audioRef.current.readyState,
+        networkState: audioRef.current.networkState,
+        readyStateText: getReadyStateText(audioRef.current.readyState),
+        networkStateText: getNetworkStateText(audioRef.current.networkState),
+        contextState: context?.state,
+        hasMainConnection: !!audioRef.current.__ngksMainSourceNode
+      })
+      
       await audioRef.current.play()
+      
+      console.log('✅ Play successful')
+      console.log('🔊 Post-play audio state:', {
+        currentTime: audioRef.current.currentTime,
+        duration: audioRef.current.duration,
+        volume: audioRef.current.volume,
+        muted: audioRef.current.muted,
+        paused: audioRef.current.paused,
+        readyState: audioRef.current.readyState,
+        networkState: audioRef.current.networkState,
+        readyStateText: getReadyStateText(audioRef.current.readyState),
+        networkStateText: getNetworkStateText(audioRef.current.networkState),
+        contextState: context?.state,
+        hasMainConnection: !!audioRef.current.__ngksMainSourceNode
+      })
+      
+      // Test audio output and check if currentTime progresses
+      setTimeout(() => {
+        console.log('🔊 Audio state after 1 second:', {
+          currentTime: audioRef.current?.currentTime,
+          paused: audioRef.current?.paused,
+          ended: audioRef.current?.ended,
+          readyState: audioRef.current?.readyState,
+          networkState: audioRef.current?.networkState,
+          readyStateText: getReadyStateText(audioRef.current?.readyState),
+          networkStateText: getNetworkStateText(audioRef.current?.networkState),
+          hasMainConnection: !!audioRef.current?.__ngksMainSourceNode
+        })
+        
+        // Check if currentTime is progressing now
+        if (audioRef.current?.currentTime === 0 && !audioRef.current?.paused) {
+          console.log('⚠️ Audio still not progressing with main connection')
+          
+          const context = audioRef.current.__ngksMainAudioContext
+          if (context) {
+            console.log('🔊 AudioContext final state check:', {
+              state: context.state,
+              sampleRate: context.sampleRate,
+              hasConnection: !!audioRef.current.__ngksMainSourceNode
+            })
+          }
+        } else if (audioRef.current?.currentTime > 0) {
+          console.log('🎉 SUCCESS! Audio is playing and progressing!')
+        }
+      }, 1000)
       
       // Cache next track
       if (index !== undefined && tracks.length > 0) {
@@ -206,6 +378,7 @@ export default function NowPlaying({ onNavigate }) {
       
       showToast(`Now playing: ${track.title || track.filename}`, 'success')
     } catch (err) {
+      console.log('❌ Play error:', err)
       // Ignore AbortError - happens when a new track loads before previous finishes
       if (err.name === 'AbortError') {
         console.log('[playTrack] Play interrupted by new track load')
@@ -295,9 +468,48 @@ export default function NowPlaying({ onNavigate }) {
   useEffect(() => {
     if (!audioRef.current) {
       audioRef.current = document.createElement('audio')
+      
+      // Add audio element to DOM for Electron compatibility
+      audioRef.current.style.display = 'none'
+      audioRef.current.preload = 'auto'
+      document.body.appendChild(audioRef.current)
+      
+      console.log('🎵 Audio element created and added to DOM')
     }
     
     const audio = audioRef.current
+    
+    // Setup proper Web Audio chain (like DJ AudioManager)
+    const setupAudioChain = () => {
+      if (!audioContextRef.current) {
+        audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)()
+        console.log('🎵 Created AudioContext for NowPlaying:', audioContextRef.current.state)
+      }
+      
+      try {
+        // Only create source if not already connected
+        if (!audio.__ngksMainSourceNode) {
+          const sourceNode = audioContextRef.current.createMediaElementSource(audio)
+          const gainNode = audioContextRef.current.createGain()
+          
+          // Connect: source -> gain -> destination (simplified but working chain)
+          sourceNode.connect(gainNode)
+          gainNode.connect(audioContextRef.current.destination)
+          
+          // Store references
+          audio.__ngksMainSourceNode = sourceNode
+          audio.__ngksMainGainNode = gainNode
+          audio.__ngksMainAudioContext = audioContextRef.current
+          
+          console.log('✅ Created main audio chain: source -> gain -> destination')
+        }
+      } catch (error) {
+        console.error('❌ Failed to setup main audio chain:', error)
+      }
+    }
+    
+    // Setup audio chain immediately
+    setupAudioChain()
     
     const handleEnded = () => {
       if (playMode === 'stop') {
@@ -308,7 +520,16 @@ export default function NowPlaying({ onNavigate }) {
     }
     
     const handleLoadedMetadata = () => {
+      console.log('🎵 Audio metadata loaded:', audio.src, 'duration:', audio.duration)
       setDuration(audio.duration)
+    }
+    
+    const handleCanPlay = () => {
+      console.log('🎵 Audio can play:', audio.src)
+    }
+    
+    const handleLoadError = (e) => {
+      console.error('🎵 Audio load error:', e, audio.src)
     }
     
     const handleTimeUpdate = () => {
@@ -325,6 +546,8 @@ export default function NowPlaying({ onNavigate }) {
     
     audio.addEventListener('ended', handleEnded)
     audio.addEventListener('loadedmetadata', handleLoadedMetadata)
+    audio.addEventListener('canplay', handleCanPlay)
+    audio.addEventListener('error', handleLoadError)
     audio.addEventListener('timeupdate', handleTimeUpdate)
     audio.addEventListener('play', handlePlay)
     audio.addEventListener('pause', handlePause)
@@ -332,14 +555,26 @@ export default function NowPlaying({ onNavigate }) {
     return () => {
       audio.removeEventListener('ended', handleEnded)
       audio.removeEventListener('loadedmetadata', handleLoadedMetadata)
+      audio.removeEventListener('canplay', handleCanPlay)
+      audio.removeEventListener('error', handleLoadError)
       audio.removeEventListener('timeupdate', handleTimeUpdate)
       audio.removeEventListener('play', handlePlay)
       audio.removeEventListener('pause', handlePause)
     }
   }, [playMode, nextTrack, setIsPlaying, setDuration, setPosition])
   
-  // Audio analysis for extreme effects
-  useAudioAnalysis(audioRef.current)
+  // Cleanup audio element on unmount
+  useEffect(() => {
+    return () => {
+      if (audioRef.current && audioRef.current.parentNode) {
+        document.body.removeChild(audioRef.current)
+        console.log('🎵 Audio element removed from DOM')
+      }
+    }
+  }, [])
+  
+  // Audio analysis for extreme effects - DISABLED to prevent conflicts
+  // useAudioAnalysis(audioRef.current)
   
   // Waveform hook (manages canvas rendering and beat detection)
   const { waveformCanvasRef, analyzerRef, waveformType, setWaveformType } = useWaveform(
@@ -441,7 +676,9 @@ export default function NowPlaying({ onNavigate }) {
   // ========== ADDITIONAL PLAYBACK CONTROLS ==========
   const handleSeek = (e) => {
     if (audioRef.current) {
-      audioRef.current.currentTime = parseFloat(e.target.value)
+      // Handle both direct value and event object
+      const seekTime = typeof e === 'number' ? e : parseFloat(e?.target?.value || 0)
+      audioRef.current.currentTime = seekTime
     }
   }
   
@@ -678,7 +915,7 @@ export default function NowPlaying({ onNavigate }) {
   return (
     <>
       <div 
-        className="h-screen flex flex-col overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"
+        className="simple-player h-screen flex flex-col overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"
         onClick={() => {
           setContextMenu(null)
           setShowThemeMenu(false)

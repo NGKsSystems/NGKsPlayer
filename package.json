@@ -28,6 +28,7 @@
     "test:robot:ui": "node run-testing-robot.js -- --ui",
     "test:robot:quick": "node run-testing-robot.js -- --quick",
     "test:robot:verbose": "node run-testing-robot.js -- --verbose",
+    "verify": "node verify.js",
     "calibrate": "node calibrate-analyzer.js",
     "calibrate:verbose": "node calibrate-analyzer.js --verbose"
   },

@@ -1,4 +1,4 @@
-// src/themes/chromatic-chaos/particles-config.js
+// src/themes/chromaticChaos/particles-config.js
 
 // Simple particle config for chaos sparks/glitches
 // Can be used with particles.js or your custom canvas particle system

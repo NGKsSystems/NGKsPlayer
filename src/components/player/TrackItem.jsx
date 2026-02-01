@@ -8,7 +8,10 @@ export function TrackItem({ track, actualIndex, currentIndex, onPlay, onContextM
 
   return (
     <div
-      onClick={() => onPlay(track, actualIndex)}
+      onClick={() => {
+        console.log('🎵 TrackItem clicked:', track?.title, 'onPlay:', typeof onPlay)
+        onPlay(track, actualIndex)
+      }}
       onContextMenu={(e) => onContextMenu(e, track)}
       className={`p-3 border border-gray-700 rounded cursor-pointer hover:bg-gray-700 transition ${
         isCurrentTrack ? 'bg-blue-900 border-blue-600' : 'bg-gray-800'

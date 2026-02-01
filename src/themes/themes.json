@@ -1,3 +1,5 @@
+
+
 {
   "modernDark": {
     "name": "Modern Dark",
@@ -476,6 +478,42 @@
       "screenShake": true,
       "quantum": true,
       "drift": true
+    }
+  },
+  "terminator": {  
+    "name": "Terminator",
+    "id": "terminator",
+    "colors": {
+      "bg-primary": "#c0c0c0",
+      "bg-secondary": "#a0a0a0",
+      "bg-tertiary": "#808080",
+      "text-primary": "#000000",
+      "text-secondary": "#333333",
+      "text-tertiary": "#666666",
+      "accent-primary": "#ff0000",
+      "accent-secondary": "#cc0000",
+      "accent-success": "#00ff00",
+      "accent-warning": "#ffff00",
+      "accent-error": "#ff0000",
+      "waveform-line": "linear-gradient(90deg, #ff0000, #c0c0c0, #ff0000)",
+      "waveform-fill": "rgba(255, 0, 0, 0.35)",
+      "progress-bg": "#808080",
+      "progress-fill": "#ff0000",
+      "button-bg": "#a0a0a0",
+      "button-hover": "#d0d0d0",
+      "button-active": "#ff0000",
+      "border-subtle": "#606060",
+      "glow": "0 0 15px #ff0000, 0 0 30px #ff0000"
+    },
+    "fonts": {
+      "primary": "'Orbitron', 'Courier New', monospace",
+      "monospace": "'Courier New', monospace"
+    },
+    "effects": {
+      "scanlines": true,
+      "glow": true,
+      "pixelated": false,
+      "metallic-sheen": true
     }
   }
 }

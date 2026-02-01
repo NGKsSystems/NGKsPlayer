@@ -1,98 +1,102 @@
 /* Global theme overrides - Map Tailwind classes to CSS variables */
-/* GATE: Only apply to OLD theme system (exclude chromaticChaos and other new modular themes) */
-/* NEW modular themes handle their own styling */
+/* GATE: Do not apply theme overrides to DJ routes */
 
-/* Background colors - OLD THEME SYSTEM ONLY */
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .bg-zinc-900, 
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .bg-gray-900, 
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .bg-slate-900 {
+/* THEME OVERRIDES DISABLED - Themes are currently disabled globally */
+/* Tailwind colors will use their default values */
+
+/* Background colors */
+/* THEME OVERRIDES DISABLED - Tailwind colors use defaults */
+/*
+html:not(.dj-route) .bg-zinc-900, 
+html:not(.dj-route) .bg-gray-900, 
+html:not(.dj-route) .bg-slate-900 {
   background-color: var(--bg-primary) !important;
 }
 
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .bg-zinc-800,
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .bg-gray-800,
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .bg-slate-800 {
+html:not(.dj-route) .bg-zinc-800,
+html:not(.dj-route) .bg-gray-800,
+html:not(.dj-route) .bg-slate-800 {
   background-color: var(--bg-secondary) !important;
 }
 
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .bg-zinc-700,
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .bg-gray-700,
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .bg-slate-700 {
+html:not(.dj-route) .bg-zinc-700,
+html:not(.dj-route) .bg-gray-700,
+html:not(.dj-route) .bg-slate-700 {
   background-color: var(--bg-tertiary) !important;
 }
 
 /* Text colors */
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .text-zinc-100,
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .text-gray-100,
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .text-white {
+html:not(.dj-route) .text-zinc-100,
+html:not(.dj-route) .text-gray-100,
+html:not(.dj-route) .text-white {
   color: var(--text-primary) !important;
 }
 
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .text-zinc-400,
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .text-gray-400 {
+html:not(.dj-route) .text-zinc-400,
+html:not(.dj-route) .text-gray-400 {
   color: var(--text-secondary) !important;
 }
 
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .text-zinc-500,
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .text-gray-500 {
+html:not(.dj-route) .text-zinc-500,
+html:not(.dj-route) .text-gray-500 {
   color: var(--text-tertiary) !important;
 }
 
 /* Accent colors - Blues */
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .bg-blue-600,
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .bg-blue-700 {
+html:not(.dj-route) .bg-blue-600,
+html:not(.dj-route) .bg-blue-700 {
   background-color: var(--accent-primary) !important;
 }
 
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .bg-blue-500 {
+html:not(.dj-route) .bg-blue-500 {
   background-color: var(--accent-primary) !important;
   filter: brightness(1.1);
 }
 
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .text-blue-500,
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .text-blue-400,
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .text-blue-300 {
+html:not(.dj-route) .text-blue-500,
+html:not(.dj-route) .text-blue-400,
+html:not(.dj-route) .text-blue-300 {
   color: var(--accent-primary) !important;
 }
 
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .border-blue-600,
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .border-blue-500 {
+html:not(.dj-route) .border-blue-600,
+html:not(.dj-route) .border-blue-500 {
   border-color: var(--accent-primary) !important;
 }
 
 /* Accent colors - Purples */
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .bg-purple-600,
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .bg-purple-700 {
+html:not(.dj-route) .bg-purple-600,
+html:not(.dj-route) .bg-purple-700 {
   background-color: var(--accent-secondary) !important;
 }
 
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .text-purple-400,
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .text-purple-300 {
+html:not(.dj-route) .text-purple-400,
+html:not(.dj-route) .text-purple-300 {
   color: var(--accent-secondary) !important;
 }
 
 /* Success/Green */
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .bg-green-600,
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .bg-green-700,
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .bg-green-900 {
+html:not(.dj-route) .bg-green-600,
+html:not(.dj-route) .bg-green-700,
+html:not(.dj-route) .bg-green-900 {
   background-color: var(--accent-success) !important;
   opacity: 0.9;
 }
 
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .text-green-400,
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .text-green-300,
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .text-green-200 {
+html:not(.dj-route) .text-green-400,
+html:not(.dj-route) .text-green-300,
+html:not(.dj-route) .text-green-200 {
   color: var(--accent-success) !important;
 }
 
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .border-green-600 {
+html:not(.dj-route) .border-green-600 {
   border-color: var(--accent-success) !important;
 }
 
 /* Warning/Orange */
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .bg-orange-600,
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .bg-orange-700,
-html:not(.dj-route):not([data-theme="chromaticChaos"]) .bg-orange-900 {
+html:not(.dj-route) .bg-orange-600,
+html:not(.dj-route) .bg-orange-700,
+html:not(.dj-route) .bg-orange-900 {
   background-color: var(--accent-warning) !important;
   opacity: 0.9;
 }

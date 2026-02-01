@@ -65,10 +65,10 @@ class ExtremeVisualEffects {
       this.currentTheme = e.detail.theme;
       
       // Apply RGB split filter for Chromatic Chaos
-      if (this.currentTheme === 'chromaticChaos') {
-        document.body.style.filter = 'url(#rgb-split-filter)';
-        console.log('🎨 Applied RGB split filter for Chromatic Chaos');
-      }
+      // if (this.currentTheme === 'chromaticChaos') {
+      //   document.body.style.filter = 'url(#rgb-split-filter)';
+      //   console.log('🎨 Applied RGB split filter for Chromatic Chaos');
+      // }
       
       // Check if new theme needs extreme effects
       if (e.detail && (e.detail.particles || e.detail.effects.particles || e.detail.effects.bloodRain)) {
@@ -214,9 +214,9 @@ class ExtremeVisualEffects {
       case 'galacticStorm':
         this.startNebulaFlow();
         break;
-      case 'chromaticChaos':
-        this.startColorShift();
-        break;
+      // case 'chromaticChaos':
+      //   this.startColorShift();
+      //   break;
       case 'quantumDrift':
         this.startQuantumField();
         break;
@@ -469,9 +469,9 @@ class ExtremeVisualEffects {
     }
 
     // Chromatic Chaos feedback loop on high energy
-    if (this.currentTheme === 'chromaticChaos' && volume > 1.5) {
-      this.chromaticFeedbackLoop(volume);
-    }
+    // if (this.currentTheme === 'chromaticChaos' && volume > 1.5) {
+    //   this.chromaticFeedbackLoop(volume);
+    // }
 
     // Continuous low-level particles
     if (Math.random() < volume * 0.3) {
@@ -543,13 +543,13 @@ class ExtremeVisualEffects {
           swirl: Math.random() * Math.PI * 2
         };
         
-      case 'chromaticChaos':
-        return {
-          ...baseParticle,
-          color: this.getChromaticColor(),
-          type: 'chromatic',
-          colorPhase: Math.random() * Math.PI * 2
-        };
+      // case 'chromaticChaos':
+      //   return {
+      //     ...baseParticle,
+      //     color: this.getChromaticColor(),
+      //     type: 'chromatic',
+      //     colorPhase: Math.random() * Math.PI * 2
+      //   };
         
       case 'quantumDrift':
         return {
@@ -1124,13 +1124,13 @@ class ExtremeVisualEffects {
           this.nebulaSwirlAcceleration(intensity);
           break;
           
-        case 'chromaticChaos':
-          this.spawnColorShift(4 + Math.floor(intensity * 6));
-          this.rgbSplitStorm(intensity);
-          if (isSuperPeak) {
-            this.colorChannelTearing();
-          }
-          break;
+        // case 'chromaticChaos':
+        //   this.spawnColorShift(4 + Math.floor(intensity * 6));
+        //   this.rgbSplitStorm(intensity);
+        //   if (isSuperPeak) {
+        //     this.colorChannelTearing();
+        //   }
+        //   break;
           
         case 'quantumDrift':
           this.spawnQuantumParticles(3 + Math.floor(intensity * 4));

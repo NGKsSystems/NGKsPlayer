@@ -1,7 +1,8 @@
 /* Atari Theme Effects */
+/* GATE: Theme effects only apply to non-DJ routes */
 
 /* Scanline overlay effect */
-html[data-scanlines="true"]::before {
+html:not(.dj-route)[data-scanlines="true"]::before {
   content: '';
   position: fixed;
   top: 0;
@@ -21,21 +22,21 @@ html[data-scanlines="true"]::before {
 }
 
 /* Glow effect utilities */
-html[data-glow="true"] .glow-text {
+html:not(.dj-route)[data-glow="true"] .glow-text {
   text-shadow: var(--glow);
 }
 
-html[data-glow="true"] .glow-border {
+html:not(.dj-route)[data-glow="true"] .glow-border {
   box-shadow: var(--glow);
 }
 
-html[data-glow="true"] button:hover {
+html:not(.dj-route)[data-glow="true"] button:hover {
   box-shadow: var(--glow);
   transition: box-shadow 0.2s ease;
 }
 
 /* Pixelated rendering for retro feel */
-html[data-pixelated="true"] canvas {
+html:not(.dj-route)[data-pixelated="true"] canvas {
   image-rendering: pixelated;
   image-rendering: crisp-edges;
 }
@@ -83,7 +84,8 @@ html[data-pixelated="true"] canvas {
 }
 
 /* CRT screen curvature (optional, subtle) */
-html[data-scanlines="true"] #root {
+/* GATE: Only apply when NOT on DJ/Library routes */
+html:not(.dj-route)[data-scanlines="true"] #root {
   /* Subtle vignette for CRT feel */
   background: radial-gradient(ellipse at center, 
     transparent 0%, 
@@ -92,7 +94,8 @@ html[data-scanlines="true"] #root {
 }
 
 /* Retro pixel font scaling */
-html[data-pixelated="true"] {
+/* GATE: Only apply when NOT on DJ/Library routes */
+html:not(.dj-route)[data-pixelated="true"] {
   font-smooth: never;
   -webkit-font-smoothing: none;
   -moz-osx-font-smoothing: grayscale;

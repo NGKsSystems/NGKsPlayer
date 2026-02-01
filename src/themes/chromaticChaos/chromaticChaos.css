@@ -1,7 +1,9 @@
-/* src/themes/chromatic-chaos/chromatic-chaos.css */
+/* src/themes/chromaticChaos/chromaticChaos.css */
+/* NEW MODULAR THEME SYSTEM - SCOPED TO .simple-player AND data-theme */
 
 /* Base: deep dark with subtle swirling undertone */
-[data-theme="chromaticChaos"] {
+/* TRIPLE GATE: Requires correct data-theme + .simple-player container + NOT .dj-route */
+html[data-theme="chromaticChaos"]:not(.dj-route) .simple-player {
   --bg-primary: #0f001a;                 /* deep purple-black */
   --bg-gradient: linear-gradient(135deg, #0f001a, #1a002f, #2a004f, #0f001a);
   --accent-red: #ff2d00;                 /* fiery red */
@@ -15,19 +17,19 @@
   --waveform-fill: rgba(255, 45, 0, 0.35);
 }
 
-/* Page-wide swirling paint background */
-[data-theme="chromaticChaos"] body,
-[data-theme="chromaticChaos"] .app,
-[data-theme="chromaticChaos"] .main-container {
-  background: var(--bg-gradient);
-  background-size: 300% 300%;
-  animation: paint-swirl 25s ease infinite;
+/* Force background ONLY when chromaticChaos is active */
+html[data-theme="chromaticChaos"]:not(.dj-route) .simple-player,
+html[data-theme="chromaticChaos"]:not(.dj-route) .simple-player .app,
+html[data-theme="chromaticChaos"]:not(.dj-route) .simple-player .main-container {
+  background: var(--bg-gradient) !important;
+  background-size: 300% 300% !important;
+  animation: paint-swirl 25s ease infinite !important;
 }
 
-/* Title – flowing paint color shift */
-[data-theme="chromaticChaos"] h1,
-[data-theme="chromaticChaos"] .title,
-[data-theme="chromaticChaos"] .track-title {
+/* Title – flowing paint color shift (ONLY when chromaticChaos active) */
+html[data-theme="chromaticChaos"]:not(.dj-route) .simple-player h1,
+html[data-theme="chromaticChaos"]:not(.dj-route) .simple-player .title,
+html[data-theme="chromaticChaos"]:not(.dj-route) .simple-player .track-title {
   background: var(--waveform-line);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -37,18 +39,18 @@
   font-weight: bold;
 }
 
-/* Waveform – paint splash style */
-[data-theme="chromaticChaos"] .waveform,
-[data-theme="chromaticChaos"] canvas {
+/* Waveform – paint splash style (ONLY when chromaticChaos active) */
+html[data-theme="chromaticChaos"]:not(.dj-route) .simple-player .waveform,
+html[data-theme="chromaticChaos"]:not(.dj-route) .simple-player canvas {
   filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.6));
   background: linear-gradient(45deg, #ff2d00, #ffd700, #00f5ff, #d500f9);
   background-size: 400% 400%;
   animation: paint-swirl 15s ease infinite;
 }
 
-/* Buttons – paint splash on hover */
-[data-theme="chromaticChaos"] button,
-[data-theme="chromaticChaos"] .btn {
+/* Buttons – paint splash on hover (ONLY when chromaticChaos active) */
+html[data-theme="chromaticChaos"]:not(.dj-route) .simple-player button,
+html[data-theme="chromaticChaos"]:not(.dj-route) .simple-player .btn {
   background: linear-gradient(135deg, #ff2d00, #ffd700, #00f5ff);
   background-size: 200% 200%;
   animation: paint-flow 8s ease infinite;
@@ -57,14 +59,14 @@
   transition: transform 0.3s, box-shadow 0.3s;
 }
 
-[data-theme="chromaticChaos"] button:hover,
-[data-theme="chromaticChaos"] .btn:hover {
+html[data-theme="chromaticChaos"]:not(.dj-route) .simple-player button:hover,
+html[data-theme="chromaticChaos"]:not(.dj-route) .simple-player .btn:hover {
   transform: scale(1.1);
   box-shadow: 0 0 40px rgba(255, 45, 0, 0.8), 0 0 60px rgba(0, 245, 255, 0.6);
 }
 
-/* Progress bar – flowing paint fill */
-[data-theme="chromaticChaos"] .progress-bar-fill {
+/* Progress bar – flowing paint fill (ONLY when chromaticChaos active) */
+html[data-theme="chromaticChaos"]:not(.dj-route) .simple-player .progress-bar-fill {
   background: var(--waveform-line);
   background-size: 200% 200%;
   animation: paint-flow 6s linear infinite;

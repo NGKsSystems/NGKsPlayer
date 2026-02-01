@@ -458,6 +458,7 @@ html[data-glow="true"] .progress-bar::after {
 
 /* ========== CHROMATIC CHAOS THEME - DIGITAL DISTORTION & CHROME ========== */
 
+/*
 [data-theme="chromaticChaos"] {
   --bg-primary: #000000;
   --accent-primary: #ff00ff;  /* Magenta chaos */
@@ -467,8 +468,12 @@ html[data-glow="true"] .progress-bar::after {
   --glow-chaos: 0 0 20px #ff00ff, 0 0 40px #00ff00;
   --filter-chaos: hue-rotate(0deg) saturate(1.5) contrast(1.2);  /* Base filter */
 }
+*/
 
-/* Chrome metallic effect for track containers */
+*/
+
+/* COMMENTED OUT - Using modular chromaticChaos theme instead */
+/*
 [data-theme="chromaticChaos"] .np-queue-item {
   background: linear-gradient(145deg, 
     #f0f0f0 0%,     /* Bright chrome white */
@@ -516,37 +521,31 @@ html[data-glow="true"] .progress-bar::after {
   transition: all 0.2s ease;
 }
 
-/* Title & Up Next Glitch */
 [data-theme="chromaticChaos"] .title, [data-theme="chromaticChaos"] .up-next {
   text-shadow: 2px 0 var(--accent-tertiary), -2px 0 var(--accent-secondary), var(--glow-chaos);
   animation: chromatic-glitch-text 0.5s infinite steps(2);
 }
 
-/* Waveform Chaos */
 [data-theme="chromaticChaos"] .waveform {
   filter: drop-shadow(var(--glow-chaos)) var(--filter-chaos);
   animation: chromatic-wave-tear 1s infinite linear;
 }
 
-/* Pulse Super: Intense Chaos */
 [data-theme="chromaticChaos"] .pulse-super {
   animation: chromatic-chaos-storm 1.2s ease-out;
 }
 
-/* Buttons & Borders */
 [data-theme="chromaticChaos"] .button {
   border: 1px solid var(--accent-primary);
   box-shadow: var(--glow-chaos);
   animation: chromatic-glitch-text 1s infinite;
 }
 
-/* Chrome effect for text elements in tracks */
 [data-theme="chromaticChaos"] .np-queue-item * {
   color: #1a1a1a;
   text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
 }
 
-/* Chrome effect for the now playing tag */
 [data-theme="chromaticChaos"] .np-queue-item .tag-now {
   background: linear-gradient(145deg, #333333, #666666);
   color: #ffffff;
@@ -575,4 +574,5 @@ html[data-glow="true"] .progress-bar::after {
   30% { filter: brightness(2) contrast(1.8) hue-rotate(180deg); transform: translate(5px, 5px); }
   60% { filter: brightness(3) contrast(2.5) hue-rotate(360deg); transform: translate(-5px, -5px); }
   100% { filter: brightness(1) contrast(1); transform: translate(0, 0); }
+}
 }

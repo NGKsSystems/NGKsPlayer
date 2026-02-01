@@ -48,6 +48,27 @@ try {
   };
 }
 
+// Shared file finder utility
+function findFile(dir, targetFile) {
+  try {
+    const files = fs.readdirSync(dir);
+    for (const file of files) {
+      const fullPath = path.join(dir, file);
+      const stat = fs.statSync(fullPath);
+      
+      if (stat.isDirectory()) {
+        const found = findFile(fullPath, targetFile);
+        if (found) return found;
+      } else if (file.toLowerCase() === targetFile.toLowerCase()) {
+        return fullPath;
+      }
+    }
+  } catch (error) {
+    return null;
+  }
+  return null;
+}
+
 // Audio loading function for REAL analysis
 async function loadAudioFile(filePath) {
   const fs = require('fs');
@@ -58,27 +79,6 @@ async function loadAudioFile(filePath) {
   const musicDirPath = path.join('C:', 'Users', 'suppo', 'Music');
   
   let actualFilePath = filePath;
-  
-  // Search for the file in the Music directory and subdirectories
-  function findFile(dir, targetFile) {
-    try {
-      const files = fs.readdirSync(dir);
-      for (const file of files) {
-        const fullPath = path.join(dir, file);
-        const stat = fs.statSync(fullPath);
-        
-        if (stat.isDirectory()) {
-          const found = findFile(fullPath, targetFile);
-          if (found) return found;
-        } else if (file.toLowerCase() === targetFile.toLowerCase()) {
-          return fullPath;
-        }
-      }
-    } catch (error) {
-      return null;
-    }
-    return null;
-  }
   
   const foundFile = findFile(musicDirPath, fileName);
   if (foundFile) {
@@ -1191,25 +1191,6 @@ register('audio:loadSegment', async (_evt, payload = {}) => {
   const musicDirPath = path.join('C:', 'Users', 'suppo', 'Music');
   let actualFilePath = filePath;
 
-  function findFile(dir, targetFile) {
-    try {
-      const files = fs.readdirSync(dir);
-      for (const file of files) {
-        const fullPath = path.join(dir, file);
-        const stat = fs.statSync(fullPath);
-        if (stat.isDirectory()) {
-          const found = findFile(fullPath, targetFile);
-          if (found) return found;
-        } else if (file.toLowerCase() === targetFile.toLowerCase()) {
-          return fullPath;
-        }
-      }
-    } catch (e) {
-      return null;
-    }
-    return null;
-  }
-
   const foundFile = findFile(musicDirPath, fileName);
   if (foundFile) actualFilePath = foundFile;
   else if (!fs.existsSync(actualFilePath)) throw new Error('Audio file not found: ' + filePath);
@@ -1981,12 +1962,6 @@ register('analyze-single-file', async (_evt, { filePath }) => {
       analyzed: false
     };
   }
-});
-
-// Legacy batch-analyze - now uses unified system
-register('batch-analyze', async (_evt, options) => {
-  console.log('[batch-analyze] DEPRECATED: use unified analyzer');
-  return { success: false, error: 'Use unified analyzer' };
 });
 
 // ── Sampler handlers ──────────────────────────────────────────────────────

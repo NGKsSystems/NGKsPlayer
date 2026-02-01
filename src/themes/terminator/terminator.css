@@ -1,0 +1,38 @@
+/* src/themes/terminator/terminator.css */
+/* GATE: Only apply when NOT on DJ/Library routes */
+html:not(.dj-route)[data-theme="terminator"] {
+  --bg-primary: #c0c0c0;
+  --accent-red: #ff0000;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  /* Add metallic gradients, scanlines, red glows, skeleton outlines, etc. */
+}
+
+html:not(.dj-route)[data-theme="terminator"] body,
+html:not(.dj-route)[data-theme="terminator"] .app {
+  background: linear-gradient(135deg, #c0c0c0, #a0a0a0, #c0c0c0);
+  background-size: 200% 200%;
+  animation: metallic-sheen 8s ease infinite;
+}
+
+@keyframes metallic-sheen {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Scanlines example */
+/* GATE: Only apply when NOT on DJ/Library routes */
+html:not(.dj-route)[data-theme="terminator"]::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    rgba(0,0,0,0.05) 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}

@@ -1,0 +1,24 @@
+// src/themes/terminator/theme.json
+
+{
+  "id": "terminator",
+  "name": "Terminator",
+  "description": "Chrome skeleton with red glow and metallic distortion",
+  "colors": {
+    "bg-primary": "#c0c0c0",  // silver chrome
+    "accent-red": "#ff0000",  // terminator red eyes/glow
+    "accent-silver": "#e0e0e0",  // lighter chrome
+    "accent-dark": "#404040",  // skeletal shadows
+    "text-primary": "#000000",
+    "waveform-line": "linear-gradient(90deg, #ff0000, #c0c0c0, #ff0000)",
+    "waveform-fill": "rgba(255, 0, 0, 0.35)"
+  },
+  "fonts": {
+    "primary": "'Orbitron', system-ui, sans-serif"  // futuristic font (add via CSS import if needed)
+  },
+  "effects": {
+    "glow": true,
+    "metallic-sheen": true,
+    "scanlines": true
+  }
+}

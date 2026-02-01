@@ -1,4 +1,4 @@
-// src/themes/chromatic-chaos/effects.js
+// src/themes/chromaticChaos/effects.js
 
 /**
  * Chromatic Chaos dynamic canvas effects

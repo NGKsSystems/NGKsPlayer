@@ -18,12 +18,37 @@ export function useAudioAnalysis(audioElement) {
   
   // Setup audio context and analyser
   useEffect(() => {
-    if (!audioElement || isSetup) return
+    if (!audioElement) return
+    
+    // Reset setup flag when audio element changes or context is closed
+    if (isSetup && audioContextRef.current?.state === 'closed') {
+      setIsSetup(false)
+    }
+    
+    if (isSetup) return
     
     const setupAnalysis = async () => {
       try {
-        // Create audio context
-        audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)()
+        // Check if we have an existing context that's still valid
+        let needsNewContext = true
+        if (audioElement.__ngksAudioAnalysisContext) {
+          const existingContext = audioElement.__ngksAudioAnalysisContext
+          if (existingContext.state !== 'closed') {
+            audioContextRef.current = existingContext
+            needsNewContext = false
+            console.log('🎵 Using existing AudioContext:', existingContext.state)
+          } else {
+            console.log('🔄 Existing AudioContext is closed, will create new one')
+            audioElement.__ngksAudioAnalysisConnected = false
+          }
+        }
+        
+        // Create new audio context if needed
+        if (needsNewContext) {
+          audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)()
+          audioElement.__ngksAudioAnalysisContext = audioContextRef.current
+          console.log('🎵 Created new AudioContext for analysis:', audioContextRef.current.state)
+        }
         
         // Create analyser
         analyserRef.current = audioContextRef.current.createAnalyser()
@@ -36,24 +61,32 @@ export function useAudioAnalysis(audioElement) {
             // Create source from audio element
             sourceRef.current = audioContextRef.current.createMediaElementSource(audioElement)
             audioElement.__ngksAudioAnalysisConnected = true
+            
+            // Store AudioContext reference on element for coordination
+            audioElement.__ngksAudioAnalysisContext = audioContextRef.current
+            console.log('🎵 Created MediaElementSource and connected to analysis')
           } catch (error) {
             if (error.message.includes('already connected')) {
-              console.warn('Audio element already connected, using existing source')
-              // We'll try a different approach for already connected elements
+              console.warn('Audio element already connected, reusing existing connection')
               return
             } else {
               throw error
             }
           }
         } else {
-          // Element already processed, skip setup
-          console.warn('Audio element already has analysis connected')
+          console.log('🎵 Audio element already connected, reusing connection')
           return
         }
         
         // Connect: source -> analyser -> destination
         sourceRef.current.connect(analyserRef.current)
         analyserRef.current.connect(audioContextRef.current.destination)
+        
+        // Resume context if needed
+        if (audioContextRef.current.state === 'suspended') {
+          console.log('🎵 Resuming AudioContext for analysis...')
+          await audioContextRef.current.resume()
+        }
         
         setIsSetup(true)
         console.log('🎵 Audio analysis setup complete')
