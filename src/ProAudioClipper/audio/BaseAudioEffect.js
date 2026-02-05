@@ -31,6 +31,9 @@ export class BaseAudioEffect {
     this.dryNode = audioContext.createGain();
     this.mixNode = audioContext.createGain();
     
+    // Set mix node gain to unity
+    this.mixNode.gain.value = 1.0;
+    
     // Set up wet/dry mixing
     this.wetGain = 1.0;
     this.dryGain = 0.0;
@@ -140,26 +143,30 @@ export class BaseAudioEffect {
     this.firstProcessingNode = firstNode;
     this.lastProcessingNode = lastNode;
     
-    // Disconnect default direct routing from constructor
+    // Disconnect default dry path from setupRouting
     try {
-      this.inputNode.disconnect(this.outputNode);
+      this.inputNode.disconnect(this.dryNode);
     } catch (e) {
       // Already disconnected or never connected
     }
     
-    // Connect input to first processing node
-    this.inputNode.connect(firstNode);
+    // Connect input to both dry and processing paths
+    this.inputNode.connect(this.dryNode);           // Dry path: input -> dry -> mix
+    this.inputNode.connect(firstNode);             // Wet path: input -> processing
     
-    // Connect last processing node to output
-    lastNode.connect(this.outputNode);
+    // Connect processing chain to wet node (not directly to output)
+    lastNode.connect(this.wetNode);                // Processing -> wet gain -> mix
   }
 
   /**
    * Override this method to set up audio routing
    */
   setupRouting() {
-    // Default: direct connection (no processing)
-    this.inputNode.connect(this.outputNode);
+    // Set up proper wet/dry mixing topology
+    this.inputNode.connect(this.dryNode);    // Dry path: input -> dry gain -> mix
+    this.dryNode.connect(this.mixNode);
+    this.wetNode.connect(this.mixNode);       // Wet path: processing -> wet gain -> mix
+    this.mixNode.connect(this.outputNode);    // Mixed output to final output
   }
 
   /**
