@@ -14,6 +14,14 @@
 
 import BaseAudioEffect from '../BaseAudioEffect.js';
 
+function __ngksAssertConnectable(label, v) {
+  const ok = !!v && (typeof v.connect === 'function' || typeof v.setValueAtTime === 'function');
+  if (!ok) {
+    const t = v === null ? 'null' : typeof v;
+    throw new Error(`[NGKS_CONNECT_GUARD] ${label} not connectable (type=${t})`);
+  }
+}
+
 export class ConvolutionReverb extends BaseAudioEffect {
   static displayName = 'Convolution Reverb';
   static category = 'Reverb';
@@ -55,6 +63,11 @@ export class ConvolutionReverb extends BaseAudioEffect {
   }
 
   setupRouting() {
+    // Skip routing if specific nodes aren't created yet (called from base constructor)
+    if (!this.preDelayNode || !this.convolverNode || !this.dampingFilter) {
+      return;
+    }
+    
     // Wet signal path: input -> preDelay -> convolver -> damping -> wet
     this.inputNode.connect(this.preDelayNode);
     this.preDelayNode.connect(this.convolverNode);
