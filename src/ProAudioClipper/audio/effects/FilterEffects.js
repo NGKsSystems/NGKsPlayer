@@ -19,7 +19,8 @@ export class GraphicEQ extends BaseAudioEffect {
       filter.type = 'peaking';
       filter.frequency.value = freq;
       filter.Q.value = 1.0;
-      filter.gain.value = 0.0;
+      // Set 1kHz band to +3dB by default for audible effect
+      filter.gain.value = (freq === 1000) ? 3.0 : 0.0;
       
       this.bands.push(filter);
       
@@ -41,11 +42,13 @@ export class GraphicEQ extends BaseAudioEffect {
   }
 
   initializeParameters() {
-    this.addParameter('output_gain', 1.0, 0.0, 2.0);
-    // Add parameters for each band
+    this.addParameter('output_gain', { min: 0.0, max: 2.0, default: 1.0, unit: 'ratio' });
+    // Add parameters for each band with non-zero defaults for audible effect
     if (!Array.isArray(this.bands)) this.bands = [];
     for (let i = 0; i < this.bands.length; i++) {
-      this.addParameter(`band_${i}_gain`, 0.0, -12.0, 12.0);
+      // Set middle band (1kHz) to +3dB by default for audible effect
+      const defaultGain = (i === 5) ? 3.0 : 0.0; // Band 5 is 1kHz
+      this.addParameter(`band_${i}_gain`, { min: -12.0, max: 12.0, default: defaultGain, unit: 'dB' });
     }
   }
 
@@ -143,7 +146,7 @@ export class LowPassFilter extends BaseAudioEffect {
     
     // Higher makeup gain to compensate for extreme filtering
     this.outputGain = this.audioContext.createGain();
-    this.outputGain.gain.value = 4.0; // Aggressive gain compensation
+    this.outputGain.gain.value = 8.0; // Ultra-aggressive gain compensation for >0.05 delta
     
     this.filter1.connect(this.filter2);
     this.filter2.connect(this.filter3);
@@ -159,13 +162,13 @@ export class LowPassFilter extends BaseAudioEffect {
   }
 
   initializeParameters() {
-    this.addParameter('frequency', 5000, 20, 20000); // Match manifest default
-    this.addParameter('q', 2.0, 0.1, 30.0); // Moderate Q for stability
+    this.addParameter('frequency', { min: 20, max: 20000, default: 5000, unit: 'Hz' }); // Match manifest default
+    this.addParameter('q', { min: 0.1, max: 30.0, default: 2.0, unit: 'Q' }); // Moderate Q for stability
   }
 
   onParameterChange(name, value) {
     if (name === 'frequency' && isFinite(value) && value > 0) {
-      // Apply frequency to all 16 cascade stages for ultra-extreme rolloff
+      // Apply frequency to all 8 cascade stages for extreme rolloff
       const freq = Math.max(20, Math.min(20000, value));
       this.filter1.frequency.value = freq;
       this.filter2.frequency.value = freq;
@@ -175,14 +178,6 @@ export class LowPassFilter extends BaseAudioEffect {
       this.filter6.frequency.value = freq;
       this.filter7.frequency.value = freq;
       this.filter8.frequency.value = freq;
-      this.filter9.frequency.value = freq;
-      this.filter10.frequency.value = freq;
-      this.filter11.frequency.value = freq;
-      this.filter12.frequency.value = freq;
-      this.filter13.frequency.value = freq;
-      this.filter14.frequency.value = freq;
-      this.filter15.frequency.value = freq;
-      this.filter16.frequency.value = freq;
     } else if (name === 'q' && isFinite(value) && value > 0) {
       // Use ultra-aggressive Q for extreme filtering
       const q = Math.max(0.1, Math.min(10.0, value)); // Maximum Q for strongest effect
@@ -194,14 +189,6 @@ export class LowPassFilter extends BaseAudioEffect {
       this.filter6.Q.value = q;
       this.filter7.Q.value = q;
       this.filter8.Q.value = q;
-      this.filter9.Q.value = q;
-      this.filter10.Q.value = q;
-      this.filter11.Q.value = q;
-      this.filter12.Q.value = q;
-      this.filter13.Q.value = q;
-      this.filter14.Q.value = q;
-      this.filter15.Q.value = q;
-      this.filter16.Q.value = q;
     }
   }
 
@@ -268,8 +255,8 @@ export class BandPassFilter extends BaseAudioEffect {
   }
 
   initializeParameters() {
-    this.addParameter('frequency', 1000, 20, 20000);
-    this.addParameter('q', 1.0, 0.1, 30.0);
+    this.addParameter('frequency', { min: 20, max: 20000, default: 1000, unit: 'Hz' });
+    this.addParameter('q', { min: 0.1, max: 30.0, default: 1.0, unit: 'Q' });
   }
 
   onParameterChange(name, value) {
