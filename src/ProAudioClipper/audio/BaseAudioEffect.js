@@ -11,6 +11,15 @@
 
 export class BaseAudioEffect {
   constructor(audioContext, parameters = {}) {
+    if (!audioContext) {
+      throw new Error('AudioContext is required for audio effects');
+    }
+    
+    // Fail-fast assertion for setProcessingChain method
+    if (typeof this.setProcessingChain !== 'function') {
+      throw new Error('BaseAudioEffect: setProcessingChain method missing from prototype');
+    }
+    
     this.audioContext = audioContext;
     this.id = `effect_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     this.bypass = false;
@@ -30,7 +39,10 @@ export class BaseAudioEffect {
     // Initialize parameters
     this.parameters = new Map();
     this.initializeParameters();
-    this.setParameters(parameters);
+    
+    // Store parameters for later initialization - don't call setParameters() yet
+    // Child classes must call finalizeInit() when ready
+    this._pendingParameters = parameters;
     
     // Set up basic signal routing
     this.setupRouting();
@@ -106,6 +118,40 @@ export class BaseAudioEffect {
   updateMix() {
     this.wetNode.gain.value = this.wetGain;
     this.dryNode.gain.value = this.dryGain;
+  }
+
+  /**
+   * Finalize effect initialization with parameters
+   * @param {Object} parameters - Parameter overrides
+   */
+  finalizeInit(parameters = {}) {
+    // Merge pending parameters from constructor with any additional parameters
+    const allParameters = { ...this._pendingParameters, ...parameters };
+    this.setParameters(allParameters);
+  }
+
+  /**
+   * Set up processing chain between input and output
+   * @param {AudioNode} firstNode - First processing node
+   * @param {AudioNode} lastNode - Last processing node
+   */
+  setProcessingChain(firstNode, lastNode) {
+    console.log('[BaseAudioEffect] setProcessingChain called:', this.id);
+    this.firstProcessingNode = firstNode;
+    this.lastProcessingNode = lastNode;
+    
+    // Disconnect default direct routing from constructor
+    try {
+      this.inputNode.disconnect(this.outputNode);
+    } catch (e) {
+      // Already disconnected or never connected
+    }
+    
+    // Connect input to first processing node
+    this.inputNode.connect(firstNode);
+    
+    // Connect last processing node to output
+    lastNode.connect(this.outputNode);
   }
 
   /**

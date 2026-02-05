@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Effects Module Smoke Test</title>
+</head>
+<body>
+  <h1>Effects Module Smoke Test</h1>
+
+  <script type="module">
+    // IMPORTANT:
+    // This file exists ONLY to give Playwright a page context
+    // where the effects engine can be loaded and exercised.
+
+    import { AudioEffectsEngine } from '/src/ProAudioClipper/audio/AudioEffectsEngine.js';
+
+    window.__effectsTestReady = false;
+    window.__effectsEngine = null;
+
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      window.__effectsEngine = new AudioEffectsEngine(ctx);
+      window.__effectsTestReady = true;
+      console.log('[effects-test] ready');
+    } catch (err) {
+      console.error('[effects-test] init failed', err);
+      window.__effectsTestError = err;
+    }
+  </script>
+</body>
+</html>

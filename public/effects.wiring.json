@@ -1,0 +1,627 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "description": "NGKs Player Effects Bundle Manifest - Single source of truth for all effects metadata, parameters, and validation profiles",
+  "version": "1.0.0",
+  "effects": [
+    {
+      "id": "parametric-eq",
+      "displayName": "Parametric EQ",
+      "category": "filter",
+      "description": "3-band parametric equalizer with adjustable gain for low, mid, and high frequencies",
+      "modulePath": "/src/ProAudioClipper/audio/effects/ParametricEQ.js",
+      "factoryExport": "ParametricEQ",
+      "params": [
+        { "name": "lowGain", "type": "float", "min": -12, "max": 12, "default": 0, "step": 0.1, "unit": "dB", "label": "Low Gain" },
+        { "name": "midGain", "type": "float", "min": -12, "max": 12, "default": 0, "step": 0.1, "unit": "dB", "label": "Mid Gain" },
+        { "name": "highGain", "type": "float", "min": -12, "max": 12, "default": 0, "step": 0.1, "unit": "dB", "label": "High Gain" }
+      ],
+      "validation": {
+        "step3": {
+          "metric": "bandEnergy",
+          "minDelta": 0.01,
+          "stimulusName": "noise",
+          "paramsOverride": { "lowGain": 6, "highGain": 6 }
+        }
+      }
+    },
+    {
+      "id": "graphic-eq",
+      "displayName": "Graphic EQ",
+      "category": "filter",
+      "description": "10-band graphic equalizer with individual band controls",
+      "modulePath": "/src/ProAudioClipper/audio/effects/FilterEffects.js",
+      "factoryExport": "GraphicEQ",
+      "params": [
+        { "name": "band0", "type": "float", "min": -12, "max": 12, "default": 0, "step": 0.1, "unit": "dB", "label": "31 Hz" },
+        { "name": "band1", "type": "float", "min": -12, "max": 12, "default": 0, "step": 0.1, "unit": "dB", "label": "63 Hz" },
+        { "name": "band2", "type": "float", "min": -12, "max": 12, "default": 0, "step": 0.1, "unit": "dB", "label": "125 Hz" },
+        { "name": "band3", "type": "float", "min": -12, "max": 12, "default": 0, "step": 0.1, "unit": "dB", "label": "250 Hz" },
+        { "name": "band4", "type": "float", "min": -12, "max": 12, "default": 0, "step": 0.1, "unit": "dB", "label": "500 Hz" },
+        { "name": "band5", "type": "float", "min": -12, "max": 12, "default": 0, "step": 0.1, "unit": "dB", "label": "1 kHz" },
+        { "name": "band6", "type": "float", "min": -12, "max": 12, "default": 0, "step": 0.1, "unit": "dB", "label": "2 kHz" },
+        { "name": "band7", "type": "float", "min": -12, "max": 12, "default": 0, "step": 0.1, "unit": "dB", "label": "4 kHz" },
+        { "name": "band8", "type": "float", "min": -12, "max": 12, "default": 0, "step": 0.1, "unit": "dB", "label": "8 kHz" },
+        { "name": "band9", "type": "float", "min": -12, "max": 12, "default": 0, "step": 0.1, "unit": "dB", "label": "16 kHz" }
+      ],
+      "validation": {
+        "step3": {
+          "metric": "bandEnergy",
+          "minDelta": 0.0001,
+          "stimulusName": "noise",
+          "paramsOverride": { "band0": 12, "band5": -12 }
+        }
+      }
+    },
+    {
+      "id": "high-pass",
+      "displayName": "High-Pass Filter",
+      "category": "filter",
+      "description": "Removes low frequencies below cutoff",
+      "modulePath": "/src/ProAudioClipper/audio/effects/FilterEffects.js",
+      "factoryExport": "HighPassFilter",
+      "params": [
+        { "name": "frequency", "type": "float", "min": 20, "max": 20000, "default": 80, "step": 1, "unit": "Hz", "label": "Cutoff Frequency" },
+        { "name": "q", "type": "float", "min": 0.1, "max": 10, "default": 0.707, "step": 0.01, "label": "Q Factor" }
+      ],
+      "validation": {
+        "step3": {
+          "metric": "bandEnergy",
+          "minDelta": 0.0001,
+          "stimulusName": "noise",
+          "paramsOverride": { "frequency": 4000 }
+        }
+      }
+    },
+    {
+      "id": "low-pass",
+      "displayName": "Low-Pass Filter",
+      "category": "filter",
+      "description": "Removes high frequencies above cutoff",
+      "modulePath": "/src/ProAudioClipper/audio/effects/FilterEffects.js",
+      "factoryExport": "LowPassFilter",
+      "params": [
+        { "name": "frequency", "type": "float", "min": 20, "max": 20000, "default": 5000, "step": 1, "unit": "Hz", "label": "Cutoff Frequency" },
+        { "name": "q", "type": "float", "min": 0.1, "max": 10, "default": 0.707, "step": 0.01, "label": "Q Factor" }
+      ],
+      "validation": {
+        "step3": {
+          "metric": "bandEnergy",
+          "minDelta": 0.05,
+          "stimulusName": "noise",
+          "paramsOverride": { "frequency": 500 }
+        }
+      }
+    },
+    {
+      "id": "band-pass",
+      "displayName": "Band-Pass Filter",
+      "category": "filter",
+      "description": "Allows only frequencies within a specific range",
+      "modulePath": "/src/ProAudioClipper/audio/effects/FilterEffects.js",
+      "factoryExport": "BandPassFilter",
+      "params": [
+        { "name": "frequency", "type": "float", "min": 20, "max": 20000, "default": 1000, "step": 1, "unit": "Hz", "label": "Center Frequency" },
+        { "name": "bandwidth", "type": "float", "min": 0.1, "max": 10, "default": 1, "step": 0.1, "unit": "octaves", "label": "Bandwidth" }
+      ],
+      "validation": {
+        "step3": {
+          "metric": "bandEnergy",
+          "minDelta": 0.05,
+          "stimulusName": "noise",
+          "paramsOverride": { "frequency": 1000, "bandwidth": 2 }
+        }
+      }
+    },
+    {
+      "id": "notch",
+      "displayName": "Notch Filter",
+      "category": "filter",
+      "description": "Removes frequencies at a specific center point",
+      "modulePath": "/src/ProAudioClipper/audio/effects/FilterEffects.js",
+      "factoryExport": "NotchFilter",
+      "params": [
+        { "name": "frequency", "type": "float", "min": 20, "max": 20000, "default": 1000, "step": 1, "unit": "Hz", "label": "Center Frequency" },
+        { "name": "q", "type": "float", "min": 0.1, "max": 100, "default": 10, "step": 0.1, "label": "Q Factor" }
+      ],
+      "validation": {
+        "step3": {
+          "metric": "bandEnergy",
+          "minDelta": 0.0001,
+          "stimulusName": "noise",
+          "paramsOverride": { "frequency": 1000, "q": 10 }
+        }
+      }
+    },
+    {
+      "id": "compressor",
+      "displayName": "Compressor",
+      "category": "dynamics",
+      "description": "Reduces dynamic range by attenuating signals above threshold",
+      "modulePath": "/src/ProAudioClipper/audio/effects/Compressor.js",
+      "factoryExport": "Compressor",
+      "params": [
+        { "name": "threshold", "type": "float", "min": -60, "max": 0, "default": -24, "step": 0.1, "unit": "dB", "label": "Threshold" },
+        { "name": "ratio", "type": "float", "min": 1, "max": 20, "default": 4, "step": 0.1, "label": "Ratio" },
+        { "name": "attack", "type": "float", "min": 0, "max": 100, "default": 10, "step": 0.1, "unit": "ms", "label": "Attack" },
+        { "name": "release", "type": "float", "min": 0, "max": 1000, "default": 100, "step": 1, "unit": "ms", "label": "Release" },
+        { "name": "knee", "type": "float", "min": 0, "max": 40, "default": 6, "step": 0.1, "unit": "dB", "label": "Knee" }
+      ],
+      "validation": {
+        "step3": {
+          "metric": "rms",
+          "minDelta": 0.005,
+          "stimulusName": "sine",
+          "paramsOverride": { "threshold": -20, "ratio": 4 }
+        }
+      }
+    },
+    {
+      "id": "limiter",
+      "displayName": "Limiter",
+      "category": "dynamics",
+      "description": "Hard limiting to prevent signal from exceeding threshold",
+      "modulePath": "/src/ProAudioClipper/audio/effects/DynamicsEffects.js",
+      "factoryExport": "Limiter",
+      "params": [
+        { "name": "threshold", "type": "float", "min": -60, "max": 0, "default": -1, "step": 0.1, "unit": "dB", "label": "Threshold" },
+        { "name": "attack", "type": "float", "min": 0, "max": 10, "default": 1, "step": 0.01, "unit": "ms", "label": "Attack" },
+        { "name": "release", "type": "float", "min": 0, "max": 1000, "default": 50, "step": 1, "unit": "ms", "label": "Release" }
+      ],
+      "validation": {
+        "step3": {
+          "metric": "rms",
+          "minDelta": 0.005,
+          "stimulusName": "sine",
+          "paramsOverride": { "threshold": -12, "release": 50 }
+        }
+      }
+    },
+    {
+      "id": "gate",
+      "displayName": "Noise Gate",
+      "category": "dynamics",
+      "description": "Silences signal below threshold to reduce noise",
+      "modulePath": "/src/ProAudioClipper/audio/effects/DynamicsEffects.js",
+      "factoryExport": "NoiseGate",
+      "params": [
+        { "name": "threshold", "type": "float", "min": -80, "max": 0, "default": -40, "step": 0.1, "unit": "dB", "label": "Threshold" },
+        { "name": "attack", "type": "float", "min": 0, "max": 100, "default": 1, "step": 0.1, "unit": "ms", "label": "Attack" },
+        { "name": "release", "type": "float", "min": 0, "max": 1000, "default": 100, "step": 1, "unit": "ms", "label": "Release" },
+        { "name": "range", "type": "float", "min": -80, "max": 0, "default": -60, "step": 0.1, "unit": "dB", "label": "Range" }
+      ],
+      "validation": {
+        "step3": {
+          "metric": "rms",
+          "minDelta": 0.01,
+          "stimulusName": "gateTest",
+          "paramsOverride": { "threshold": -40, "attack": 1, "release": 50 }
+        }
+      }
+    },
+    {
+      "id": "expander",
+      "displayName": "Expander",
+      "category": "dynamics",
+      "description": "Increases dynamic range by attenuating quiet signals",
+      "modulePath": "/src/ProAudioClipper/audio/effects/DynamicsEffects.js",
+      "factoryExport": "Expander",
+      "params": [
+        { "name": "threshold", "type": "float", "min": -80, "max": 0, "default": -40, "step": 0.1, "unit": "dB", "label": "Threshold" },
+        { "name": "ratio", "type": "float", "min": 1, "max": 10, "default": 2, "step": 0.1, "label": "Ratio" },
+        { "name": "attack", "type": "float", "min": 0, "max": 100, "default": 5, "step": 0.1, "unit": "ms", "label": "Attack" },
+        { "name": "release", "type": "float", "min": 0, "max": 1000, "default": 100, "step": 1, "unit": "ms", "label": "Release" }
+      ],
+      "validation": {
+        "step3": {
+          "metric": "rms",
+          "minDelta": 0.001,
+          "stimulusName": "sine",
+          "paramsOverride": { "threshold": -30, "ratio": 2 }
+        }
+      }
+    },
+    {
+      "id": "de-esser",
+      "displayName": "De-Esser",
+      "category": "dynamics",
+      "description": "Reduces harsh sibilant frequencies",
+      "modulePath": "/src/ProAudioClipper/audio/effects/DynamicsEffects.js",
+      "factoryExport": "DeEsser",
+      "params": [
+        { "name": "frequency", "type": "float", "min": 2000, "max": 16000, "default": 6000, "step": 10, "unit": "Hz", "label": "Frequency" },
+        { "name": "threshold", "type": "float", "min": -60, "max": 0, "default": -20, "step": 0.1, "unit": "dB", "label": "Threshold" },
+        { "name": "ratio", "type": "float", "min": 1, "max": 10, "default": 3, "step": 0.1, "label": "Ratio" }
+      ],
+      "validation": {
+        "step3": {
+          "metric": "rms",
+          "minDelta": 0.001,
+          "stimulusName": "sine",
+          "paramsOverride": { "frequency": 6000, "threshold": -20 }
+        }
+      }
+    },
+    {
+      "id": "reverb",
+      "displayName": "Reverb",
+      "category": "time",
+      "description": "Simulates acoustic space reflections",
+      "modulePath": "/src/ProAudioClipper/audio/effects/ConvolutionReverb.js",
+      "factoryExport": "ConvolutionReverb",
+      "params": [
+        { "name": "roomSize", "type": "float", "min": 0, "max": 1, "default": 0.5, "step": 0.01, "label": "Room Size" },
+        { "name": "damping", "type": "float", "min": 0, "max": 1, "default": 0.5, "step": 0.01, "label": "Damping" },
+        { "name": "width", "type": "float", "min": 0, "max": 1, "default": 1, "step": 0.01, "label": "Width" }
+      ],
+      "validation": {
+        "step3": {
+          "metric": "tailEnergy",
+          "minDelta": 0.01,
+          "stimulusName": "impulse",
+          "paramsOverride": {}
+        }
+      }
+    },
+    {
+      "id": "delay",
+      "displayName": "Stereo Delay",
+      "category": "time",
+      "description": "Time-delayed echo with separate left/right controls",
+      "modulePath": "/src/ProAudioClipper/audio/effects/TimeBasedEffects.js",
+      "factoryExport": "StereoDelay",
+      "params": [
+        { "name": "delayTimeLeft", "type": "float", "min": 0, "max": 2000, "default": 250, "step": 1, "unit": "ms", "label": "Delay Time (L)" },
+        { "name": "delayTimeRight", "type": "float", "min": 0, "max": 2000, "default": 250, "step": 1, "unit": "ms", "label": "Delay Time (R)" },
+        { "name": "feedback", "type": "float", "min": 0, "max": 0.95, "default": 0.3, "step": 0.01, "label": "Feedback" }
+      ],
+      "validation": {
+        "step3": {
+          "metric": "tailEnergy",
+          "minDelta": 0.0001,
+          "stimulusName": "impulse",
+          "paramsOverride": { "delayTimeLeft": 300, "delayTimeRight": 300, "feedback": 0.4 }
+        }
+      }
+    },
+    {
+      "id": "echo",
+      "displayName": "Echo",
+      "category": "time",
+      "description": "Simple feedback delay",
+      "modulePath": "/src/ProAudioClipper/audio/effects/TimeBasedEffects.js",
+      "factoryExport": "EchoDelay",
+      "params": [
+        { "name": "delayTime", "type": "float", "min": 0, "max": 2000, "default": 250, "step": 1, "unit": "ms", "label": "Delay Time" },
+        { "name": "feedback", "type": "float", "min": 0, "max": 0.95, "default": 0.5, "step": 0.01, "label": "Feedback" }
+      ],
+      "validation": {
+        "step3": {
+          "metric": "tailEnergy",
+          "minDelta": 0.01,
+          "stimulusName": "impulse",
+          "paramsOverride": { "delayTime": 250, "feedback": 0.7 }
+        }
+      }
+    },
+    {
+      "id": "chorus",
+      "displayName": "Chorus",
+      "category": "time",
+      "description": "Thickens sound by modulating delayed copies",
+      "modulePath": "/src/ProAudioClipper/audio/effects/TimeBasedEffects.js",
+      "factoryExport": "Chorus",
+      "params": [
+        { "name": "rate", "type": "float", "min": 0.1, "max": 10, "default": 1.5, "step": 0.1, "unit": "Hz", "label": "Rate" },
+        { "name": "depth", "type": "float", "min": 0, "max": 1, "default": 0.3, "step": 0.01, "label": "Depth" },
+        { "name": "delay", "type": "float", "min": 10, "max": 50, "default": 20, "step": 0.1, "unit": "ms", "label": "Delay" }
+      ],
+      "validation": {
+        "step3": {
+          "metric": "rms",
+          "minDelta": 0.002,
+          "stimulusName": "sine",
+          "paramsOverride": { "rate": 2, "depth": 0.5 }
+        }
+      }
+    },
+    {
+      "id": "flanger",
+      "displayName": "Flanger",
+      "category": "time",
+      "description": "Sweeping comb filter effect",
+      "modulePath": "/src/ProAudioClipper/audio/effects/TimeBasedEffects.js",
+      "factoryExport": "Flanger",
+      "params": [
+        { "name": "rate", "type": "float", "min": 0.1, "max": 10, "default": 0.5, "step": 0.1, "unit": "Hz", "label": "Rate" },
+        { "name": "depth", "type": "float", "min": 0, "max": 1, "default": 0.5, "step": 0.01, "label": "Depth" },
+        { "name": "feedback", "type": "float", "min": 0, "max": 0.95, "default": 0.5, "step": 0.01, "label": "Feedback" }
+      ],
+      "validation": {
+        "step3": {
+          "metric": "rms",
+          "minDelta": 0.001,
+          "stimulusName": "sine",
+          "paramsOverride": { "rate": 1, "depth": 0.5 }
+        }
+      }
+    },
+    {
+      "id": "phaser",
+      "displayName": "Phaser",
+      "category": "time",
+      "description": "Sweeping all-pass filter effect",
+      "modulePath": "/src/ProAudioClipper/audio/effects/TimeBasedEffects.js",
+      "factoryExport": "Phaser",
+      "params": [
+        { "name": "rate", "type": "float", "min": 0.1, "max": 10, "default": 0.5, "step": 0.1, "unit": "Hz", "label": "Rate" },
+        { "name": "depth", "type": "float", "min": 0, "max": 1, "default": 0.5, "step": 0.01, "label": "Depth" },
+        { "name": "feedback", "type": "float", "min": 0, "max": 0.95, "default": 0.5, "step": 0.01, "label": "Feedback" },
+        { "name": "stages", "type": "int", "min": 2, "max": 12, "default": 4, "step": 1, "label": "Stages" }
+      ],
+      "validation": {
+        "step3": {
+          "metric": "rms",
+          "minDelta": 0.001,
+          "stimulusName": "sine",
+          "paramsOverride": { "rate": 1, "depth": 0.5 }
+        }
+      }
+    },
+    {
+      "id": "overdrive",
+      "displayName": "Overdrive",
+      "category": "distortion",
+      "description": "Warm tube-style saturation",
+      "modulePath": "/src/ProAudioClipper/audio/effects/DistortionEffects.js",
+      "factoryExport": "Overdrive",
+      "params": [
+        { "name": "drive", "type": "float", "min": 0, "max": 100, "default": 10, "step": 0.1, "label": "Drive" },
+        { "name": "tone", "type": "float", "min": 0, "max": 1, "default": 0.5, "step": 0.01, "label": "Tone" },
+        { "name": "level", "type": "float", "min": 0, "max": 2, "default": 1, "step": 0.01, "label": "Level" }
+      ],
+      "validation": {
+        "step3": {
+          "metric": "rms",
+          "minDelta": 0.05,
+          "stimulusName": "sine",
+          "paramsOverride": { "drive": 20 }
+        }
+      }
+    },
+    {
+      "id": "distortion",
+      "displayName": "Distortion",
+      "category": "distortion",
+      "description": "Hard clipping distortion",
+      "modulePath": "/src/ProAudioClipper/audio/effects/DistortionEffects.js",
+      "factoryExport": "Distortion",
+      "params": [
+        { "name": "amount", "type": "float", "min": 0, "max": 1, "default": 0.5, "step": 0.01, "label": "Amount" },
+        { "name": "mix", "type": "float", "min": 0, "max": 1, "default": 1, "step": 0.01, "label": "Mix" }
+      ],
+      "validation": {
+        "step3": {
+          "metric": "rms",
+          "minDelta": 0.001,
+          "stimulusName": "sine",
+          "paramsOverride": { "amount": 0.9 }
+        }
+      }
+    },
+    {
+      "id": "saturation",
+      "displayName": "Saturation",
+      "category": "distortion",
+      "description": "Tape-style saturation",
+      "modulePath": "/src/ProAudioClipper/audio/effects/DistortionEffects.js",
+      "factoryExport": "TapeSaturation",
+      "params": [
+        { "name": "saturation", "type": "float", "min": 0, "max": 2, "default": 1, "step": 0.01, "label": "Saturation" }
+      ],
+      "validation": {
+        "step3": {
+          "metric": "rms",
+          "minDelta": 0.01,
+          "stimulusName": "sine",
+          "paramsOverride": { "saturation": 1.0 }
+        }
+      }
+    },
+    {
+      "id": "bitcrusher",
+      "displayName": "Bitcrusher",
+      "category": "distortion",
+      "description": "Digital degradation effect",
+      "modulePath": "/src/ProAudioClipper/audio/effects/DistortionEffects.js",
+      "factoryExport": "BitCrusher",
+      "params": [
+        { "name": "bitDepth", "type": "int", "min": 1, "max": 16, "default": 8, "step": 1, "unit": "bits", "label": "Bit Depth" },
+        { "name": "sampleRate", "type": "float", "min": 100, "max": 44100, "default": 8000, "step": 100, "unit": "Hz", "label": "Sample Rate" }
+      ],
+      "validation": {
+        "step3": {
+          "metric": "rms",
+          "minDelta": 0.0001,
+          "stimulusName": "sine",
+          "paramsOverride": { "bitDepth": 4, "sampleRate": 8000 }
+        }
+      }
+    },
+    {
+      "id": "stereo-enhancer",
+      "displayName": "Stereo Enhancer",
+      "category": "utility",
+      "description": "Widens or narrows stereo image",
+      "modulePath": "/src/ProAudioClipper/audio/effects/UtilityEffects.js",
+      "factoryExport": "StereoEnhancer",
+      "params": [
+        { "name": "width", "type": "float", "min": 0, "max": 2, "default": 1, "step": 0.01, "label": "Width" }
+      ],
+      "validation": {
+        "step3": {
+          "metric": "rms",
+          "minDelta": 0.0001,
+          "stimulusName": "sine",
+          "paramsOverride": { "width": 2.0 }
+        }
+      }
+    },
+    {
+      "id": "mono-converter",
+      "displayName": "Mono Converter",
+      "category": "utility",
+      "description": "Converts stereo to mono",
+      "modulePath": "/src/ProAudioClipper/audio/effects/UtilityEffects.js",
+      "factoryExport": "MonoConverter",
+      "params": [],
+      "validation": {
+        "step3": {
+          "metric": "rms",
+          "minDelta": 0.0001,
+          "stimulusName": "sine",
+          "paramsOverride": {}
+        }
+      }
+    },
+    {
+      "id": "phase-inverter",
+      "displayName": "Phase Inverter",
+      "category": "utility",
+      "description": "Inverts phase of audio signal",
+      "modulePath": "/src/ProAudioClipper/audio/effects/UtilityEffects.js",
+      "factoryExport": "PhaseInverter",
+      "params": [],
+      "validation": {
+        "step3": {
+          "metric": "rms",
+          "minDelta": 0.0001,
+          "stimulusName": "sine",
+          "paramsOverride": {}
+        }
+      }
+    },
+    {
+      "id": "gain",
+      "displayName": "Gain",
+      "category": "utility",
+      "description": "Simple volume control",
+      "modulePath": "/src/ProAudioClipper/audio/effects/UtilityEffects.js",
+      "factoryExport": "GainEffect",
+      "params": [
+        { "name": "gain", "type": "float", "min": 0, "max": 2, "default": 1, "step": 0.01, "label": "Gain" }
+      ],
+      "validation": {
+        "step3": {
+          "metric": "rms",
+          "minDelta": 0.01,
+          "stimulusName": "sine",
+          "paramsOverride": { "gain": 0.5 }
+        }
+      }
+    },
+    {
+      "id": "noise-reduction",
+      "displayName": "Noise Reduction",
+      "category": "restoration",
+      "description": "Reduces broadband background noise",
+      "modulePath": "/src/ProAudioClipper/audio/effects/RestorationEffects.js",
+      "factoryExport": "NoiseReduction",
+      "params": [
+        { "name": "amount", "type": "float", "min": 0, "max": 1, "default": 0.5, "step": 0.01, "label": "Amount" }
+      ],
+      "validation": {
+        "step3": {
+          "metric": "rms",
+          "minDelta": 0.005,
+          "stimulusName": "steadyNoiseWithBurst",
+          "paramsOverride": {}
+        },
+        "phase2": {
+          "testName": "NFR",
+          "thresholds": {
+            "nfr": 0.50,
+            "signalPreservation": { "min": 0.95, "max": 1.05 }
+          }
+        }
+      }
+    },
+    {
+      "id": "click-removal",
+      "displayName": "Click Removal",
+      "category": "restoration",
+      "description": "Removes clicks and pops from audio",
+      "modulePath": "/src/ProAudioClipper/audio/effects/RestorationEffects.js",
+      "factoryExport": "ClickRemoval",
+      "params": [
+        { "name": "sensitivity", "type": "float", "min": 0, "max": 100, "default": 50, "step": 1, "label": "Sensitivity" }
+      ],
+      "validation": {
+        "step3": {
+          "metric": "rms",
+          "minDelta": 0.01,
+          "stimulusName": "clicksInTone",
+          "paramsOverride": { "sensitivity": 80 },
+          "expectedResult": "FAIL",
+          "failureReason": "Metric-invariant mismatch: RMS averaging dilutes sparse transient suppression. See STEP 3 baseline note in fx-smoke.spec.ts."
+        },
+        "phase2": {
+          "testName": "TSR",
+          "thresholds": {
+            "tsr": 0.70
+          }
+        }
+      }
+    },
+    {
+      "id": "hum-removal",
+      "displayName": "Hum Removal",
+      "category": "restoration",
+      "description": "Removes 50/60Hz hum and harmonics",
+      "modulePath": "/src/ProAudioClipper/audio/effects/RestorationEffects.js",
+      "factoryExport": "HumRemoval",
+      "params": [
+        { "name": "frequency", "type": "float", "min": 50, "max": 60, "default": 60, "step": 10, "unit": "Hz", "label": "Hum Frequency" }
+      ],
+      "validation": {
+        "step3": {
+          "metric": "rms",
+          "minDelta": 0.01,
+          "stimulusName": "humPlusTone",
+          "paramsOverride": { "frequency": 60 }
+        },
+        "phase2": {
+          "testName": "BSIS",
+          "thresholds": {
+            "bsis": 0.80,
+            "signalPreservation": { "min": 0.90, "max": 1.10 }
+          }
+        }
+      }
+    },
+    {
+      "id": "declip",
+      "displayName": "Declipping",
+      "category": "restoration",
+      "description": "Attempts to restore clipped audio",
+      "modulePath": "/src/ProAudioClipper/audio/effects/RestorationEffects.js",
+      "factoryExport": "Declipping",
+      "params": [
+        { "name": "threshold", "type": "float", "min": 0, "max": 1, "default": 0.9, "step": 0.01, "label": "Threshold" }
+      ],
+      "validation": {
+        "step3": {
+          "metric": "rms",
+          "minDelta": 0.001,
+          "stimulusName": "clippedSine",
+          "paramsOverride": { "threshold": 0.8 }
+        },
+        "phase2": {
+          "testName": "THDR",
+          "thresholds": {
+            "thdr": 0.30
+          }
+        }
+      }
+    }
+  ]
+}
