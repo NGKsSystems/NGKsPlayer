@@ -35,6 +35,7 @@ export class GraphicEQ extends BaseAudioEffect {
     });
     
     // Ensure bands array is properly initialized before finalizing
+    if (!Array.isArray(this.bands)) this.bands = [];
     console.log(`GraphicEQ initialized with ${this.bands.length} bands`);
     this.finalizeInit(parameters);
   }
@@ -42,6 +43,7 @@ export class GraphicEQ extends BaseAudioEffect {
   initializeParameters() {
     this.addParameter('output_gain', 1.0, 0.0, 2.0);
     // Add parameters for each band
+    if (!Array.isArray(this.bands)) this.bands = [];
     for (let i = 0; i < this.bands.length; i++) {
       this.addParameter(`band_${i}_gain`, 0.0, -12.0, 12.0);
     }
@@ -63,7 +65,9 @@ export class GraphicEQ extends BaseAudioEffect {
   }
 
   destroy() {
-    this.bands.forEach(filter => filter.disconnect());
+    if (Array.isArray(this.bands)) {
+      this.bands.forEach(filter => filter.disconnect());
+    }
     this.outputGainNode.disconnect();
     super.destroy();
   }

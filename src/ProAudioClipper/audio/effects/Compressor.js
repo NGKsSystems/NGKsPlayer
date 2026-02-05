@@ -17,6 +17,14 @@
 
 import BaseAudioEffect from '../BaseAudioEffect.js';
 
+function __ngksAssertConnectable(label, v) {
+  const ok = !!v && (typeof v.connect === 'function' || typeof v.setValueAtTime === 'function');
+  if (!ok) {
+    const t = v === null ? 'null' : typeof v;
+    throw new Error(`[NGKS_CONNECT_GUARD] ${label} not connectable (type=${t})`);
+  }
+}
+
 export class Compressor extends BaseAudioEffect {
   static displayName = 'Compressor';
   static category = 'Dynamics';
@@ -46,7 +54,7 @@ export class Compressor extends BaseAudioEffect {
     this.useSideChain = false;
     
     this.setupCompressor();
-    this.setupRouting();
+    this.setupRouting(); // Redo routing now that nodes are created
   }
 
   initializeParameters() {
@@ -99,21 +107,58 @@ export class Compressor extends BaseAudioEffect {
   }
 
   setupRouting() {
+    // Disconnect BaseAudioEffect's default routing
+    try {
+      this.inputNode.disconnect();
+    } catch (e) {}
+    
+    // Only proceed if nodes are created (after setupCompressor() is called)
+    if (!this.delayNode) {
+      // Route directly input -> output for now
+      __ngksAssertConnectable('from: inputNode', this.inputNode);
+      __ngksAssertConnectable('to: outputNode', this.outputNode);
+      this.inputNode.connect(this.outputNode);
+      return;
+    }
+    
     // Main signal path: input -> delay -> processor -> makeup -> wet
+    __ngksAssertConnectable('from: inputNode', this.inputNode);
+    __ngksAssertConnectable('to: delayNode', this.delayNode);
     this.inputNode.connect(this.delayNode);
+    
+    __ngksAssertConnectable('from: delayNode', this.delayNode);
+    __ngksAssertConnectable('to: processorNode', this.processorNode);
     this.delayNode.connect(this.processorNode);
+    
+    __ngksAssertConnectable('from: processorNode', this.processorNode);
+    __ngksAssertConnectable('to: makeupGainNode', this.makeupGainNode);
     this.processorNode.connect(this.makeupGainNode);
+    
+    __ngksAssertConnectable('from: makeupGainNode', this.makeupGainNode);
+    __ngksAssertConnectable('to: wetGainNode', this.wetGainNode);
     this.makeupGainNode.connect(this.wetGainNode);
     
     // Dry signal path: input -> dry
+    __ngksAssertConnectable('from: inputNode', this.inputNode);
+    __ngksAssertConnectable('to: dryGainNode', this.dryGainNode);
     this.inputNode.connect(this.dryGainNode);
     
     // Mix wet and dry signals
+    __ngksAssertConnectable('from: wetGainNode', this.wetGainNode);
+    __ngksAssertConnectable('to: mixOutputNode', this.mixOutputNode);
     this.wetGainNode.connect(this.mixOutputNode);
+    
+    __ngksAssertConnectable('from: dryGainNode', this.dryGainNode);
+    __ngksAssertConnectable('to: mixOutputNode', this.mixOutputNode);
     this.dryGainNode.connect(this.mixOutputNode);
+    
+    __ngksAssertConnectable('from: mixOutputNode', this.mixOutputNode);
+    __ngksAssertConnectable('to: outputNode', this.outputNode);
     this.mixOutputNode.connect(this.outputNode);
     
     // Side-chain setup (will be connected externally if used)
+    __ngksAssertConnectable('from: sideChainGain', this.sideChainGain);
+    __ngksAssertConnectable('to: processorNode', this.processorNode);
     this.sideChainGain.connect(this.processorNode);
     
     this.updateMixRatio();

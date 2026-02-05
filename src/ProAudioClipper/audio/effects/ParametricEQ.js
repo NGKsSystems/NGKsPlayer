@@ -15,6 +15,14 @@
 
 import BaseAudioEffect from '../BaseAudioEffect.js';
 
+function __ngksAssertConnectable(label, v) {
+  const ok = !!v && (typeof v.connect === 'function' || typeof v.setValueAtTime === 'function');
+  if (!ok) {
+    const t = v === null ? 'null' : typeof v;
+    throw new Error(`[NGKS_CONNECT_GUARD] ${label} not connectable (type=${t})`);
+  }
+}
+
 export class ParametricEQ extends BaseAudioEffect {
   static displayName = 'Parametric EQ';
   static category = 'EQ';
@@ -36,6 +44,7 @@ export class ParametricEQ extends BaseAudioEffect {
     this.frequencyResponse = new Float32Array(this.analyser.frequencyBinCount);
     
     this.setupEQBands();
+    // Redo routing now that everything is initialized
     this.setupRouting();
   }
 
@@ -109,6 +118,14 @@ export class ParametricEQ extends BaseAudioEffect {
   }
 
   setupRouting() {
+    // Disconnect any existing connections
+    try {
+      this.inputNode.disconnect();
+      if (this.outputGain) this.outputGain.disconnect();
+      if (this.phaseInverter) this.phaseInverter.disconnect();
+      if (this.analyser) this.analyser.disconnect();
+    } catch (e) {}
+    
     // Create output gain for master output level
     this.outputGain = this.audioContext.createGain();
     this.phaseInverter = this.audioContext.createGain();
@@ -116,16 +133,38 @@ export class ParametricEQ extends BaseAudioEffect {
     // Chain all EQ bands together
     let currentNode = this.inputNode;
     
+    if (!Array.isArray(this.bands)) this.bands = [];
     for (const band of this.bands) {
+      __ngksAssertConnectable('from: currentNode', currentNode);
+      __ngksAssertConnectable('to: band.filter', band.filter);
       currentNode.connect(band.filter);
       currentNode = band.filter;
     }
     
-    // Connect to phase inverter, then output gain, then analyser
+    // Connect to phase inverter, then output gain
+    __ngksAssertConnectable('from: currentNode', currentNode);
+    __ngksAssertConnectable('to: phaseInverter', this.phaseInverter);
     currentNode.connect(this.phaseInverter);
+    
+    __ngksAssertConnectable('from: phaseInverter', this.phaseInverter);
+    __ngksAssertConnectable('to: outputGain', this.outputGain);
     this.phaseInverter.connect(this.outputGain);
-    this.outputGain.connect(this.analyser);
-    this.analyser.connect(this.outputNode);
+    
+    // Connect through analyser if it exists (after constructor completes), otherwise directly to output
+    if (this.analyser) {
+      __ngksAssertConnectable('from: outputGain', this.outputGain);
+      __ngksAssertConnectable('to: analyser', this.analyser);
+      this.outputGain.connect(this.analyser);
+      
+      __ngksAssertConnectable('from: analyser', this.analyser);
+      __ngksAssertConnectable('to: outputNode', this.outputNode);
+      this.analyser.connect(this.outputNode);
+    } else {
+      // Direct connection when analyser not ready yet
+      __ngksAssertConnectable('from: outputGain', this.outputGain);
+      __ngksAssertConnectable('to: outputNode', this.outputNode);
+      this.outputGain.connect(this.outputNode);
+    }
     
     // Set initial values
     this.outputGain.gain.value = this.dbToLinear(0); // 0 dB
@@ -155,6 +194,7 @@ export class ParametricEQ extends BaseAudioEffect {
   }
 
   updateBand(bandName, paramType, value) {
+    if (!Array.isArray(this.bands)) this.bands = [];
     const band = this.bands.find(b => b.name === bandName);
     if (!band) return;
 
@@ -217,6 +257,7 @@ export class ParametricEQ extends BaseAudioEffect {
   }
 
   updateAllBands() {
+    if (!Array.isArray(this.bands)) this.bands = [];
     for (const band of this.bands) {
       const enabled = this.getParameter(`${band.name}Enabled`);
       const freq = this.getParameter(`${band.name}Freq`);
@@ -248,7 +289,8 @@ export class ParametricEQ extends BaseAudioEffect {
     // Calculate cumulative response from all enabled bands
     magnitudeResponse.fill(1); // Start with unity gain
     phaseResponse.fill(0); // Start with zero phase
-    
+
+    if (!Array.isArray(this.bands)) this.bands = [];
     for (const band of this.bands) {
       if (band.enabled) {
         const bandMagnitude = new Float32Array(frequencyArray.length);
@@ -321,6 +363,7 @@ export class ParametricEQ extends BaseAudioEffect {
    * Get EQ band information for UI
    */
   getBandInfo() {
+    if (!Array.isArray(this.bands)) this.bands = [];
     return this.bands.map(band => ({
       name: band.name,
       displayName: this.getBandDisplayName(band.name),
@@ -392,9 +435,11 @@ export class ParametricEQ extends BaseAudioEffect {
 
   destroy() {
     // Clean up all filter nodes
-    this.bands.forEach(band => {
-      band.filter.disconnect();
-    });
+    if (Array.isArray(this.bands)) {
+      this.bands.forEach(band => {
+        band.filter.disconnect();
+      });
+    }
     
     this.outputGain.disconnect();
     this.phaseInverter.disconnect();
