@@ -86,6 +86,46 @@ const ProjectManager = ({ currentProject, onLoadProject, onClose }) => {
     setShowNewProject(true);
   };
 
+  // Template definitions
+  const templates = {
+    'music-editing': {
+      name: 'Music Editing Project',
+      settings: { bufferSize: 4096, sampleRate: 44100 },
+      timeline: { zoom: 1.5, viewport: 0 }
+    },
+    'podcast-editing': {
+      name: 'Podcast Editing Project', 
+      settings: { bufferSize: 2048, sampleRate: 44100 },
+      timeline: { zoom: 2.0, viewport: 0 }
+    },
+    'sample-creation': {
+      name: 'Sample Creation Project',
+      settings: { bufferSize: 1024, sampleRate: 48000 },
+      timeline: { zoom: 3.0, viewport: 0 }
+    }
+  };
+
+  const applyTemplate = (templateId) => {
+    const template = templates[templateId];
+    if (!template) return;
+    
+    const project = {
+      id: Date.now().toString(),
+      name: template.name,
+      created: new Date().toISOString(),
+      modified: new Date().toISOString(),
+      file: null,
+      clips: [],
+      timeline: template.timeline,
+      settings: template.settings
+    };
+    
+    if (onLoadProject) {
+      onLoadProject(project);
+      onClose();
+    }
+  };
+
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleString();
   };
@@ -238,7 +278,7 @@ const ProjectManager = ({ currentProject, onLoadProject, onClose }) => {
                   <div className="template-name">Music Editing</div>
                   <div className="template-desc">Pre-configured for music track editing and loop creation</div>
                 </div>
-                <button className="template-btn">Use Template</button>
+                <button className="template-btn" onClick={() => applyTemplate('music-editing')}>Use Template</button>
               </div>
               
               <div className="template-item">
@@ -246,7 +286,7 @@ const ProjectManager = ({ currentProject, onLoadProject, onClose }) => {
                   <div className="template-name">Podcast Editing</div>
                   <div className="template-desc">Optimized for speech editing and noise reduction</div>
                 </div>
-                <button className="template-btn">Use Template</button>
+                <button className="template-btn" onClick={() => applyTemplate('podcast-editing')}>Use Template</button>
               </div>
               
               <div className="template-item">
@@ -254,7 +294,7 @@ const ProjectManager = ({ currentProject, onLoadProject, onClose }) => {
                   <div className="template-name">Sample Creation</div>
                   <div className="template-desc">Perfect for creating short audio samples and clips</div>
                 </div>
-                <button className="template-btn">Use Template</button>
+                <button className="template-btn" onClick={() => applyTemplate('sample-creation')}>Use Template</button>
               </div>
             </div>
           </div>
