@@ -284,8 +284,12 @@ const TrackHeader = ({
           className="track-action-btn effects-btn"
           onClick={(e) => {
             e.stopPropagation();
+            console.log('Effects button clicked!', { trackId: track.id, onOpenEffects });
             if (onOpenEffects) {
+              console.log('Calling onOpenEffects...');
               onOpenEffects(track.id);
+            } else {
+              console.log('onOpenEffects is not available!');
             }
           }}
           title="Open Effects Panel"

@@ -541,9 +541,12 @@ const ProAudioClipper = ({ onNavigate }) => {
 
   // Effects panel management
   const handleOpenEffectsPanel = useCallback((trackId) => {
+    console.log('handleOpenEffectsPanel called with trackId:', trackId);
+    console.log('Current showEffectsPanel:', showEffectsPanel);
     setEffectsPanelTrackId(trackId);
     setShowEffectsPanel(true);
-  }, []);
+    console.log('Effects panel should now be open');
+  }, [showEffectsPanel]);
 
   const handleCloseEffectsPanel = useCallback(() => {
     setShowEffectsPanel(false);
