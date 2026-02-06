@@ -144,7 +144,7 @@ const TrackHeader = ({
     <div 
       className={`track-header ${isActive ? 'active' : ''}`}
       style={style}
-      onClick={() => onSelect(track.id)}
+      onClick={() => onSelect && onSelect(track.id)}
       onContextMenu={onContextMenu}
     >
       {/* Track Color Indicator */}
