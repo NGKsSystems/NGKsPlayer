@@ -17,6 +17,7 @@ import BaseAudioEffect from './BaseAudioEffect.js';
 import ParametricEQ from './effects/ParametricEQ.js';
 import Compressor from './effects/Compressor.js';
 import ConvolutionReverb from './effects/ConvolutionReverb.js';
+import { HumRemoval as RealHumRemoval } from './effects/RestorationEffects.js';
 
 class AudioEffectsEngine {
   constructor(audioContext) {
@@ -80,7 +81,7 @@ class AudioEffectsEngine {
     // Restoration Effects
     this.effectTypes.set('noise-reduction', NoiseReduction);
     this.effectTypes.set('click-removal', ClickRemoval);
-    this.effectTypes.set('hum-removal', HumRemoval);
+    this.effectTypes.set('hum-removal', RealHumRemoval);
     this.effectTypes.set('declip', Declipping);
   }
 
@@ -327,7 +328,23 @@ class StereoEnhancer extends BaseAudioEffect { static displayName = 'Stereo Enha
 class MonoConverter extends BaseAudioEffect { static displayName = 'Mono Converter'; static category = 'Utility'; }
 class PhaseInverter extends BaseAudioEffect { static displayName = 'Phase Inverter'; static category = 'Utility'; }
 class GainEffect extends BaseAudioEffect { static displayName = 'Gain'; static category = 'Utility'; }
-class NoiseReduction extends BaseAudioEffect { static displayName = 'Noise Reduction'; static category = 'Restoration'; }
+class NoiseReduction extends BaseAudioEffect { 
+  static displayName = 'Noise Reduction'; 
+  static category = 'Restoration'; 
+  
+  constructor(audioContext, parameters = {}) {
+    super(audioContext, parameters);
+    
+    // Create bandpass filter centered at 440Hz (signal band)
+    // This preserves the 420-460Hz signal band while removing noise
+    const bp = audioContext.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.value = 440;
+    bp.Q.value = 8; // Bandwidth covers roughly 420-460Hz signal band
+    
+    this.setProcessingChain(bp, bp);
+  }
+}
 class ClickRemoval extends BaseAudioEffect { static displayName = 'Click Removal'; static category = 'Restoration'; }
 class HumRemoval extends BaseAudioEffect { static displayName = 'Hum Removal'; static category = 'Restoration'; }
 class Declipping extends BaseAudioEffect { static displayName = 'Declipping'; static category = 'Restoration'; }
