@@ -92,6 +92,7 @@ const ProAudioClipper = ({ onNavigate }) => {
   // UI state
   const [showExportPanel, setShowExportPanel] = useState(false);
   const [showProjectManager, setShowProjectManager] = useState(false);
+  const [currentProject, setCurrentProject] = useState(null);
   const [showEffectsPanel, setShowEffectsPanel] = useState(false);
   const [effectsPanelTrackId, setEffectsPanelTrackId] = useState(null);
   const [showAnalysisDashboard, setShowAnalysisDashboard] = useState(false);
@@ -124,6 +125,34 @@ const ProAudioClipper = ({ onNavigate }) => {
   const multiTrackEngine = useMultiTrackAudioEngine();
   const trackManager = useTrackManager();
   const projectState = useProjectState();
+  
+  // Handle project loading from templates (moved after projectState initialization)
+  const handleLoadProject = useCallback((project) => {
+    console.log('Loading project:', project);
+    setCurrentProject({ ...project });
+    
+    // Apply timeline settings if provided
+    if (project.timeline) {
+      if (project.timeline.zoom) {
+        console.log('Setting zoom level from project to:', project.timeline.zoom);
+        setZoomLevel(project.timeline.zoom);
+      }
+      if (project.timeline.viewport) {
+        console.log('Setting viewport start from project to:', project.timeline.viewport);
+        setViewportStart(project.timeline.viewport);
+      }
+    }
+    
+    // Save to project history 
+    projectState.saveState({
+      type: 'project_loaded',
+      project: project,
+      timeline: { zoom: zoomLevel, viewport: viewportStart },
+      tracks: trackManager.tracks.map(t => ({ ...t, clips: t.clips }))
+    });
+    
+    console.log('Project loaded successfully:', project.name);
+  }, [projectState, zoomLevel, viewportStart, trackManager.tracks, setZoomLevel, setViewportStart]);
   
   // Professional Undo/Redo System
   const undoRedo = useUndoRedo(trackManager);
@@ -577,7 +606,10 @@ const ProAudioClipper = ({ onNavigate }) => {
 
   // Zoom and viewport controls with proper synchronization
   const handleZoom = useCallback((newZoomLevel) => {
+    console.log('handleZoom called with:', newZoomLevel, 'current zoomLevel:', zoomLevel);
+    
     const clampedZoom = Math.max(0.1, Math.min(20, newZoomLevel));
+    console.log('Clamped zoom level:', clampedZoom);
     
     // Zoom centered on the playhead position (currentTime) to keep it in sync
     const viewportWidth = 800; // Approximate timeline width in pixels
@@ -594,6 +626,7 @@ const ProAudioClipper = ({ onNavigate }) => {
       currentTime - (playheadRelativePosition * newViewportDuration)
     ));
     
+    console.log('Setting zoom level to:', clampedZoom, 'viewport start to:', newViewportStart);
     setZoomLevel(clampedZoom);
     setViewportStart(newViewportStart);
   }, [zoomLevel, viewportStart, duration, currentTime]);
@@ -1143,6 +1176,33 @@ const ProAudioClipper = ({ onNavigate }) => {
               flexShrink: 0
             }}
           >
+            {/* Project Status Header */}
+            {currentProject && (
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                marginBottom: '12px',
+                padding: '8px 12px',
+                background: 'rgba(0, 212, 255, 0.1)',
+                border: '1px solid rgba(0, 212, 255, 0.3)',
+                borderRadius: '6px',
+                fontSize: '13px',
+                color: '#00d4ff'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{ fontSize: '16px' }}>📋</span>
+                  <strong>{currentProject.name}</strong>
+                  <span style={{ opacity: 0.7, fontSize: '12px' }}>
+                    • Zoom: {Math.round(zoomLevel * 100)}% • {currentProject.settings?.sampleRate || 44100}Hz
+                  </span>
+                </div>
+                <span style={{ fontSize: '11px', opacity: 0.6 }}>
+                  Template Applied ✓
+                </span>
+              </div>
+            )}
+            
             <TransportControls
               isPlaying={isPlaying}
               currentTime={currentTime}
@@ -1255,8 +1315,9 @@ const ProAudioClipper = ({ onNavigate }) => {
 
       {showProjectManager && (
         <ProjectManager
+          currentProject={currentProject}
+          onLoadProject={handleLoadProject}
           onClose={() => setShowProjectManager(false)}
-          projectState={projectState}
         />
       )}
 

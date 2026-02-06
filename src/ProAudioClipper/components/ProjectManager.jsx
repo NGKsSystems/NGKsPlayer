@@ -12,10 +12,14 @@ import './ProjectManager.css';
  * - Auto-save functionality
  */
 const ProjectManager = ({ currentProject, onLoadProject, onClose }) => {
+  // Debug props
+  console.log('ProjectManager rendered with props:', { currentProject, onLoadProject, onClose });
+  
   const [projects, setProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
   const [projectName, setProjectName] = useState('');
   const [showNewProject, setShowNewProject] = useState(false);
+  const [selectedTemplate, setSelectedTemplate] = useState(null);
 
   // Load projects from localStorage on mount
   useEffect(() => {
@@ -49,7 +53,7 @@ const ProjectManager = ({ currentProject, onLoadProject, onClose }) => {
       return;
     }
 
-    const project = {
+    const baseProject = {
       id: Date.now().toString(),
       name: projectName.trim(),
       created: new Date().toISOString(),
@@ -59,12 +63,39 @@ const ProjectManager = ({ currentProject, onLoadProject, onClose }) => {
       timeline: currentProject?.timeline || { zoom: 1, viewport: 0 },
       settings: currentProject?.settings || {}
     };
+    
+    // Apply template settings if a template is selected
+    let project = { ...baseProject };
+    if (selectedTemplate) {
+      project = {
+        ...baseProject,
+        timeline: selectedTemplate.timeline,
+        settings: selectedTemplate.settings
+      };
+    }
 
     const updatedProjects = [project, ...projects.filter(p => p.name !== project.name)];
     saveProjectsList(updatedProjects);
+    
     setProjectName('');
     setShowNewProject(false);
-    alert('Project saved successfully!');
+    setSelectedTemplate(null);
+    
+    // Load the created project
+    if (onLoadProject) {
+      const feedbackMessage = selectedTemplate 
+        ? `✅ ${project.name} created from ${selectedTemplate.name} template!\n\n• Timeline zoom: ${selectedTemplate.timeline.zoom}x\n• Buffer size: ${selectedTemplate.settings.bufferSize}\n• Sample rate: ${selectedTemplate.settings.sampleRate}Hz`
+        : 'Project saved successfully!';
+      
+      setTimeout(() => {
+        alert(feedbackMessage);
+      }, 100);
+      
+      onLoadProject(project);
+      onClose();
+    } else {
+      alert('Project saved successfully!');
+    }
   };
 
   const loadProject = (project) => {
@@ -83,6 +114,7 @@ const ProjectManager = ({ currentProject, onLoadProject, onClose }) => {
 
   const createNewProject = () => {
     setProjectName('');
+    setSelectedTemplate(null);
     setShowNewProject(true);
   };
 
@@ -106,23 +138,34 @@ const ProjectManager = ({ currentProject, onLoadProject, onClose }) => {
   };
 
   const applyTemplate = (templateId) => {
+    console.log('=== applyTemplate called ===');
+    console.log('templateId:', templateId);
+    console.log('templates object:', templates);
+    
     const template = templates[templateId];
-    if (!template) return;
+    if (!template) {
+      console.error('Template not found:', templateId);
+      alert('Template not found: ' + templateId);
+      return;
+    }
     
-    const project = {
-      id: Date.now().toString(),
-      name: template.name,
-      created: new Date().toISOString(),
-      modified: new Date().toISOString(),
-      file: null,
-      clips: [],
-      timeline: template.timeline,
-      settings: template.settings
-    };
+    console.log('✅ Template found:', template);
     
-    if (onLoadProject) {
-      onLoadProject(project);
-      onClose();
+    try {
+      // Set up the new project form with template settings
+      console.log('Setting selected template...');
+      setSelectedTemplate(template);
+      
+      console.log('Setting project name...');
+      setProjectName(template.name); // Pre-fill with template name, user can edit
+      
+      console.log('Setting showNewProject to true...');
+      setShowNewProject(true);
+      
+      console.log('✅ Template applied successfully, form should be visible');
+    } catch (error) {
+      console.error('❌ Error applying template:', error);
+      alert('Error applying template: ' + error.message);
     }
   };
 
@@ -153,22 +196,41 @@ const ProjectManager = ({ currentProject, onLoadProject, onClose }) => {
           {/* Current Project Section */}
           <div className="current-project-section">
             <h3>Current Project</h3>
-            {currentProject ? (
+            {showNewProject || currentProject ? (
               <div className="current-project-info">
-                <div className="project-details">
-                  <div><strong>File:</strong> {currentProject.file || 'No file loaded'}</div>
-                  <div><strong>Clips:</strong> {currentProject.clips?.length || 0}</div>
-                  <div><strong>Total Duration:</strong> {
-                    (currentProject.clips?.reduce((total, clip) => total + (clip.duration || 0), 0) || 0).toFixed(2)
-                  }s</div>
-                </div>
+                {currentProject && (
+                  <div className="project-details">
+                    <div><strong>File:</strong> {currentProject.file || 'No file loaded'}</div>
+                    <div><strong>Clips:</strong> {currentProject.clips?.length || 0}</div>
+                    <div><strong>Total Duration:</strong> {
+                      (currentProject.clips?.reduce((total, clip) => total + (clip.duration || 0), 0) || 0).toFixed(2)
+                    }s</div>
+                  </div>
+                )}
                 
                 <div className="save-project-form">
                   {showNewProject ? (
                     <div className="new-project-form">
+                      {selectedTemplate && (
+                        <div className="template-indicator" style={{
+                          background: 'rgba(0, 212, 255, 0.1)',
+                          border: '1px solid rgba(0, 212, 255, 0.3)',
+                          padding: '8px 12px',
+                          borderRadius: '6px',
+                          marginBottom: '12px',
+                          fontSize: '13px',
+                          color: '#00d4ff'
+                        }}>
+                          ✨ <strong>Creating from template:</strong> {selectedTemplate.name}
+                          <br />
+                          <span style={{ fontSize: '11px', opacity: 0.8 }}>
+                            Zoom: {selectedTemplate.timeline.zoom}x • Buffer: {selectedTemplate.settings.bufferSize} • Rate: {selectedTemplate.settings.sampleRate}Hz
+                          </span>
+                        </div>
+                      )}
                       <input
                         type="text"
-                        placeholder="Enter project name..."
+                        placeholder={selectedTemplate ? "Enter your project name..." : "Enter project name..."}
                         value={projectName}
                         onChange={(e) => setProjectName(e.target.value)}
                         className="project-name-input"
@@ -177,24 +239,28 @@ const ProjectManager = ({ currentProject, onLoadProject, onClose }) => {
                       <div className="form-actions">
                         <button onClick={saveCurrentProject} className="save-btn">
                           <Save size={16} />
-                          Save
+                          {selectedTemplate ? 'Create Project' : 'Save'}
                         </button>
-                        <button onClick={() => setShowNewProject(false)} className="cancel-btn">
+                        <button onClick={() => {
+                          setShowNewProject(false);
+                          setSelectedTemplate(null);
+                          setProjectName('');
+                        }} className="cancel-btn">
                           Cancel
                         </button>
                       </div>
                     </div>
-                  ) : (
+                  ) : currentProject ? (
                     <button onClick={createNewProject} className="new-project-btn">
                       <Plus size={16} />
                       Save as New Project
                     </button>
-                  )}
+                  ) : null}
                 </div>
               </div>
             ) : (
               <div className="no-current-project">
-                No project loaded. Load an audio file to start a new project.
+                No project loaded. Use templates below to create a new project.
               </div>
             )}
           </div>
@@ -272,13 +338,24 @@ const ProjectManager = ({ currentProject, onLoadProject, onClose }) => {
           {/* Project Templates Section */}
           <div className="templates-section">
             <h3>Quick Start Templates</h3>
+            <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.6)', margin: '0 0 16px 0' }}>
+              Choose a template to create a new project with optimized settings
+            </p>
             <div className="templates-list">
               <div className="template-item">
                 <div className="template-info">
                   <div className="template-name">Music Editing</div>
                   <div className="template-desc">Pre-configured for music track editing and loop creation</div>
                 </div>
-                <button className="template-btn" onClick={() => applyTemplate('music-editing')}>Use Template</button>
+                <button 
+                  className="template-btn" 
+                  onClick={() => {
+                    console.log('Music template button clicked!');
+                    applyTemplate('music-editing');
+                  }}
+                >
+                  Create Project
+                </button>
               </div>
               
               <div className="template-item">
@@ -286,7 +363,15 @@ const ProjectManager = ({ currentProject, onLoadProject, onClose }) => {
                   <div className="template-name">Podcast Editing</div>
                   <div className="template-desc">Optimized for speech editing and noise reduction</div>
                 </div>
-                <button className="template-btn" onClick={() => applyTemplate('podcast-editing')}>Use Template</button>
+                <button 
+                  className="template-btn" 
+                  onClick={() => {
+                    console.log('Podcast template button clicked!');
+                    applyTemplate('podcast-editing');
+                  }}
+                >
+                  Create Project
+                </button>
               </div>
               
               <div className="template-item">
@@ -294,7 +379,15 @@ const ProjectManager = ({ currentProject, onLoadProject, onClose }) => {
                   <div className="template-name">Sample Creation</div>
                   <div className="template-desc">Perfect for creating short audio samples and clips</div>
                 </div>
-                <button className="template-btn" onClick={() => applyTemplate('sample-creation')}>Use Template</button>
+                <button 
+                  className="template-btn" 
+                  onClick={() => {
+                    console.log('Sample template button clicked!');
+                    applyTemplate('sample-creation');
+                  }}
+                >
+                  Create Project
+                </button>
               </div>
             </div>
           </div>
