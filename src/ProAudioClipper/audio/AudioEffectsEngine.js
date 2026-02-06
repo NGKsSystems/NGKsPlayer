@@ -168,6 +168,44 @@ class AudioEffectsEngine {
   getStats() {
     return { ...this.processingStats };
   }
+
+  /**
+   * Get effects engine statistics (alias for compatibility)
+   */
+  getEffectsEngineStats() {
+    return this.getStats();
+  }
+
+  /**
+   * Get effects for a specific track
+   */
+  getTrackEffects(trackId) {
+    const chain = this.getTrackEffectChain(trackId);
+    return chain ? chain.effects : [];
+  }
+
+  /**
+   * Set effect parameter for a specific track
+   */
+  setEffectParameter(trackId, effectId, parameterName, value) {
+    const chain = this.getTrackEffectChain(trackId);
+    if (chain) {
+      const effect = chain.effects.find(eff => eff.id === effectId);
+      if (effect && effect.setParameter) {
+        effect.setParameter(parameterName, value);
+      }
+    }
+  }
+
+  /**
+   * Reorder effect in track's chain
+   */
+  reorderTrackEffect(trackId, effectId, newIndex) {
+    const chain = this.getTrackEffectChain(trackId);
+    if (chain) {
+      chain.reorderEffect(effectId, newIndex);
+    }
+  }
 }
 
 /**
