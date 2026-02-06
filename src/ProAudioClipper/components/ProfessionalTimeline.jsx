@@ -35,6 +35,7 @@ const ProfessionalTimeline = React.forwardRef(({
   onTrackDelete,
   onTrackMoveUp,
   onTrackMoveDown,
+  onOpenEffects,
   onViewportChange, // Add viewport change handler
   onTrackContextMenu, // Add context menu handler
   onUndo,
@@ -645,6 +646,7 @@ const ProfessionalTimeline = React.forwardRef(({
                     onReverseToggle={onTrackReverseToggle}
                     onNameChange={onTrackNameChange}
                     onDelete={onTrackDelete}
+                    onOpenEffects={onOpenEffects}
                     onMoveUp={() => onTrackMoveUp(trackIndex)}
                     onMoveDown={() => onTrackMoveDown(trackIndex)}
                     onContextMenu={(e) => onTrackContextMenu && onTrackContextMenu(e, track.id)}
