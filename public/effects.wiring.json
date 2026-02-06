@@ -560,9 +560,7 @@
           "metric": "rms",
           "minDelta": 0.01,
           "stimulusName": "clicksInTone",
-          "paramsOverride": { "sensitivity": 80 },
-          "expectedResult": "FAIL",
-          "failureReason": "Metric-invariant mismatch: RMS averaging dilutes sparse transient suppression. See STEP 3 baseline note in fx-smoke.spec.ts."
+          "paramsOverride": { "sensitivity": 80 }
         },
         "phase2": {
           "testName": "TSR",

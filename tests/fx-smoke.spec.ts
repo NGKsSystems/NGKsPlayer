@@ -58,7 +58,7 @@ test.describe('STEP 3: Effects Module Smoke Test', () => {
     await page.waitForLoadState('domcontentloaded');
   });
 
-  test('all 29 effects load and process audio (28 pass, 1 expected fail)', async ({ page }) => {
+  test('all 29 effects load and process audio (29 pass)', async ({ page }) => {
     // Load manifest in browser context
     const manifest = await page.evaluate(async (manifestPath) => {
       const response = await fetch(manifestPath);
@@ -347,13 +347,12 @@ test.describe('STEP 3: Effects Module Smoke Test', () => {
     });
 
     // Assert expected results
-    expect(passed.length, 'Should have 28 passing effects').toBe(28);
-    expect(expectedFails.length, 'Should have 1 expected failure (click-removal)').toBe(1);
+    expect(passed.length, 'Should have 29 passing effects').toBe(29);
+    expect(expectedFails.length, 'Should have 0 expected failures').toBe(0);
     expect(unexpectedFails.length, 'Should have 0 unexpected failures').toBe(0);
     
     // Verify the expected failure is click-removal
     const clickRemovalResult = results.find(r => r.id === 'click-removal');
-    expect(clickRemovalResult?.passed, 'click-removal should fail (expected)').toBe(false);
-    expect(clickRemovalResult?.expectedResult, 'click-removal failure should be documented').toBe('FAIL');
+    expect(clickRemovalResult?.passed, 'click-removal should pass (fixed metric)').toBe(true);
   });
 });
