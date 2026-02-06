@@ -279,6 +279,20 @@ const TrackHeader = ({
           </button>
         </div>
 
+        {/* Effects Button - Direct Access */}
+        <button
+          className="track-action-btn effects-btn"
+          onClick={(e) => {
+            e.stopPropagation();
+            if (onOpenEffects) {
+              onOpenEffects(track.id);
+            }
+          }}
+          title="Open Effects Panel"
+        >
+          <Sliders size={12} />
+        </button>
+
         {/* Delete Button */}
         <button
           className="track-action-btn delete-btn"
@@ -308,19 +322,6 @@ const TrackHeader = ({
               className="actions-menu"
               style={menuPosition}
             >
-              <button
-                className="menu-item"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (onOpenEffects) {
-                    onOpenEffects(track.id);
-                  }
-                  setShowControls(false);
-                }}
-              >
-                <Sliders size={12} />
-                Effects
-              </button>
               <button
                 className="menu-item"
                 onClick={(e) => {
