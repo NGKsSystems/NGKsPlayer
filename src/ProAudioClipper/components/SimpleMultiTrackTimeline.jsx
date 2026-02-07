@@ -196,6 +196,8 @@ const SimpleMultiTrackTimeline = React.forwardRef(({
 
   // Update canvas size and render
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -208,7 +210,9 @@ const SimpleMultiTrackTimeline = React.forwardRef(({
     
     // Render on window resize
     window.addEventListener('resize', updateSize);
-    return () => window.removeEventListener('resize', updateSize);
+    return () => {
+      window.removeEventListener('resize', updateSize);
+    };
   }, [render]);
 
   // Render when props change
