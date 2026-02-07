@@ -32,6 +32,7 @@ const TimelineRuler = ({
   const [dragTarget, setDragTarget] = useState(null);
   const [isCreatingLoop, setIsCreatingLoop] = useState(false);
   const [loopStart, setLoopStart] = useState(null);
+  const [currentMouseX, setCurrentMouseX] = useState(0);
 
   const timelineWidth = duration * pixelsPerSecond * zoom;
 
@@ -155,6 +156,11 @@ const TimelineRuler = ({
   }, [markers, loopRegions, pixelToTime, timeToPixel, onSelectMarker, onSelectLoopRegion, onAddMarker, onTimeChange]);
 
   const handleMouseMove = useCallback((e) => {
+    // Track mouse position for loop creation preview
+    if (isCreatingLoop) {
+      setCurrentMouseX(e.clientX);
+    }
+    
     if (!isDragging || !rulerRef.current) return;
     
     const currentMouseTime = pixelToTime(e.clientX);
@@ -332,7 +338,7 @@ const TimelineRuler = ({
             className="loop-preview"
             style={{
               left: timeToPixel(loopStart),
-              width: Math.max(0, timeToPixel(pixelToTime(window.event?.clientX || 0)) - timeToPixel(loopStart))
+              width: Math.max(0, timeToPixel(pixelToTime(currentMouseX)) - timeToPixel(loopStart))
             }}
           />
         )}
