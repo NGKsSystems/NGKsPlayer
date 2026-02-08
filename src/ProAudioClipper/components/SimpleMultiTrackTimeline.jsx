@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useCallback } from 'react';
+import { timeToPixels, pixelsToTime } from '../timeline/timelineMath.js';
 import './MultiTrackTimeline.css';
 
 /**
@@ -112,8 +113,8 @@ const SimpleMultiTrackTimeline = React.forwardRef(({
       // Draw clips
       if (track.clips && track.clips.length > 0) {
         track.clips.forEach(clip => {
-          const clipX = clip.startTime * PIXELS_PER_SECOND;
-          const clipWidth = clip.duration * PIXELS_PER_SECOND;
+          const clipX = timeToPixels(clip.startTime, PIXELS_PER_SECOND, 1);
+          const clipWidth = timeToPixels(clip.duration, PIXELS_PER_SECOND, 1);
           const clipY = trackY + 10;
           const clipHeight = TRACK_HEIGHT - 20;
           
@@ -136,7 +137,7 @@ const SimpleMultiTrackTimeline = React.forwardRef(({
     });
 
     // Draw playhead
-    const playheadX = currentTime * PIXELS_PER_SECOND;
+    const playheadX = timeToPixels(currentTime, PIXELS_PER_SECOND, 1);
     if (playheadX >= 0 && playheadX <= rect.width) {
       ctx.strokeStyle = '#e74c3c';
       ctx.lineWidth = 2;
@@ -170,7 +171,7 @@ const SimpleMultiTrackTimeline = React.forwardRef(({
 
     // Ruler click - seek
     if (y <= RULER_HEIGHT) {
-      const time = x / PIXELS_PER_SECOND;
+      const time = pixelsToTime(x, 0, 0, PIXELS_PER_SECOND, 1, 0);
       onSeek?.(time);
       return;
     }
@@ -179,7 +180,7 @@ const SimpleMultiTrackTimeline = React.forwardRef(({
     const trackIndex = Math.floor((y - RULER_HEIGHT) / TRACK_HEIGHT);
     if (trackIndex >= 0 && trackIndex < tracks.length) {
       const track = tracks[trackIndex];
-      const time = x / PIXELS_PER_SECOND;
+      const time = pixelsToTime(x, 0, 0, PIXELS_PER_SECOND, 1, 0);
       
       if (selectedTool === 'razor') {
         // Find clips at this position and split them
