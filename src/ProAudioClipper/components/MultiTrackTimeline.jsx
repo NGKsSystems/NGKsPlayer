@@ -273,10 +273,11 @@ const MultiTrackTimeline = React.forwardRef(({
     const ctx = canvas.getContext('2d');
     const rect = canvas.getBoundingClientRect();
     
-    // Set canvas size
-    canvas.width = rect.width * window.devicePixelRatio;
-    canvas.height = rect.height * window.devicePixelRatio;
-    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    // Set canvas size with SSR-safe devicePixelRatio access
+    const devicePixelRatio = (typeof window !== 'undefined' ? window.devicePixelRatio : null) || 1;
+    canvas.width = rect.width * devicePixelRatio;
+    canvas.height = rect.height * devicePixelRatio;
+    ctx.scale(devicePixelRatio, devicePixelRatio);
     
     // Clear canvas with a visible background
     ctx.fillStyle = '#1a1a1a';
@@ -749,16 +750,16 @@ const MultiTrackTimeline = React.forwardRef(({
     canvas.addEventListener('dragover', handleDragOver);
     canvas.addEventListener('dragleave', handleDragLeave);
     canvas.addEventListener('drop', handleDrop);
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseup', handleMouseUp);
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
 
     return () => {
       canvas.removeEventListener('mousedown', handleMouseDown);
       canvas.removeEventListener('dragover', handleDragOver);
       canvas.removeEventListener('dragleave', handleDragLeave);
       canvas.removeEventListener('drop', handleDrop);
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
     };
   }, [handleMouseDown, handleMouseMove, handleMouseUp, handleDragOver, handleDragLeave, handleDrop]);
 
@@ -773,8 +774,8 @@ const MultiTrackTimeline = React.forwardRef(({
       setTimeout(renderTimeline, 10);
     };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    document.addEventListener('resize', handleResize);
+    return () => document.removeEventListener('resize', handleResize);
   }, [renderTimeline]);
 
   return (
