@@ -209,6 +209,8 @@ const AutomationLane = ({
       }
     };
 
+    if (typeof document === 'undefined') return;
+
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [selectedPoint, points, parameter, onAutomationChange]);
@@ -217,6 +219,8 @@ const AutomationLane = ({
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+
+    if (typeof document === 'undefined') return;
 
     canvas.addEventListener('mousedown', handleMouseDown);
     document.addEventListener('mousemove', handleMouseMove);
