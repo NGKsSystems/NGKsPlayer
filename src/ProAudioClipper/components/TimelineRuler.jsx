@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useRef, useEffect, useMemo } from 'react';
 import './TimelineRuler.css';
+import { timeToPixels, pixelsToTime, calculateTimelineWidth, generateTicks } from '../timeline/timelineMath.js';
 
 /**
  * Professional Timeline Ruler with Markers & Loop Regions
@@ -34,7 +35,7 @@ const TimelineRuler = ({
   const [loopStart, setLoopStart] = useState(null);
   const [currentMouseX, setCurrentMouseX] = useState(0);
 
-  const timelineWidth = duration * pixelsPerSecond * zoom;
+  const timelineWidth = calculateTimelineWidth(duration, pixelsPerSecond, zoom);
 
   // Time formatting
   const formatTime = useCallback((seconds) => {
@@ -44,20 +45,16 @@ const TimelineRuler = ({
     return `${mins}:${secs.toString().padStart(2, '0')}.${ms.toString().padStart(2, '0')}`;
   }, []);
 
-  // Convert pixel position to time - accounting for viewport
+  // Convert pixel position to time using math helper
   const pixelToTime = useCallback((pixelX) => {
     if (!rulerRef.current) return 0;
     const rect = rulerRef.current.getBoundingClientRect();
-    const relativeX = pixelX - rect.left;
-    // Account for viewport scrolling
-    const timeAtPixel = viewportStart + (relativeX / (pixelsPerSecond * zoom));
-    return Math.max(0, Math.min(duration, timeAtPixel));
+    return pixelsToTime(pixelX, rect.left, viewportStart, pixelsPerSecond, zoom, duration);
   }, [viewportStart, pixelsPerSecond, zoom, duration]);
 
-  // Convert time to pixel position - absolute position (timeline scrolls)
+  // Convert time to pixel position using math helper
   const timeToPixel = useCallback((time) => {
-    // Absolute position in the full timeline (not relative to viewport)
-    return time * pixelsPerSecond * zoom;
+    return timeToPixels(time, pixelsPerSecond, zoom);
   }, [pixelsPerSecond, zoom]);
 
   // Calculate playhead position after timeToPixel is defined
@@ -65,27 +62,12 @@ const TimelineRuler = ({
     return timeToPixel(currentTime);
   }, [timeToPixel, currentTime]);
 
-  // Generate ruler tick marks - for entire timeline (scrolling handled by parent)
+  // Generate ruler tick marks using math helper
   const ticks = useMemo(() => {
-    const tickArray = [];
-    
     const majorTickInterval = Math.max(1, Math.floor(10 / zoom));
     const minorTickInterval = Math.max(0.1, majorTickInterval / 10);
     
-    // Generate ticks for entire timeline
-    for (let time = 0; time <= duration; time += minorTickInterval) {
-      const position = timeToPixel(time);
-      const isMajor = Math.abs(time % majorTickInterval) < 0.001; // Float precision handling
-      
-      tickArray.push({
-        time,
-        position,
-        isMajor,
-        label: isMajor ? formatTime(time) : null
-      });
-    }
-    
-    return tickArray;
+    return generateTicks(duration, majorTickInterval, minorTickInterval, timeToPixel, formatTime);
   }, [zoom, duration, timeToPixel, formatTime]);
 
   // Mouse event handlers
