@@ -67,8 +67,10 @@ const TrackHeader = ({
       const rect = moreActionsRef.current.getBoundingClientRect();
       const menuWidth = 150;
       const menuHeight = 80; // Approximate menu height
-      const spaceOnRight = window.innerWidth - rect.right;
-      const spaceBelow = window.innerHeight - rect.bottom;
+      const viewportWidth = document.documentElement.clientWidth;
+      const viewportHeight = document.documentElement.clientHeight;
+      const spaceOnRight = viewportWidth - rect.right;
+      const spaceBelow = viewportHeight - rect.bottom;
       
       let top = rect.bottom + 5; // Position below the button
       let left = rect.right - menuWidth; // Align right edge
@@ -84,8 +86,8 @@ const TrackHeader = ({
       }
       
       // Ensure menu stays within screen bounds
-      left = Math.max(10, Math.min(left, window.innerWidth - menuWidth - 10));
-      top = Math.max(10, Math.min(top, window.innerHeight - menuHeight - 10));
+      left = Math.max(10, Math.min(left, viewportWidth - menuWidth - 10));
+      top = Math.max(10, Math.min(top, viewportHeight - menuHeight - 10));
       
       setMenuPosition({ 
         position: 'fixed',
