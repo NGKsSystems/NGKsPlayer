@@ -269,7 +269,7 @@ const MultiTrackTimeline = React.forwardRef(({
     const rect = canvas.getBoundingClientRect();
     
     // Set canvas size with SSR-safe devicePixelRatio access
-    const devicePixelRatio = (typeof window !== 'undefined' ? window.devicePixelRatio : null) || 1;
+    const devicePixelRatio = (typeof document !== 'undefined' && document.defaultView && document.defaultView.devicePixelRatio) ? document.defaultView.devicePixelRatio : 1;
     canvas.width = rect.width * devicePixelRatio;
     canvas.height = rect.height * devicePixelRatio;
     ctx.scale(devicePixelRatio, devicePixelRatio);
@@ -741,6 +741,8 @@ const MultiTrackTimeline = React.forwardRef(({
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    if (typeof document === 'undefined') return;
+
     canvas.addEventListener('mousedown', handleMouseDown);
     canvas.addEventListener('dragover', handleDragOver);
     canvas.addEventListener('dragleave', handleDragLeave);
@@ -768,6 +770,8 @@ const MultiTrackTimeline = React.forwardRef(({
     const handleResize = () => {
       setTimeout(renderTimeline, 10);
     };
+
+    if (typeof document === 'undefined') return;
 
     document.addEventListener('resize', handleResize);
     return () => document.removeEventListener('resize', handleResize);

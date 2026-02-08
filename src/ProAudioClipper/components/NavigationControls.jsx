@@ -71,6 +71,8 @@ const NavigationControls = ({
       document.removeEventListener('mouseup', handleJogEnd);
     };
     
+    if (typeof document === 'undefined') return;
+
     document.addEventListener('mousemove', handleJogMove);
     document.addEventListener('mouseup', handleJogEnd);
   }, [currentTime, duration, isPlaying, onTimeChange, onPause]);
@@ -105,6 +107,8 @@ const NavigationControls = ({
       document.removeEventListener('mouseup', handleShuttleEnd);
     };
     
+    if (typeof document === 'undefined') return;
+
     document.addEventListener('mousemove', handleShuttleMove);
     document.addEventListener('mouseup', handleShuttleEnd);
   }, [isPlaying, onPlay, onPause, onPlaybackRateChange]);
@@ -131,6 +135,8 @@ const NavigationControls = ({
     // Initial scrub
     handleScrubMove(e);
     
+    if (typeof document === 'undefined') return;
+
     document.addEventListener('mousemove', handleScrubMove);
     document.addEventListener('mouseup', handleScrubEnd);
   }, [duration, isPlaying, onTimeChange, onPause]);
@@ -176,6 +182,8 @@ const NavigationControls = ({
       }
     };
     
+    if (typeof document === 'undefined') return;
+
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isPlaying, currentTime, duration, onPlay, onPause, onTimeChange, onJumpToNext, onJumpToPrevious]);

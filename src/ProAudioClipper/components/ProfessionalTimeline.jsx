@@ -223,6 +223,8 @@ const ProfessionalTimeline = React.forwardRef(({
   // Set up global mouse events for dragging
   useEffect(() => {
     if (isDraggingClip) {
+      if (typeof document === 'undefined') return;
+
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mouseup', handleMouseUp);
       
@@ -430,6 +432,8 @@ const ProfessionalTimeline = React.forwardRef(({
   // Close context menu on click outside
   useEffect(() => {
     if (contextMenu) {
+      if (typeof document === 'undefined') return;
+
       const handleClickOutside = (e) => {
         // Don't close if clicking inside the context menu
         if (!e.target.closest('[data-context-menu]')) {
