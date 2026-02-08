@@ -82,6 +82,7 @@ const PerformanceMonitorDashboard = ({ isVisible = true, position = 'bottom-righ
   }, [checkPerformanceAlerts]);
   
   const exportReport = useCallback(() => {
+    if (typeof document === 'undefined') return;
     const report = generateReport();
     const blob = new Blob([JSON.stringify(report, null, 2)], { 
       type: 'application/json' 
