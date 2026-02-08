@@ -293,8 +293,9 @@ const PerformanceMonitorDashboard = ({ isVisible = true, position = 'bottom-righ
         
         <button
           onClick={() => {
-            if (window.gc) {
-              window.gc();
+            const gc = (typeof gc !== "undefined" ? gc : undefined);
+            if (gc) {
+              gc();
               alert('Garbage collection triggered');
             } else {
               alert('Manual GC not available');
