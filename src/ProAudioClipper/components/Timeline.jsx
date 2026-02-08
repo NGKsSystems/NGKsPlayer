@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useCallback, useState, forwardRef, useImperativeHandle } from 'react';
+import { timeToPixels, pixelsToTime, calculateTimelineWidth } from '../timeline/timelineMath.js';
 import './Timeline.css';
 
 /**
@@ -58,7 +59,7 @@ const Timeline = forwardRef(({
   }));
 
   // Calculate dimensions
-  const timelineWidth = duration * PIXELS_PER_SECOND * zoomLevel;
+  const timelineWidth = calculateTimelineWidth(duration, PIXELS_PER_SECOND, zoomLevel);
   const viewportWidth = containerRef.current?.clientWidth || 800;
   const viewportDuration = viewportWidth / (PIXELS_PER_SECOND * zoomLevel);
   
@@ -73,11 +74,11 @@ const Timeline = forwardRef(({
 
   // Time conversion utilities
   const timeToPixel = useCallback((time) => {
-    return (time - viewportStart) * PIXELS_PER_SECOND * zoomLevel;
+    return timeToPixels(time - viewportStart, PIXELS_PER_SECOND, zoomLevel);
   }, [viewportStart, zoomLevel]);
 
   const pixelToTime = useCallback((pixel) => {
-    return (pixel / (PIXELS_PER_SECOND * zoomLevel)) + viewportStart;
+    return viewportStart + (pixel / (PIXELS_PER_SECOND * zoomLevel));
   }, [viewportStart, zoomLevel]);
 
   // Draw waveform
@@ -464,9 +465,20 @@ const Timeline = forwardRef(({
     };
 
     updateCanvasSize();
-    document.addEventListener('resize', updateCanvasSize);
     
-    return () => document.removeEventListener('resize', updateCanvasSize);
+    // Use ResizeObserver instead of document resize events
+    const container = containerRef.current;
+    if (!container) return;
+    
+    const resizeObserver = new ResizeObserver(() => {
+      updateCanvasSize();
+    });
+    
+    resizeObserver.observe(container);
+    
+    return () => {
+      resizeObserver.disconnect();
+    };
   }, []);
 
   // Redraw when state changes
