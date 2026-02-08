@@ -280,8 +280,9 @@ class AdvancedMemoryPool {
     });
     
     // Force garbage collection if available
-    if (window.gc) {
-      window.gc();
+    const gc = (typeof gc !== "undefined" ? gc : undefined);
+    if (gc) {
+      gc();
     }
     
     this.updateMemoryUsage();
@@ -306,8 +307,8 @@ class AdvancedMemoryPool {
     }
     
     // Listen for memory pressure events (if supported)
-    if ('onmemorypressure' in window) {
-      window.addEventListener('memorypressure', (event) => {
+    if (typeof addEventListener !== "undefined" && typeof MemoryPressure !== "undefined") {
+      addEventListener('memorypressure', (event) => {
         this.handleMemoryPressure(event.detail.level, event.detail);
       });
     }
@@ -632,10 +633,12 @@ const globalMemoryPool = new AdvancedMemoryPool();
 const globalProfiler = new AudioPerformanceProfiler();
 
 // Setup automatic cleanup on page unload
-window.addEventListener('beforeunload', () => {
-  globalMemoryPool.cleanup();
-  globalProfiler.stopFrameRateMonitoring();
-});
+if (typeof addEventListener !== "undefined") {
+  addEventListener('beforeunload', () => {
+    globalMemoryPool.cleanup();
+    globalProfiler.stopFrameRateMonitoring();
+  });
+}
 
 export { 
   AdvancedMemoryPool, 
