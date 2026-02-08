@@ -1,4 +1,5 @@
 import React from 'react';
+import { timeToPixels, pixelsToTime } from '../timeline/timelineMath.js';
 import SimpleWaveform from './SimpleWaveform';
 import './MultiTrackTimeline.css';
 
@@ -32,7 +33,7 @@ const BasicHTMLTimeline = React.forwardRef(({
   const handleTimelineClick = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
-    const time = x / PIXELS_PER_SECOND;
+    const time = pixelsToTime(x, 0, 0, PIXELS_PER_SECOND);
     onSeek?.(time);
   };
 
@@ -91,7 +92,7 @@ const BasicHTMLTimeline = React.forwardRef(({
             key={second}
             style={{
               position: 'absolute',
-              left: `${(second * PIXELS_PER_SECOND)}px`,
+              left: `${timeToPixels(second, PIXELS_PER_SECOND, 1)}px`,
               top: '0',
               height: '100%',
               width: '1px',
@@ -115,7 +116,7 @@ const BasicHTMLTimeline = React.forwardRef(({
         {/* Playhead */}
         <div style={{
           position: 'absolute',
-          left: `${(currentTime || 0) * PIXELS_PER_SECOND}px`,
+          left: `${timeToPixels(currentTime || 0, PIXELS_PER_SECOND, 1)}px`,
           top: '0',
           width: '3px',
           height: '100%',
@@ -172,7 +173,7 @@ const BasicHTMLTimeline = React.forwardRef(({
                   position: 'absolute',
                   left: '0',
                   top: '50%',
-                  width: `${(track.audioBuffer?.duration || 1) * PIXELS_PER_SECOND}px`,
+                  width: `${timeToPixels(track.audioBuffer?.duration || 1, PIXELS_PER_SECOND, 1)}px`,
                   height: '2px',
                   background: track.color || '#4CAF50',
                   transform: 'translateY(-50%)',
@@ -218,9 +219,9 @@ const BasicHTMLTimeline = React.forwardRef(({
                   key={clip.id}
                   style={{
                     position: 'absolute',
-                    left: `${clip.startTime * PIXELS_PER_SECOND}px`,
+                    left: `${timeToPixels(clip.startTime, PIXELS_PER_SECOND, 1)}px`,
                     top: '10px',
-                    width: `${clip.duration * PIXELS_PER_SECOND}px`,
+                    width: `${timeToPixels(clip.duration, PIXELS_PER_SECOND, 1)}px`,
                     height: `${TRACK_HEIGHT - 20}px`,
                     background: 'linear-gradient(135deg, #3498db 0%, #2980b9 100%)',
                     border: '2px solid #2980b9',
@@ -247,7 +248,7 @@ const BasicHTMLTimeline = React.forwardRef(({
                   {clip.audioBuffer && (
                     <SimpleWaveform
                       audioBuffer={clip.audioBuffer}
-                      width={clip.duration * PIXELS_PER_SECOND}
+                      width={timeToPixels(clip.duration, PIXELS_PER_SECOND, 1)}
                       height={TRACK_HEIGHT - 20}
                       color="rgba(255,255,255,0.3)"
                       backgroundColor="transparent"
