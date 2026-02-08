@@ -240,8 +240,8 @@ const ProfessionalTimeline = React.forwardRef(({
     // Calculate optimal position to prevent off-screen menu
     const menuWidth = 200; // Approximate menu width
     const menuHeight = 300; // Approximate menu height
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
+    const viewportWidth = document.documentElement.clientWidth;
+    const viewportHeight = document.documentElement.clientHeight;
     
     let x = e.pageX;
     let y = e.pageY;
@@ -273,8 +273,8 @@ const ProfessionalTimeline = React.forwardRef(({
     // Calculate optimal position to prevent off-screen menu
     const menuWidth = 200; // Approximate menu width
     const menuHeight = 400; // Approximate menu height (clips have more options)
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
+    const viewportWidth = document.documentElement.clientWidth;
+    const viewportHeight = document.documentElement.clientHeight;
     
     let x = e.pageX;
     let y = e.pageY;
