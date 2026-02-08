@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useCallback, useState } from 'react';
 import { formatTime } from '../utils/timeUtils';
+import { snapTime, timeToPixels, calculateTimelineWidth } from '../timeline/timelineMath.js';
 import './MultiTrackTimeline.css';
 
 /**
@@ -62,14 +63,8 @@ const MultiTrackTimeline = React.forwardRef(({
 
   // Calculate timeline dimensions
   const maxDuration = Math.max(...tracks.filter(t => t.audioBuffer).map(t => t.audioBuffer.duration), 0);
-  const timelineWidth = Math.max(maxDuration * PIXELS_PER_SECOND, 1000);
+  const timelineWidth = calculateTimelineWidth(maxDuration, PIXELS_PER_SECOND, 1);
   const timelineHeight = RULER_HEIGHT + (tracks.length * TRACK_HEIGHT);
-
-  // Snap to grid helper
-  const snapToGrid = useCallback((time) => {
-    const gridInterval = GRID_SNAP_INTERVAL / zoomLevel; // Smaller intervals when zoomed in
-    return Math.round(time / gridInterval) * gridInterval;
-  }, [zoomLevel, GRID_SNAP_INTERVAL]);
 
   // Find snap points (clip edges, markers, etc.)
   const findSnapPoints = useCallback((excludeClipId = null) => {
@@ -100,7 +95,7 @@ const MultiTrackTimeline = React.forwardRef(({
   }, [tracks, currentTime, maxDuration, GRID_SNAP_INTERVAL]);
 
   // Snap time to nearest snap point
-  const snapTime = useCallback((time, excludeClipId = null) => {
+  const snapTimeToPoints = useCallback((time, excludeClipId = null) => {
     const snapPoints = findSnapPoints(excludeClipId);
     let closestSnap = time;
     let minDistance = Infinity;
@@ -158,8 +153,8 @@ const MultiTrackTimeline = React.forwardRef(({
     if (!track.clips || track.clips.length === 0) return;
 
     track.clips.forEach(clip => {
-      const clipX = clip.startTime * PIXELS_PER_SECOND - (viewportStart * PIXELS_PER_SECOND);
-      const clipWidth = clip.duration * PIXELS_PER_SECOND;
+      const clipX = timeToPixels(clip.startTime - viewportStart, 100, zoomLevel);
+      const clipWidth = timeToPixels(clip.duration, 100, zoomLevel);
       const clipY = trackY + TRACK_PADDING;
       const clipHeight = WAVEFORM_HEIGHT;
 
@@ -208,7 +203,7 @@ const MultiTrackTimeline = React.forwardRef(({
     const endSecond = Math.ceil(viewportStart + (width / PIXELS_PER_SECOND));
 
     for (let second = startSecond; second <= endSecond; second += secondInterval) {
-      const x = (second * PIXELS_PER_SECOND) - (viewportStart * PIXELS_PER_SECOND);
+      const x = timeToPixels(second - viewportStart, 100, zoomLevel);
       
       if (x >= 0 && x <= width) {
         // Major tick
@@ -224,7 +219,7 @@ const MultiTrackTimeline = React.forwardRef(({
         if (PIXELS_PER_SECOND > 100) {
           for (let minor = 1; minor < 5; minor++) {
             const minorSecond = second + (minor * 0.2);
-            const minorX = (minorSecond * PIXELS_PER_SECOND) - (viewportStart * PIXELS_PER_SECOND);
+            const minorX = timeToPixels(minorSecond - viewportStart, 100, zoomLevel);
             
             if (minorX >= 0 && minorX <= width) {
               ctx.beginPath();
@@ -240,7 +235,7 @@ const MultiTrackTimeline = React.forwardRef(({
 
   // Draw playhead
   const drawPlayhead = useCallback((ctx, height) => {
-    const playheadX = (currentTime * PIXELS_PER_SECOND) - (viewportStart * PIXELS_PER_SECOND);
+    const playheadX = timeToPixels(currentTime - viewportStart, 100, zoomLevel);
     
     if (playheadX >= 0 && playheadX <= timelineWidth) {
       ctx.strokeStyle = '#e74c3c';
@@ -365,7 +360,7 @@ const MultiTrackTimeline = React.forwardRef(({
       ctx.setLineDash([5, 5]);
       
       snapGuides.forEach(snapTime => {
-        const snapX = (snapTime * PIXELS_PER_SECOND) - (viewportStart * PIXELS_PER_SECOND);
+        const snapX = timeToPixels(snapTime - viewportStart, 100, zoomLevel);
         if (snapX >= 0 && snapX <= rect.width) {
           ctx.beginPath();
           ctx.moveTo(snapX, RULER_HEIGHT);
@@ -411,8 +406,8 @@ const MultiTrackTimeline = React.forwardRef(({
 
     // Draw dragged clip preview
     if (isDraggingClip && draggedClip) {
-      const clipX = (draggedClip.startTime * PIXELS_PER_SECOND) - (viewportStart * PIXELS_PER_SECOND);
-      const clipWidth = (draggedClip.endTime - draggedClip.startTime) * PIXELS_PER_SECOND;
+      const clipX = timeToPixels(draggedClip.startTime - viewportStart, 100, zoomLevel);
+      const clipWidth = timeToPixels(draggedClip.endTime - draggedClip.startTime, 100, zoomLevel);
       
       // Find target track position
       let targetTrackY = RULER_HEIGHT;
@@ -573,7 +568,7 @@ const MultiTrackTimeline = React.forwardRef(({
       // Calculate new position with viewport offset
       const timelineX = x + (viewportStart * PIXELS_PER_SECOND);
       const newStartTime = Math.max(0, (timelineX - dragOffset.x) / PIXELS_PER_SECOND);
-      const snappedTime = snapTime(newStartTime, draggedClip.id);
+      const snappedTime = snapTimeToPoints(newStartTime, draggedClip.id);
       
       // Determine which track we're over
       let targetTrackIndex = -1;
@@ -730,7 +725,7 @@ const MultiTrackTimeline = React.forwardRef(({
       const x = e.clientX - rect.left;
       const timelineX = x + (viewportStart * PIXELS_PER_SECOND);
       const dropTime = Math.max(0, timelineX / PIXELS_PER_SECOND);
-      const snappedTime = snapTime(dropTime);
+      const snappedTime = snapTimeToPoints(dropTime);
       
       if (onFileImport) {
         onFileImport(audioFiles[0], dragOverTrack, snappedTime);
@@ -739,7 +734,7 @@ const MultiTrackTimeline = React.forwardRef(({
     
     setIsDragOver(false);
     setDragOverTrack(null);
-  }, [dragOverTrack, viewportStart, PIXELS_PER_SECOND, snapTime, onFileImport]);
+  }, [dragOverTrack, viewportStart, PIXELS_PER_SECOND, snapTimeToPoints, onFileImport]);
 
   // Set up event listeners
   useEffect(() => {
