@@ -432,7 +432,7 @@ const Timeline = forwardRef(({
       if (!container) return;
       
       const rect = container.getBoundingClientRect();
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = (typeof devicePixelRatio !== "undefined" ? devicePixelRatio : 1);
       
       // Waveform canvas
       const waveformCanvas = waveformCanvasRef.current;
@@ -464,9 +464,9 @@ const Timeline = forwardRef(({
     };
 
     updateCanvasSize();
-    window.addEventListener('resize', updateCanvasSize);
+    document.addEventListener('resize', updateCanvasSize);
     
-    return () => window.removeEventListener('resize', updateCanvasSize);
+    return () => document.removeEventListener('resize', updateCanvasSize);
   }, []);
 
   // Redraw when state changes
