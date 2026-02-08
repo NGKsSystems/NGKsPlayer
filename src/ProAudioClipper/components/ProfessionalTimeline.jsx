@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { timeToPixels, snapTime, calculateTimelineWidth } from '../timeline/timelineMath.js';
 import TrackHeader from './TrackHeader';
 import SimpleWaveform from './SimpleWaveform';
 import TimelineRuler from './TimelineRuler';
@@ -89,7 +90,7 @@ const ProfessionalTimeline = React.forwardRef(({
   // Sync scroll position when viewport changes programmatically (e.g., from zoom)
   useEffect(() => {
     if (timelineRef.current) {
-      const targetScrollLeft = viewportStart * PIXELS_PER_SECOND;
+      const targetScrollLeft = timeToPixels(viewportStart, 50, zoomLevel);
       timelineRef.current.scrollLeft = targetScrollLeft;
     }
   }, [viewportStart, PIXELS_PER_SECOND]);
@@ -155,7 +156,7 @@ const ProfessionalTimeline = React.forwardRef(({
     }));
     
     // Calculate snap position (every 0.1 seconds)
-    const newStartTime = Math.max(0, Math.round((x / PIXELS_PER_SECOND) * 10) / 10);
+    const newStartTime = snapTime(x / PIXELS_PER_SECOND, 0.1);
     
     // Determine target track
     const trackIndex = Math.floor(y / TRACK_HEIGHT);
@@ -674,14 +675,14 @@ const ProfessionalTimeline = React.forwardRef(({
         >
           {/* Timeline content with proper width for scrolling */}
           <div style={{
-            width: `${Math.max(duration * PIXELS_PER_SECOND, 2000)}px`, // Ensure minimum width
+            width: `${calculateTimelineWidth(Math.max(duration, 2000/PIXELS_PER_SECOND), 50, zoomLevel)}px`, // Ensure minimum width
             minHeight: '100%',
             position: 'relative'
           }}>
             {/* Playhead */}
             <div style={{
               position: 'absolute',
-              left: `${(currentTime || 0) * PIXELS_PER_SECOND}px`,
+              left: `${timeToPixels(currentTime || 0, 50, zoomLevel)}px`,
               top: 0,
               width: '3px',
               height: '100%',
@@ -738,7 +739,7 @@ const ProfessionalTimeline = React.forwardRef(({
                       position: 'absolute',
                       left: '0',
                       top: '50%',
-                      width: `${duration * PIXELS_PER_SECOND}px`,
+                      width: `${timeToPixels(duration, 50, zoomLevel)}px`,
                       height: '1px',
                       background: 'rgba(255, 255, 255, 0.1)',
                       transform: 'translateY(-50%)'
@@ -748,7 +749,7 @@ const ProfessionalTimeline = React.forwardRef(({
                     {isDraggingClip && dragPreview?.targetTrackId === track.id && dragPreview.snapTime !== undefined && (
                       <div style={{
                         position: 'absolute',
-                        left: `${dragPreview.snapTime * PIXELS_PER_SECOND}px`,
+                        left: `${timeToPixels(dragPreview.snapTime, 50, zoomLevel)}px`,
                         top: '0',
                         width: '2px',
                         height: '100%',
@@ -763,14 +764,14 @@ const ProfessionalTimeline = React.forwardRef(({
                       // Calculate visual duration based on track's playback rate
                       const trackPlaybackRate = track.playbackRate || 1.0;
                       const visualDuration = clip.duration / trackPlaybackRate; // Slower = longer visual, Faster = shorter visual
-                      const clipWidthPixels = visualDuration * PIXELS_PER_SECOND;
+                      const clipWidthPixels = timeToPixels(visualDuration, 50, zoomLevel);
                       
                       return (
                       <div
                         key={clip.id}
                         style={{
                           position: 'absolute',
-                          left: `${clip.startTime * PIXELS_PER_SECOND}px`,
+                          left: `${timeToPixels(clip.startTime, 50, zoomLevel)}px`,
                           top: '2px',
                           width: `${clipWidthPixels}px`,
                           height: `${TRACK_HEIGHT - 4}px`,
