@@ -83,6 +83,8 @@ const ProfessionalFader = ({
       }
     }
 
+    if (typeof document === 'undefined') return;
+
     // Add global mouse event listeners
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseup', handleMouseUp);
@@ -129,6 +131,8 @@ const ProfessionalFader = ({
         }
       }, 1000); // 1 second latch timeout
     }
+
+    if (typeof document === 'undefined') return;
 
     // Remove global mouse event listeners
     document.removeEventListener('mousemove', handleMouseMove);
