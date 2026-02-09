@@ -34,7 +34,9 @@ export const useExportEngine = () => {
    */
   const initializeExportContext = useCallback((sampleRate = 44100) => {
     if (!audioContextRef.current || audioContextRef.current.state === 'closed') {
-      audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)({
+      const AC = typeof window !== 'undefined' ? (window.AudioContext || window.webkitAudioContext) : null;
+      if (!AC) return null;
+      audioContextRef.current = new AC({
         sampleRate: sampleRate
       });
     }
@@ -273,6 +275,7 @@ export const useExportEngine = () => {
       setExportProgress(90);
 
       // Download file
+      if (typeof document === 'undefined') return blob;
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -327,14 +330,16 @@ export const useExportEngine = () => {
         const blob = bufferToWav(stemBuffer, exportSettings.bitDepth);
 
         // Download stem
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `${track.name || `Track_${i + 1}`}_stem.wav`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
+        if (typeof document !== 'undefined') {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `${track.name || `Track_${i + 1}`}_stem.wav`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        }
 
         results.push({ track: track.name, blob });
       }
