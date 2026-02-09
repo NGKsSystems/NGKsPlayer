@@ -28,6 +28,7 @@ const ProjectManager = ({ currentProject, onLoadProject, onClose }) => {
 
   const loadProjectsList = () => {
     try {
+      if (typeof localStorage === 'undefined') return;
       const savedProjects = localStorage.getItem('pro-clipper-projects');
       if (savedProjects) {
         setProjects(JSON.parse(savedProjects));
@@ -39,7 +40,9 @@ const ProjectManager = ({ currentProject, onLoadProject, onClose }) => {
 
   const saveProjectsList = (updatedProjects) => {
     try {
-      localStorage.setItem('pro-clipper-projects', JSON.stringify(updatedProjects));
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem('pro-clipper-projects', JSON.stringify(updatedProjects));
+      }
       setProjects(updatedProjects);
     } catch (error) {
       console.error('Failed to save projects:', error);
