@@ -323,10 +323,10 @@ const PerformanceMonitorDashboard = ({ isVisible = true, position = 'bottom-righ
         <div className="bg-gray-800 p-3 rounded">
           <h4 className="text-sm font-semibold text-white mb-2">Quick Stats</h4>
           <div className="text-xs text-gray-400 space-y-1">
-            <div>User Agent: {navigator.userAgent.split(' ')[0]}</div>
-            <div>Hardware Concurrency: {navigator.hardwareConcurrency || 'Unknown'}</div>
-            <div>Device Memory: {navigator.deviceMemory || 'Unknown'} GB</div>
-            <div>Connection: {navigator.connection?.effectiveType || 'Unknown'}</div>
+            <div>User Agent: {typeof navigator !== 'undefined' ? navigator.userAgent.split(' ')[0] : 'Unknown'}</div>
+            <div>Hardware Concurrency: {typeof navigator !== 'undefined' ? (navigator.hardwareConcurrency || 'Unknown') : 'Unknown'}</div>
+            <div>Device Memory: {typeof navigator !== 'undefined' ? (navigator.deviceMemory || 'Unknown') : 'Unknown'} GB</div>
+            <div>Connection: {typeof navigator !== 'undefined' ? (navigator.connection?.effectiveType || 'Unknown') : 'Unknown'}</div>
           </div>
         </div>
       </div>
