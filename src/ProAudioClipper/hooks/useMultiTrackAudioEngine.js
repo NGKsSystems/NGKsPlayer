@@ -92,7 +92,8 @@ export const useMultiTrackAudioEngine = () => {
   // Initialize audio context, master chain, effects engine, and mixing infrastructure
   useEffect(() => {
     const initializeAudio = async () => {
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      const AudioContext = typeof window !== 'undefined' ? (window.AudioContext || window.webkitAudioContext) : null;
+      if (!AudioContext) return;
       audioContextRef.current = new AudioContext();
       
       // Create master chain
