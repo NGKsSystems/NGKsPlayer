@@ -470,12 +470,14 @@ export function useMemoryMonitor() {
   const [isSupported, setIsSupported] = useState(false);
   
   useEffect(() => {
-    setIsSupported('memory' in performance);
+    const hasPerformance = typeof performance !== "undefined";
+    const supportsMemory = hasPerformance && "memory" in performance;
+    setIsSupported(supportsMemory);
     
-    if (!isSupported) return;
+    if (!supportsMemory) return;
     
     const updateMemoryInfo = () => {
-      if ('memory' in performance) {
+      if ("memory" in performance) {
         const mem = performance.memory;
         setMemoryInfo({
           used: mem.usedJSHeapSize,
