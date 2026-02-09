@@ -130,6 +130,7 @@ function getDefaultMetadata(audioFile = null) {
  * @returns {string} - Data URL of generated image
  */
 export function generatePlaceholderArt(title = 'Unknown') {
+  if (typeof document === 'undefined') return null;
   const canvas = document.createElement('canvas');
   canvas.width = 512;
   canvas.height = 512;
