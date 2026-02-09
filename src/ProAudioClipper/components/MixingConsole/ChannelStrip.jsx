@@ -42,15 +42,19 @@ const ChannelStrip = ({
   useEffect(() => {
     if (!audioEngine || !track.id) return;
 
+    let animationId;
     const updateMeters = () => {
       const levels = audioEngine.getTrackMetering(track.id);
       if (levels) {
         setMeterLevels(levels);
       }
+      animationId = requestAnimationFrame(updateMeters);
     };
 
-    const intervalId = setInterval(updateMeters, 50); // 20fps metering
-    return () => clearInterval(intervalId);
+    animationId = requestAnimationFrame(updateMeters);
+    return () => {
+      if (animationId) cancelAnimationFrame(animationId);
+    };
   }, [audioEngine, track.id]);
 
   // Handle fader automation

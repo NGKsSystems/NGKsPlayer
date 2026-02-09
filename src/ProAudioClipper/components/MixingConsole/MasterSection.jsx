@@ -46,15 +46,19 @@ const MasterSection = ({
   useEffect(() => {
     if (!audioEngine) return;
 
+    let animationId;
     const updateMeters = () => {
       const levels = audioEngine.getMasterMetering();
       if (levels) {
         setMasterLevels(levels);
       }
+      animationId = requestAnimationFrame(updateMeters);
     };
 
-    const intervalId = setInterval(updateMeters, 33); // 30fps metering
-    return () => clearInterval(intervalId);
+    animationId = requestAnimationFrame(updateMeters);
+    return () => {
+      if (animationId) cancelAnimationFrame(animationId);
+    };
   }, [audioEngine]);
 
   // Handle master fader

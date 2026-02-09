@@ -82,8 +82,16 @@ export const PhaseCorrelationMeterComponent = ({
       drawCorrelationHistory();
     };
 
-    const interval = setInterval(updateData, 33); // ~30 FPS
-    return () => clearInterval(interval);
+    let animationId;
+    const animate = () => {
+      updateData();
+      animationId = requestAnimationFrame(animate);
+    };
+    
+    animationId = requestAnimationFrame(animate);
+    return () => {
+      if (animationId) cancelAnimationFrame(animationId);
+    };
   }, [isActive]);
 
   // Start/stop meter based on audio playback
