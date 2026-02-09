@@ -171,6 +171,7 @@ export const useKeyboardShortcuts = ({
     };
 
     // Add event listener
+    if (typeof document === 'undefined') return;
     document.addEventListener('keydown', handleKeyDown);
 
     // Cleanup
