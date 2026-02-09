@@ -23,7 +23,8 @@ export const useAudioEngine = (audioRef) => {
   
   // Initialize audio context
   useEffect(() => {
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const AudioContext = typeof window !== 'undefined' ? (window.AudioContext || window.webkitAudioContext) : null;
+    if (!AudioContext) return;
     audioContextRef.current = new AudioContext();
     
     // Create gain node for volume control
