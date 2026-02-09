@@ -28,6 +28,7 @@ class ProAudioProcessor extends AudioWorkletProcessor {
     // Performance monitoring
     this.processingTimes = [];
     this.maxProcessingTime = (this.bufferSize / this.sampleRate) * 1000; // ms
+    this.perfMonitorCounter = 0;
     
     // Listen for parameter changes
     this.port.onmessage = this.handleMessage.bind(this);
@@ -146,7 +147,11 @@ class ProAudioProcessor extends AudioWorkletProcessor {
   }
 
   process(inputs, outputs, parameters) {
-    const startTime = performance.now();
+    let startTime;
+    const shouldMonitorPerf = (++this.perfMonitorCounter % 50) === 0;
+    if (shouldMonitorPerf) {
+      startTime = performance.now();
+    }
     
     const input = inputs[0];
     const output = outputs[0];
@@ -190,21 +195,23 @@ class ProAudioProcessor extends AudioWorkletProcessor {
     
     this.processedSamples += frameCount;
     
-    // Performance monitoring
-    const processingTime = performance.now() - startTime;
-    this.processingTimes.push(processingTime);
-    
-    if (this.processingTimes.length > 100) {
-      this.processingTimes.shift();
-    }
-    
-    // Check for real-time performance issues
-    if (processingTime > this.maxProcessingTime * 0.8) {
-      this.port.postMessage({
-        type: 'performanceWarning',
-        processingTime,
-        maxTime: this.maxProcessingTime
-      });
+    // Performance monitoring (sampled)
+    if (shouldMonitorPerf) {
+      const processingTime = performance.now() - startTime;
+      this.processingTimes.push(processingTime);
+      
+      if (this.processingTimes.length > 100) {
+        this.processingTimes.shift();
+      }
+      
+      // Check for real-time performance issues
+      if (processingTime > this.maxProcessingTime * 0.8) {
+        this.port.postMessage({
+          type: 'performanceWarning',
+          processingTime,
+          maxTime: this.maxProcessingTime
+        });
+      }
     }
     
     return true;
