@@ -98,11 +98,13 @@ class PluginManager {
       Int16Array,
       JSON,
       // Audio API subset
-      AudioContext: window.AudioContext,
-      AudioWorkletNode: window.AudioWorkletNode,
+      AudioContext: typeof window !== 'undefined' ? window.AudioContext : null,
+      AudioWorkletNode: typeof window !== 'undefined' ? window.AudioWorkletNode : null,
       // Plugin utilities
       createAudioBuffer: (channels, length, sampleRate) => {
-        const audioContext = new AudioContext();
+        const AC = typeof window !== 'undefined' ? window.AudioContext : null;
+        if (!AC) return null;
+        const audioContext = new AC();
         return audioContext.createBuffer(channels, length, sampleRate);
       }
     };
