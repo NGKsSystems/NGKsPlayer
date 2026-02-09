@@ -190,6 +190,8 @@ const TimelineRuler = ({
   // Event listeners
   useEffect(() => {
     if (isDragging || isCreatingLoop) {
+      if (typeof document === 'undefined') return;
+
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mouseup', handleMouseUp);
       
