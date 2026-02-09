@@ -11,7 +11,7 @@ class OffscreenCanvasRenderer {
     this.offscreenCanvases = new Map();
     this.renderQueue = [];
     this.isProcessing = false;
-    this.maxWorkers = navigator.hardwareConcurrency || 4;
+    this.maxWorkers = (typeof navigator !== 'undefined' ? navigator.hardwareConcurrency : null) || 4;
     this.workerPool = [];
     
     this.initializeWorkerPool();
@@ -169,11 +169,13 @@ class OffscreenCanvasRenderer {
     
     if (typeof OffscreenCanvas !== 'undefined') {
       offscreenCanvas = new OffscreenCanvas(width, height);
-    } else {
+    } else if (typeof document !== 'undefined') {
       // Fallback for browsers without OffscreenCanvas
       offscreenCanvas = document.createElement('canvas');
       offscreenCanvas.width = width;
       offscreenCanvas.height = height;
+    } else {
+      return null;
     }
     
     this.offscreenCanvases.set(id, offscreenCanvas);
