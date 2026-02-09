@@ -50,6 +50,8 @@ const TrackHeader = ({
       }
     };
 
+    if (typeof document === 'undefined') return;
+
     if (showControls) {
       document.addEventListener('mousedown', handleClickOutside);
       return () => {
@@ -67,8 +69,8 @@ const TrackHeader = ({
       const rect = moreActionsRef.current.getBoundingClientRect();
       const menuWidth = 150;
       const menuHeight = 80; // Approximate menu height
-      const viewportWidth = document.documentElement.clientWidth;
-      const viewportHeight = document.documentElement.clientHeight;
+      const viewportWidth = typeof document !== 'undefined' ? document.documentElement.clientWidth : 1920;
+      const viewportHeight = typeof document !== 'undefined' ? document.documentElement.clientHeight : 1080;
       const spaceOnRight = viewportWidth - rect.right;
       const spaceBelow = viewportHeight - rect.bottom;
       
