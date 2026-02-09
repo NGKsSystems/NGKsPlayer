@@ -115,7 +115,7 @@ export class SpectrumAnalyzer {
     this.canvasContext = canvas.getContext('2d');
     
     // Set up high DPI support
-    const dpr = window.devicePixelRatio || 1;
+    const dpr = (typeof window !== 'undefined' ? window.devicePixelRatio : null) || 1;
     const rect = canvas.getBoundingClientRect();
     
     canvas.width = rect.width * dpr;
@@ -193,8 +193,9 @@ export class SpectrumAnalyzer {
     if (!this.canvas || !this.canvasContext) return;
     
     const ctx = this.canvasContext;
-    const width = this.canvas.width / (window.devicePixelRatio || 1);
-    const height = this.canvas.height / (window.devicePixelRatio || 1);
+    const pixelRatio = (typeof window !== 'undefined' ? window.devicePixelRatio : null) || 1;
+    const width = this.canvas.width / pixelRatio;
+    const height = this.canvas.height / pixelRatio;
     
     // Clear canvas
     ctx.fillStyle = '#1a1a1a';
