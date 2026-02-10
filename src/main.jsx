@@ -99,8 +99,6 @@ import { ThemeProvider } from "./contexts/ThemeContext.jsx";
 
 import Library from "./views/library/Library.jsx";
 import NowPlaying from "./views/player/NowPlaying.jsx";
-import DJInterface from "./views/player/DJInterface.jsx";
-import DJProfessional from "./views/player/DJProfessional.jsx";
 import DJSimple from "./views/player/DJSimple.jsx";
 import FourDeckDJ from "./views/player/FourDeckDJ.jsx";
 import TagEditor from "./views/library/TagEditor.jsx";
