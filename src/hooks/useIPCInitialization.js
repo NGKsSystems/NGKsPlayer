@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: useIPCInitialization.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -54,7 +54,7 @@ export function useIPCInitialization() {
           }
         }
 
-        console.log('[IPCInit] âœ… All IPC methods verified');
+        console.log('[IPCInit] ✅ All IPC methods verified');
         
         // Wait for database to be ready (signal from main process)
         const dbReady = await Promise.race([
@@ -80,14 +80,14 @@ export function useIPCInitialization() {
         ]);
 
         if (!dbReady) {
-          console.warn('[IPCInit] âš ï¸  Database not signaled ready, but continuing...');
+          console.warn('[IPCInit] ⚠️  Database not signaled ready, but continuing...');
         }
 
         setIpcReady(true);
         initCoordinator.setReady('ipcBridge', true);
         
       } catch (error) {
-        console.error('[IPCInit] âŒ IPC initialization failed:', error);
+        console.error('[IPCInit] ❌ IPC initialization failed:', error);
         setIpcError(error.message);
         initCoordinator.setReady('ipcBridge', false);
       }

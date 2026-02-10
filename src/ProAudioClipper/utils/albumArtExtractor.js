@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: albumArtExtractor.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -169,7 +169,7 @@ export function generatePlaceholderArt(title = 'Unknown') {
   ctx.font = 'bold 200px Arial';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText('â™ª', 256, 256);
+  ctx.fillText('♪', 256, 256);
   
   return canvas.toDataURL('image/png');
 }

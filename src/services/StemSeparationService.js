@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: StemSeparationService.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -24,7 +24,7 @@ class StemSeparationService {
   setupProgressListener() {
     if (window.electron?.on) {
       window.electron.on('stem-separation:progress', (event, update) => {
-        console.log('ðŸ“Š Stem progress update:', update);
+        console.log('📊 Stem progress update:', update);
         // Notify all registered callbacks
         this.progressCallbacks.forEach(callback => {
           try {
@@ -35,7 +35,7 @@ class StemSeparationService {
         });
       });
     } else {
-      console.warn('âš ï¸  Electron IPC not available - running in development mode?');
+      console.warn('⚠️  Electron IPC not available - running in development mode?');
     }
   }
 
@@ -46,7 +46,7 @@ class StemSeparationService {
     
     try {
       const result = await window.electron.invoke('stem-separation:check-python');
-      console.log('ðŸ Python check result:', result);
+      console.log('🐍 Python check result:', result);
       return result;
     } catch (error) {
       console.error('Python check failed:', error);
@@ -66,16 +66,16 @@ class StemSeparationService {
     }
 
     try {
-      console.log(`ðŸŽµ Starting stem separation: ${filePath}`);
+      console.log(`🎵 Starting stem separation: ${filePath}`);
       const result = await window.electron.invoke('stem-separation:separate', {
         filePath,
         stemsCount
       });
 
-      console.log('âœ… Separation result:', result);
+      console.log('✅ Separation result:', result);
       return result;
     } catch (error) {
-      console.error('âŒ Separation failed:', error);
+      console.error('❌ Separation failed:', error);
       throw error;
     } finally {
       // Cleanup callback
@@ -92,7 +92,7 @@ class StemSeparationService {
     
     try {
       const result = await window.electron.invoke('stem-separation:cancel');
-      console.log('ðŸ›‘ Cancel result:', result);
+      console.log('🛑 Cancel result:', result);
       return result;
     } catch (error) {
       console.error('Cancel failed:', error);

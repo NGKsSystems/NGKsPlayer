@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: PhaseCorrelationMeterComponent.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -382,7 +382,7 @@ export const PhaseCorrelationMeterComponent = ({
           fontSize: '11px',
           color: '#ff9999'
         }}>
-          <strong>âš  Mono Compatibility Issues:</strong>
+          <strong>⚠ Mono Compatibility Issues:</strong>
           <ul style={{ margin: '5px 0 0 15px', padding: 0 }}>
             {monoCompatibility.warnings.map((warning, index) => (
               <li key={index}>{warning}</li>

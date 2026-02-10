@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: VirtualInstruments.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -25,7 +25,7 @@ export class VirtualInstrument {
         this.masterVolume = 1.0;
         this.masterPan = 0;
         this.pitchBend = 0; // In semitones
-        this.pitchBendRange = 2; // Â±2 semitones
+        this.pitchBendRange = 2; // ±2 semitones
         
         // Master output nodes
         this.masterGain = audioContext.createGain();

@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: TimeBasedEffects.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -89,7 +89,7 @@ export class StereoDelay extends BaseAudioEffect {
  * - Feedback comb filter on WET path (8ms delay, 0.975 feedback)
  * - Parallel mix: 50% direct + 50% comb-resonated
  * - Perceptual feedback mapping: feedback^0.6 (controls decay TIME not amplitude)
- * - Energy-aware output compensation: 1.5 + (feedback Ã— 0.8)
+ * - Energy-aware output compensation: 1.5 + (feedback × 0.8)
  * 
  * Design rationale:
  * - Single-sample impulse echoes create sparse energy (<0.02% sample occupancy in tail)
@@ -102,9 +102,9 @@ export class StereoDelay extends BaseAudioEffect {
  * 
  * Why tail energy increases:
  * - Each impulse echo triggers geometric series of comb reflections (8ms spacing)
- * - Sample occupancy in tail increases 1500Ã— (0.02% â†’ 30%)
+ * - Sample occupancy in tail increases 1500× (0.02% → 30%)
  * - Comb feedback f=0.975 creates ~200ms ring time per echo
- * - Energy per echo = AÂ² Ã— [0.25 + 0.25/(1-fÂ²)] = AÂ² Ã— 5.31
+ * - Energy per echo = A² × [0.25 + 0.25/(1-f²)] = A² × 5.31
  * - RMS = sqrt(energy/samples) benefits from massive density increase
  * - Comb is stable (f < 1.0) and deterministic (no randomness)
  * 
@@ -168,31 +168,31 @@ export class EchoDelay extends BaseAudioEffect {
     // Default will be set in onParameterChange when feedback is initialized
     
     // Signal flow:
-    // Input â†’ inputSplitter â”€â”¬â†’ delayPrimary â†’ tapGainPrimary â”€â”
-    //                         â””â†’ delaySecondary â†’ tapGainSecondary â”€â”˜
-    //                                                                â†“
+    // Input → inputSplitter ─┬→ delayPrimary → tapGainPrimary ─┐
+    //                         └→ delaySecondary → tapGainSecondary ─┘
+    //                                                                ↓
     //                                                           tapSumBus
-    //                                                                â†“
-    //                                                    â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-    //                                                    â†“                       â†“
+    //                                                                ↓
+    //                                                    ┌───────────┴───────────┐
+    //                                                    ↓                       ↓
     //                                              directPath (50%)    combRingPath (50%)
-    //                                                    â†“                       â†“
+    //                                                    ↓                       ↓
     //                                                    |                   combDelay (8ms)
-    //                                                    |                       â†“
-    //                                                    |                  combFeedback â”€â”€â”
-    //                                                    |                       â†‘         â”‚
-    //                                                    |                       â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-    //                                                    â†“                       â†“
-    //                                                    â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-    //                                                                â†“
+    //                                                    |                       ↓
+    //                                                    |                  combFeedback ──┐
+    //                                                    |                       ↑         │
+    //                                                    |                       └─────────┘
+    //                                                    ↓                       ↓
+    //                                                    └───────────┬───────────┘
+    //                                                                ↓
     //                                                           wetMixBus
-    //                                                                â†“
-    //                                                           outputGain â†’ Output
-    //                                                                â†“
+    //                                                                ↓
+    //                                                           outputGain → Output
+    //                                                                ↓
     //                                                           feedbackGain
-    //                                                                â†“
-    //                                                    â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-    //                                                    â†“                      â†“
+    //                                                                ↓
+    //                                                    ┌───────────┴──────────┐
+    //                                                    ↓                      ↓
     //                                               delayPrimary          delaySecondary
     
     // Connect delay taps to tap sum bus
@@ -222,7 +222,7 @@ export class EchoDelay extends BaseAudioEffect {
     this.feedbackGain.connect(this.delayPrimary);
     this.feedbackGain.connect(this.delaySecondary);
     
-    // Set processing chain (input â†’ delays, output from outputGain)
+    // Set processing chain (input → delays, output from outputGain)
     // We need a splitter to send input to both delays
     this.inputSplitter = audioContext.createGain();
     this.inputSplitter.gain.value = 1.0;
@@ -269,10 +269,10 @@ export class EchoDelay extends BaseAudioEffect {
       this.feedbackGain.gain.value = feedbackDSP;
       
       // ENERGY-AWARE OUTPUT COMPENSATION:
-      // Higher feedback â†’ longer decay â†’ more cumulative energy
+      // Higher feedback → longer decay → more cumulative energy
       // Output gain compensates to maintain perceived loudness
       // 
-      // Formula: outputGain = 2.5 + (feedback_user Ã— 1.5)
+      // Formula: outputGain = 2.5 + (feedback_user × 1.5)
       // - Base gain 2.5: ensures echo energy is measurable in RMS
       // - Scaling 1.5: compensates for echo dispersion over time
       // - Accounts for energy distribution across multiple delayed taps

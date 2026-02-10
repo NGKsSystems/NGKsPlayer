@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: KeyAnalyzer.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -40,7 +40,7 @@ function hann(n, N) {
   return 0.5 - 0.5 * Math.cos((2 * Math.PI * n) / (N - 1));
 }
 
-// Fast magnitude DFT (O(NÂ²) but small N â€” fine for key)
+// Fast magnitude DFT (O(N²) but small N — fine for key)
 function getMagnitude(frame) {
   const N = frame.length;
   const mag = new Float32Array(N / 2);

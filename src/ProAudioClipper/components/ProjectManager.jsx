@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: ProjectManager.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -100,7 +100,7 @@ const ProjectManager = ({ currentProject, onLoadProject, onClose }) => {
     // Load the created project
     if (onLoadProject) {
       const feedbackMessage = selectedTemplate 
-        ? `âœ… ${project.name} created from ${selectedTemplate.name} template!\n\nâ€¢ Timeline zoom: ${selectedTemplate.timeline.zoom}x\nâ€¢ Buffer size: ${selectedTemplate.settings.bufferSize}\nâ€¢ Sample rate: ${selectedTemplate.settings.sampleRate}Hz`
+        ? `✅ ${project.name} created from ${selectedTemplate.name} template!\n\n• Timeline zoom: ${selectedTemplate.timeline.zoom}x\n• Buffer size: ${selectedTemplate.settings.bufferSize}\n• Sample rate: ${selectedTemplate.settings.sampleRate}Hz`
         : 'Project saved successfully!';
       
       setTimeout(() => {
@@ -165,7 +165,7 @@ const ProjectManager = ({ currentProject, onLoadProject, onClose }) => {
       return;
     }
     
-    console.log('âœ… Template found:', template);
+    console.log('✅ Template found:', template);
     
     try {
       // Set up the new project form with template settings
@@ -178,9 +178,9 @@ const ProjectManager = ({ currentProject, onLoadProject, onClose }) => {
       console.log('Setting showNewProject to true...');
       setShowNewProject(true);
       
-      console.log('âœ… Template applied successfully, form should be visible');
+      console.log('✅ Template applied successfully, form should be visible');
     } catch (error) {
-      console.error('âŒ Error applying template:', error);
+      console.error('❌ Error applying template:', error);
       alert('Error applying template: ' + error.message);
     }
   };
@@ -237,10 +237,10 @@ const ProjectManager = ({ currentProject, onLoadProject, onClose }) => {
                           fontSize: '13px',
                           color: '#00d4ff'
                         }}>
-                          âœ¨ <strong>Creating from template:</strong> {selectedTemplate.name}
+                          ✨ <strong>Creating from template:</strong> {selectedTemplate.name}
                           <br />
                           <span style={{ fontSize: '11px', opacity: 0.8 }}>
-                            Zoom: {selectedTemplate.timeline.zoom}x â€¢ Buffer: {selectedTemplate.settings.bufferSize} â€¢ Rate: {selectedTemplate.settings.sampleRate}Hz
+                            Zoom: {selectedTemplate.timeline.zoom}x • Buffer: {selectedTemplate.settings.bufferSize} • Rate: {selectedTemplate.settings.sampleRate}Hz
                           </span>
                         </div>
                       )}
@@ -309,7 +309,7 @@ const ProjectManager = ({ currentProject, onLoadProject, onClose }) => {
                             {project.file || 'No file'}
                           </div>
                           <div className="project-stats">
-                            {stats.clipsCount} clips â€¢ {stats.totalDuration.toFixed(2)}s
+                            {stats.clipsCount} clips • {stats.totalDuration.toFixed(2)}s
                           </div>
                           <div className="project-dates">
                             <Clock size={14} />

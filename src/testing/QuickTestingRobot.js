@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: QuickTestingRobot.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -53,7 +53,7 @@ class SimplifiedTestingRobot {
   }
 
   async runQuickTests() {
-    console.log('ðŸš€ Starting NGKs Player Quick Test Suite...');
+    console.log('🚀 Starting NGKs Player Quick Test Suite...');
     const startTime = Date.now();
 
     // Test 1: System Environment
@@ -113,7 +113,7 @@ class SimplifiedTestingRobot {
     if (hasEnoughMemory) this.results.summary.passed++; else this.results.summary.failed++;
 
     this.results.testSuites.push(suite);
-    console.log(`  âœ… System Environment: ${suite.passed}/${suite.tests.length} tests passed`);
+    console.log(`  ✅ System Environment: ${suite.passed}/${suite.tests.length} tests passed`);
   }
 
   async testFileStructure() {
@@ -143,7 +143,7 @@ class SimplifiedTestingRobot {
     }
 
     this.results.testSuites.push(suite);
-    console.log(`  âœ… File Structure: ${suite.passed}/${suite.tests.length} tests passed`);
+    console.log(`  ✅ File Structure: ${suite.passed}/${suite.tests.length} tests passed`);
   }
 
   async testDependencies() {
@@ -186,7 +186,7 @@ class SimplifiedTestingRobot {
     }
 
     this.results.testSuites.push(suite);
-    console.log(`  âœ… Dependencies: ${suite.passed}/${suite.tests.length} tests passed`);
+    console.log(`  ✅ Dependencies: ${suite.passed}/${suite.tests.length} tests passed`);
   }
 
   async testConfigFiles() {
@@ -214,7 +214,7 @@ class SimplifiedTestingRobot {
     }
 
     this.results.testSuites.push(suite);
-    console.log(`  âœ… Configuration: ${suite.passed}/${suite.tests.length} tests passed`);
+    console.log(`  ✅ Configuration: ${suite.passed}/${suite.tests.length} tests passed`);
   }
 
   async testAudioSystemMock() {
@@ -245,7 +245,7 @@ class SimplifiedTestingRobot {
     }
 
     this.results.testSuites.push(suite);
-    console.log(`  âœ… Audio System: ${suite.passed}/${suite.tests.length} tests passed`);
+    console.log(`  ✅ Audio System: ${suite.passed}/${suite.tests.length} tests passed`);
   }
 
   async generateReports() {
@@ -263,7 +263,7 @@ class SimplifiedTestingRobot {
     const htmlContent = this.generateHTMLReport();
     fs.writeFileSync(htmlPath, htmlContent);
 
-    console.log(`\\nðŸ“Š Reports generated:`);
+    console.log(`\\n📊 Reports generated:`);
     console.log(`   JSON: ${jsonPath}`);
     console.log(`   HTML: ${htmlPath}`);
   }
@@ -308,7 +308,7 @@ class SimplifiedTestingRobot {
 <body>
     <div class="container">
         <div class="header">
-            <h1 class="title">ðŸ¤– NGKs Player Quick Test</h1>
+            <h1 class="title">🤖 NGKs Player Quick Test</h1>
             <p class="subtitle">Automated System Validation - ${timestamp}</p>
         </div>
         
@@ -339,7 +339,7 @@ class SimplifiedTestingRobot {
             ${this.results.testSuites.map(suite => `
                 <div class="suite">
                     <div class="suite-header">
-                        ðŸ“ ${suite.name} - ${suite.passed}/${suite.tests.length} passed
+                        📁 ${suite.name} - ${suite.passed}/${suite.tests.length} passed
                     </div>
                     ${suite.tests.map(test => `
                         <div class="test">
@@ -355,7 +355,7 @@ class SimplifiedTestingRobot {
         </div>
 
         <div class="footer">
-            <p>ðŸ¤– Testing Robot v1.0.0 - Generated at ${timestamp}</p>
+            <p>🤖 Testing Robot v1.0.0 - Generated at ${timestamp}</p>
             <p>NGKs Player System Validation Complete</p>
         </div>
     </div>
@@ -377,27 +377,27 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   robot.runQuickTests()
     .then(results => {
       console.log('\\n' + '='.repeat(60));
-      console.log('ðŸ¤– QUICK TEST RESULTS');
+      console.log('🤖 QUICK TEST RESULTS');
       console.log('='.repeat(60));
-      console.log(`ðŸ“Š Total Tests: ${results.summary.total}`);
-      console.log(`âœ… Passed: ${results.summary.passed}`);
-      console.log(`âŒ Failed: ${results.summary.failed}`);
-      console.log(`ðŸ“ˆ Pass Rate: ${results.summary.passRate}%`);
-      console.log(`â±ï¸  Duration: ${(results.duration / 1000).toFixed(2)}s`);
+      console.log(`📊 Total Tests: ${results.summary.total}`);
+      console.log(`✅ Passed: ${results.summary.passed}`);
+      console.log(`❌ Failed: ${results.summary.failed}`);
+      console.log(`📈 Pass Rate: ${results.summary.passRate}%`);
+      console.log(`⏱️  Duration: ${(results.duration / 1000).toFixed(2)}s`);
       
       if (results.summary.passRate >= 90) {
-        console.log('\\nðŸŽ‰ EXCELLENT! System is healthy and ready.');
+        console.log('\\n🎉 EXCELLENT! System is healthy and ready.');
         process.exit(0);
       } else if (results.summary.passRate >= 70) {
-        console.log('\\nðŸ‘ GOOD! Minor issues detected, but system is operational.');
+        console.log('\\n👍 GOOD! Minor issues detected, but system is operational.');
         process.exit(0);
       } else {
-        console.log('\\nâš ï¸  WARNING! Multiple issues detected - review required.');
+        console.log('\\n⚠️  WARNING! Multiple issues detected - review required.');
         process.exit(1);
       }
     })
     .catch(error => {
-      console.error('âŒ Testing failed:', error.message);
+      console.error('❌ Testing failed:', error.message);
       process.exit(1);
     });
 }

@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: BusRoutingMatrix.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -95,7 +95,7 @@ const BusRoutingMatrix = ({
                     title={disabled ? 'Cannot route to self' : `Route ${source.name} to ${destination.name}`}
                   >
                     <div className="cell-indicator">
-                      {routed ? 'â—' : 'â—‹'}
+                      {routed ? '●' : '○'}
                     </div>
                   </div>
                 );

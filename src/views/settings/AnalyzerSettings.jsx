@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: AnalyzerSettings.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -38,7 +38,7 @@ const settingsDefs = [
   { key: 'fadeSlopeMin', label: 'Fade Slope Min', type: 'number', min: -0.2, max: -0.001, step: 0.001,
     desc: 'Minimum energy drop rate to identify natural fades (more negative = steeper required).' },
   { key: 'reverbTailThreshold', label: 'Reverb Tail Threshold', type: 'number', min: 0.0001, max: 0.05, step: 0.0001,
-    desc: 'Max lingering energy considered a reverb tailâ€”helps detect long, mix-friendly fades.' },
+    desc: 'Max lingering energy considered a reverb tail—helps detect long, mix-friendly fades.' },
   { key: 'halfTimeConfidenceMin', label: 'Half-Time Confidence Min', type: 'number', min: 0.5, max: 1.0, step: 0.01,
     desc: 'Minimum confidence to treat a track as half-time (higher = stricter).' },
   { key: 'halfTimeRawRangeMin', label: 'Half-Time Raw BPM Range Min', type: 'number', min: 80, max: 140, step: 1,
@@ -61,7 +61,7 @@ const settingsDefs = [
   { key: 'commonKeyPreferenceBoost', label: 'Common Key Preference Boost', type: 'number', min: 0.0, max: 0.5, step: 0.01,
     desc: 'Extra confidence for common genre keys when matches are close.' },
   { key: 'capoTranspositionCheck', label: 'Capo Transposition Check', type: 'checkbox',
-    desc: 'Check +1/+2 semitone shifts (capo) to find a better keyâ€”useful for guitar tracks.' },
+    desc: 'Check +1/+2 semitone shifts (capo) to find a better key—useful for guitar tracks.' },
 ]
 
 export default function AnalyzerSettings(){
@@ -337,7 +337,7 @@ export default function AnalyzerSettings(){
           {hist.map((h, idx) => (
             <div key={idx} className="mb-2 border-b border-gray-800 pb-2">
               <div className="text-xxs text-gray-400">{h.time}</div>
-              <div className="text-sm text-gray-200">{h.action}{h.key ? ` â€” ${h.key}` : ''}</div>
+              <div className="text-sm text-gray-200">{h.action}{h.key ? ` — ${h.key}` : ''}</div>
               {h.settings && <div className="text-xxs text-gray-400">{JSON.stringify(h.settings)}</div>}
             </div>
           ))}

@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: ProfessionalTimeline.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -144,7 +144,7 @@ const ProfessionalTimeline = React.forwardRef(({
           color: '#00d4ff',
           margin: 0
         }}>
-          ðŸŽµ Professional Multi-Track Timeline
+          🎵 Professional Multi-Track Timeline
         </h3>
         
         <div style={{
@@ -368,7 +368,7 @@ const ProfessionalTimeline = React.forwardRef(({
                   color: '#666',
                   fontSize: '16px'
                 }}>
-                  <div style={{ fontSize: '48px', marginBottom: '16px' }}>ðŸŽµ</div>
+                  <div style={{ fontSize: '48px', marginBottom: '16px' }}>🎵</div>
                   <div>Timeline is ready for audio clips!</div>
                 </div>
               ) : (
@@ -528,12 +528,12 @@ const ProfessionalTimeline = React.forwardRef(({
           Duration: {(duration || 0).toFixed(1)}s
           {activeLoopRegion && (
             <span style={{ color: '#FF6B35', marginLeft: '8px' }}>
-              â€¢ Loop Active: {activeLoopRegion.name}
+              • Loop Active: {activeLoopRegion.name}
             </span>
           )}
         </div>
         <div>
-          Professional Multi-Track Timeline â€¢ {tracks.length} tracks loaded
+          Professional Multi-Track Timeline • {tracks.length} tracks loaded
         </div>
       </div>
 
@@ -624,7 +624,7 @@ const ProfessionalTimeline = React.forwardRef(({
                       onMouseLeave={(e) => e.target.style.background = 'transparent'}
                       onClick={() => handleContextMenuAction('undo')}
                     >
-                      â†¶ Undo{nextUndoDescription ? ` ${nextUndoDescription}` : ''}
+                      ↶ Undo{nextUndoDescription ? ` ${nextUndoDescription}` : ''}
                     </div>
                   )}
                   
@@ -639,7 +639,7 @@ const ProfessionalTimeline = React.forwardRef(({
                       onMouseLeave={(e) => e.target.style.background = 'transparent'}
                       onClick={() => handleContextMenuAction('redo')}
                     >
-                      â†· Redo{nextRedoDescription ? ` ${nextRedoDescription}` : ''}
+                      ↷ Redo{nextRedoDescription ? ` ${nextRedoDescription}` : ''}
                     </div>
                   )}
                   
@@ -657,7 +657,7 @@ const ProfessionalTimeline = React.forwardRef(({
                 onMouseLeave={(e) => e.target.style.background = 'transparent'}
                 onClick={() => handleContextMenuAction('cut')}
               >
-                âœ‚ï¸ Cut Clip
+                ✂️ Cut Clip
               </div>
 
               <div
@@ -670,7 +670,7 @@ const ProfessionalTimeline = React.forwardRef(({
                 onMouseLeave={(e) => e.target.style.background = 'transparent'}
                 onClick={() => handleContextMenuAction('copy')}
               >
-                ðŸ“‹ Copy Clip
+                📋 Copy Clip
               </div>
 
               <div
@@ -683,7 +683,7 @@ const ProfessionalTimeline = React.forwardRef(({
                 onMouseLeave={(e) => e.target.style.background = 'transparent'}
                 onClick={() => handleContextMenuAction('duplicate')}
               >
-                ðŸ“„ Duplicate Clip
+                📄 Duplicate Clip
               </div>
 
               <div style={{ height: '1px', background: '#404040', margin: '4px 0' }} />
@@ -698,7 +698,7 @@ const ProfessionalTimeline = React.forwardRef(({
                 onMouseLeave={(e) => e.target.style.background = 'transparent'}
                 onClick={() => handleContextMenuAction('fadeIn')}
               >
-                ðŸ“ˆ Fade In
+                📈 Fade In
               </div>
 
               <div
@@ -711,7 +711,7 @@ const ProfessionalTimeline = React.forwardRef(({
                 onMouseLeave={(e) => e.target.style.background = 'transparent'}
                 onClick={() => handleContextMenuAction('fadeOut')}
               >
-                ðŸ“‰ Fade Out
+                📉 Fade Out
               </div>
 
               <div
@@ -724,7 +724,7 @@ const ProfessionalTimeline = React.forwardRef(({
                 onMouseLeave={(e) => e.target.style.background = 'transparent'}
                 onClick={() => handleContextMenuAction('normalize')}
               >
-                ðŸ“Š Normalize
+                📊 Normalize
               </div>
 
               <div style={{ height: '1px', background: '#404040', margin: '4px 0' }} />
@@ -740,7 +740,7 @@ const ProfessionalTimeline = React.forwardRef(({
                 onMouseLeave={(e) => e.target.style.background = 'transparent'}
                 onClick={() => handleContextMenuAction('extractStems')}
               >
-                ðŸŽµ Extract Stems
+                🎵 Extract Stems
               </div>
 
               <div style={{ height: '1px', background: '#404040', margin: '4px 0' }} />
@@ -756,7 +756,7 @@ const ProfessionalTimeline = React.forwardRef(({
                 onMouseLeave={(e) => e.target.style.background = 'transparent'}
                 onClick={() => handleContextMenuAction('delete')}
               >
-                ðŸ—‘ï¸ Delete Clip
+                🗑️ Delete Clip
               </div>
             </>
           )}
@@ -778,7 +778,7 @@ const ProfessionalTimeline = React.forwardRef(({
                       onMouseLeave={(e) => e.target.style.background = 'transparent'}
                       onClick={() => handleContextMenuAction('undo')}
                     >
-                      â†¶ Undo{nextUndoDescription ? ` ${nextUndoDescription}` : ''}
+                      ↶ Undo{nextUndoDescription ? ` ${nextUndoDescription}` : ''}
                     </div>
                   )}
                   
@@ -793,7 +793,7 @@ const ProfessionalTimeline = React.forwardRef(({
                       onMouseLeave={(e) => e.target.style.background = 'transparent'}
                       onClick={() => handleContextMenuAction('redo')}
                     >
-                      â†· Redo{nextRedoDescription ? ` ${nextRedoDescription}` : ''}
+                      ↷ Redo{nextRedoDescription ? ` ${nextRedoDescription}` : ''}
                     </div>
                   )}
                   
@@ -811,7 +811,7 @@ const ProfessionalTimeline = React.forwardRef(({
                 onMouseLeave={(e) => e.target.style.background = 'transparent'}
                 onClick={() => handleContextMenuAction('rename')}
               >
-                âœï¸ Rename Track
+                ✏️ Rename Track
               </div>
 
               <div
@@ -824,7 +824,7 @@ const ProfessionalTimeline = React.forwardRef(({
                 onMouseLeave={(e) => e.target.style.background = 'transparent'}
                 onClick={() => handleContextMenuAction('duplicate')}
               >
-                ðŸ“‹ Duplicate Track
+                📋 Duplicate Track
               </div>
 
               <div style={{ height: '1px', background: '#404040', margin: '4px 0' }} />
@@ -839,7 +839,7 @@ const ProfessionalTimeline = React.forwardRef(({
                 onMouseLeave={(e) => e.target.style.background = 'transparent'}
                 onClick={() => handleContextMenuAction('mute')}
               >
-                ðŸ”‡ {contextMenuTrack.muted ? 'Unmute' : 'Mute'} Track
+                🔇 {contextMenuTrack.muted ? 'Unmute' : 'Mute'} Track
               </div>
 
               <div
@@ -852,7 +852,7 @@ const ProfessionalTimeline = React.forwardRef(({
                 onMouseLeave={(e) => e.target.style.background = 'transparent'}
                 onClick={() => handleContextMenuAction('solo')}
               >
-                ðŸŽ§ {contextMenuTrack.solo ? 'Unsolo' : 'Solo'} Track
+                🎧 {contextMenuTrack.solo ? 'Unsolo' : 'Solo'} Track
               </div>
 
               <div style={{ height: '1px', background: '#404040', margin: '4px 0' }} />
@@ -868,7 +868,7 @@ const ProfessionalTimeline = React.forwardRef(({
                   onMouseLeave={(e) => e.target.style.background = 'transparent'}
                   onClick={() => handleContextMenuAction('moveUp')}
                 >
-                  â¬†ï¸ Move Up
+                  ⬆️ Move Up
                 </div>
               )}
 
@@ -883,7 +883,7 @@ const ProfessionalTimeline = React.forwardRef(({
                   onMouseLeave={(e) => e.target.style.background = 'transparent'}
                   onClick={() => handleContextMenuAction('moveDown')}
                 >
-                  â¬‡ï¸ Move Down
+                  ⬇️ Move Down
                 </div>
               )}
 
@@ -900,7 +900,7 @@ const ProfessionalTimeline = React.forwardRef(({
                 onMouseLeave={(e) => e.target.style.background = 'transparent'}
                 onClick={() => handleContextMenuAction('delete')}
               >
-                ðŸ—‘ï¸ Delete Track
+                🗑️ Delete Track
               </div>
             </>
           )}

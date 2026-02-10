@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: PianoRollMIDIEditor.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -347,7 +347,7 @@ const PianoRollMIDIEditor = ({
           onClick={() => handleToolChange('pencil')}
           style={{ padding: '5px 10px', background: tool === 'pencil' ? '#4A90E2' : '#fff' }}
         >
-          âœï¸
+          ✏️
         </button>
         
         <button 
@@ -356,7 +356,7 @@ const PianoRollMIDIEditor = ({
           onClick={() => handleToolChange('select')}
           style={{ padding: '5px 10px', background: tool === 'select' ? '#4A90E2' : '#fff' }}
         >
-          ðŸ”
+          🔍
         </button>
         
         <button 
@@ -365,7 +365,7 @@ const PianoRollMIDIEditor = ({
           onClick={() => handleToolChange('erase')}
           style={{ padding: '5px 10px', background: tool === 'erase' ? '#4A90E2' : '#fff' }}
         >
-          ðŸ—‘ï¸
+          🗑️
         </button>
 
         <button 
@@ -373,7 +373,7 @@ const PianoRollMIDIEditor = ({
           style={{ padding: '5px 10px', background: '#fff' }}
           title="Quantize Notes"
         >
-          ðŸ“ Quantize
+          📐 Quantize
         </button>
 
         <select 
@@ -393,7 +393,7 @@ const PianoRollMIDIEditor = ({
           onClick={() => setShowGrid(prev => !prev)}
           style={{ padding: '5px 10px', background: showGrid ? '#4A90E2' : '#fff' }}
         >
-          ðŸ“‹
+          📋
         </button>
 
         <button 
@@ -402,7 +402,7 @@ const PianoRollMIDIEditor = ({
           onClick={() => setShowVelocityLane(prev => !prev)}
           style={{ padding: '5px 10px', background: showVelocityLane ? '#4A90E2' : '#fff' }}
         >
-          ðŸ“Š
+          📊
         </button>
 
         {onClose && (
@@ -411,7 +411,7 @@ const PianoRollMIDIEditor = ({
             style={{ padding: '5px 10px', background: '#ff6b6b', color: 'white', marginLeft: 'auto' }}
             title="Close Editor"
           >
-            âŒ
+            ❌
           </button>
         )}
       </div>

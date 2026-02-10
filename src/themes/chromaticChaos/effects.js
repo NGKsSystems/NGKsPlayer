@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: effects.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -20,7 +20,7 @@
 
 /**
  * Intensify RGB split filter on beats
- * @param {number} beatStrength - From your detection (0â€“2+)
+ * @param {number} beatStrength - From your detection (0–2+)
  */
 export function intensifyRGBSplit(beatStrength) {
   if (typeof beatStrength !== 'number' || !Number.isFinite(beatStrength) || beatStrength <= 1.0) {
@@ -112,7 +112,7 @@ export function applyFeedbackTunnel(canvas, ctx, beatStrength) {
 }
 
 /**
- * Main function â€“ call this in your draw loop or on beat
+ * Main function – call this in your draw loop or on beat
  * @param {HTMLCanvasElement} canvas
  * @param {CanvasRenderingContext2D} ctx
  * @param {number} beatStrength

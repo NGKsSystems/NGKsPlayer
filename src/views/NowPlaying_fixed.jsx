@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: NowPlaying_fixed.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -77,7 +77,7 @@ export default function NowPlaying({ onNavigate }) {
   const handleLibraryRefresh = useCallback(async () => {
     console.log('[Frontend] Manual library refresh triggered')
     setTracks([]) // Clear tracks immediately for visual feedback
-    showToast('ðŸ”„ Rescanning music library...', 'info')
+    showToast('🔄 Rescanning music library...', 'info')
     
     try {
       // First try auto-scan to pick up file changes
@@ -85,9 +85,9 @@ export default function NowPlaying({ onNavigate }) {
       console.log('[Frontend] Rescan result:', scanResult)
       
       if (scanResult.added > 0) {
-        showToast(`âœ… Library rescanned! Added ${scanResult.added} new tracks.`, 'success')
+        showToast(`✅ Library rescanned! Added ${scanResult.added} new tracks.`, 'success')
       } else {
-        showToast('âœ… Library rescanned successfully!', 'success')
+        showToast('✅ Library rescanned successfully!', 'success')
       }
       
       // Then reload tracks
@@ -95,7 +95,7 @@ export default function NowPlaying({ onNavigate }) {
       console.log('[Frontend] Library refresh completed')
     } catch (err) {
       console.error('[Frontend] Library rescan failed:', err)
-      showToast('âŒ Library rescan failed', 'error')
+      showToast('❌ Library rescan failed', 'error')
     }
   }, [loadTracks, setTracks, showToast])
   
@@ -498,12 +498,12 @@ export default function NowPlaying({ onNavigate }) {
   
   const renameFile = async (track) => {
     if (!newFileName.trim()) {
-      showToast('âŒ Filename cannot be empty', 'error')
+      showToast('❌ Filename cannot be empty', 'error')
       return
     }
     
     setContextMenu(null)
-    showToast('ðŸ”„ Renaming file...', 'info')
+    showToast('🔄 Renaming file...', 'info')
     
     try {
       // Extract extension safely from the file path
@@ -534,7 +534,7 @@ export default function NowPlaying({ onNavigate }) {
       console.log('[Frontend] Rename result:', result)
       
       if (result && result.success) {
-        showToast('âœ… File renamed successfully! Updating library...', 'success')
+        showToast('✅ File renamed successfully! Updating library...', 'success')
         console.log('[Frontend] File renamed successfully, auto-rescanning library...')
         
         try {
@@ -545,27 +545,27 @@ export default function NowPlaying({ onNavigate }) {
           // Reload tracks with fresh data
           await loadTracks()
           
-          showToast('ðŸŽµ Library updated! File renamed and rescanned.', 'success')
+          showToast('🎵 Library updated! File renamed and rescanned.', 'success')
           console.log('[Frontend] Auto-rescan and refresh completed')
         } catch (scanErr) {
           console.error('[Frontend] Auto-rescan failed:', scanErr)
-          showToast('âœ… File renamed, but library rescan failed. Click "ðŸ”„ Rescan" manually.', 'warning')
+          showToast('✅ File renamed, but library rescan failed. Click "🔄 Rescan" manually.', 'warning')
         }
       } else {
         const errorMsg = result?.error || 'Unknown error occurred'
-        showToast(`âŒ Rename failed: ${errorMsg}`, 'error')
+        showToast(`❌ Rename failed: ${errorMsg}`, 'error')
         console.error('[Frontend] Rename failed:', result)
         
         // Show critical errors prominently
         if (errorMsg.includes('already exists')) {
-          alert(`âš ï¸ RENAME ERROR\n\nA file with that name already exists!\n\nOriginal: ${track.filename}\nNew name: ${finalNewName}`)
+          alert(`⚠️ RENAME ERROR\n\nA file with that name already exists!\n\nOriginal: ${track.filename}\nNew name: ${finalNewName}`)
         }
       }
     } catch (err) {
       console.error('[Frontend] Rename error:', err)
-      const errorMessage = `âŒ Critical rename error: ${err.message}`
+      const errorMessage = `❌ Critical rename error: ${err.message}`
       showToast(errorMessage, 'error')
-      alert(`ðŸš¨ FILE OPERATION ERROR\n\n${err.message}\n\nCheck console for details.`)
+      alert(`🚨 FILE OPERATION ERROR\n\n${err.message}\n\nCheck console for details.`)
     }
     
     setShowRenameInput(false)
@@ -799,28 +799,28 @@ export default function NowPlaying({ onNavigate }) {
                   onClick={(e) => { e.stopPropagation(); setWaveformType('line'); }}
                   title="Line Waveform"
                 >
-                  ã€°ï¸ Line
+                  〰️ Line
                 </button>
                 <button
                   className={`px-3 py-1 rounded text-xs ${waveformType === 'bars' ? 'bg-red-600' : 'bg-gray-700 hover:bg-gray-600'}`}
                   onClick={(e) => { e.stopPropagation(); setWaveformType('bars'); }}
                   title="Frequency Bars"
                 >
-                  ðŸ“Š Bars
+                  📊 Bars
                 </button>
                 <button
                   className={`px-3 py-1 rounded text-xs ${waveformType === 'circle' ? 'bg-red-600' : 'bg-gray-700 hover:bg-gray-600'}`}
                   onClick={(e) => { e.stopPropagation(); setWaveformType('circle'); }}
                   title="Circular Waveform"
                 >
-                  â­• Circle
+                  ⭕ Circle
                 </button>
                 <button
                   className={`px-3 py-1 rounded text-xs ${waveformType === 'none' ? 'bg-red-600' : 'bg-gray-700 hover:bg-gray-600'}`}
                   onClick={(e) => { e.stopPropagation(); setWaveformType('none'); }}
                   title="No Waveform"
                 >
-                  âœ–ï¸ None
+                  ✖️ None
                 </button>
               </div>
               
@@ -834,7 +834,7 @@ export default function NowPlaying({ onNavigate }) {
                   }}
                   title="Toggle beat-reactive title pulse"
                 >
-                  {beatPulseEnabled ? 'ðŸ”´ Pulse ON' : 'âš« Pulse OFF'}
+                  {beatPulseEnabled ? '🔴 Pulse ON' : '⚫ Pulse OFF'}
                 </button>
                 
                 <button
@@ -845,7 +845,7 @@ export default function NowPlaying({ onNavigate }) {
                   }}
                   title="Show beat detection controls"
                 >
-                  âš™ï¸ Tune
+                  ⚙️ Tune
                 </button>
               </div>
             </div>

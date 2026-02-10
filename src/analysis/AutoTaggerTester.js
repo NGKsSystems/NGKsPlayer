@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: AutoTaggerTester.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -30,7 +30,7 @@ class AutoTaggerTester {
   }
 
   async initializeTest() {
-    console.log('ðŸ§ª Initializing AutoTagger Test Suite...');
+    console.log('🧪 Initializing AutoTagger Test Suite...');
     
     // Create test database
     await this.createTestDatabase();
@@ -40,19 +40,19 @@ class AutoTaggerTester {
     
     // Set up event listeners
     this.autoTagger.on('analysisStarted', (data) => {
-      console.log(`ðŸ“Š Starting analysis: ${path.basename(data.filePath)}`);
+      console.log(`📊 Starting analysis: ${path.basename(data.filePath)}`);
     });
     
     this.autoTagger.on('analysisCompleted', (result) => {
-      console.log(`âœ… Completed analysis: ${path.basename(result.filePath)} (${result.analysisDuration.toFixed(1)}s)`);
+      console.log(`✅ Completed analysis: ${path.basename(result.filePath)} (${result.analysisDuration.toFixed(1)}s)`);
       this.displayAnalysisResult(result);
     });
     
     this.autoTagger.on('analysisError', (data) => {
-      console.log(`âŒ Analysis failed: ${path.basename(data.filePath)} - ${data.error}`);
+      console.log(`❌ Analysis failed: ${path.basename(data.filePath)} - ${data.error}`);
     });
     
-    console.log('âœ… Test suite initialized');
+    console.log('✅ Test suite initialized');
   }
 
   async createTestDatabase() {
@@ -91,19 +91,19 @@ class AutoTaggerTester {
   async runFullTest() {
     await this.initializeTest();
     
-    console.log('\nðŸŽµ NGKs AutoTagger - Full Test Suite');
+    console.log('\n🎵 NGKs AutoTagger - Full Test Suite');
     console.log('=====================================');
     
     // Test 1: Find test audio files
     const testFiles = await this.findTestAudioFiles();
     
     if (testFiles.length === 0) {
-      console.log('âŒ No audio files found for testing');
-      console.log('ðŸ“ Please place some audio files in your Music folder or Desktop');
+      console.log('❌ No audio files found for testing');
+      console.log('📁 Please place some audio files in your Music folder or Desktop');
       return;
     }
     
-    console.log(`\nðŸ“ Found ${testFiles.length} audio files for testing`);
+    console.log(`\n📁 Found ${testFiles.length} audio files for testing`);
     
     // Test 2: Analyze sample files
     await this.testAnalysisAccuracy(testFiles.slice(0, 3)); // Test first 3 files
@@ -117,7 +117,7 @@ class AutoTaggerTester {
     // Test 5: Error handling
     await this.testErrorHandling();
     
-    console.log('\nðŸ“Š Test Summary');
+    console.log('\n📊 Test Summary');
     console.log('===============');
     this.printTestSummary();
     
@@ -177,7 +177,7 @@ class AutoTaggerTester {
   }
 
   async testAnalysisAccuracy(testFiles) {
-    console.log('\nðŸŽ¯ Testing Analysis Accuracy');
+    console.log('\n🎯 Testing Analysis Accuracy');
     console.log('-----------------------------');
     
     for (const filePath of testFiles) {
@@ -203,7 +203,7 @@ class AutoTaggerTester {
           error: error.message
         });
         
-        console.log(`âŒ Failed to analyze ${path.basename(filePath)}: ${error.message}`);
+        console.log(`❌ Failed to analyze ${path.basename(filePath)}: ${error.message}`);
       }
     }
   }
@@ -237,42 +237,42 @@ class AutoTaggerTester {
     }
     
     if (issues.length > 0) {
-      console.log(`âš ï¸  ${fileName} - Validation issues:`);
+      console.log(`⚠️  ${fileName} - Validation issues:`);
       issues.forEach(issue => console.log(`   ${issue}`));
     } else {
-      console.log(`âœ… ${fileName} - Analysis looks good`);
+      console.log(`✅ ${fileName} - Analysis looks good`);
     }
   }
 
   displayAnalysisResult(result) {
     const fileName = path.basename(result.filePath);
     
-    console.log(`\nðŸ“Š Analysis Result: ${fileName}`);
-    console.log('â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”');
-    console.log(`ðŸŽµ BPM: ${result.bpm} (confidence: ${(result.bpmConfidence * 100).toFixed(0)}%)`);
+    console.log(`\n📊 Analysis Result: ${fileName}`);
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    console.log(`🎵 BPM: ${result.bpm} (confidence: ${(result.bpmConfidence * 100).toFixed(0)}%)`);
     
     if (result.isDoubleTime) {
-      console.log(`   âš¡ Double-time detected`);
+      console.log(`   ⚡ Double-time detected`);
     }
     
-    console.log(`ðŸŽ¹ Key: ${result.musicalKey} (confidence: ${(result.keyConfidence * 100).toFixed(0)}%)`);
-    console.log(`ðŸŽ¨ Camelot: ${result.camelotCode}`);
-    console.log(`âš¡ Energy: ${result.energyLevel}/10`);
-    console.log(`ðŸ”Š Loudness: ${result.loudnessLUFS.toFixed(1)} LUFS (range: ${result.loudnessRange.toFixed(1)} LU)`);
-    console.log(`ðŸŽ¯ Cue In: ${result.cueInTime.toFixed(1)}s | Cue Out: ${result.cueOutTime.toFixed(1)}s`);
-    console.log(`ðŸŽ¤ Content: ${result.vocalInstrumental}`);
-    console.log(`ðŸ·ï¸  Mood: ${result.moodTags.join(', ')}`);
-    console.log(`ðŸŽšï¸  Hot Cues: ${result.hotCues.length} points`);
+    console.log(`🎹 Key: ${result.musicalKey} (confidence: ${(result.keyConfidence * 100).toFixed(0)}%)`);
+    console.log(`🎨 Camelot: ${result.camelotCode}`);
+    console.log(`⚡ Energy: ${result.energyLevel}/10`);
+    console.log(`🔊 Loudness: ${result.loudnessLUFS.toFixed(1)} LUFS (range: ${result.loudnessRange.toFixed(1)} LU)`);
+    console.log(`🎯 Cue In: ${result.cueInTime.toFixed(1)}s | Cue Out: ${result.cueOutTime.toFixed(1)}s`);
+    console.log(`🎤 Content: ${result.vocalInstrumental}`);
+    console.log(`🏷️  Mood: ${result.moodTags.join(', ')}`);
+    console.log(`🎚️  Hot Cues: ${result.hotCues.length} points`);
     
     // Display compatible keys
     const compat = result.harmonicCompatibility;
-    console.log(`ðŸ”— Compatible keys: ${compat.energyUp.join(', ')}`);
+    console.log(`🔗 Compatible keys: ${compat.energyUp.join(', ')}`);
     
-    console.log(`â±ï¸  Analysis time: ${result.analysisDuration.toFixed(1)} seconds`);
+    console.log(`⏱️  Analysis time: ${result.analysisDuration.toFixed(1)} seconds`);
   }
 
   async testAnalysisPerformance(testFile) {
-    console.log('\nâš¡ Testing Analysis Performance');
+    console.log('\n⚡ Testing Analysis Performance');
     console.log('-------------------------------');
     
     const iterations = 3;
@@ -291,54 +291,54 @@ class AutoTaggerTester {
     }
     
     const avgTime = times.reduce((a, b) => a + b) / times.length;
-    console.log(`ðŸ“Š Average analysis time: ${avgTime.toFixed(1)} seconds`);
+    console.log(`📊 Average analysis time: ${avgTime.toFixed(1)} seconds`);
     
     if (avgTime >= 60 && avgTime <= 120) {
-      console.log('âœ… Performance meets target (1-2 minutes)');
+      console.log('✅ Performance meets target (1-2 minutes)');
     } else if (avgTime < 60) {
-      console.log('âš ï¸  Analysis faster than expected - consider deeper analysis');
+      console.log('⚠️  Analysis faster than expected - consider deeper analysis');
     } else {
-      console.log('âš ï¸  Analysis slower than target - optimization needed');
+      console.log('⚠️  Analysis slower than target - optimization needed');
     }
   }
 
   async testDatabaseIntegration(testFile) {
-    console.log('\nðŸ’¾ Testing Database Integration');
+    console.log('\n💾 Testing Database Integration');
     console.log('-------------------------------');
     
     try {
       // Test saving analysis
       console.log('Testing save to database...');
       const result = await this.autoTagger.analyzeTrack(testFile, true);
-      console.log('âœ… Successfully saved analysis to database');
+      console.log('✅ Successfully saved analysis to database');
       
       // Test retrieving analysis status
       console.log('Testing analysis status retrieval...');
       const status = await this.autoTagger.getAnalysisStatus(testFile);
       
       if (status.hasAnalysis) {
-        console.log('âœ… Analysis status correctly retrieved');
+        console.log('✅ Analysis status correctly retrieved');
         console.log(`   Analysis date: ${new Date(status.analysisDate).toLocaleString()}`);
         console.log(`   Analysis version: ${status.analysisVersion}`);
       } else {
-        console.log('âŒ Analysis not found in database');
+        console.log('❌ Analysis not found in database');
       }
       
     } catch (error) {
-      console.log(`âŒ Database integration failed: ${error.message}`);
+      console.log(`❌ Database integration failed: ${error.message}`);
     }
   }
 
   async testErrorHandling() {
-    console.log('\nðŸ›¡ï¸  Testing Error Handling');
+    console.log('\n🛡️  Testing Error Handling');
     console.log('---------------------------');
     
     // Test non-existent file
     try {
       await this.autoTagger.analyzeTrack('/nonexistent/file.mp3', false);
-      console.log('âŒ Should have thrown error for non-existent file');
+      console.log('❌ Should have thrown error for non-existent file');
     } catch (error) {
-      console.log('âœ… Correctly handled non-existent file error');
+      console.log('✅ Correctly handled non-existent file error');
     }
     
     // Test invalid file format
@@ -347,11 +347,11 @@ class AutoTaggerTester {
       await fs.writeFile(tempFile, 'not an audio file');
       
       await this.autoTagger.analyzeTrack(tempFile, false);
-      console.log('âŒ Should have thrown error for invalid audio file');
+      console.log('❌ Should have thrown error for invalid audio file');
       
       await fs.unlink(tempFile);
     } catch (error) {
-      console.log('âœ… Correctly handled invalid audio file error');
+      console.log('✅ Correctly handled invalid audio file error');
       await fs.unlink(path.join(__dirname, 'test.txt')).catch(() => {});
     }
   }
@@ -363,34 +363,34 @@ class AutoTaggerTester {
       .filter(r => r.success)
       .reduce((sum, r) => sum + r.duration, 0);
     
-    console.log(`âœ… Successful analyses: ${successful}`);
-    console.log(`âŒ Failed analyses: ${failed}`);
-    console.log(`â±ï¸  Total analysis time: ${totalTime.toFixed(1)} seconds`);
+    console.log(`✅ Successful analyses: ${successful}`);
+    console.log(`❌ Failed analyses: ${failed}`);
+    console.log(`⏱️  Total analysis time: ${totalTime.toFixed(1)} seconds`);
     
     if (successful > 0) {
       const avgTime = totalTime / successful;
-      console.log(`ðŸ“Š Average time per track: ${avgTime.toFixed(1)} seconds`);
+      console.log(`📊 Average time per track: ${avgTime.toFixed(1)} seconds`);
     }
     
     // Success rate
     const successRate = (successful / (successful + failed)) * 100;
-    console.log(`ðŸ“ˆ Success rate: ${successRate.toFixed(1)}%`);
+    console.log(`📈 Success rate: ${successRate.toFixed(1)}%`);
     
     if (successRate >= 90) {
-      console.log('ðŸŽ‰ Excellent success rate!');
+      console.log('🎉 Excellent success rate!');
     } else if (successRate >= 70) {
-      console.log('ðŸ‘ Good success rate');
+      console.log('👍 Good success rate');
     } else {
-      console.log('âš ï¸  Success rate needs improvement');
+      console.log('⚠️  Success rate needs improvement');
     }
   }
 
   async cleanup() {
-    console.log('\nðŸ§¹ Cleaning up test files...');
+    console.log('\n🧹 Cleaning up test files...');
     
     try {
       await fs.unlink(this.testDbPath);
-      console.log('âœ… Test database cleaned up');
+      console.log('✅ Test database cleaned up');
     } catch (e) {
       // File might not exist
     }
@@ -402,10 +402,10 @@ if (require.main === module) {
   const tester = new AutoTaggerTester();
   
   tester.runFullTest().then(() => {
-    console.log('\nðŸ Testing complete!');
+    console.log('\n🏁 Testing complete!');
     process.exit(0);
   }).catch((error) => {
-    console.error('ðŸ’¥ Test suite failed:', error);
+    console.error('💥 Test suite failed:', error);
     process.exit(1);
   });
 }

@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: RecordingControl.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -101,7 +101,7 @@ const RecordingControl = ({ audioManager }) => {
         )}
         {fileName && (
           <div className="recording-saved">
-            âœ“ Saved
+            ✓ Saved
           </div>
         )}
         {!isRecording && !fileName && (
@@ -130,7 +130,7 @@ const RecordingControl = ({ audioManager }) => {
             onClick={handleStartRecording}
             title="Start Recording"
           >
-            â— REC
+            ● REC
           </button>
         ) : (
           <button
@@ -138,7 +138,7 @@ const RecordingControl = ({ audioManager }) => {
             onClick={handleStopRecording}
             title="Stop Recording"
           >
-            â—¼ STOP
+            ◼ STOP
           </button>
         )}
       </div>

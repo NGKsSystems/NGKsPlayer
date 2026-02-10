@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: NodeAudioAnalyzer.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -18,7 +18,7 @@ import fs from 'fs';
 
 export async function analyzeBufferFromFile(filePath) {
   const data = fs.readFileSync(filePath);
-  // This module is a shim â€” actual analysis occurs in renderer AudioContext
+  // This module is a shim — actual analysis occurs in renderer AudioContext
   return { length: data.length, sampleRate: 44100 };
 }
 

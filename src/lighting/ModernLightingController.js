@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: ModernLightingController.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -58,7 +58,7 @@ export class ModernLightingController {
       protocolSwitches: 0
     };
     
-    console.log('ðŸŒ Modern Lighting Controller initialized');
+    console.log('🌐 Modern Lighting Controller initialized');
     console.log(`   Primary: ${this.options.primaryProtocol} @ ${this.options.networkRefreshRate}Hz`);
     console.log(`   Fallback: ${this.options.fallbackProtocol}`);
     console.log(`   Legacy: ${this.options.legacyProtocol} @ ${this.options.dmxRefreshRate}Hz`);
@@ -68,7 +68,7 @@ export class ModernLightingController {
    * Initialize with automatic protocol selection
    */
   async initialize() {
-    console.log('ðŸ” Detecting available lighting interfaces...');
+    console.log('🔍 Detecting available lighting interfaces...');
     
     // Try modern protocols first
     const protocolsToTry = [
@@ -84,7 +84,7 @@ export class ModernLightingController {
         
         if (success) {
           this.activeProtocol = protocol;
-          console.log(`âœ… Connected via ${protocol}`);
+          console.log(`✅ Connected via ${protocol}`);
           
           // Set appropriate refresh rate
           this.refreshRate = protocol === 'DMX512' 
@@ -95,7 +95,7 @@ export class ModernLightingController {
           return true;
         }
       } catch (error) {
-        console.log(`âŒ ${protocol} failed: ${error.message}`);
+        console.log(`❌ ${protocol} failed: ${error.message}`);
       }
     }
     
@@ -107,7 +107,7 @@ export class ModernLightingController {
    */
   async sendUniverse(universeData) {
     if (!this.activeProtocol) {
-      console.warn('âš ï¸ No active lighting protocol');
+      console.warn('⚠️ No active lighting protocol');
       return false;
     }
     
@@ -135,7 +135,7 @@ export class ModernLightingController {
    * Switch to fallback protocol on failure
    */
   async switchToFallbackProtocol() {
-    console.log('ðŸ”„ Switching to fallback protocol...');
+    console.log('🔄 Switching to fallback protocol...');
     
     const currentIndex = [
       this.options.primaryProtocol,
@@ -158,15 +158,15 @@ export class ModernLightingController {
         if (success) {
           this.activeProtocol = nextProtocol;
           this.stats.protocolSwitches++;
-          console.log(`âœ… Switched to ${nextProtocol}`);
+          console.log(`✅ Switched to ${nextProtocol}`);
           return true;
         }
       } catch (error) {
-        console.log(`âŒ Fallback ${nextProtocol} failed: ${error.message}`);
+        console.log(`❌ Fallback ${nextProtocol} failed: ${error.message}`);
       }
     }
     
-    console.error('âŒ All lighting protocols failed');
+    console.error('❌ All lighting protocols failed');
     return false;
   }
   
@@ -234,7 +234,7 @@ export class ModernLightingController {
   startPerformanceMonitoring() {
     setInterval(() => {
       const stats = this.getStats();
-      console.log(`ðŸ“Š Lighting Performance:`, {
+      console.log(`📊 Lighting Performance:`, {
         protocol: stats.activeProtocol,
         fps: Math.round(stats.updatesPerSecond),
         latency: Math.round(stats.averageLatency * 100) / 100 + 'ms',
@@ -256,13 +256,13 @@ class ArtNetInterface {
   
   async initialize() {
     // Art-Net over UDP/Ethernet - much faster than USB
-    console.log('ðŸŒ Initializing Art-Net (Ethernet)...');
+    console.log('🌐 Initializing Art-Net (Ethernet)...');
     
     // Simulate Art-Net initialization
     // In real implementation, would use dgram socket
     return new Promise((resolve) => {
       setTimeout(() => {
-        console.log('   âœ… Art-Net ready @ 250Hz refresh rate');
+        console.log('   ✅ Art-Net ready @ 250Hz refresh rate');
         resolve(true);
       }, 100);
     });
@@ -285,11 +285,11 @@ class SACNInterface {
   }
   
   async initialize() {
-    console.log('ðŸš€ Initializing sACN (Gigabit Ethernet)...');
+    console.log('🚀 Initializing sACN (Gigabit Ethernet)...');
     
     return new Promise((resolve) => {
       setTimeout(() => {
-        console.log('   âœ… sACN ready @ 512Hz refresh rate');
+        console.log('   ✅ sACN ready @ 512Hz refresh rate');
         resolve(true);
       }, 50);
     });
@@ -311,11 +311,11 @@ class DMX512Interface {
   }
   
   async initialize() {
-    console.log('ðŸŒ Initializing DMX512 (USB - Legacy)...');
+    console.log('🐌 Initializing DMX512 (USB - Legacy)...');
     
     return new Promise((resolve) => {
       setTimeout(() => {
-        console.log('   âš ï¸ DMX512 ready @ 44Hz refresh rate (limited by 1986 protocol)');
+        console.log('   ⚠️ DMX512 ready @ 44Hz refresh rate (limited by 1986 protocol)');
         resolve(true);
       }, 200);
     });

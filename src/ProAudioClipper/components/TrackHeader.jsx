@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: TrackHeader.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -76,7 +76,7 @@ const TrackHeader = ({
   // Handle more actions menu positioning
   const handleMoreActionsClick = useCallback((e) => {
     e.stopPropagation();
-    console.log('ðŸ”˜ More actions clicked, current state:', showControls);
+    console.log('🔘 More actions clicked, current state:', showControls);
     
     if (!showControls && moreActionsRef.current) {
       const rect = moreActionsRef.current.getBoundingClientRect();
@@ -145,7 +145,7 @@ const TrackHeader = ({
   };
 
   const formatVolume = (volume) => {
-    if (!volume || volume === 0) return '-âˆž dB';
+    if (!volume || volume === 0) return '-∞ dB';
     const db = volumeToDb(volume);
     return `${db >= 0 ? '+' : ''}${db?.toFixed(1) || '0.0'} dB`;
   };

@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: LayoutControls.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -41,7 +41,7 @@ const LayoutControls = ({
           onClick={() => onSave?.()}
           title="Save current layout"
         >
-          ðŸ’¾
+          💾
         </button>
         
         <button 
@@ -49,7 +49,7 @@ const LayoutControls = ({
           onClick={() => setShowSaveAs(!showSaveAs)}
           title="Save as new layout"
         >
-          ðŸ“‹
+          📋
         </button>
         
         {showLoadOptions && layoutList.length > 0 && (
@@ -59,7 +59,7 @@ const LayoutControls = ({
               onClick={() => setShowDropdown(!showDropdown)}
               title="Load layout"
             >
-              ðŸ“
+              📁
             </button>
             
             {showDropdown && (
@@ -92,8 +92,8 @@ const LayoutControls = ({
             className="save-as-input"
             onKeyPress={(e) => e.key === 'Enter' && handleSaveAs()}
           />
-          <button onClick={handleSaveAs} className="save-as-confirm">âœ“</button>
-          <button onClick={() => setShowSaveAs(false)} className="save-as-cancel">âœ—</button>
+          <button onClick={handleSaveAs} className="save-as-confirm">✓</button>
+          <button onClick={() => setShowSaveAs(false)} className="save-as-cancel">✗</button>
         </div>
       )}
     </div>

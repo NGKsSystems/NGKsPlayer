@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: AppWithSplash.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -57,7 +57,7 @@ const AppWithSplash = ({ children }) => {
       {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
       
       {/* SVG Filters for Theme Effects */}
-      {/* Hidden global SVG filters â€“ available to all themes */}
+      {/* Hidden global SVG filters – available to all themes */}
 <svg style={{ position: 'absolute', width: 0, height: 0, overflow: 'hidden' }}>
   <defs>
     <filter id="rgb-split-filter">

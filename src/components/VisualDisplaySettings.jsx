@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: VisualDisplaySettings.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -82,14 +82,14 @@ const VisualDisplaySettings = ({ onApply, onClose }) => {
     <div className="visual-settings-overlay" onClick={onClose}>
       <div className="visual-settings-panel" onClick={(e) => e.stopPropagation()}>
         <div className="visual-settings-header">
-          <h2>ðŸŽ¨ Visual Display Settings</h2>
-          <button className="close-btn" onClick={onClose}>âœ•</button>
+          <h2>🎨 Visual Display Settings</h2>
+          <button className="close-btn" onClick={onClose}>✕</button>
         </div>
 
         <div className="visual-settings-content">
           {/* Branding Section */}
           <div className="settings-section">
-            <h3>ðŸŽ­ Branding</h3>
+            <h3>🎭 Branding</h3>
             
             <div className="setting-row">
               <label>DJ Name</label>
@@ -142,7 +142,7 @@ const VisualDisplaySettings = ({ onApply, onClose }) => {
 
           {/* Display Mode Section */}
           <div className="settings-section">
-            <h3>ðŸ“º Display Mode</h3>
+            <h3>📺 Display Mode</h3>
             
             <div className="setting-row">
               <label>Visual Mode</label>
@@ -202,7 +202,7 @@ const VisualDisplaySettings = ({ onApply, onClose }) => {
 
           {/* Colors Section */}
           <div className="settings-section">
-            <h3>ðŸŽ¨ Colors</h3>
+            <h3>🎨 Colors</h3>
             
             <div className="setting-row color-row">
               <label>Primary Color</label>
@@ -227,7 +227,7 @@ const VisualDisplaySettings = ({ onApply, onClose }) => {
 
           {/* Display Elements Section */}
           <div className="settings-section">
-            <h3>âœ¨ Display Elements</h3>
+            <h3>✨ Display Elements</h3>
             
             <label className="setting-checkbox">
               <input
@@ -268,7 +268,7 @@ const VisualDisplaySettings = ({ onApply, onClose }) => {
 
           {/* Presets Section */}
           <div className="settings-section">
-            <h3>âš¡ Quick Presets</h3>
+            <h3>⚡ Quick Presets</h3>
             <div className="preset-buttons">
               <button onClick={() => setSettings({
                 ...settings,
@@ -278,7 +278,7 @@ const VisualDisplaySettings = ({ onApply, onClose }) => {
                 showTrackInfo: true,
                 showProgress: true
               })}>
-                ðŸŽµ Classic
+                🎵 Classic
               </button>
               <button onClick={() => setSettings({
                 ...settings,
@@ -288,7 +288,7 @@ const VisualDisplaySettings = ({ onApply, onClose }) => {
                 showTrackInfo: true,
                 showClock: true
               })}>
-                ðŸŽ§ DJ Set
+                🎧 DJ Set
               </button>
               <button onClick={() => setSettings({
                 ...settings,
@@ -298,7 +298,7 @@ const VisualDisplaySettings = ({ onApply, onClose }) => {
                 showTrackInfo: true,
                 showProgress: false
               })}>
-                âœ¨ Minimal
+                ✨ Minimal
               </button>
               <button onClick={() => setSettings({
                 ...settings,
@@ -308,7 +308,7 @@ const VisualDisplaySettings = ({ onApply, onClose }) => {
                 showTrackInfo: true,
                 showProgress: true
               })}>
-                ðŸ”Š Club Party
+                🔊 Club Party
               </button>
             </div>
           </div>

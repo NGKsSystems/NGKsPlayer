@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: WhisperTranscriber.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -113,7 +113,7 @@ const WhisperTranscriber = ({ audioFilePath, onTranscriptionComplete, onClose })
     return (
       <div className="whisper-transcriber-modal">
         <div className="whisper-error">
-          <h3>âš ï¸ Whisper Not Available</h3>
+          <h3>⚠️ Whisper Not Available</h3>
           <p>Audio transcription requires Python 3.8+ with OpenAI Whisper installed.</p>
           
           <div className="install-instructions">
@@ -156,14 +156,14 @@ const WhisperTranscriber = ({ audioFilePath, onTranscriptionComplete, onClose })
   return (
     <div className="whisper-transcriber-modal">
       <div className="whisper-transcriber-content">
-        <h2>ðŸŽ¤ Transcribe Audio</h2>
+        <h2>🎤 Transcribe Audio</h2>
         <p className="subtitle">Convert speech to text with timestamps</p>
         
         <div className="model-selector">
           <label>Model Quality:</label>
           <select value={modelSize} onChange={(e) => setModelSize(e.target.value)}>
             <option value="tiny">Tiny - Fast, less accurate (~39MB, 32x speed)</option>
-            <option value="base">Base - Balanced (~74MB, 16x speed) â­</option>
+            <option value="base">Base - Balanced (~74MB, 16x speed) ⭐</option>
             <option value="small">Small - Good quality (~244MB, 6x speed)</option>
             <option value="medium">Medium - High quality (~769MB, 2x speed)</option>
             <option value="large">Large - Best quality (~1.5GB, 1x speed)</option>
@@ -189,15 +189,15 @@ const WhisperTranscriber = ({ audioFilePath, onTranscriptionComplete, onClose })
         </div>
         
         <div className="info-box">
-          <p><strong>ðŸ’¡ Tip:</strong> For best accuracy with music, extract vocals first using "Extract Stems" then transcribe the vocals-only file.</p>
-          <p><strong>â±ï¸ Processing Time:</strong></p>
+          <p><strong>💡 Tip:</strong> For best accuracy with music, extract vocals first using "Extract Stems" then transcribe the vocals-only file.</p>
+          <p><strong>⏱️ Processing Time:</strong></p>
           <ul>
             <li>Tiny/Base: ~10-30 seconds per minute of audio</li>
             <li>Small/Medium: ~30-120 seconds per minute</li>
             <li>Large: 60-240 seconds per minute</li>
           </ul>
-          <p><strong>ðŸ’¾ Output:</strong> SRT subtitle file with timestamps (editable in any text editor)</p>
-          <p><strong>ðŸš€ First run:</strong> Model will download (~39MB to 1.5GB depending on size)</p>
+          <p><strong>💾 Output:</strong> SRT subtitle file with timestamps (editable in any text editor)</p>
+          <p><strong>🚀 First run:</strong> Model will download (~39MB to 1.5GB depending on size)</p>
         </div>
         
         <div className="button-group">

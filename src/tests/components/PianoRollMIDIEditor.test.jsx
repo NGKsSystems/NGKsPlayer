@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: PianoRollMIDIEditor.test.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -219,7 +219,7 @@ describe('Piano Roll MIDI Editor', () => {
         />
       );
 
-      const quantizeButton = screen.getByText('ðŸ“ Quantize');
+      const quantizeButton = screen.getByText('📐 Quantize');
       await user.click(quantizeButton);
 
       // Should quantize the note timing
@@ -463,7 +463,7 @@ describe('Piano Roll MIDI Editor', () => {
         />
       );
 
-      const closeButton = screen.getByText('âŒ');
+      const closeButton = screen.getByText('❌');
       await user.click(closeButton);
 
       expect(mockOnClose).toHaveBeenCalled();

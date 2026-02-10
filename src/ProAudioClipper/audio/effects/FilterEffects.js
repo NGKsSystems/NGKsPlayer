@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: FilterEffects.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -139,7 +139,7 @@ export class LowPassFilter extends BaseAudioEffect {
   constructor(audioContext, parameters = {}) {
     super(audioContext);
     
-    // Create 8-pole cascade for extreme filtering to achieve delta â‰¥ 0.05
+    // Create 8-pole cascade for extreme filtering to achieve delta ≥ 0.05
     this.filter1 = this.audioContext.createBiquadFilter();
     this.filter1.type = 'lowpass';
     this.filter2 = this.audioContext.createBiquadFilter();
@@ -258,7 +258,7 @@ export class BandPassFilter extends BaseAudioEffect {
     this.filter6.connect(this.filter7);
     this.filter7.connect(this.filter8);
     
-    // Add output gain to compensate for cascade loss and achieve delta â‰¥ 0.05
+    // Add output gain to compensate for cascade loss and achieve delta ≥ 0.05
     this.outputGain = this.audioContext.createGain();
     this.outputGain.gain.value = 10.0; // Ultra-high compensation for maximum filtering effect
     this.filter8.connect(this.outputGain);

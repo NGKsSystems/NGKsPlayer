@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: BasicHTMLTimeline.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -85,7 +85,7 @@ const BasicHTMLTimeline = React.forwardRef(({
         fontWeight: 'bold',
         fontSize: '14px'
       }}>
-        ðŸŽµ Pro Audio Timeline | Tracks: {tracks.length} | Tool: {selectedTool} | Time: {(currentTime || 0).toFixed(2)}s
+        🎵 Pro Audio Timeline | Tracks: {tracks.length} | Tool: {selectedTool} | Time: {(currentTime || 0).toFixed(2)}s
       </div>
 
       {/* Time Ruler */}
@@ -162,7 +162,7 @@ const BasicHTMLTimeline = React.forwardRef(({
             color: '#666',
             fontSize: '16px'
           }}>
-            <div style={{ fontSize: '48px', marginBottom: '16px' }}>ðŸŽµ</div>
+            <div style={{ fontSize: '48px', marginBottom: '16px' }}>🎵</div>
             <div>No tracks yet. Click "Add Audio Track" to get started!</div>
           </div>
         ) : (

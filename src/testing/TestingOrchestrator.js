@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: TestingOrchestrator.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -58,7 +58,7 @@ export class TestingOrchestrator {
    * Run comprehensive testing by orchestrating existing Jest test suites
    */
   async runComprehensiveTesting() {
-    console.log('ðŸ¤– Starting NGKs Player Comprehensive Testing...');
+    console.log('🤖 Starting NGKs Player Comprehensive Testing...');
     const startTime = Date.now();
 
     try {
@@ -84,7 +84,7 @@ export class TestingOrchestrator {
       return this.results;
 
     } catch (error) {
-      console.error('âŒ Comprehensive testing failed:', error.message);
+      console.error('❌ Comprehensive testing failed:', error.message);
       throw error;
     }
   }
@@ -93,7 +93,7 @@ export class TestingOrchestrator {
    * Run quick validation tests
    */
   async runQuickTests() {
-    console.log('âš¡ Starting Quick System Validation...');
+    console.log('⚡ Starting Quick System Validation...');
     const startTime = Date.now();
 
     try {
@@ -109,7 +109,7 @@ export class TestingOrchestrator {
       return this.results;
 
     } catch (error) {
-      console.error('âŒ Quick testing failed:', error.message);
+      console.error('❌ Quick testing failed:', error.message);
       throw error;
     }
   }
@@ -118,7 +118,7 @@ export class TestingOrchestrator {
    * Run audio-specific tests
    */
   async runAudioTests() {
-    console.log('ðŸŽµ Starting Audio Engine Testing...');
+    console.log('🎵 Starting Audio Engine Testing...');
     const startTime = Date.now();
 
     try {
@@ -133,7 +133,7 @@ export class TestingOrchestrator {
       return this.results;
 
     } catch (error) {
-      console.error('âŒ Audio testing failed:', error.message);
+      console.error('❌ Audio testing failed:', error.message);
       throw error;
     }
   }
@@ -142,7 +142,7 @@ export class TestingOrchestrator {
    * Run UI component tests
    */
   async runUITests() {
-    console.log('ðŸ–¥ï¸ Starting UI Component Testing...');
+    console.log('🖥️ Starting UI Component Testing...');
     const startTime = Date.now();
 
     try {
@@ -157,7 +157,7 @@ export class TestingOrchestrator {
       return this.results;
 
     } catch (error) {
-      console.error('âŒ UI testing failed:', error.message);
+      console.error('❌ UI testing failed:', error.message);
       throw error;
     }
   }
@@ -166,7 +166,7 @@ export class TestingOrchestrator {
    * Execute a Jest test run and capture results
    */
   async runTestCategory(category, description, extraArgs = []) {
-    console.log(`\nðŸ§ª Running ${description}...`);
+    console.log(`\n🧪 Running ${description}...`);
     
     const testRun = {
       category,
@@ -195,7 +195,7 @@ export class TestingOrchestrator {
         const resultsPath = path.join(this.options.outputDir, `${category}-results.json`);
         jestArgs.push('--json', '--outputFile=' + resultsPath);
       } catch (error) {
-        console.log(`  âš ï¸ Cannot write JSON results: ${error.message}`);
+        console.log(`  ⚠️ Cannot write JSON results: ${error.message}`);
       }
 
       if (this.options.verbose) {
@@ -212,7 +212,7 @@ export class TestingOrchestrator {
       let stderr = '';
 
       if (this.options.verbose) {
-        console.log(`\nðŸ”§ Executing: ${command} ${jestArgs.join(' ')}`);
+        console.log(`\n🔧 Executing: ${command} ${jestArgs.join(' ')}`);
       }
 
       jestProcess.stdout.on('data', (data) => {
@@ -253,10 +253,10 @@ export class TestingOrchestrator {
 
           if (code === 0) {
             testRun.status = 'passed';
-            console.log(`  âœ… ${description} completed successfully`);
+            console.log(`  ✅ ${description} completed successfully`);
           } else {
             testRun.status = 'failed';
-            console.log(`  âŒ ${description} failed with exit code ${code}`);
+            console.log(`  ❌ ${description} failed with exit code ${code}`);
           }
 
           resolve(testRun);
@@ -264,7 +264,7 @@ export class TestingOrchestrator {
         } catch (error) {
           testRun.status = 'error';
           testRun.error = error.message;
-          console.log(`  ðŸ’¥ ${description} crashed: ${error.message}`);
+          console.log(`  💥 ${description} crashed: ${error.message}`);
           reject(error);
         }
       });
@@ -272,7 +272,7 @@ export class TestingOrchestrator {
       jestProcess.on('error', (error) => {
         testRun.status = 'error';
         testRun.error = error.message;
-        console.log(`  ðŸ’¥ Failed to start ${description}: ${error.message}`);
+        console.log(`  💥 Failed to start ${description}: ${error.message}`);
         reject(error);
       });
     });
@@ -282,7 +282,7 @@ export class TestingOrchestrator {
    * Run coverage analysis
    */
   async runCoverageAnalysis() {
-    console.log('\nðŸ“Š Generating code coverage analysis...');
+    console.log('\n📊 Generating code coverage analysis...');
     
     return new Promise((resolve, reject) => {
       const command = process.platform === 'win32' ? 'npm.cmd' : 'npm';
@@ -294,16 +294,16 @@ export class TestingOrchestrator {
 
       coverageProcess.on('close', (code) => {
         if (code === 0) {
-          console.log('  âœ… Coverage analysis completed');
+          console.log('  ✅ Coverage analysis completed');
           resolve();
         } else {
-          console.log('  âš ï¸ Coverage analysis completed with warnings');
+          console.log('  ⚠️ Coverage analysis completed with warnings');
           resolve(); // Don't fail the whole process
         }
       });
 
       coverageProcess.on('error', (error) => {
-        console.log(`  âš ï¸ Coverage analysis failed: ${error.message}`);
+        console.log(`  ⚠️ Coverage analysis failed: ${error.message}`);
         resolve(); // Don't fail the whole process
       });
     });
@@ -321,7 +321,7 @@ export class TestingOrchestrator {
     const html = this.generateHTMLReport('Comprehensive Test Report', passRate);
     fs.writeFileSync(reportPath, html);
     
-    console.log(`\nðŸ“Š Comprehensive report: ${reportPath}`);
+    console.log(`\n📊 Comprehensive report: ${reportPath}`);
   }
 
   /**
@@ -336,7 +336,7 @@ export class TestingOrchestrator {
     const html = this.generateHTMLReport('Quick Validation Report', passRate);
     fs.writeFileSync(reportPath, html);
     
-    console.log(`\nðŸ“Š Quick report: ${reportPath}`);
+    console.log(`\n📊 Quick report: ${reportPath}`);
   }
 
   /**
@@ -351,7 +351,7 @@ export class TestingOrchestrator {
     const html = this.generateHTMLReport('Audio Engine Test Report', passRate);
     fs.writeFileSync(reportPath, html);
     
-    console.log(`\nðŸ“Š Audio report: ${reportPath}`);
+    console.log(`\n📊 Audio report: ${reportPath}`);
   }
 
   /**
@@ -366,7 +366,7 @@ export class TestingOrchestrator {
     const html = this.generateHTMLReport('UI Component Test Report', passRate);
     fs.writeFileSync(reportPath, html);
     
-    console.log(`\nðŸ“Š UI report: ${reportPath}`);
+    console.log(`\n📊 UI report: ${reportPath}`);
   }
 
   /**
@@ -415,7 +415,7 @@ export class TestingOrchestrator {
 <body>
     <div class="container">
         <div class="header">
-            <h1>ðŸ¤– ${title}</h1>
+            <h1>🤖 ${title}</h1>
             <p>NGKs Player Automated Testing Results - ${timestamp}</p>
         </div>
         
@@ -447,14 +447,14 @@ export class TestingOrchestrator {
         </div>
 
         <div class="test-runs">
-            <h2>ðŸ“‹ Test Execution Summary</h2>
+            <h2>📋 Test Execution Summary</h2>
             ${this.results.testRuns.map(run => `
                 <div class="test-run ${run.status}">
                     <h3>${run.description} <span class="badge ${run.status}">${run.status.toUpperCase()}</span></h3>
                     <div class="test-run-meta">
-                        <span>â±ï¸ ${run.duration ? (run.duration / 1000).toFixed(2) + 's' : 'N/A'}</span>
-                        <span>ðŸ·ï¸ ${run.category}</span>
-                        ${run.exitCode !== undefined ? `<span>ðŸ”¢ Exit Code: ${run.exitCode}</span>` : ''}
+                        <span>⏱️ ${run.duration ? (run.duration / 1000).toFixed(2) + 's' : 'N/A'}</span>
+                        <span>🏷️ ${run.category}</span>
+                        ${run.exitCode !== undefined ? `<span>🔢 Exit Code: ${run.exitCode}</span>` : ''}
                     </div>
                     ${run.results ? `
                         <div class="test-run-details">
@@ -468,7 +468,7 @@ export class TestingOrchestrator {
         </div>
 
         <div class="footer">
-            <p>ðŸ¤– Testing Orchestrator v1.0.0 - Powered by Jest & NGKs Systems</p>
+            <p>🤖 Testing Orchestrator v1.0.0 - Powered by Jest & NGKs Systems</p>
             <p>Report generated at ${timestamp}</p>
         </div>
     </div>
@@ -485,29 +485,29 @@ export class TestingOrchestrator {
       : 0;
 
     console.log('\n' + '='.repeat(70));
-    console.log('ðŸ¤– TESTING ORCHESTRATOR RESULTS');
+    console.log('🤖 TESTING ORCHESTRATOR RESULTS');
     console.log('='.repeat(70));
-    console.log(`ðŸ“Š Total Tests: ${this.results.summary.total}`);
-    console.log(`âœ… Passed: ${this.results.summary.passed}`);
-    console.log(`âŒ Failed: ${this.results.summary.failed}`);
-    console.log(`â­ï¸ Skipped: ${this.results.summary.skipped}`);
-    console.log(`ðŸ“ˆ Pass Rate: ${passRate}%`);
-    console.log(`â±ï¸ Duration: ${(this.results.duration / 1000).toFixed(2)}s`);
+    console.log(`📊 Total Tests: ${this.results.summary.total}`);
+    console.log(`✅ Passed: ${this.results.summary.passed}`);
+    console.log(`❌ Failed: ${this.results.summary.failed}`);
+    console.log(`⏭️ Skipped: ${this.results.summary.skipped}`);
+    console.log(`📈 Pass Rate: ${passRate}%`);
+    console.log(`⏱️ Duration: ${(this.results.duration / 1000).toFixed(2)}s`);
     
-    console.log('\nðŸ“‹ Test Categories:');
+    console.log('\n📋 Test Categories:');
     this.results.testRuns.forEach(run => {
-      const status = run.status === 'passed' ? 'âœ…' : run.status === 'failed' ? 'âŒ' : 'âš ï¸';
+      const status = run.status === 'passed' ? '✅' : run.status === 'failed' ? '❌' : '⚠️';
       console.log(`  ${status} ${run.description} - ${run.status}`);
     });
 
     if (passRate >= 95) {
-      console.log('\nðŸŽ‰ EXCELLENT! All systems operational.');
+      console.log('\n🎉 EXCELLENT! All systems operational.');
     } else if (passRate >= 85) {
-      console.log('\nðŸ‘ GOOD! Minor issues detected.');
+      console.log('\n👍 GOOD! Minor issues detected.');
     } else if (passRate >= 70) {
-      console.log('\nâš ï¸ WARNING! Multiple issues need attention.');
+      console.log('\n⚠️ WARNING! Multiple issues need attention.');
     } else {
-      console.log('\nðŸš¨ CRITICAL! Major issues detected - immediate action required!');
+      console.log('\n🚨 CRITICAL! Major issues detected - immediate action required!');
     }
 
     console.log('='.repeat(70));

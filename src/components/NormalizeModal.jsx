@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: NormalizeModal.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -21,7 +21,7 @@ const NormalizeModal = ({ isOpen, onClose, folderPath }) => {
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h3>Normalize Audio</h3>
-          <button className="modal-close" onClick={onClose}>Ã—</button>
+          <button className="modal-close" onClick={onClose}>×</button>
         </div>
         <div className="modal-body">
           <p>Normalize audio files in: {folderPath}</p>

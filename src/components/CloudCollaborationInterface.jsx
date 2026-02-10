@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: CloudCollaborationInterface.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -632,35 +632,35 @@ const CloudCollaborationInterface = ({ projectData, onProjectUpdate, isActive = 
         <div className="space-y-4">
             {/* Security Status */}
             <div className="bg-gray-800 rounded-lg p-4">
-                <h4 className="text-white font-medium mb-3">ðŸ”’ Security Status</h4>
+                <h4 className="text-white font-medium mb-3">🔒 Security Status</h4>
                 
                 {securityDashboard && (
                     <div className="grid grid-cols-2 gap-4">
                         <div className="bg-gray-700 rounded p-3">
                             <div className="text-green-400 text-sm font-medium">HTTPS Enabled</div>
                             <div className="text-gray-300 text-xs">
-                                {securityDashboard.isSecure?.httpsEnabled ? 'âœ… Active' : 'âŒ Disabled'}
+                                {securityDashboard.isSecure?.httpsEnabled ? '✅ Active' : '❌ Disabled'}
                             </div>
                         </div>
                         
                         <div className="bg-gray-700 rounded p-3">
                             <div className="text-blue-400 text-sm font-medium">Encryption</div>
                             <div className="text-gray-300 text-xs">
-                                {encryptionEnabled ? 'âœ… AES-256' : 'âŒ Disabled'}
+                                {encryptionEnabled ? '✅ AES-256' : '❌ Disabled'}
                             </div>
                         </div>
                         
                         <div className="bg-gray-700 rounded p-3">
                             <div className="text-purple-400 text-sm font-medium">Authentication</div>
                             <div className="text-gray-300 text-xs">
-                                {currentUser ? 'âœ… Authenticated' : 'âŒ Not Signed In'}
+                                {currentUser ? '✅ Authenticated' : '❌ Not Signed In'}
                             </div>
                         </div>
                         
                         <div className="bg-gray-700 rounded p-3">
                             <div className="text-orange-400 text-sm font-medium">Monitoring</div>
                             <div className="text-gray-300 text-xs">
-                                {securityDashboard.isSecure?.monitoringActive ? 'âœ… Active' : 'âŒ Disabled'}
+                                {securityDashboard.isSecure?.monitoringActive ? '✅ Active' : '❌ Disabled'}
                             </div>
                         </div>
                     </div>
@@ -669,7 +669,7 @@ const CloudCollaborationInterface = ({ projectData, onProjectUpdate, isActive = 
 
             {/* Authentication Methods */}
             <div className="bg-gray-800 rounded-lg p-4">
-                <h4 className="text-white font-medium mb-3">ðŸ” Authentication Methods</h4>
+                <h4 className="text-white font-medium mb-3">🔐 Authentication Methods</h4>
                 
                 <div className="space-y-3">
                     <div className="flex items-center space-x-3">
@@ -718,7 +718,7 @@ const CloudCollaborationInterface = ({ projectData, onProjectUpdate, isActive = 
 
             {/* Security Metrics */}
             <div className="bg-gray-800 rounded-lg p-4">
-                <h4 className="text-white font-medium mb-3">ðŸ“Š Security Metrics</h4>
+                <h4 className="text-white font-medium mb-3">📊 Security Metrics</h4>
                 
                 {securityDashboard?.metrics && (
                     <div className="space-y-3">
@@ -746,7 +746,7 @@ const CloudCollaborationInterface = ({ projectData, onProjectUpdate, isActive = 
 
             {/* Security Settings */}
             <div className="bg-gray-800 rounded-lg p-4">
-                <h4 className="text-white font-medium mb-3">âš™ï¸ Security Settings</h4>
+                <h4 className="text-white font-medium mb-3">⚙️ Security Settings</h4>
                 
                 <div className="space-y-3">
                     <div className="flex items-center justify-between">
@@ -783,7 +783,7 @@ const CloudCollaborationInterface = ({ projectData, onProjectUpdate, isActive = 
 
             {/* Security Actions */}
             <div className="bg-gray-800 rounded-lg p-4">
-                <h4 className="text-white font-medium mb-3">ðŸ›¡ï¸ Security Actions</h4>
+                <h4 className="text-white font-medium mb-3">🛡️ Security Actions</h4>
                 
                 <div className="grid grid-cols-2 gap-3">
                     <button
@@ -843,7 +843,7 @@ const CloudCollaborationInterface = ({ projectData, onProjectUpdate, isActive = 
 
             {/* Recent Security Events */}
             <div className="bg-gray-800 rounded-lg p-4">
-                <h4 className="text-white font-medium mb-3">ðŸ“‹ Recent Security Events</h4>
+                <h4 className="text-white font-medium mb-3">📋 Recent Security Events</h4>
                 
                 <div className="space-y-2 max-h-40 overflow-y-auto">
                     {securityDashboard?.monitor?.recentEvents?.map((event, index) => (

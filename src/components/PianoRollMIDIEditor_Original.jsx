@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: PianoRollMIDIEditor_Original.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -674,21 +674,21 @@ const PianoRollMIDIEditor = ({
             onClick={() => setTool('pencil')}
             title="Pencil Tool (Create Notes)"
           >
-            âœï¸
+            ✏️
           </button>
           <button
             className={`tool-btn ${tool === 'select' ? 'active' : ''}`}
             onClick={() => setTool('select')}
             title="Select Tool"
           >
-            ðŸ”²
+            🔲
           </button>
           <button
             className={`tool-btn ${tool === 'erase' ? 'active' : ''}`}
             onClick={() => setTool('erase')}
             title="Erase Tool"
           >
-            ðŸ—‘ï¸
+            🗑️
           </button>
         </div>
         
@@ -715,7 +715,7 @@ const PianoRollMIDIEditor = ({
             onClick={() => setIsLooping(!isLooping)}
             title="Loop"
           >
-            ðŸ”„
+            🔄
           </button>
         </div>
         
@@ -749,13 +749,13 @@ const PianoRollMIDIEditor = ({
         
         <div className="edit-group">
           <button onClick={quantizeNotes} title="Quantize (Ctrl+Q)">
-            ðŸ“ Quantize
+            📐 Quantize
           </button>
           <button onClick={copyNotes} title="Copy (Ctrl+C)">
-            ðŸ“‹ Copy
+            📋 Copy
           </button>
           <button onClick={pasteNotes} title="Paste (Ctrl+V)">
-            ðŸ“ Paste
+            📝 Paste
           </button>
         </div>
         
@@ -776,7 +776,7 @@ const PianoRollMIDIEditor = ({
         </div>
         
         <div className="close-group">
-          <button onClick={onClose} className="close-btn">âŒ</button>
+          <button onClick={onClose} className="close-btn">❌</button>
         </div>
       </div>
       

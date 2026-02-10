@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: WaveformEditor.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -356,7 +356,7 @@ const WaveformEditor = ({
   return (
     <div className="waveform-editor">
       <div className="editor-header">
-        <h3>ðŸŽµ Waveform Editor</h3>
+        <h3>🎵 Waveform Editor</h3>
         <div className="editor-stats">
           <span>{formatTime(currentTime)} / {formatTime(duration * 1000)}</span>
         </div>
@@ -459,7 +459,7 @@ const WaveformEditor = ({
             onClick={onPlayPause} 
             title={isPlaying ? "Pause" : "Play"}
           >
-            {isPlaying ? 'â¸' : 'â–¶'}
+            {isPlaying ? '⏸' : '▶'}
           </button>
           
           <button 
@@ -468,17 +468,17 @@ const WaveformEditor = ({
             disabled={!isPlaying && currentTime === 0}
             title="Stop and reset"
           >
-            â¹
+            ⏹
           </button>
         </div>
 
         <div className="point-controls">
           <button className="btn-ctrl btn-in" onClick={onSetInPoint} title="Set In Point at current time">
-            ðŸŸ¢ In
+            🟢 In
           </button>
 
           <button className="btn-ctrl btn-out" onClick={onSetOutPoint} title="Set Out Point at current time">
-            ðŸ”´ Out
+            🔴 Out
           </button>
 
           <button 
@@ -487,7 +487,7 @@ const WaveformEditor = ({
             disabled={inPoint === null && outPoint === null}
             title="Reset points and name"
           >
-            â†» Reset
+            ↻ Reset
           </button>
         </div>
 
@@ -657,7 +657,7 @@ const WaveformEditor = ({
             disabled={inPoint === null || outPoint === null}
             title="Create clip with current in/out points"
           >
-            âœ‚ï¸ Create
+            ✂️ Create
           </button>
         </div>
       </div>
@@ -665,22 +665,22 @@ const WaveformEditor = ({
       <div className="point-display-enhanced">
         <div className="point-badges">
           <div className={`badge in-badge ${inPoint !== null ? 'active' : ''}`}>
-            <span className="badge-label">ðŸŸ¢ IN</span>
-            <span className="badge-value">{inPoint !== null ? formatTime(inPoint) : 'â€”'}</span>
+            <span className="badge-label">🟢 IN</span>
+            <span className="badge-value">{inPoint !== null ? formatTime(inPoint) : '—'}</span>
           </div>
 
           <div className={`badge out-badge ${outPoint !== null ? 'active' : ''}`}>
-            <span className="badge-label">ðŸ”´ OUT</span>
-            <span className="badge-value">{outPoint !== null ? formatTime(outPoint) : 'â€”'}</span>
+            <span className="badge-label">🔴 OUT</span>
+            <span className="badge-value">{outPoint !== null ? formatTime(outPoint) : '—'}</span>
           </div>
 
           <div className={`badge duration-badge ${inPoint !== null && outPoint !== null ? 'active' : ''}`}>
-            <span className="badge-label">â± DURATION</span>
-            <span className="badge-value">{inPoint !== null && outPoint !== null ? formatTime(outPoint - inPoint) : 'â€”'}</span>
+            <span className="badge-label">⏱ DURATION</span>
+            <span className="badge-value">{inPoint !== null && outPoint !== null ? formatTime(outPoint - inPoint) : '—'}</span>
           </div>
 
           <div className={`badge current-badge`}>
-            <span className="badge-label">â–¶ CURRENT</span>
+            <span className="badge-label">▶ CURRENT</span>
             <span className="badge-value">{formatTime(currentTime)}</span>
           </div>
         </div>

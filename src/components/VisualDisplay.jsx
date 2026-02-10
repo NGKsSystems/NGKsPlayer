@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: VisualDisplay.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -191,7 +191,7 @@ const VisualDisplay = ({
       {/* Close Button */}
       {displayMode !== 'obs' && onClose && showControls && (
         <button className="visual-close" onClick={onClose}>
-          âœ•
+          ✕
         </button>
       )}
 

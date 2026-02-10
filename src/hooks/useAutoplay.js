@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: useAutoplay.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -25,10 +25,10 @@ export function useAutoplay(tracks, playTrack, showToast) {
         try {
           const trackIndex = tracks.findIndex(t => t.filePath === autoplayPath);
           if (trackIndex >= 0) {
-            console.log('ðŸŽµ Autoplay: Found track at index', trackIndex, tracks[trackIndex].title);
+            console.log('🎵 Autoplay: Found track at index', trackIndex, tracks[trackIndex].title);
             playTrack(tracks[trackIndex], trackIndex);
           } else {
-            console.warn('ðŸŽµ Autoplay: Track not found in library:', autoplayPath);
+            console.warn('🎵 Autoplay: Track not found in library:', autoplayPath);
             showToast('Track not found in library', 'error');
           }
         } catch (err) {

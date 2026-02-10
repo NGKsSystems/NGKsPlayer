@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: VoiceRecognition.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -54,13 +54,13 @@ class VoiceRecognition {
     // Event handlers
     this.recognition.onstart = () => {
       this.isListening = true;
-      console.log('ðŸŽ¤ Voice recognition started');
+      console.log('🎤 Voice recognition started');
       if (this.onStartCallback) this.onStartCallback();
     };
 
     this.recognition.onend = () => {
       this.isListening = false;
-      console.log('ðŸŽ¤ Voice recognition ended');
+      console.log('🎤 Voice recognition ended');
       if (this.onEndCallback) this.onEndCallback();
       
       // Auto-restart if in continuous mode
@@ -101,7 +101,7 @@ class VoiceRecognition {
       const transcript = result.transcript.toLowerCase().trim();
       const confidence = result.confidence;
 
-      console.log(`ðŸŽ¤ Heard: "${transcript}" (confidence: ${(confidence * 100).toFixed(1)}%)`);
+      console.log(`🎤 Heard: "${transcript}" (confidence: ${(confidence * 100).toFixed(1)}%)`);
 
       if (confidence > 0.5) {
         this.parseCommand(transcript);

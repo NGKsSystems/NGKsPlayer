@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: index.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -94,7 +94,7 @@ const Microphone = ({ audioManager, micSettings = {}, onMicChange = () => {} }) 
             onClick={handleMicToggle}
           >
             <div className="toggle-icon">
-              {micState.enabled ? 'ðŸŽ¤' : 'ðŸ”‡'}
+              {micState.enabled ? '🎤' : '🔇'}
             </div>
             <div className="toggle-label">
               {micState.enabled ? 'ON' : 'OFF'}
@@ -136,7 +136,7 @@ const Microphone = ({ audioManager, micSettings = {}, onMicChange = () => {} }) 
 
       {/* Routing Info */}
       <div className="mic-routing-info">
-        <span className="routing-label">â†’ LEFT CHANNEL</span>
+        <span className="routing-label">→ LEFT CHANNEL</span>
       </div>
     </div>
   );

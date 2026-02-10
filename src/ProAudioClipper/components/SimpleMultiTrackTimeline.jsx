@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: SimpleMultiTrackTimeline.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -263,7 +263,7 @@ const SimpleMultiTrackTimeline = React.forwardRef(({
         borderRadius: '3px',
         zIndex: 10
       }}>
-        ðŸ“Š Timeline: {tracks.length} tracks | Tool: {selectedTool} | Time: {currentTime.toFixed(1)}s
+        📊 Timeline: {tracks.length} tracks | Tool: {selectedTool} | Time: {currentTime.toFixed(1)}s
       </div>
       
       <canvas

@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: ChannelStrip.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -210,7 +210,7 @@ const ChannelStrip = ({
               onClick={handlePhaseInvert}
               title="Phase Invert"
             >
-              Ã˜
+              Ø
             </button>
           </div>
         </div>
@@ -300,7 +300,7 @@ const ChannelStrip = ({
             <div className="meter-mark">-12</div>
             <div className="meter-mark">-18</div>
             <div className="meter-mark">-24</div>
-            <div className="meter-mark">-âˆž</div>
+            <div className="meter-mark">-∞</div>
           </div>
           <div className="stereo-meters">
             <div className="meter-bar left">
@@ -333,7 +333,7 @@ const ChannelStrip = ({
           }}
           title="Record Enable"
         >
-          â—
+          ●
         </button>
         
         <button 
@@ -370,7 +370,7 @@ const ChannelStrip = ({
         />
         
         <div className="fader-readout">
-          {localGain > -60 ? `${localGain.toFixed(1)}dB` : '-âˆž'}
+          {localGain > -60 ? `${localGain.toFixed(1)}dB` : '-∞'}
         </div>
       </div>
     </div>

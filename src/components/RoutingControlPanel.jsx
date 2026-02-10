@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: RoutingControlPanel.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -329,7 +329,7 @@ const RoutingControlPanel = ({
               <div className="flex items-center justify-between">
                 <span className="text-white font-medium">{chain.name}</span>
                 <span className="text-xs text-gray-400">
-                  {chain.modules.length} modules â€¢ {chain.parallel ? 'Parallel' : 'Series'}
+                  {chain.modules.length} modules • {chain.parallel ? 'Parallel' : 'Series'}
                 </span>
               </div>
             </div>
@@ -389,7 +389,7 @@ const RoutingControlPanel = ({
                     module.enabled ? 'bg-green-600' : 'bg-gray-600'
                   }`}
                 >
-                  {module.enabled ? 'â—' : 'â—‹'}
+                  {module.enabled ? '●' : '○'}
                 </button>
               </div>
             </div>
@@ -416,7 +416,7 @@ const RoutingControlPanel = ({
                 className="flex items-center justify-between p-2 bg-gray-700 rounded"
               >
                 <div className="text-xs text-white">
-                  {sourceModule?.name} â†’ {destModule?.name}
+                  {sourceModule?.name} → {destModule?.name}
                 </div>
                 
                 <div className="flex items-center gap-2">
@@ -436,7 +436,7 @@ const RoutingControlPanel = ({
                     onClick={() => removeConnection(connection.id)}
                     className="w-5 h-5 bg-red-600 rounded text-xs"
                   >
-                    Ã—
+                    ×
                   </button>
                 </div>
               </div>

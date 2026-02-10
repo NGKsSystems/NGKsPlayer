@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: AutomationSystem.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -147,7 +147,7 @@ const AutomationSystem = ({
             marginRight: '15px'
           }}
         >
-          {isRecording ? 'â— Stop Recording' : 'â—‹ Start Recording'}
+          {isRecording ? '● Stop Recording' : '○ Start Recording'}
         </button>
 
         {/* Clear All */}

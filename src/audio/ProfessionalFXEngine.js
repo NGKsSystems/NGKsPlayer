@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: ProfessionalFXEngine.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -74,7 +74,7 @@ class ProfessionalFXEngine extends EventEmitter {
    * Initialize the complete effect library
    */
   initializeEffectLibrary() {
-    console.log('ðŸŽ›ï¸ Initializing Professional FX Library...');
+    console.log('🎛️ Initializing Professional FX Library...');
     
     // FILTERS (Essential for DJing)
     this.registerEffect('lowpass', this.createLowPassFilter.bind(this));
@@ -143,7 +143,7 @@ class ProfessionalFXEngine extends EventEmitter {
     this.registerEffect('shimmer', this.createShimmer.bind(this));
     this.registerEffect('ambient_wash', this.createAmbientWash.bind(this));
     
-    console.log(`âœ… Loaded ${this.effectLibrary.size} professional effects`);
+    console.log(`✅ Loaded ${this.effectLibrary.size} professional effects`);
   }
 
   /**
@@ -163,7 +163,7 @@ class ProfessionalFXEngine extends EventEmitter {
    * Create effect chain for a deck or master
    */
   createEffectChain(chainId, maxEffects = 4) {
-    console.log(`ðŸ”— Creating effect chain: ${chainId}`);
+    console.log(`🔗 Creating effect chain: ${chainId}`);
     
     const chain = {
       id: chainId,
@@ -201,7 +201,7 @@ class ProfessionalFXEngine extends EventEmitter {
       throw new Error(`Effect type ${effectType} not found`);
     }
 
-    console.log(`âž• Adding ${effectType} to chain ${chainId}`);
+    console.log(`➕ Adding ${effectType} to chain ${chainId}`);
 
     // Create the effect
     const effectId = `${chainId}_${effectType}_${Date.now()}`;
@@ -393,7 +393,7 @@ class ProfessionalFXEngine extends EventEmitter {
   createBeatJump(params = {}) {
     // This would be implemented with a more complex system
     // that manipulates playback position based on beat grid
-    console.log('ðŸŽµ Beat Jump effect created');
+    console.log('🎵 Beat Jump effect created');
     
     const processor = this.audioContext.createScriptProcessor(1024);
     let jumpBeat = params.jumpBeat || 1;
@@ -416,7 +416,7 @@ class ProfessionalFXEngine extends EventEmitter {
   }
 
   createRoll(params = {}) {
-    console.log('ðŸ”„ Roll effect created');
+    console.log('🔄 Roll effect created');
     
     const processor = this.audioContext.createScriptProcessor(1024);
     const subdivision = params.subdivision || 16; // 16th notes
@@ -476,7 +476,7 @@ class ProfessionalFXEngine extends EventEmitter {
    * Hardware controller integration
    */
   mapControllerToEffect(controllerId, effectChainId, effectId, parameterName, midiCC) {
-    console.log(`ðŸŽ›ï¸ Mapping controller ${controllerId} CC${midiCC} to ${effectId}.${parameterName}`);
+    console.log(`🎛️ Mapping controller ${controllerId} CC${midiCC} to ${effectId}.${parameterName}`);
     
     const mappingId = `${controllerId}_${midiCC}`;
     this.midiMappings.set(mappingId, {
@@ -539,7 +539,7 @@ class ProfessionalFXEngine extends EventEmitter {
    * BPM synchronization
    */
   setBPM(bpm) {
-    console.log(`ðŸ¥ Setting BPM to ${bpm}`);
+    console.log(`🥁 Setting BPM to ${bpm}`);
     this.currentBPM = bpm;
     this.beatLength = 60 / bpm;
     
@@ -647,7 +647,7 @@ class ProfessionalFXEngine extends EventEmitter {
    * Cleanup
    */
   destroy() {
-    console.log('ðŸ§¹ Destroying FX Engine...');
+    console.log('🧹 Destroying FX Engine...');
     
     // Disconnect all effects
     this.effectNodes.forEach(effect => {

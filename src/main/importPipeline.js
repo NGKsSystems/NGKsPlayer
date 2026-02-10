@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: importPipeline.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -65,7 +65,7 @@ async function executeNormalization(plans) {
         status: 'renamed'
       });
       
-      console.log(`[executeNormalization] Renamed: ${path.basename(plan.srcPath)} â†’ ${path.basename(plan.dstPath)}`);
+      console.log(`[executeNormalization] Renamed: ${path.basename(plan.srcPath)} → ${path.basename(plan.dstPath)}`);
     } catch (error) {
       results.push({
         ...plan,

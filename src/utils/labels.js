@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: labels.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -17,7 +17,7 @@
  * Supports both "new" object queue entries and legacy string file paths.
  */
 export function trackLabel(item) {
-  if (!item) return 'â€”';
+  if (!item) return '—';
   if (typeof item === 'string') {
     // Legacy: just a path. Show file name without folder.
     try {
@@ -30,6 +30,6 @@ export function trackLabel(item) {
   // Object with title/artist
   const title = item.title || 'Unknown Title';
   const artist = item.artist || 'Unknown Artist';
-  return `${artist} â€” ${title}`;
+  return `${artist} — ${title}`;
 }
 

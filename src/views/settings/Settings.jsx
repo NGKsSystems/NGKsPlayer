@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: Settings.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -65,12 +65,12 @@ const Settings = ({ onNavigate }) => {
 
   const handleResetLibrary = async () => {
     const confirmMessage = 
-      "âš ï¸ RESET ENTIRE LIBRARY âš ï¸\n\n" +
+      "⚠️ RESET ENTIRE LIBRARY ⚠️\n\n" +
       "This will:\n" +
-      "â€¢ Delete ALL tracks from the database\n" +
-      "â€¢ Delete ALL playlists\n" +
-      "â€¢ Clear ALL play history\n" +
-      "â€¢ Rescan your music folders (if you choose)\n\n" +
+      "• Delete ALL tracks from the database\n" +
+      "• Delete ALL playlists\n" +
+      "• Clear ALL play history\n" +
+      "• Rescan your music folders (if you choose)\n\n" +
       "This action CANNOT be undone!\n\n" +
       "Are you sure you want to continue?";
     
@@ -88,7 +88,7 @@ const Settings = ({ onNavigate }) => {
         const rescanMessage = 
           "Would you like to automatically rescan your previous music folders?\n\n" +
           "Previous folders:\n" +
-          scannedFolders.map(f => `â€¢ ${f.path} (${f.trackCount} tracks)`).join('\n') +
+          scannedFolders.map(f => `• ${f.path} (${f.trackCount} tracks)`).join('\n') +
           "\n\nClick OK to rescan these folders, or Cancel to start fresh.";
         
         shouldRescan = window.confirm(rescanMessage);
@@ -220,11 +220,11 @@ const Settings = ({ onNavigate }) => {
 
   const openAnalyzer = () => {
     try {
-      console.log("ðŸ”Ž [Settings] Open Analyzer Settings button clicked");
+      console.log("🔎 [Settings] Open Analyzer Settings button clicked");
       if (typeof onNavigate === 'function') {
         onNavigate('analyzerSettings');
       } else {
-        console.warn('[Settings] onNavigate is not a function â€” falling back to location.hash');
+        console.warn('[Settings] onNavigate is not a function — falling back to location.hash');
       }
 
       // Fallback: directly set the hash to ensure the router navigates (works if onNavigate mapping fails)
@@ -386,7 +386,7 @@ const Settings = ({ onNavigate }) => {
           
           <div className="space-y-4">
             <div className="bg-zinc-900 rounded-lg p-4 border border-red-800">
-              <h3 className="text-red-400 font-medium mb-2">âš ï¸ Dangerous Actions</h3>
+              <h3 className="text-red-400 font-medium mb-2">⚠️ Dangerous Actions</h3>
               <p className="text-sm text-zinc-400 mb-4">
                 These actions will permanently modify your music library database. 
                 Always backup important data before proceeding.
@@ -397,7 +397,7 @@ const Settings = ({ onNavigate }) => {
                 disabled={loading}
                 className="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-500 text-white disabled:opacity-50 font-medium mr-3"
               >
-                ðŸ”„ Reset Entire Library
+                🔄 Reset Entire Library
               </button>
               
               <button
@@ -405,7 +405,7 @@ const Settings = ({ onNavigate }) => {
                 disabled={loading}
                 className="px-4 py-2 rounded-lg bg-orange-600 hover:bg-orange-500 text-white disabled:opacity-50 font-medium"
               >
-                ðŸ§¹ Cleanup Database
+                🧹 Cleanup Database
               </button>
               
               <p className="text-xs text-zinc-500 mt-2">
@@ -419,7 +419,7 @@ const Settings = ({ onNavigate }) => {
             </div>
             
             <div className="bg-zinc-900 rounded-lg p-4 border border-green-800">
-              <h3 className="text-green-400 font-medium mb-2">ðŸ“ Scan Music Folder</h3>
+              <h3 className="text-green-400 font-medium mb-2">📁 Scan Music Folder</h3>
               <p className="text-sm text-zinc-400 mb-4">
                 Scan your Music folder for new tracks. Existing tracks will not be duplicated.
               </p>
@@ -429,7 +429,7 @@ const Settings = ({ onNavigate }) => {
                 disabled={loading}
                 className="px-4 py-2 rounded-lg bg-green-600 hover:bg-green-500 text-white disabled:opacity-50 font-medium"
               >
-                {loading ? 'â³ Scanning...' : 'ðŸ” Scan Music Folder'}
+                {loading ? '⏳ Scanning...' : '🔍 Scan Music Folder'}
               </button>
             </div>
           </div>

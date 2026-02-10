@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: index.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -151,14 +151,14 @@ const Mixer = ({ audioManager, mixerLayout = {}, onMixerLayoutChange = () => {},
 
   // Create a unified layout update handler that properly integrates with DJSimple's mixerSubwidgets system
   const handleMixerSubwidgetUpdate = (updates) => {
-    console.log('ðŸŽ›ï¸ Mixer subwidget update called with:', updates);
+    console.log('🎛️ Mixer subwidget update called with:', updates);
     
     // If this is a knob widget being resized, apply the same size to ALL knob widgets
     const resizedWidgetId = Object.keys(updates)[0];
     const resizedWidget = updates[resizedWidgetId];
     
     if (KNOB_WIDGET_IDS.includes(resizedWidgetId) && resizedWidget && (resizedWidget.width || resizedWidget.height)) {
-      console.log('ðŸŽ›ï¸ Knob resize detected, synchronizing sizes...');
+      console.log('🎛️ Knob resize detected, synchronizing sizes...');
       // Apply the same width and height to all knob widgets, but PRESERVE individual positions
       const synchronizedUpdates = {};
       
@@ -179,11 +179,11 @@ const Mixer = ({ audioManager, mixerLayout = {}, onMixerLayoutChange = () => {},
         }
       });
       
-      console.log('ðŸŽ›ï¸ Sending synchronized knob updates:', synchronizedUpdates);
+      console.log('🎛️ Sending synchronized knob updates:', synchronizedUpdates);
       onMixerLayoutChange(synchronizedUpdates);
     } else {
       // For all other updates (position changes, single widget updates)
-      console.log('ðŸŽ›ï¸ Sending direct widget update:', updates);
+      console.log('🎛️ Sending direct widget update:', updates);
       onMixerLayoutChange(updates);
     }
   };

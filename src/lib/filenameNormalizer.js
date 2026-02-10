@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: filenameNormalizer.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -11,7 +11,7 @@
  *
  * Owner: NGKsSystems
  */
-// NGKsPlayer â€” Filename Normalizer (Artist - Title.ext)
+// NGKsPlayer — Filename Normalizer (Artist - Title.ext)
 // Hybrid approach: regex first, optional tag read, OpenRouter fallback.
 // Node/Electron main-process safe. Requires Node 18+ (fetch) or polyfill.
 
@@ -52,7 +52,7 @@ const BAND_NAME_CORRECTIONS = {
   "Thirty Eight Special": "38 Special"
 };
 
-const DASH_RE = /\s+[\-â€“â€”]\s+/;
+const DASH_RE = /\s+[\-–—]\s+/;
 const TRACKNUM_RE = /^\s*(?:disc\s*\d+\s*[-_. ]*)?(?:cd\s*\d+\s*[-_. ]*)?(?:\d{1,2}|[A-Za-z]\d)\s*[-_. ]+/i;
 const NOISE_RE = new RegExp([
   String.raw`\[(?:[^\]]+)\]`,                    // [Official], [HD], [Lyrics], [320kbps]
@@ -73,7 +73,7 @@ function cleanNoise(s) {
   cleaned = cleaned.replace(NOISE_RE, " ");
   
   // Fix multiple dashes - convert "Another - Brick - in - the - Wall" to "Another Brick in the Wall"
-  cleaned = cleaned.replace(/\s*[-â€“â€”]\s*/g, " - ").replace(/(\s-\s){2,}/g, " ");
+  cleaned = cleaned.replace(/\s*[-–—]\s*/g, " - ").replace(/(\s-\s){2,}/g, " ");
   
   // Clean up extra spaces
   cleaned = cleaned.replace(/\s+/g, " ");
@@ -86,8 +86,8 @@ function cleanNoise(s) {
 
 function alreadyNormalized(stem) {
   // MAXIMUM DETECTION MODE - Flag absolutely everything for processing
-  console.log(`ðŸ” CHECKING: "${stem}"`);
-  console.log(`âŒ FLAGGED: Maximum detection mode - flagging all files`);
+  console.log(`🔍 CHECKING: "${stem}"`);
+  console.log(`❌ FLAGGED: Maximum detection mode - flagging all files`);
   return false; // Flag every single file
 }
 
@@ -272,10 +272,10 @@ async function planForFile(filePath, opts = {}) {
   const base = path.basename(filePath);
   const ext = path.extname(filePath).toLowerCase();
   
-  console.log(`ðŸ“‹ PLANNING FILE: "${base}"`);
+  console.log(`📋 PLANNING FILE: "${base}"`);
   
   if (!AUDIO_EXTS.has(ext)) {
-    console.log(`âš ï¸ SKIP: Not audio file`);
+    console.log(`⚠️ SKIP: Not audio file`);
     return { status: "skip", reason: "not_audio", file: base, srcPath: filePath };
   }
 
@@ -283,7 +283,7 @@ async function planForFile(filePath, opts = {}) {
   
   // Check if already normalized (now much more conservative)
   if (alreadyNormalized(stem)) {
-    console.log(`âš ï¸ SKIP: Already normalized`);
+    console.log(`⚠️ SKIP: Already normalized`);
     return { status: "skip", reason: "already_normalized", file: base, srcPath: filePath };
   }
 
@@ -315,7 +315,7 @@ async function planForFile(filePath, opts = {}) {
 
   // 2) If regex failed or AI is explicitly requested, try AI parsing
   if ((!artist || !title) && opts.useAI && opts.openRouterApiKey) {
-    console.log(`ðŸ¤– AI PARSING ATTEMPT:
+    console.log(`🤖 AI PARSING ATTEMPT:
       Original filename: "${stem}"
       Cleaned: "${cleaned}"
       Regex found dash: ${!!dashMatch}
@@ -333,21 +333,21 @@ async function planForFile(filePath, opts = {}) {
           artist = aiParts[0].trim();
           title = aiParts[1].trim();
           method = "ai";
-          console.log(`âœ… AI PARSING SUCCESS: "${artist}" - "${title}"`);
+          console.log(`✅ AI PARSING SUCCESS: "${artist}" - "${title}"`);
         }
       } else {
-        console.log(`âŒ AI PARSING FAILED: No valid "Artist - Title" format in response: "${aiResult}"`);
+        console.log(`❌ AI PARSING FAILED: No valid "Artist - Title" format in response: "${aiResult}"`);
       }
     } catch (error) {
-      console.error('âŒ AI parsing failed:', error.message);
+      console.error('❌ AI parsing failed:', error.message);
       // Continue with regex result or fail
     }
   }
 
-  console.log(`ðŸ” After parsing: artist="${artist}", title="${title}", method="${method}"`);
+  console.log(`🔍 After parsing: artist="${artist}", title="${title}", method="${method}"`);
 
   if (!artist || !title) {
-    console.log(`âŒ SKIP: Can't parse - missing artist or title`);
+    console.log(`❌ SKIP: Can't parse - missing artist or title`);
     return { status: "skip", reason: "cant_parse", file: base, srcPath: filePath, method };
   }
 
@@ -356,14 +356,14 @@ async function planForFile(filePath, opts = {}) {
   const toName = `${normalizedParts.artist} - ${normalizedParts.title}${ext}`;
   const dstPath = path.join(path.dirname(filePath), toName);
 
-  console.log(`ðŸ“ Final result: "${base}" â†’ "${toName}"`);
+  console.log(`📝 Final result: "${base}" → "${toName}"`);
 
   if (path.basename(dstPath) === base) {
-    console.log(`âŒ SKIP: Unchanged after normalization`);
+    console.log(`❌ SKIP: Unchanged after normalization`);
     return { status: "skip", reason: "unchanged", file: base, srcPath: filePath };
   }
 
-  console.log(`âœ… PLAN: Will rename`);
+  console.log(`✅ PLAN: Will rename`);
   return { status: "plan", from: base, to: toName, srcPath: filePath, dstPath, method };
 }
 
@@ -412,7 +412,7 @@ export async function parseWithAI(filename, opts = {}) {
 
   // Build band exceptions context
   const bandExamplesText = bandExceptions.length > 0 ? 
-    `\nKnown band name variations: ${bandExceptions.slice(0, 20).map(e => `"${e.variant}" â†’ "${e.correct_name}"`).join(', ')}` : '';
+    `\nKnown band name variations: ${bandExceptions.slice(0, 20).map(e => `"${e.variant}" → "${e.correct_name}"`).join(', ')}` : '';
 
   const prompt = `Parse this music filename into "Artist - Title" format:
 
@@ -430,7 +430,7 @@ Rules:
 7. Band names often contain words like "The", "And", "Chronicles", proper names, or plural forms${bandExamplesText}
 
 Common flip-flop patterns to watch for:
-- "Song Title - Band Name" â†’ "Band Name - Song Title"
+- "Song Title - Band Name" → "Band Name - Song Title"
 - Look for band-like names (The, And, Chronicles, Brothers, etc.)
 
 Example responses (ONLY the clean result):
@@ -441,7 +441,7 @@ Example responses (ONLY the clean result):
 
 Response:`;
 
-  console.log(`ðŸ¤– AI PARSING REQUEST:
+  console.log(`🤖 AI PARSING REQUEST:
     Model: ${model}
     Filename: "${filename}"
     Prompt length: ${prompt.length} chars
@@ -455,7 +455,7 @@ Response:`;
       temperature: 0.1
     };
 
-    console.log(`ðŸ“¤ FULL AI REQUEST:`, JSON.stringify(requestBody, null, 2));
+    console.log(`📤 FULL AI REQUEST:`, JSON.stringify(requestBody, null, 2));
 
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
@@ -468,20 +468,20 @@ Response:`;
       body: JSON.stringify(requestBody)
     });
 
-    console.log(`ðŸ“¥ AI RESPONSE STATUS: ${response.status} ${response.statusText}`);
+    console.log(`📥 AI RESPONSE STATUS: ${response.status} ${response.statusText}`);
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error(`âŒ API ERROR BODY:`, errorText);
+      console.error(`❌ API ERROR BODY:`, errorText);
       throw new Error(`OpenRouter API error: ${response.status} ${response.statusText}`);
     }
 
     const data = await response.json();
-    console.log(`ðŸ“¥ FULL AI RESPONSE:`, JSON.stringify(data, null, 2));
+    console.log(`📥 FULL AI RESPONSE:`, JSON.stringify(data, null, 2));
 
     const result = data.choices?.[0]?.message?.content?.trim();
 
-    console.log(`ðŸŽ¯ AI FINAL RESULT: "${result}"`);
+    console.log(`🎯 AI FINAL RESULT: "${result}"`);
 
     if (!result) {
       throw new Error('No response from AI');
@@ -506,11 +506,11 @@ Response:`;
     // Remove any trailing .mp3 or other extensions the AI might have added
     cleanedResult = cleanedResult.replace(/\.(mp3|flac|wav|m4a|aac)$/i, '');
 
-    console.log(`ðŸ§¹ CLEANED RESULT: "${cleanedResult}"`);
+    console.log(`🧹 CLEANED RESULT: "${cleanedResult}"`);
 
     return cleanedResult;
   } catch (error) {
-    console.error('âŒ AI parsing failed:', error);
+    console.error('❌ AI parsing failed:', error);
     throw error;
   }
 }
@@ -538,7 +538,7 @@ Important context:
 
 If you find clear errors (like incomplete band names, obvious misspellings, or wrong order), provide the corrected "Artist - Title" format.`;
 
-  console.log(`ðŸ”§ AI CORRECTION REQUEST:
+  console.log(`🔧 AI CORRECTION REQUEST:
     Original: "${originalFilename}"
     Current: "${currentSuggestion}"
     Model: ${model}
@@ -552,7 +552,7 @@ If you find clear errors (like incomplete band names, obvious misspellings, or w
       temperature: 0.1
     };
 
-    console.log(`ðŸ“¤ CORRECTION REQUEST:`, JSON.stringify(requestBody, null, 2));
+    console.log(`📤 CORRECTION REQUEST:`, JSON.stringify(requestBody, null, 2));
 
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
@@ -565,16 +565,16 @@ If you find clear errors (like incomplete band names, obvious misspellings, or w
       body: JSON.stringify(requestBody)
     });
 
-    console.log(`ðŸ“¥ CORRECTION RESPONSE STATUS: ${response.status}`);
+    console.log(`📥 CORRECTION RESPONSE STATUS: ${response.status}`);
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error(`âŒ CORRECTION API ERROR:`, errorText);
+      console.error(`❌ CORRECTION API ERROR:`, errorText);
       throw new Error(`OpenRouter API error: ${response.status} ${response.statusText}`);
     }
 
     const data = await response.json();
-    console.log(`ðŸ“¥ FULL CORRECTION RESPONSE:`, JSON.stringify(data, null, 2));
+    console.log(`📥 FULL CORRECTION RESPONSE:`, JSON.stringify(data, null, 2));
 
     const corrected = data.choices?.[0]?.message?.content?.trim();
 
@@ -582,11 +582,11 @@ If you find clear errors (like incomplete band names, obvious misspellings, or w
       throw new Error('No response from AI');
     }
 
-    console.log(`ðŸŽ¯ AI CORRECTION RESULT: "${corrected}"`);
+    console.log(`🎯 AI CORRECTION RESULT: "${corrected}"`);
 
     // Check if AI thinks current suggestion is correct
     if (corrected === "CORRECT" || corrected === "GOOD") {
-      console.log(`âœ… AI says current suggestion is correct`);
+      console.log(`✅ AI says current suggestion is correct`);
       return currentSuggestion; // Return the same suggestion
     }
 
@@ -594,14 +594,14 @@ If you find clear errors (like incomplete band names, obvious misspellings, or w
     if (corrected && !corrected.includes('.')) {
       const ext = path.extname(currentSuggestion);
       const result = corrected + ext;
-      console.log(`ðŸ”§ AI provided correction: "${result}"`);
+      console.log(`🔧 AI provided correction: "${result}"`);
       return result;
     }
 
-    console.log(`ðŸ”§ AI provided raw correction: "${corrected}"`);
+    console.log(`🔧 AI provided raw correction: "${corrected}"`);
     return corrected;
   } catch (error) {
-    console.error('âŒ AI correction failed:', error);
+    console.error('❌ AI correction failed:', error);
     throw error;
   }
 }

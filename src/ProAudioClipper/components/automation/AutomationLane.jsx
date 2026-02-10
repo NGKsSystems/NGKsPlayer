@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: AutomationLane.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -279,7 +279,7 @@ const AutomationLane = ({
           marginLeft: 'auto',
           color: isRecording ? '#ff4444' : '#888'
         }}>
-          {isRecording ? 'â— REC' : 'â—‹'}
+          {isRecording ? '● REC' : '○'}
         </span>
       </div>
       <canvas

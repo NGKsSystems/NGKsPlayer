@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: RestorationEffects.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -199,7 +199,7 @@ export class ClickRemoval extends BaseAudioEffect {
     this.lowpass2.frequency.value = 10000;
     this.lowpass2.Q.value = 0.707;
     
-    // Chain: compressor â†’ lowpass filters
+    // Chain: compressor → lowpass filters
     this.compressor.connect(this.lowpass1);
     this.lowpass1.connect(this.lowpass2);
     this.setProcessingChain(this.compressor, this.lowpass2);

@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: MultiTrackTimeline.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -409,7 +409,7 @@ const MultiTrackTimeline = React.forwardRef(({
       ctx.fillStyle = '#e74c3c';
       ctx.font = '12px monospace';
       ctx.textAlign = 'center';
-      ctx.fillText('âœ‚', razorGuideX, RULER_HEIGHT - 5);
+      ctx.fillText('✂', razorGuideX, RULER_HEIGHT - 5);
     }
 
     // Draw drag over track highlight

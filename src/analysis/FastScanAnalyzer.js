@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: FastScanAnalyzer.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -52,7 +52,7 @@ function calculateGainRecommendation(loudness, targetLoudness = 70) {
 
 export class FastScanAnalyzer {
   static async analyze(audioBuffer, genre = "", cfg = {}) {
-    console.log("[FastScanAnalyzer] START â€” buffer duration:", audioBuffer?.duration, "sampleRate:", audioBuffer?.sampleRate, "length:", audioBuffer?.length);
+    console.log("[FastScanAnalyzer] START — buffer duration:", audioBuffer?.duration, "sampleRate:", audioBuffer?.sampleRate, "length:", audioBuffer?.length);
 
     // Robust duration check: some reconstructed audio-like objects may not have
     // `duration` set; compute from length/sampleRate when missing.

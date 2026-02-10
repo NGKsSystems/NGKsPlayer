@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: FileLoader.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -91,7 +91,7 @@ const FileLoader = ({ onFileLoad, currentFile }) => {
   return (
     <div className="file-loader">
       <div className="loader-header">
-        <h3>ðŸ“ Load Audio</h3>
+        <h3>📁 Load Audio</h3>
       </div>
 
       <div
@@ -102,7 +102,7 @@ const FileLoader = ({ onFileLoad, currentFile }) => {
         onDrop={handleDrop}
       >
         <div className="drop-content">
-          <p className="drop-icon">ðŸŽµ</p>
+          <p className="drop-icon">🎵</p>
           <p className="drop-text">Drag audio here</p>
         </div>
       </div>

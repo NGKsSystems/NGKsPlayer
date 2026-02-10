@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: index.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -163,7 +163,7 @@ export default function AutoDJPanel({ trackLibrary, currentTrack, onTrackChange 
     <div className="bg-gray-900 border border-gray-700 rounded-lg p-4 m-4">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-bold text-white flex items-center">
-          ðŸ¤– Auto DJ Intelligence
+          🤖 Auto DJ Intelligence
           {isActive && <span className="ml-2 w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>}
         </h2>
         
@@ -359,7 +359,7 @@ export default function AutoDJPanel({ trackLibrary, currentTrack, onTrackChange 
               {/* Mix Instructions */}
               <div className="bg-gray-700 rounded p-3">
                 <h4 className="font-medium text-white mb-2">Mix Instructions</h4>
-                <p className="text-green-400 text-sm mb-2">ðŸŽµ {transitionAnalysis.advice}</p>
+                <p className="text-green-400 text-sm mb-2">🎵 {transitionAnalysis.advice}</p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
                   <div>
                     <span className="text-gray-400">Strategy:</span>
@@ -404,7 +404,7 @@ export default function AutoDJPanel({ trackLibrary, currentTrack, onTrackChange 
 
       {/* Info Panel */}
       <div className="mt-4 p-3 bg-gray-800 rounded-lg">
-        <h3 className="text-sm font-semibold text-white mb-2">ðŸ§  Auto DJ Intelligence</h3>
+        <h3 className="text-sm font-semibold text-white mb-2">🧠 Auto DJ Intelligence</h3>
         <p className="text-xs text-gray-400 leading-relaxed">
           The Auto DJ analyzes harmonic compatibility, energy flow, BPM matching, and song structure 
           to create seamless transitions. It learns from your music library and adapts to context 

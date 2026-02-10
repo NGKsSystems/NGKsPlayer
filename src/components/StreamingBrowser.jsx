@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: StreamingBrowser.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -54,16 +54,16 @@ const StreamingBrowser = ({
 
   // Service configurations (matching Serato's layout)
   const serviceConfig = {
-    soundcloud: { name: 'SoundCloud', icon: 'ðŸŸ ', color: '#ff5500' },
-    spotify: { name: 'Spotify', icon: 'ðŸŸ¢', color: '#1ed760' },
-    apple_music: { name: 'Apple Music', icon: 'ðŸ”´', color: '#fa243c' },
-    tidal: { name: 'Tidal', icon: 'ðŸ”µ', color: '#000000' },
-    beatport: { name: 'Beatport', icon: 'ðŸŸ¡', color: '#01ff01' },
-    beatsource: { name: 'Beatsource', icon: 'ðŸŸ£', color: '#6441a4' },
-    youtube_music: { name: 'YouTube Music', icon: 'ðŸ”´', color: '#ff0000' },
-    bandcamp: { name: 'Bandcamp', icon: 'ðŸŽµ', color: '#408294' },
-    mixcloud: { name: 'Mixcloud', icon: 'ðŸŽ§', color: '#314359' },
-    deezer: { name: 'Deezer', icon: 'ðŸŸ ', color: '#feaa2d' }
+    soundcloud: { name: 'SoundCloud', icon: '🟠', color: '#ff5500' },
+    spotify: { name: 'Spotify', icon: '🟢', color: '#1ed760' },
+    apple_music: { name: 'Apple Music', icon: '🔴', color: '#fa243c' },
+    tidal: { name: 'Tidal', icon: '🔵', color: '#000000' },
+    beatport: { name: 'Beatport', icon: '🟡', color: '#01ff01' },
+    beatsource: { name: 'Beatsource', icon: '🟣', color: '#6441a4' },
+    youtube_music: { name: 'YouTube Music', icon: '🔴', color: '#ff0000' },
+    bandcamp: { name: 'Bandcamp', icon: '🎵', color: '#408294' },
+    mixcloud: { name: 'Mixcloud', icon: '🎧', color: '#314359' },
+    deezer: { name: 'Deezer', icon: '🟠', color: '#feaa2d' }
   };
 
   // Initialize available services
@@ -82,7 +82,7 @@ const StreamingBrowser = ({
     setIsSearching(true);
     
     try {
-      console.log('ðŸ” Searching for:', query);
+      console.log('🔍 Searching for:', query);
       const results = await streamingController.search(query, {
         services: selectedServices,
         limit: 100,
@@ -90,7 +90,7 @@ const StreamingBrowser = ({
       });
 
       setSearchResults(results.combined || []);
-      console.log(`âœ… Found ${results.combined?.length || 0} tracks`);
+      console.log(`✅ Found ${results.combined?.length || 0} tracks`);
       
     } catch (error) {
       console.error('Search failed:', error);

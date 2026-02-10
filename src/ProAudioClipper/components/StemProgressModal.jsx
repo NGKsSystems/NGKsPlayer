@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: StemProgressModal.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -43,19 +43,19 @@ const StemProgressModal = ({ progress, onCancel }) => {
   const getStatusEmoji = () => {
     switch (progress.status) {
       case 'initializing':
-        return 'âš™ï¸';
+        return '⚙️';
       case 'separating':
-        return 'ðŸŽµ';
+        return '🎵';
       case 'processing':
-        return 'âš¡';
+        return '⚡';
       case 'complete':
-        return 'âœ…';
+        return '✅';
       case 'error':
-        return 'âŒ';
+        return '❌';
       case 'cancelled':
-        return 'ðŸ›‘';
+        return '🛑';
       default:
-        return 'â³';
+        return '⏳';
     }
   };
 

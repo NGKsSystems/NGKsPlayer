@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: DeepScanAnalyzer.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -30,7 +30,7 @@ export class DeepScanAnalyzer {
       return fastResult;
     }
 
-    console.log('[DeepScanAnalyzer] Starting deep analyze â€” duration:', audioBuffer.duration, 'sampleRate:', audioBuffer.sampleRate, 'length:', audioBuffer.length);
+    console.log('[DeepScanAnalyzer] Starting deep analyze — duration:', audioBuffer.duration, 'sampleRate:', audioBuffer.sampleRate, 'length:', audioBuffer.length);
     const channelData = getMonoData(audioBuffer);
     const sampleRate = audioBuffer.sampleRate || 22050;
     console.log('[DeepScanAnalyzer] channelData length:', channelData.length, 'sampleRate:', sampleRate);

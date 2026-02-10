@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: VoiceControl.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -110,7 +110,7 @@ export default function VoiceControl({
       {/* Feedback popup */}
       {showFeedback && showTranscript && (
         <div className="mb-3 px-4 py-2 rounded-lg bg-zinc-800 border border-zinc-700 text-white text-sm shadow-lg animate-fade-in">
-          ðŸŽ¤ "{lastCommand}"
+          🎤 "{lastCommand}"
         </div>
       )}
 

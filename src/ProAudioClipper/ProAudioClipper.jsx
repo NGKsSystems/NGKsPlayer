@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: ProAudioClipper.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -186,7 +186,7 @@ const ProAudioClipper = ({ onNavigate }) => {
     const initFXEngine = async () => {
       try {
         if (multiTrackEngine.audioContext) {
-          console.log('ðŸŽ›ï¸ Initializing Professional FX Engine...');
+          console.log('🎛️ Initializing Professional FX Engine...');
           const engine = new AdvancedAudioFXEngine(multiTrackEngine.audioContext);
           
           // Connect FX engine to audio path (defensive: use known properties)
@@ -194,13 +194,13 @@ const ProAudioClipper = ({ onNavigate }) => {
             if (multiTrackEngine.masterGain && engine && engine.input) {
               multiTrackEngine.masterGain.connect(engine.input);
             } else {
-              console.warn('ProAudioClipper: missing masterGain or engine.input â€” skipping connect to engine input');
+              console.warn('ProAudioClipper: missing masterGain or engine.input — skipping connect to engine input');
             }
 
             if (engine && engine.output && multiTrackEngine?.audioContext?.destination) {
               engine.output.connect(multiTrackEngine.audioContext.destination);
             } else {
-              console.warn('ProAudioClipper: missing engine.output or audioContext.destination â€” skipping connect to destination');
+              console.warn('ProAudioClipper: missing engine.output or audioContext.destination — skipping connect to destination');
             }
           } catch (e) {
             console.error('ProAudioClipper: failed to wire FX engine safely:', e);
@@ -214,10 +214,10 @@ const ProAudioClipper = ({ onNavigate }) => {
           // engine.createEffectChain('master');
           
           setFxEngine(engine);
-          console.log('âœ… FX Engine initialized successfully');
+          console.log('✅ FX Engine initialized successfully');
         }
       } catch (error) {
-        console.error('âŒ Failed to initialize FX Engine:', error);
+        console.error('❌ Failed to initialize FX Engine:', error);
       }
     };
 
@@ -352,7 +352,7 @@ const ProAudioClipper = ({ onNavigate }) => {
     setShowStemExtractor(false);
     setContextMenu(null);
     
-    alert(`âœ… All stems loaded! Use Solo/Mute buttons to control playback.`);
+    alert(`✅ All stems loaded! Use Solo/Mute buttons to control playback.`);
   }, [multiTrackEngine, trackManager]);
 
   // Audio file loading - creates new track with automatic clip
@@ -690,7 +690,7 @@ const ProAudioClipper = ({ onNavigate }) => {
               gap: '6px'
             }}
           >
-            â† Back
+            ← Back
           </button>
           <h1>Pro Audio Clipper</h1>
         </div>
@@ -776,7 +776,7 @@ const ProAudioClipper = ({ onNavigate }) => {
               borderColor: '#66bb6a'
             }}
           >
-            ðŸŽµ Extract Stems
+            🎵 Extract Stems
           </button>
           <button
             onClick={() => {
@@ -793,7 +793,7 @@ const ProAudioClipper = ({ onNavigate }) => {
               borderColor: '#42A5F5'
             }}
           >
-            ðŸŽ¤ Transcribe
+            🎤 Transcribe
           </button>
           <button
             onClick={() => {
@@ -810,7 +810,7 @@ const ProAudioClipper = ({ onNavigate }) => {
               borderColor: '#F06292'
             }}
           >
-            ðŸŽ¬ Karaoke
+            🎬 Karaoke
           </button>
           <button
             onClick={() => {
@@ -824,7 +824,7 @@ const ProAudioClipper = ({ onNavigate }) => {
               borderColor: '#BA68C8'
             }}
           >
-            ðŸŽ¨ Visuals
+            🎨 Visuals
           </button>
           <button
             onClick={() => setShowAnalysisDashboard(true)}
@@ -834,7 +834,7 @@ const ProAudioClipper = ({ onNavigate }) => {
               background: showAnalysisDashboard ? '#4CAF50' : undefined
             }}
           >
-            ðŸ“Š Analysis
+            📊 Analysis
           </button>
           <button
             onClick={() => setShowAutomationDashboard(true)}
@@ -844,7 +844,7 @@ const ProAudioClipper = ({ onNavigate }) => {
               background: showAutomationDashboard ? '#4CAF50' : undefined
             }}
           >
-            ðŸŽ›ï¸ Automation
+            🎛️ Automation
           </button>
           <button
             onClick={() => setShowRoutingDashboard(true)}
@@ -854,7 +854,7 @@ const ProAudioClipper = ({ onNavigate }) => {
               background: showRoutingDashboard ? '#4CAF50' : undefined
             }}
           >
-            ðŸ”€ Routing
+            🔀 Routing
           </button>
           <button
             onClick={() => setShowTimeStretchDashboard(true)}
@@ -864,7 +864,7 @@ const ProAudioClipper = ({ onNavigate }) => {
               background: showTimeStretchDashboard ? '#4CAF50' : undefined
             }}
           >
-            ðŸŽµ Time/Pitch
+            🎵 Time/Pitch
           </button>
           <button
             onClick={() => setShowExportMasteringInterface(true)}
@@ -874,7 +874,7 @@ const ProAudioClipper = ({ onNavigate }) => {
               background: showExportMasteringInterface ? '#FF9800' : undefined
             }}
           >
-            ðŸ“¦ Export/Master
+            📦 Export/Master
           </button>
           <button
             onClick={() => setShowMIDIInterface(true)}
@@ -884,7 +884,7 @@ const ProAudioClipper = ({ onNavigate }) => {
               background: showMIDIInterface ? '#9C27B0' : undefined
             }}
           >
-            ðŸŽ¹ MIDI
+            🎹 MIDI
           </button>
           <button
             onClick={() => setShowCloudInterface(true)}
@@ -894,7 +894,7 @@ const ProAudioClipper = ({ onNavigate }) => {
               background: showCloudInterface ? '#2196F3' : undefined
             }}
           >
-            â˜ï¸ Cloud
+            ☁️ Cloud
           </button>
           <button
             onClick={() => setShowHelpInterface(true)}
@@ -904,7 +904,7 @@ const ProAudioClipper = ({ onNavigate }) => {
               background: showHelpInterface ? '#FF9800' : undefined
             }}
           >
-            â“ Help
+            ❓ Help
           </button>
         </div>
       </div>
@@ -1046,14 +1046,14 @@ const ProAudioClipper = ({ onNavigate }) => {
                 color: '#00d4ff'
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <span style={{ fontSize: '16px' }}>ðŸ“‹</span>
+                  <span style={{ fontSize: '16px' }}>📋</span>
                   <strong>{currentProject.name}</strong>
                   <span style={{ opacity: 0.7, fontSize: '12px' }}>
-                    â€¢ Zoom: {Math.round(zoomLevel * 100)}% â€¢ {currentProject.settings?.sampleRate || 44100}Hz
+                    • Zoom: {Math.round(zoomLevel * 100)}% • {currentProject.settings?.sampleRate || 44100}Hz
                   </span>
                 </div>
                 <span style={{ fontSize: '11px', opacity: 0.6 }}>
-                  Template Applied âœ“
+                  Template Applied ✓
                 </span>
               </div>
             )}
@@ -1081,12 +1081,12 @@ const ProAudioClipper = ({ onNavigate }) => {
               <div className="undo-status-content">
                 {canUndo && (
                   <span className="undo-info">
-                    â†©ï¸ <strong>Ctrl+Z:</strong> {nextUndoDescription}
+                    ↩️ <strong>Ctrl+Z:</strong> {nextUndoDescription}
                   </span>
                 )}
                 {canRedo && (
                   <span className="redo-info">
-                    â†ªï¸ <strong>Ctrl+Y:</strong> {nextRedoDescription}
+                    ↪️ <strong>Ctrl+Y:</strong> {nextRedoDescription}
                   </span>
                 )}
               </div>
@@ -1221,7 +1221,7 @@ const ProAudioClipper = ({ onNavigate }) => {
                 color: '#ffffff',
                 fontSize: '16px'
               }}>
-                ðŸŽ¯ Professional Audio Analysis Suite
+                🎯 Professional Audio Analysis Suite
               </h2>
               <button
                 onClick={() => setShowAnalysisDashboard(false)}
@@ -1235,7 +1235,7 @@ const ProAudioClipper = ({ onNavigate }) => {
                 }}
                 title="Close Analysis Dashboard"
               >
-                Ã—
+                ×
               </button>
             </div>
             <div style={{ padding: '20px' }}>
@@ -1281,7 +1281,7 @@ const ProAudioClipper = ({ onNavigate }) => {
                 color: '#ffffff',
                 fontSize: '16px'
               }}>
-                ðŸŽ›ï¸ Professional Automation System
+                🎛️ Professional Automation System
               </h2>
               <button
                 onClick={() => setShowAutomationDashboard(false)}
@@ -1295,7 +1295,7 @@ const ProAudioClipper = ({ onNavigate }) => {
                 }}
                 title="Close Automation Dashboard"
               >
-                Ã—
+                ×
               </button>
             </div>
             <div style={{ padding: '20px' }}>
@@ -1354,7 +1354,7 @@ const ProAudioClipper = ({ onNavigate }) => {
                 color: '#ffffff',
                 fontSize: '16px'
               }}>
-                ðŸ”€ Professional Routing System
+                🔀 Professional Routing System
               </h2>
               <button
                 onClick={() => setShowRoutingDashboard(false)}
@@ -1368,7 +1368,7 @@ const ProAudioClipper = ({ onNavigate }) => {
                 }}
                 title="Close Routing Dashboard"
               >
-                Ã—
+                ×
               </button>
             </div>
             <div style={{ padding: '20px' }}>
@@ -1424,7 +1424,7 @@ const ProAudioClipper = ({ onNavigate }) => {
                 color: '#fff',
                 fontSize: '16px'
               }}>
-                ðŸŽµ Professional Time Stretching & Pitch Correction
+                🎵 Professional Time Stretching & Pitch Correction
               </h2>
               <button
                 onClick={() => setShowTimeStretchDashboard(false)}
@@ -1438,7 +1438,7 @@ const ProAudioClipper = ({ onNavigate }) => {
                 }}
                 title="Close Time Stretch Dashboard"
               >
-                Ã—
+                ×
               </button>
             </div>
             <div style={{ padding: '20px', overflow: 'auto', flex: 1 }}>
@@ -1500,7 +1500,7 @@ const ProAudioClipper = ({ onNavigate }) => {
                 color: '#fff',
                 fontSize: '16px'
               }}>
-                ðŸ“¦ Professional Export & Mastering Suite
+                📦 Professional Export & Mastering Suite
               </h2>
               <button
                 onClick={() => setShowExportMasteringInterface(false)}
@@ -1514,7 +1514,7 @@ const ProAudioClipper = ({ onNavigate }) => {
                 }}
                 title="Close Export & Mastering Suite"
               >
-                Ã—
+                ×
               </button>
             </div>
             <div style={{ padding: '20px', overflow: 'auto', flex: 1 }}>
@@ -1573,7 +1573,7 @@ const ProAudioClipper = ({ onNavigate }) => {
                 color: '#fff',
                 fontSize: '16px'
               }}>
-                ðŸŽ¹ Professional MIDI Integration Suite
+                🎹 Professional MIDI Integration Suite
               </h2>
               <button
                 onClick={() => setShowMIDIInterface(false)}
@@ -1587,7 +1587,7 @@ const ProAudioClipper = ({ onNavigate }) => {
                 }}
                 title="Close MIDI Integration Suite"
               >
-                Ã—
+                ×
               </button>
             </div>
             <div style={{ padding: '20px', overflow: 'auto', flex: 1 }}>
@@ -1644,7 +1644,7 @@ const ProAudioClipper = ({ onNavigate }) => {
                 color: '#fff',
                 fontSize: '16px'
               }}>
-                â˜ï¸ Cloud Integration & Collaboration Suite
+                ☁️ Cloud Integration & Collaboration Suite
               </h2>
               <button
                 onClick={() => setShowCloudInterface(false)}
@@ -1658,7 +1658,7 @@ const ProAudioClipper = ({ onNavigate }) => {
                 }}
                 title="Close Cloud Integration Suite"
               >
-                Ã—
+                ×
               </button>
             </div>
             <div style={{ padding: '20px', overflow: 'auto', flex: 1 }}>
@@ -1730,7 +1730,7 @@ const ProAudioClipper = ({ onNavigate }) => {
           <WhisperTranscriber
             audioFilePath={currentAudioFile}
             onTranscriptionComplete={async (transcription) => {
-              console.log('âœ… Transcription complete:', transcription);
+              console.log('✅ Transcription complete:', transcription);
               setTranscriptionResults(transcription);
               
               // Extract album art and metadata if available
@@ -1739,7 +1739,7 @@ const ProAudioClipper = ({ onNavigate }) => {
                 const metadata = await extractMetadata(currentAudioFile);
                 setCurrentMetadata(metadata);
                 setCurrentAlbumArt(metadata.albumArt);
-                console.log('ðŸ“€ Metadata extracted:', metadata);
+                console.log('📀 Metadata extracted:', metadata);
               } catch (error) {
                 console.warn('Could not extract metadata:', error);
               }
@@ -1754,7 +1754,7 @@ const ProAudioClipper = ({ onNavigate }) => {
               a.click();
               URL.revokeObjectURL(url);
               
-              alert(`âœ… Transcription Complete & Exported!\n\nDetected Language: ${transcription.language}\nWords: ${transcription.words?.length || 0}\nDuration: ${transcription.duration?.toFixed(2)}s\n\nSRT file saved! Click "ðŸŽ¬ Karaoke" to view synchronized lyrics.`);
+              alert(`✅ Transcription Complete & Exported!\n\nDetected Language: ${transcription.language}\nWords: ${transcription.words?.length || 0}\nDuration: ${transcription.duration?.toFixed(2)}s\n\nSRT file saved! Click "🎬 Karaoke" to view synchronized lyrics.`);
               setShowWhisperTranscriber(false);
             }}
             onClose={() => setShowWhisperTranscriber(false)}
@@ -1863,7 +1863,7 @@ const ProAudioClipper = ({ onNavigate }) => {
               onMouseLeave={(e) => e.target.style.background = 'transparent'}
               onClick={() => handleExtractStems(contextMenu.trackId, contextMenu.filePath)}
             >
-              <span>ðŸŽµ</span>
+              <span>🎵</span>
               <span>Extract Stems</span>
             </div>
             <div 

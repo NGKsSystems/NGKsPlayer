@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: NowPlayingHeader.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -63,7 +63,7 @@ export function NowPlayingHeader({
               color: 'var(--accent-primary)'
             }}
           >
-            â™© {detectedBPM}
+            ♩ {detectedBPM}
           </div>
         )}
       </div>
@@ -81,9 +81,9 @@ export function NowPlayingHeader({
               border: 'none',
               cursor: 'pointer'
             }}
-            title="Test Blood Effects ðŸ©¸"
+            title="Test Blood Effects 🩸"
           >
-            ðŸ©¸ BLOOD
+            🩸 BLOOD
           </button>
         )}
         
@@ -103,7 +103,7 @@ export function NowPlayingHeader({
           }}
           title="Change Theme"
         >
-          ðŸŽ¨ Theme
+          🎨 Theme
         </button>
         
         {showThemeMenu && (
@@ -123,7 +123,7 @@ export function NowPlayingHeader({
                   currentTheme === theme.id ? 'bg-gray-700 font-bold' : ''
                 }`}
               >
-                {currentTheme === theme.id ? 'âœ“ ' : ''}{theme.name}
+                {currentTheme === theme.id ? '✓ ' : ''}{theme.name}
               </button>
             ))}
           </div>
@@ -141,7 +141,7 @@ export function NowPlayingHeader({
             cursor: 'pointer'
           }}
         >
-          ðŸ“š Back to Library
+          📚 Back to Library
         </button>
       </div>
     </div>

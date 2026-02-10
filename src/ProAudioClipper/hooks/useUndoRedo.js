@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: useUndoRedo.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -16,7 +16,7 @@ import { useState, useCallback, useRef } from 'react';
 /**
  * Professional Undo/Redo System - Command Pattern Implementation
  * 
- * ðŸŽ¯ Features:
+ * 🎯 Features:
  * - Unlimited undo/redo levels
  * - Command pattern for all operations
  * - State snapshots for complex operations
@@ -24,7 +24,7 @@ import { useState, useCallback, useRef } from 'react';
  * - Memory efficient with state compression
  * - Professional editing safety
  * 
- * ðŸ§ª Testing Notes for Robot Tester:
+ * 🧪 Testing Notes for Robot Tester:
  * TEST CATEGORIES:
  * 1. Basic Operations: Single undo/redo of clip moves, cuts, deletes
  * 2. Chain Operations: Multiple sequential operations and batch undo
@@ -65,7 +65,7 @@ export const COMMAND_TYPES = {
 export class CommandFactory {
   /**
    * Create Clip Move Command
-   * ðŸ§ª ROBOT TEST: Move clip between tracks, undo should restore original position
+   * 🧪 ROBOT TEST: Move clip between tracks, undo should restore original position
    */
   static createClipMoveCommand(clipId, fromTrackId, toTrackId, oldPosition, newPosition) {
     return {
@@ -84,7 +84,7 @@ export class CommandFactory {
 
   /**
    * Create Clip Split Command
-   * ðŸ§ª ROBOT TEST: Split clip, undo should merge back to original clip
+   * 🧪 ROBOT TEST: Split clip, undo should merge back to original clip
    */
   static createClipSplitCommand(originalClip, splitTime, newClip1, newClip2) {
     return {
@@ -103,7 +103,7 @@ export class CommandFactory {
 
   /**
    * Create Clip Delete Command
-   * ðŸ§ª ROBOT TEST: Delete clip, undo should restore with exact same properties
+   * 🧪 ROBOT TEST: Delete clip, undo should restore with exact same properties
    */
   static createClipDeleteCommand(clip, trackId) {
     return {
@@ -119,7 +119,7 @@ export class CommandFactory {
 
   /**
    * Create Track Operations
-   * ðŸ§ª ROBOT TEST: Track operations should maintain clip relationships
+   * 🧪 ROBOT TEST: Track operations should maintain clip relationships
    */
   static createTrackCreateCommand(track) {
     return {
@@ -146,7 +146,7 @@ export class CommandFactory {
 
   /**
    * Create Batch Command for Multiple Operations
-   * ðŸ§ª ROBOT TEST: Batch operations should undo/redo as single unit
+   * 🧪 ROBOT TEST: Batch operations should undo/redo as single unit
    */
   static createBatchCommand(commands, description) {
     return {
@@ -161,7 +161,7 @@ export class CommandFactory {
 
   /**
    * Create State Snapshot Command (for complex operations)
-   * ðŸ§ª ROBOT TEST: State snapshots should perfectly restore complex states
+   * 🧪 ROBOT TEST: State snapshots should perfectly restore complex states
    */
   static createStateSnapshotCommand(beforeState, afterState, description) {
     return {
@@ -179,7 +179,7 @@ export class CommandFactory {
 /**
  * Professional Undo/Redo Hook
  * 
- * ðŸŽ¯ Usage Pattern:
+ * 🎯 Usage Pattern:
  * const { executeCommand, undo, redo, canUndo, canRedo, history } = useUndoRedo(trackManager);
  * 
  * executeCommand(CommandFactory.createClipMoveCommand(...));
@@ -203,7 +203,7 @@ export const useUndoRedo = (trackManager) => {
 
   /**
    * Execute a command and add to undo stack
-   * ðŸ§ª ROBOT TEST: All executed commands must be undoable
+   * 🧪 ROBOT TEST: All executed commands must be undoable
    */
   const executeCommand = useCallback((command) => {
     if (!command || !command.type) {
@@ -243,7 +243,7 @@ export const useUndoRedo = (trackManager) => {
           memoryUsage: prev.memoryUsage + JSON.stringify(command).length
         }));
         
-        console.log(`âœ… Command executed: ${command.description}`);
+        console.log(`✅ Command executed: ${command.description}`);
         return true;
       }
     } catch (error) {
@@ -256,7 +256,7 @@ export const useUndoRedo = (trackManager) => {
 
   /**
    * Undo last command
-   * ðŸ§ª ROBOT TEST: Undo should perfectly reverse the last operation
+   * 🧪 ROBOT TEST: Undo should perfectly reverse the last operation
    */
   const undo = useCallback(() => {
     if (undoStack.length === 0) {
@@ -281,7 +281,7 @@ export const useUndoRedo = (trackManager) => {
           undoCount: prev.undoCount + 1
         }));
         
-        console.log(`â†©ï¸ Undid: ${lastCommand.description}`);
+        console.log(`↩️ Undid: ${lastCommand.description}`);
         return true;
       }
     } catch (error) {
@@ -294,7 +294,7 @@ export const useUndoRedo = (trackManager) => {
 
   /**
    * Redo last undone command
-   * ðŸ§ª ROBOT TEST: Redo should perfectly restore undone operation
+   * 🧪 ROBOT TEST: Redo should perfectly restore undone operation
    */
   const redo = useCallback(() => {
     if (redoStack.length === 0) {
@@ -319,7 +319,7 @@ export const useUndoRedo = (trackManager) => {
           redoCount: prev.redoCount + 1
         }));
         
-        console.log(`â†ªï¸ Redid: ${lastUndoneCommand.description}`);
+        console.log(`↪️ Redid: ${lastUndoneCommand.description}`);
         return true;
       }
     } catch (error) {
@@ -332,7 +332,7 @@ export const useUndoRedo = (trackManager) => {
 
   /**
    * Execute multiple commands as a batch
-   * ðŸ§ª ROBOT TEST: Batch execution should be atomic (all or nothing)
+   * 🧪 ROBOT TEST: Batch execution should be atomic (all or nothing)
    */
   const executeBatch = useCallback((commands, description) => {
     if (!commands || commands.length === 0) return false;
@@ -343,7 +343,7 @@ export const useUndoRedo = (trackManager) => {
 
   /**
    * Clear all history
-   * ðŸ§ª ROBOT TEST: Clear should reset all stacks and maintain clean state
+   * 🧪 ROBOT TEST: Clear should reset all stacks and maintain clean state
    */
   const clearHistory = useCallback(() => {
     setUndoStack([]);
@@ -355,7 +355,7 @@ export const useUndoRedo = (trackManager) => {
       redoCount: 0,
       memoryUsage: 0
     });
-    console.log('ðŸ§¹ Undo/Redo history cleared');
+    console.log('🧹 Undo/Redo history cleared');
   }, []);
 
   // Computed state
@@ -391,7 +391,7 @@ export const useUndoRedo = (trackManager) => {
 
 /**
  * Internal command execution
- * ðŸ§ª ROBOT TEST: All command types must execute successfully
+ * 🧪 ROBOT TEST: All command types must execute successfully
  */
 function executeCommandInternal(command, trackManager) {
   switch (command.type) {
@@ -427,7 +427,7 @@ function executeCommandInternal(command, trackManager) {
 
 /**
  * Reverse command execution
- * ðŸ§ª ROBOT TEST: All reversals must perfectly undo original operations
+ * 🧪 ROBOT TEST: All reversals must perfectly undo original operations
  */
 function reverseCommand(command, trackManager) {
   switch (command.type) {

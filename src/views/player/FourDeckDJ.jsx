@@ -52,7 +52,7 @@ const FourDeckDJ = ({ onNavigate }) => {
 
   // Initialize audio manager
   useEffect(() => {
-    console.log('ðŸŽ§ Initializing 4-Deck DJ System...');
+    console.log('🎧 Initializing 4-Deck DJ System...');
     
     if (!audioManagerRef.current) {
       audioManagerRef.current = new AudioManager();
@@ -99,7 +99,7 @@ const FourDeckDJ = ({ onNavigate }) => {
       const result = await window.api.invoke('library:getTracks', {});
       if (result && Array.isArray(result)) {
         setTracks(result);
-        console.log(`ðŸ“š Loaded ${result.length} tracks for 4-deck DJ system`);
+        console.log(`📚 Loaded ${result.length} tracks for 4-deck DJ system`);
       }
     } catch (err) {
       console.error('Failed to load tracks:', err);
@@ -110,7 +110,7 @@ const FourDeckDJ = ({ onNavigate }) => {
   // Handle layout changes
   const handleLayoutChange = (newLayoutConfig) => {
     setLayoutConfig(newLayoutConfig);
-    console.log('ðŸ”„ Layout changed:', newLayoutConfig);
+    console.log('🔄 Layout changed:', newLayoutConfig);
     
     // Adjust mixer layout based on deck configuration
     adjustMixerForLayout(newLayoutConfig);
@@ -231,13 +231,13 @@ const FourDeckDJ = ({ onNavigate }) => {
             className="nav-btn library-btn"
             onClick={() => onNavigate('library')}
           >
-            ðŸ“š Library
+            📚 Library
           </button>
           <button 
             className="nav-btn settings-btn"
             onClick={() => onNavigate('settings')}
           >
-            âš™ï¸ Settings
+            ⚙️ Settings
           </button>
         </div>
       </div>

@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: playerCrashProtection.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -219,7 +219,7 @@ export class CrashProtection {
       if (wasPlaying) {
         try {
           await this.audioRef.play();
-          console.log('[CrashProtection] âœ“ Recovered with pause/resume');
+          console.log('[CrashProtection] ✓ Recovered with pause/resume');
           this.onRecoverySuccess?.('pause-resume');
           this.reset();
           return;
@@ -239,7 +239,7 @@ export class CrashProtection {
       if (wasPlaying) {
         try {
           await this.audioRef.play();
-          console.log('[CrashProtection] âœ“ Recovered with reload');
+          console.log('[CrashProtection] ✓ Recovered with reload');
           this.onRecoverySuccess?.('reload');
           this.reset();
           return;
@@ -276,7 +276,7 @@ export class CrashProtection {
         await this.audioRef.play();
       }
 
-      console.log('[CrashProtection] âœ“ Recovered with full reset');
+      console.log('[CrashProtection] ✓ Recovered with full reset');
       this.onRecoverySuccess?.('full-reset');
       this.reset();
 

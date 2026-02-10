@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: index.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -50,7 +50,7 @@ const Toast = ({ message, type = 'info', title, onClose, duration = 3000 }) => {
           onClick={onClose}
           aria-label="Close notification"
         >
-          Ã—
+          ×
         </button>
       )}
     </div>

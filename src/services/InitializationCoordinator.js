@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: InitializationCoordinator.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -40,7 +40,7 @@ class InitializationCoordinator {
     const changed = this.readyStates[system] !== ready;
     this.readyStates[system] = ready;
     
-    console.log(`[InitCoordinator] ${system}: ${ready ? 'âœ… READY' : 'âŒ NOT READY'}`);
+    console.log(`[InitCoordinator] ${system}: ${ready ? '✅ READY' : '❌ NOT READY'}`);
     
     if (changed) {
       this.notifyListeners();

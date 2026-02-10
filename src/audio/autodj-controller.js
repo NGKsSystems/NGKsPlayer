@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: autodj-controller.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -175,7 +175,7 @@ class AutoDJController {
     const newTrack = this.nextTrack.track;
     const mixInstructions = this.nextTrack.mixInstructions;
     
-    console.log(`[Auto DJ] Transitioning: ${previousTrack.title} â†’ ${newTrack.title}`);
+    console.log(`[Auto DJ] Transitioning: ${previousTrack.title} → ${newTrack.title}`);
     console.log(`[Auto DJ] Mix confidence: ${mixInstructions.confidence.toFixed(2)}`);
     console.log(`[Auto DJ] Harmonic advice: ${mixInstructions.harmonic.advice}`);
     

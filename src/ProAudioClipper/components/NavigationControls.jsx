@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: NavigationControls.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -76,7 +76,7 @@ const NavigationControls = ({
           }}
           title="Stop (Enter)"
         >
-          â¹
+          ⏹
         </button>
         
         <button 
@@ -84,23 +84,23 @@ const NavigationControls = ({
           onClick={isPlaying ? onPause : onPlay}
           title="Play/Pause (Space)"
         >
-          {isPlaying ? 'â¸' : 'â–¶'}
+          {isPlaying ? '⏸' : '▶'}
         </button>
         
         <button 
           className="transport-btn previous-marker"
           onClick={() => onJumpToPrevious?.(currentTime)}
-          title="Previous Marker (Ctrl+â†)"
+          title="Previous Marker (Ctrl+←)"
         >
-          â®
+          ⏮
         </button>
         
         <button 
           className="transport-btn next-marker"
           onClick={() => onJumpToNext?.(currentTime)}
-          title="Next Marker (Ctrl+â†’)"
+          title="Next Marker (Ctrl+→)"
         >
-          â­
+          ⏭
         </button>
       </div>
 
@@ -201,8 +201,8 @@ const NavigationControls = ({
       {/* Keyboard Shortcuts Info */}
       <div className="shortcuts-info">
         <div className="shortcut">Space: Play/Pause</div>
-        <div className="shortcut">â†/â†’: Frame Step</div>
-        <div className="shortcut">Ctrl+â†/â†’: Markers</div>
+        <div className="shortcut">←/→: Frame Step</div>
+        <div className="shortcut">Ctrl+←/→: Markers</div>
         <div className="shortcut">Home/End: Start/End</div>
       </div>
     </div>

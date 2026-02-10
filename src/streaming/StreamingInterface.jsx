@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: StreamingInterface.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -50,24 +50,24 @@ const StreamingInterface = ({ onTrackSelect, currentTrack }) => {
 
         // Set up event listeners
         controller.on('initialized', (data) => {
-          console.log('ðŸŽµ Streaming services initialized:', data.services);
+          console.log('🎵 Streaming services initialized:', data.services);
           updateStatus();
         });
 
         controller.on('authenticated', (data) => {
-          console.log(`âœ… Connected to ${data.service}`);
+          console.log(`✅ Connected to ${data.service}`);
           updateStatus();
         });
 
         controller.on('searchComplete', (data) => {
-          console.log(`ðŸ” Search completed: ${data.resultCount} results`);
+          console.log(`🔍 Search completed: ${data.resultCount} results`);
         });
 
         setStreamingController(controller);
         await controller.initializeServices();
         
       } catch (error) {
-        console.error('âŒ Streaming initialization failed:', error);
+        console.error('❌ Streaming initialization failed:', error);
       }
     };
 
@@ -140,7 +140,7 @@ const StreamingInterface = ({ onTrackSelect, currentTrack }) => {
         };
         
         onTrackSelect(ngksTrack, deck);
-        console.log(`ðŸŽµ Loaded ${ngksTrack.title} to Deck ${deck}`);
+        console.log(`🎵 Loaded ${ngksTrack.title} to Deck ${deck}`);
       }
     } catch (error) {
       console.error('Failed to load track:', error);
@@ -176,7 +176,7 @@ const StreamingInterface = ({ onTrackSelect, currentTrack }) => {
     <div className="streaming-interface p-6 bg-gray-900 text-white rounded-lg">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">ðŸŽµ NGKs Streaming Hub</h2>
+        <h2 className="text-2xl font-bold">🎵 NGKs Streaming Hub</h2>
         <div className="text-sm text-gray-400">
           {stats.servicesConnected || 0} services connected
         </div>
@@ -196,7 +196,7 @@ const StreamingInterface = ({ onTrackSelect, currentTrack }) => {
           >
             <div className="font-semibold">{service.name}</div>
             <div className="text-xs">
-              {service.authenticated ? 'âœ… Connected' : 'ðŸ”Œ Connect'}
+              {service.authenticated ? '✅ Connected' : '🔌 Connect'}
             </div>
           </div>
         ))}
@@ -233,7 +233,7 @@ const StreamingInterface = ({ onTrackSelect, currentTrack }) => {
             disabled={isSearching || !searchQuery.trim()}
             className="px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 rounded font-semibold"
           >
-            {isSearching ? 'ðŸ”' : 'Search'}
+            {isSearching ? '🔍' : 'Search'}
           </button>
         </div>
         
@@ -328,28 +328,28 @@ const StreamingInterface = ({ onTrackSelect, currentTrack }) => {
           disabled={!currentTrack}
           className="p-3 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-600 rounded"
         >
-          ðŸŽ¯ Get Similar Tracks
+          🎯 Get Similar Tracks
         </button>
         
         <button
           onClick={() => setSearchQuery('house 128 bpm')}
           className="p-3 bg-green-600 hover:bg-green-700 rounded"
         >
-          ðŸ  House Music
+          🏠 House Music
         </button>
         
         <button
           onClick={() => setSearchQuery('techno 130 bpm')}
           className="p-3 bg-orange-600 hover:bg-orange-700 rounded"
         >
-          ðŸ”¥ Techno
+          🔥 Techno
         </button>
       </div>
 
       {/* Recommendations */}
       {recommendations.length > 0 && (
         <div className="mb-4">
-          <h3 className="text-lg font-semibold mb-3">ðŸŽ¯ Recommended Tracks</h3>
+          <h3 className="text-lg font-semibold mb-3">🎯 Recommended Tracks</h3>
           <div className="grid grid-cols-1 gap-2 max-h-48 overflow-y-auto">
             {recommendations.map((track, index) => (
               <div 

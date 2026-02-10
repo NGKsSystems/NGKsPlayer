@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: FixtureLibrary.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -291,7 +291,7 @@ export class FixtureManager {
       dateAdded: new Date().toISOString()
     });
     
-    console.log(`ðŸ“¦ Added custom fixture: ${fixture.name}`);
+    console.log(`📦 Added custom fixture: ${fixture.name}`);
   }
 
   /**
@@ -300,7 +300,7 @@ export class FixtureManager {
   removeCustomFixture(id) {
     if (this.customFixtures.has(id)) {
       this.customFixtures.delete(id);
-      console.log(`ðŸ—‘ï¸ Removed custom fixture: ${id}`);
+      console.log(`🗑️ Removed custom fixture: ${id}`);
       return true;
     }
     return false;
@@ -431,7 +431,7 @@ export class FixtureManager {
         }
       });
       
-      console.log(`ðŸ“¦ Imported ${imported} custom fixtures`);
+      console.log(`📦 Imported ${imported} custom fixtures`);
       return imported;
       
     } catch (error) {

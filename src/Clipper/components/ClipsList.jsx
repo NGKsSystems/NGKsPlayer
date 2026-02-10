@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: ClipsList.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -64,7 +64,7 @@ const ClipsList = ({ clips, onDeleteClip, onUpdateClip, audioBuffer, audioContex
   return (
     <div className="clips-list">
       <div className="list-header">
-        <h3>ðŸ“‹ Clips ({clips.length})</h3>
+        <h3>📋 Clips ({clips.length})</h3>
       </div>
 
       <div className="clips-container">
@@ -112,7 +112,7 @@ const ClipsList = ({ clips, onDeleteClip, onUpdateClip, audioBuffer, audioContex
                   onClick={() => handlePlayClip(clip)}
                   title="Preview"
                 >
-                  {playingClipId === clip.id ? 'â¹' : 'â–¶'}
+                  {playingClipId === clip.id ? '⏹' : '▶'}
                 </button>
 
                 <button
@@ -124,7 +124,7 @@ const ClipsList = ({ clips, onDeleteClip, onUpdateClip, audioBuffer, audioContex
                   }}
                   title="Delete"
                 >
-                  âœ•
+                  ✕
                 </button>
               </div>
             </div>

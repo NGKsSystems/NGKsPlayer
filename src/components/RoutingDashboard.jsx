@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: RoutingDashboard.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -186,7 +186,7 @@ const RoutingDashboard = ({
             className="px-3 py-1 bg-gray-600 rounded text-sm"
             title="Toggle Compact Mode (Ctrl+C)"
           >
-            {isCompact ? 'â›¶' : 'âš'}
+            {isCompact ? '⛶' : '⚏'}
           </button>
           
           <button
@@ -194,7 +194,7 @@ const RoutingDashboard = ({
             className="px-3 py-1 bg-gray-600 rounded text-sm"
             title="Toggle Control Panel (Ctrl+H)"
           >
-            {showControlPanel ? 'â—§' : 'â—¨'}
+            {showControlPanel ? '◧' : '◨'}
           </button>
         </div>
       </div>
@@ -438,8 +438,8 @@ const RoutingMonitor = ({ routingStats, selectedModule }) => {
             </svg>
             
             <div className="absolute bottom-2 left-2 text-xs text-gray-400">
-              <span className="text-red-400">â—</span> CPU Usage
-              <span className="ml-4 text-blue-400">â—</span> Latency (5x)
+              <span className="text-red-400">●</span> CPU Usage
+              <span className="ml-4 text-blue-400">●</span> Latency (5x)
             </div>
           </div>
         ) : (

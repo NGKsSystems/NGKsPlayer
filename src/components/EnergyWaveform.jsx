@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: EnergyWaveform.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -222,7 +222,7 @@ export default function EnergyWaveform({ trajectory = [], phrases = [], duration
       <canvas ref={canvasRef} style={{ width: '100%', height: `${height}px`, borderRadius: 4 }} />
       {tooltip && (
         <div style={{ position: 'absolute', left: tooltip.x, top: tooltip.y, pointerEvents: 'none', background: 'rgba(0,0,0,0.75)', color: '#fff', padding: '4px 6px', borderRadius: 4, fontSize: 12 }}>
-          {tooltip.timeSec != null ? `${Math.floor(tooltip.timeSec/60)}:${String(Math.floor(tooltip.timeSec%60)).padStart(2,'0')}` : ''} {tooltip.value != null ? ` â€¢ ${Math.round(tooltip.value*100)/100}` : ''}
+          {tooltip.timeSec != null ? `${Math.floor(tooltip.timeSec/60)}:${String(Math.floor(tooltip.timeSec%60)).padStart(2,'0')}` : ''} {tooltip.value != null ? ` • ${Math.round(tooltip.value*100)/100}` : ''}
         </div>
       )}
     </div>

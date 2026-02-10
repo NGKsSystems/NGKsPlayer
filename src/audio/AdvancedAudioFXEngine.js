@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: AdvancedAudioFXEngine.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -55,7 +55,7 @@ class AdvancedAudioFXEngine {
    * Each chain is independent - one per deck
    */
   initializeFXChains() {
-    console.log('ðŸŽ›ï¸ Initializing 4 FX chains...');
+    console.log('🎛️ Initializing 4 FX chains...');
     
     for (let i = 1; i <= 4; i++) {
       const chain = {
@@ -78,17 +78,17 @@ class AdvancedAudioFXEngine {
       chain.dryGain.connect(chain.output);
       
       this.fxChains.set(i, chain);
-      console.log(`ðŸ”— FX Chain ${i} initialized (dry path connected)`);
+      console.log(`🔗 FX Chain ${i} initialized (dry path connected)`);
     }
     
-    console.log('âœ… All FX chains ready');
+    console.log('✅ All FX chains ready');
   }
 
   /**
    * Setup master bus processing
    */
   setupMasterProcessing() {
-    console.log('ðŸŽšï¸ Setting up master processing chain...');
+    console.log('🎚️ Setting up master processing chain...');
     
     // Master compressor/limiter
     this.masterCompressor = this.audioContext.createDynamicsCompressor();
@@ -411,7 +411,7 @@ class AdvancedAudioFXEngine {
       throw new Error(`FX chain ${chainId} not found`);
     }
 
-    console.log(`âž• Adding ${effectType} to FX chain ${chainId}`);
+    console.log(`➕ Adding ${effectType} to FX chain ${chainId}`);
 
     let effect;
     switch (effectType) {
@@ -645,7 +645,7 @@ class AdvancedAudioFXEngine {
    * Cleanup
    */
   destroy() {
-    console.log('ðŸ§¹ Destroying Advanced FX Engine...');
+    console.log('🧹 Destroying Advanced FX Engine...');
     
     // Disconnect all nodes (tolerant of already-disconnected nodes)
     try { this.input.disconnect(); } catch (e) { console.debug('AdvancedAudioFXEngine: input.disconnect skipped:', e?.message || e); }

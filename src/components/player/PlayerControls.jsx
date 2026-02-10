@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: PlayerControls.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -58,20 +58,20 @@ export function PlayerControls({
             className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded font-bold text-2xl"
             disabled={tracks.length === 0}
           >
-            â® Previous
+            ⏮ Previous
           </button>
           <button
             onClick={onTogglePlayPause}
             className="px-4 py-2 bg-green-600 hover:bg-green-700 rounded font-bold text-2xl"
           >
-            {isPlaying ? 'â¸ Pause' : 'â–¶ Play'}
+            {isPlaying ? '⏸ Pause' : '▶ Play'}
           </button>
           <button
             onClick={onNextTrack}
             className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded font-bold text-2xl"
             disabled={tracks.length === 0}
           >
-            Next â­
+            Next ⏭
           </button>
         </div>
 
@@ -83,42 +83,42 @@ export function PlayerControls({
             onClick={() => onPlayModeChange('stop')}
             title="Stop After Current (Play once)"
           >
-            â¹ï¸
+            ⏹️
           </button>
           <button
             className={`px-3 py-2 rounded text-3xl ${playMode === 'inOrder' ? 'bg-blue-600' : 'bg-gray-600 hover:bg-gray-500'}`}
             onClick={() => onPlayModeChange('inOrder')}
             title="In Order"
           >
-            ðŸ”„
+            🔄
           </button>
           <button
             className={`px-3 py-2 rounded text-3xl ${playMode === 'repeatAll' ? 'bg-blue-600' : 'bg-gray-600 hover:bg-gray-500'}`}
             onClick={() => onPlayModeChange('repeatAll')}
             title="Repeat All"
           >
-            ðŸ”
+            🔁
           </button>
           <button
             className={`px-3 py-2 rounded text-3xl ${playMode === 'shuffle' ? 'bg-blue-600' : 'bg-gray-600 hover:bg-gray-500'}`}
             onClick={() => onPlayModeChange('shuffle')}
             title="Shuffle"
           >
-            ðŸ”€
+            🔀
           </button>
           <button
             className={`px-3 py-2 rounded text-3xl ${playMode === 'randomNoRepeat' ? 'bg-blue-600' : 'bg-gray-600 hover:bg-gray-500'}`}
             onClick={() => onPlayModeChange('randomNoRepeat')}
             title="Random (No Repeat)"
           >
-            ðŸŽ²
+            🎲
           </button>
         </div>
       </div>
 
       {/* Volume Control */}
       <div className="flex items-center space-x-4">
-        <span className="text-base font-semibold">ðŸ”Š Volume:</span>
+        <span className="text-base font-semibold">🔊 Volume:</span>
         <input
           type="range"
           min="0"

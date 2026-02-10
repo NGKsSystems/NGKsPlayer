@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: PianoRollMIDIEditor_MemoryOptimized.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -262,7 +262,7 @@ const PianoRollMIDIEditor = ({
           onClick={() => handleToolChange('pencil')}
           style={{ padding: '5px 10px', background: tool === 'pencil' ? '#4A90E2' : '#fff' }}
         >
-          âœï¸
+          ✏️
         </button>
         
         <button 
@@ -271,7 +271,7 @@ const PianoRollMIDIEditor = ({
           onClick={() => handleToolChange('select')}
           style={{ padding: '5px 10px', background: tool === 'select' ? '#4A90E2' : '#fff' }}
         >
-          ðŸ”
+          🔍
         </button>
         
         <button 
@@ -280,7 +280,7 @@ const PianoRollMIDIEditor = ({
           onClick={() => handleToolChange('erase')}
           style={{ padding: '5px 10px', background: tool === 'erase' ? '#4A90E2' : '#fff' }}
         >
-          ðŸ—‘ï¸
+          🗑️
         </button>
       </div>
       
@@ -290,7 +290,7 @@ const PianoRollMIDIEditor = ({
           onClick={handlePlayPause}
           style={{ padding: '5px 10px' }}
         >
-          {isPlaying ? 'â¸ï¸' : 'â–¶ï¸'}
+          {isPlaying ? '⏸️' : '▶️'}
         </button>
         
         <button 
@@ -298,14 +298,14 @@ const PianoRollMIDIEditor = ({
           onClick={handleStop}
           style={{ padding: '5px 10px' }}
         >
-          â¹ï¸
+          ⏹️
         </button>
         
         <button 
           title="Loop"
           style={{ padding: '5px 10px' }}
         >
-          ðŸ”„
+          🔄
         </button>
       </div>
       

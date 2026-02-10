@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: AutomationControlPanel.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -266,7 +266,7 @@ const AutomationControlPanel = ({
             }`}
             title="Enable/Disable"
           >
-            {lane.enabled ? 'âœ“' : 'âœ—'}
+            {lane.enabled ? '✓' : '✗'}
           </button>
 
           <button
@@ -280,7 +280,7 @@ const AutomationControlPanel = ({
             }`}
             title="Show/Hide"
           >
-            ðŸ‘
+            👁
           </button>
 
           <button
@@ -294,7 +294,7 @@ const AutomationControlPanel = ({
             }`}
             title="Lock/Unlock"
           >
-            ðŸ”’
+            🔒
           </button>
 
           {isRecording && isSelected && (

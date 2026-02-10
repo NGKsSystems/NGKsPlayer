@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: GenreRules.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -60,7 +60,7 @@ class GenreRules {
               bpm: Math.round(corrected),
               adjustment: `acoustic-harmonic-${r}x`,
               confidence: 0.8,
-              reason: `Acoustic correction: ${detectedBPM} â†’ ${Math.round(
+              reason: `Acoustic correction: ${detectedBPM} → ${Math.round(
                 corrected
               )} (${r}x ratio)`,
             };

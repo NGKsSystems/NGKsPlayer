@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: index_old.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -306,7 +306,7 @@ const EQB = ({ id, audioContext, gainNode, pannerNode, onStyleChange = () => {},
       <div className="eq-b-header" onMouseDown={handleMouseDown}>
         <h3>EQ B</h3>
         <div className="widget-controls">
-          <span className="drag-handle">â‹®â‹®</span>
+          <span className="drag-handle">⋮⋮</span>
         </div>
       </div>
       
@@ -335,14 +335,14 @@ const EQB = ({ id, audioContext, gainNode, pannerNode, onStyleChange = () => {},
             onClick={handleBypass}
             title={bypassed ? 'EQ Bypassed - Click to activate' : 'EQ Active - Click to bypass'}
           >
-            {bypassed ? 'âŠ˜' : 'â—'}
+            {bypassed ? '⊘' : '●'}
           </button>
           <button
             className="eq-reset-btn-compact"
             onClick={handleReset}
             title="Reset to Flat"
           >
-            âŸ²
+            ⟲
           </button>
         </div>
 
@@ -382,7 +382,7 @@ const EQB = ({ id, audioContext, gainNode, pannerNode, onStyleChange = () => {},
         onMouseDown={handleResizeMouseDown}
         title="Drag to resize"
       >
-        âŸ²
+        ⟲
       </div>
     </div>
   );

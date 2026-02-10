@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: MeteringBridge.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -109,7 +109,7 @@ const MeteringBridge = forwardRef(({ tracks, buses, audioEngine, consoleSize }, 
         
         {meterMode !== 'peak' && levels.rms && (
           <div className="rms-display">
-            {levels.rms > -60 ? `${levels.rms.toFixed(1)}` : '-âˆž'}
+            {levels.rms > -60 ? `${levels.rms.toFixed(1)}` : '-∞'}
           </div>
         )}
       </div>
@@ -178,7 +178,7 @@ const MeteringBridge = forwardRef(({ tracks, buses, audioEngine, consoleSize }, 
           <div className="scale-mark" style={{ left: '50%' }}>-24</div>
           <div className="scale-mark" style={{ left: '30%' }}>-36</div>
           <div className="scale-mark" style={{ left: '10%' }}>-48</div>
-          <div className="scale-mark" style={{ left: '0%' }}>-âˆž</div>
+          <div className="scale-mark" style={{ left: '0%' }}>-∞</div>
         </div>
       </div>
 

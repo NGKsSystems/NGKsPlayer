@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: useTrackManager.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -267,10 +267,10 @@ export const useTrackManager = () => {
 
   // Reorder tracks
   const reorderTracks = useCallback((fromIndex, toIndex) => {
-    console.log(`ðŸ”„ Reordering tracks: ${fromIndex} -> ${toIndex}`);
+    console.log(`🔄 Reordering tracks: ${fromIndex} -> ${toIndex}`);
     setTracks(prev => {
       if (fromIndex < 0 || fromIndex >= prev.length || toIndex < 0 || toIndex >= prev.length) {
-        console.warn('âš ï¸ Invalid track reorder indices');
+        console.warn('⚠️ Invalid track reorder indices');
         return prev;
       }
       
@@ -284,7 +284,7 @@ export const useTrackManager = () => {
         order: index
       }));
       
-      console.log('âœ… Tracks reordered:', updatedTracks.map(t => t.name));
+      console.log('✅ Tracks reordered:', updatedTracks.map(t => t.name));
       return updatedTracks;
     });
   }, []);
@@ -388,7 +388,7 @@ export const useTrackManager = () => {
   }, [tracks]);
 
   // Undo/Redo Support Methods
-  // ðŸ§ª ROBOT TEST: State management must be atomic and reversible
+  // 🧪 ROBOT TEST: State management must be atomic and reversible
 
   // Add track (for undo/redo system)
   const addTrack = useCallback((track) => {

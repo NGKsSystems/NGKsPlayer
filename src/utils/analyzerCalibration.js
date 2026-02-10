@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: analyzerCalibration.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -36,7 +36,7 @@ export const CALIBRATION_TRACKS = [
   // 130-180 BPM (fast / dance)
   { name: "Mr. Brightside", artist: "The Killers", bpm: 148, key: "D", mode: "major", category: "fast" },
   { name: "Levels", artist: "Avicii", bpm: 126, key: "C#", mode: "minor", category: "fast", note: "doubles to 252" },
-  { name: "Master of Puppets", artist: "Metallica", bpm: 212, key: "E", mode: "minor", category: "fast", note: "half-time feel â‰ˆ 106" },
+  { name: "Master of Puppets", artist: "Metallica", bpm: 212, key: "E", mode: "minor", category: "fast", note: "half-time feel ≈ 106" },
   
   // Straight 4/4 (electronic focus)
   { name: "Summer", artist: "Calvin Harris", bpm: 128, key: "C#", mode: "minor", category: "electronic" },
@@ -106,7 +106,7 @@ export function findCalibrationTrack(filename) {
 export function calculateBPMAccuracy(detected, expected) {
   if (!detected || !expected) return 0;
   
-  const tolerance = 2; // Â±2 BPM is acceptable
+  const tolerance = 2; // ±2 BPM is acceptable
   const diff = Math.abs(detected - expected);
   
   // Exact match (within tolerance)
@@ -205,7 +205,7 @@ function normalizeKey(key) {
     'Bb': 'A#'
   };
   
-  const normalized = key.replace('â™­', 'b').replace('â™¯', '#').toUpperCase();
+  const normalized = key.replace('♭', 'b').replace('♯', '#').toUpperCase();
   return enharmonic[normalized] || normalized;
 }
 

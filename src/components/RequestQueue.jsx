@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: RequestQueue.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -279,8 +279,8 @@ export default function RequestQueue({ onClose, onLoadTrack }) {
     <div className="request-queue-overlay" onClick={onClose}>
       <div className="request-queue-panel" onClick={(e) => e.stopPropagation()}>
         <div className="rq-header">
-          <h2>ðŸŽµ Crowd Requests</h2>
-          <button className="rq-close-btn" onClick={onClose}>Ã—</button>
+          <h2>🎵 Crowd Requests</h2>
+          <button className="rq-close-btn" onClick={onClose}>×</button>
         </div>
 
         <div className="rq-content">
@@ -298,11 +298,11 @@ export default function RequestQueue({ onClose, onLoadTrack }) {
 
               {!serverStatus.isRunning ? (
                 <button className="rq-btn rq-btn-start" onClick={startServer}>
-                  â–¶ï¸ Start Request Server
+                  ▶️ Start Request Server
                 </button>
               ) : (
                 <button className="rq-btn rq-btn-stop" onClick={stopServer}>
-                  â¹ï¸ Stop Server
+                  ⏹️ Stop Server
                 </button>
               )}
             </div>
@@ -325,7 +325,7 @@ export default function RequestQueue({ onClose, onLoadTrack }) {
                       alert('URL copied to clipboard!');
                     }}
                   >
-                    ðŸ“‹ Copy
+                    📋 Copy
                   </button>
                 </div>
 
@@ -337,7 +337,7 @@ export default function RequestQueue({ onClose, onLoadTrack }) {
                     setShowQR(!showQR);
                   }}
                 >
-                  {showQR ? 'ðŸ”½ Hide QR Code' : 'ðŸ“± Show QR Code'}
+                  {showQR ? '🔽 Hide QR Code' : '📱 Show QR Code'}
                 </button>
 
                 {showQR && (
@@ -362,7 +362,7 @@ export default function RequestQueue({ onClose, onLoadTrack }) {
               <h3>Request Queue ({pendingRequests.length})</h3>
               {pendingRequests.length > 0 && (
                 <button className="rq-btn-clear" onClick={clearAllRequests}>
-                  ðŸ—‘ï¸ Clear All
+                  🗑️ Clear All
                 </button>
               )}
             </div>
@@ -371,8 +371,8 @@ export default function RequestQueue({ onClose, onLoadTrack }) {
               {pendingRequests.length === 0 ? (
                 <div className="rq-empty">
                   {serverStatus.isRunning 
-                    ? 'ðŸ“­ No requests yet. Share the URL with your audience!'
-                    : 'ðŸŽ§ Start the server to accept requests'}
+                    ? '📭 No requests yet. Share the URL with your audience!'
+                    : '🎧 Start the server to accept requests'}
                 </div>
               ) : (
                 pendingRequests.map(request => (
@@ -381,9 +381,9 @@ export default function RequestQueue({ onClose, onLoadTrack }) {
                       <div className="rq-track-title">{request.track.title}</div>
                       <div className="rq-track-artist">{request.track.artist || 'Unknown Artist'}</div>
                       <div className="rq-track-meta">
-                        <span className="rq-requester">ðŸ‘¤ {request.requester}</span>
+                        <span className="rq-requester">👤 {request.requester}</span>
                         <span className="rq-votes">
-                          {request.votes > 0 && 'ðŸ”¥ '}
+                          {request.votes > 0 && '🔥 '}
                           {request.votes} votes
                         </span>
                         <span className="rq-time">
@@ -398,21 +398,21 @@ export default function RequestQueue({ onClose, onLoadTrack }) {
                         onClick={() => acceptRequest(request)}
                         title="Accept and load to deck"
                       >
-                        âœ…
+                        ✅
                       </button>
                       <button 
                         className="rq-action-btn rq-reject"
                         onClick={() => rejectRequest(request.id)}
                         title="Reject request"
                       >
-                        âŒ
+                        ❌
                       </button>
                       <button 
                         className="rq-action-btn rq-remove"
                         onClick={() => removeRequest(request.id)}
                         title="Remove from queue"
                       >
-                        ðŸ—‘ï¸
+                        🗑️
                       </button>
                     </div>
                   </div>
@@ -435,7 +435,7 @@ export default function RequestQueue({ onClose, onLoadTrack }) {
                 cursor: 'pointer'
               }}
             >
-              âš™ï¸ Payment & Request Settings
+              ⚙️ Payment & Request Settings
             </button>
           </div>
 
@@ -448,7 +448,7 @@ export default function RequestQueue({ onClose, onLoadTrack }) {
               border: '2px solid #ffb800',
               borderRadius: '8px'
             }}>
-              <h3 style={{ margin: '0 0 15px 0', fontSize: '16px' }}>ðŸ’° Payment & Request Settings</h3>
+              <h3 style={{ margin: '0 0 15px 0', fontSize: '16px' }}>💰 Payment & Request Settings</h3>
               
               {/* Request Policy Section */}
               <div style={{ marginBottom: '25px', padding: '15px', background: 'rgba(0,0,0,0.2)', borderRadius: '8px' }}>
@@ -601,10 +601,10 @@ export default function RequestQueue({ onClose, onLoadTrack }) {
                   const policyResult = await window.api.invoke('request-server:setRequestPolicy', requestPolicy);
                   
                   if (handlesResult.success && policyResult.success) {
-                    alert('âœ… Settings saved successfully!');
+                    alert('✅ Settings saved successfully!');
                     setShowPaymentSettings(false);
                   } else {
-                    alert('âŒ Failed to save settings. Please try again.');
+                    alert('❌ Failed to save settings. Please try again.');
                   }
                 }}
                 style={{
@@ -619,7 +619,7 @@ export default function RequestQueue({ onClose, onLoadTrack }) {
                   fontSize: '14px'
                 }}
               >
-                ðŸ’¾ Save Settings
+                💾 Save Settings
               </button>
               <p style={{ margin: '10px 0 0 0', fontSize: '11px', color: 'rgba(255,255,255,0.5)', textAlign: 'center' }}>
                 Leave payment fields blank to hide those options from guests
@@ -644,7 +644,7 @@ export default function RequestQueue({ onClose, onLoadTrack }) {
                     cursor: 'pointer'
                   }}
                 >
-                  ðŸ’¬ Feedback ({feedback.length})
+                  💬 Feedback ({feedback.length})
                 </button>
                 <button 
                   onClick={async () => {
@@ -654,7 +654,7 @@ export default function RequestQueue({ onClose, onLoadTrack }) {
                       const tipDetails = result.tips.map(tip => 
                         `$${tip.amount} via ${tip.paymentMethod} from ${tip.name}${tip.message ? ` - "${tip.message}"` : ''}`
                       ).join('\n');
-                      alert(`ðŸ’° Total Tips: $${totalTips}\n${result.tips.length} tip(s) received\n\n${tipDetails}`);
+                      alert(`💰 Total Tips: $${totalTips}\n${result.tips.length} tip(s) received\n\n${tipDetails}`);
                     } else {
                       alert('No tips received yet');
                     }
@@ -670,7 +670,7 @@ export default function RequestQueue({ onClose, onLoadTrack }) {
                     cursor: 'pointer'
                   }}
                 >
-                  ðŸ’° View Tips
+                  💰 View Tips
                 </button>
               </div>
 
@@ -705,7 +705,7 @@ export default function RequestQueue({ onClose, onLoadTrack }) {
 
           {/* Instructions */}
           <div className="rq-section rq-instructions">
-            <h3>ðŸ’¡ How It Works</h3>
+            <h3>💡 How It Works</h3>
             <ol>
               <li>Click <strong>"Start Request Server"</strong> to begin accepting requests</li>
               <li>Share the URL or show the QR code to your audience</li>
@@ -716,15 +716,15 @@ export default function RequestQueue({ onClose, onLoadTrack }) {
             </ol>
 
             <div className="rq-tips">
-              <strong>ðŸ”¥ Pro Tips:</strong>
+              <strong>🔥 Pro Tips:</strong>
               <ul>
                 <li>Works on local WiFi - no internet needed!</li>
                 <li>Print QR code poster for venues</li>
                 <li>Guests can upvote their favorites</li>
                 <li>You stay in full control - accept only what you want</li>
-                <li><strong>ðŸ’° Configure Payment Settings:</strong> Click "Payment & Request Settings" to set up your Venmo, Cash App, PayPal, or Zelle accounts for tips</li>
-                <li><strong>ðŸ’µ Paid Requests:</strong> Choose your request policy (free, paid only, or both) - paid requests are NOT guaranteed to be played</li>
-                <li><strong>ðŸ’¬ Guest Feedback:</strong> Guests can leave feedback about your performance - check the Feedback section above</li>
+                <li><strong>💰 Configure Payment Settings:</strong> Click "Payment & Request Settings" to set up your Venmo, Cash App, PayPal, or Zelle accounts for tips</li>
+                <li><strong>💵 Paid Requests:</strong> Choose your request policy (free, paid only, or both) - paid requests are NOT guaranteed to be played</li>
+                <li><strong>💬 Guest Feedback:</strong> Guests can leave feedback about your performance - check the Feedback section above</li>
               </ul>
             </div>
           </div>

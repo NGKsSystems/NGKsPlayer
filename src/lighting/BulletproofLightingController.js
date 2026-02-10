@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: BulletproofLightingController.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -66,7 +66,7 @@ export class BulletproofLightingController {
     this.lastSuccessfulSend = Date.now();
     this.failoverCount = 0;
     
-    console.log('ðŸ›¡ï¸ Bulletproof Lighting Controller initialized');
+    console.log('🛡️ Bulletproof Lighting Controller initialized');
     console.log('   Failover hierarchy:', this.options.connectionHierarchy);
   }
   
@@ -74,7 +74,7 @@ export class BulletproofLightingController {
    * Initialize all available connections
    */
   async initialize() {
-    console.log('ðŸ” Testing all lighting connection methods...');
+    console.log('🔍 Testing all lighting connection methods...');
     
     // Test each connection type
     for (const connectionType of this.options.connectionHierarchy) {
@@ -86,19 +86,19 @@ export class BulletproofLightingController {
         
         if (status.available && !this.activeConnection) {
           this.activeConnection = connectionType;
-          console.log(`âœ… Primary connection: ${connectionType}`);
+          console.log(`✅ Primary connection: ${connectionType}`);
         } else if (status.available) {
           this.backupConnections.push(connectionType);
-          console.log(`ðŸ”„ Backup available: ${connectionType}`);
+          console.log(`🔄 Backup available: ${connectionType}`);
         }
       } catch (error) {
-        console.log(`âŒ ${connectionType} unavailable: ${error.message}`);
+        console.log(`❌ ${connectionType} unavailable: ${error.message}`);
         this.connectionStatus.set(connectionType, { available: false, error: error.message });
       }
     }
     
     if (!this.activeConnection) {
-      console.log('âš ï¸ No network connections available - entering offline mode');
+      console.log('⚠️ No network connections available - entering offline mode');
       this.enableOfflineMode();
       return true; // Still functional offline
     }
@@ -106,7 +106,7 @@ export class BulletproofLightingController {
     // Start health monitoring
     this.startHealthMonitoring();
     
-    console.log(`ðŸŽ¯ Active: ${this.activeConnection}, Backups: ${this.backupConnections.length}`);
+    console.log(`🎯 Active: ${this.activeConnection}, Backups: ${this.backupConnections.length}`);
     return true;
   }
   
@@ -177,15 +177,15 @@ export class BulletproofLightingController {
         
         // Reset failure count on success
         if (attempts > 0) {
-          console.log(`âœ… Recovered after ${attempts} attempts`);
+          console.log(`✅ Recovered after ${attempts} attempts`);
         }
         
       } catch (error) {
         attempts++;
-        console.log(`âš ï¸ Send failed (attempt ${attempts}): ${error.message}`);
+        console.log(`⚠️ Send failed (attempt ${attempts}): ${error.message}`);
         
         if (attempts >= this.options.maxRetries) {
-          console.log('ðŸ”„ Triggering failover...');
+          console.log('🔄 Triggering failover...');
           await this.executeFailover();
           
           // Try once more with new connection
@@ -194,9 +194,9 @@ export class BulletproofLightingController {
               const connection = this.connections[this.activeConnection];
               await connection.sendUniverse(universeData);
               success = true;
-              console.log('âœ… Failover successful');
+              console.log('✅ Failover successful');
             } catch (failoverError) {
-              console.log('âŒ Failover also failed, entering offline mode');
+              console.log('❌ Failover also failed, entering offline mode');
               this.enableOfflineMode();
               this.handleOfflineData(universeData);
               return true; // Still continuing in offline mode
@@ -214,18 +214,18 @@ export class BulletproofLightingController {
    */
   async executeFailover() {
     this.failoverCount++;
-    console.log(`ðŸš¨ FAILOVER #${this.failoverCount} - Switching connections...`);
+    console.log(`🚨 FAILOVER #${this.failoverCount} - Switching connections...`);
     
     // Mark current connection as failed
     if (this.activeConnection) {
       this.connectionStatus.get(this.activeConnection).available = false;
-      console.log(`âŒ ${this.activeConnection} marked as failed`);
+      console.log(`❌ ${this.activeConnection} marked as failed`);
     }
     
     // Try backup connections in order
     for (const backupType of this.backupConnections) {
       try {
-        console.log(`ðŸ”„ Trying backup: ${backupType}`);
+        console.log(`🔄 Trying backup: ${backupType}`);
         
         const connection = this.connections[backupType];
         const status = await this.testConnection(connection, backupType);
@@ -240,17 +240,17 @@ export class BulletproofLightingController {
           this.backupConnections = this.backupConnections.filter(type => type !== backupType);
           
           this.activeConnection = backupType;
-          console.log(`âœ… Failover to ${backupType} successful`);
+          console.log(`✅ Failover to ${backupType} successful`);
           return true;
         }
       } catch (error) {
-        console.log(`âŒ Backup ${backupType} also failed: ${error.message}`);
+        console.log(`❌ Backup ${backupType} also failed: ${error.message}`);
       }
     }
     
     // All connections failed
     this.activeConnection = null;
-    console.log('âŒ All connections failed - entering offline mode');
+    console.log('❌ All connections failed - entering offline mode');
     this.enableOfflineMode();
     return false;
   }
@@ -259,11 +259,11 @@ export class BulletproofLightingController {
    * Enable offline mode - show continues without network
    */
   enableOfflineMode() {
-    console.log('ðŸ“´ OFFLINE MODE ACTIVATED');
-    console.log('   â€¢ Show continues autonomously');
-    console.log('   â€¢ Beat sync from local audio analysis');
-    console.log('   â€¢ Stored scenes and sequences active');
-    console.log('   â€¢ Manual control still available');
+    console.log('📴 OFFLINE MODE ACTIVATED');
+    console.log('   • Show continues autonomously');
+    console.log('   • Beat sync from local audio analysis');
+    console.log('   • Stored scenes and sequences active');
+    console.log('   • Manual control still available');
     
     // Continue with offline show
     this.startOfflineShow();
@@ -289,7 +289,7 @@ export class BulletproofLightingController {
   startOfflineShow() {
     if (this.offlineShow.autonomousInterval) return;
     
-    console.log('ðŸ¤– Starting autonomous lighting show...');
+    console.log('🤖 Starting autonomous lighting show...');
     
     this.offlineShow.autonomousInterval = setInterval(() => {
       // Simple color cycling when offline
@@ -299,7 +299,7 @@ export class BulletproofLightingController {
       const color = this.hsvToRgb(hue, 1, 1);
       
       // Simulate sending to fixtures (would be displayed locally)
-      console.log(`ðŸŽ¨ Offline lighting: HSV(${Math.round(hue)}, 100%, 100%)`);
+      console.log(`🎨 Offline lighting: HSV(${Math.round(hue)}, 100%, 100%)`);
       
     }, 100); // 10 FPS offline mode
   }
@@ -313,7 +313,7 @@ export class BulletproofLightingController {
     const phase = (Date.now() % beatInterval) / beatInterval;
     
     if (phase < 0.1) { // Beat detected
-      console.log('ðŸ’“ Offline beat - flash');
+      console.log('💓 Offline beat - flash');
     }
   }
   
@@ -325,7 +325,7 @@ export class BulletproofLightingController {
       await this.checkConnectionHealth();
     }, this.options.healthCheckInterval);
     
-    console.log('â¤ï¸ Health monitoring started');
+    console.log('❤️ Health monitoring started');
   }
   
   /**
@@ -343,7 +343,7 @@ export class BulletproofLightingController {
         this.connectionStatus.get(this.activeConnection).lastHealthCheck = Date.now();
         
       } catch (error) {
-        console.log(`âš ï¸ Health check failed for ${this.activeConnection}`);
+        console.log(`⚠️ Health check failed for ${this.activeConnection}`);
         // Will trigger failover on next send attempt
       }
     }
@@ -356,7 +356,7 @@ export class BulletproofLightingController {
           const newStatus = await this.testConnection(connection, connectionType);
           
           if (newStatus.available) {
-            console.log(`âœ… Connection ${connectionType} has recovered`);
+            console.log(`✅ Connection ${connectionType} has recovered`);
             this.connectionStatus.set(connectionType, newStatus);
             
             // Add back to backup list
@@ -430,7 +430,7 @@ export class BulletproofLightingController {
       }
     }
     
-    console.log('ðŸ”Œ Bulletproof lighting controller shutdown');
+    console.log('🔌 Bulletproof lighting controller shutdown');
   }
 }
 
@@ -440,10 +440,10 @@ export class BulletproofLightingController {
 class WiredEthernetInterface {
   async initialize() {
     // Check for wired network adapter
-    console.log('ðŸ”Œ Testing wired Ethernet connection...');
+    console.log('🔌 Testing wired Ethernet connection...');
     return new Promise((resolve) => {
       setTimeout(() => {
-        console.log('   âœ… Gigabit Ethernet ready (most reliable)');
+        console.log('   ✅ Gigabit Ethernet ready (most reliable)');
         resolve(true);
       }, 50);
     });
@@ -455,7 +455,7 @@ class WiredEthernetInterface {
   }
   
   async disconnect() {
-    console.log('ðŸ”Œ Ethernet disconnected');
+    console.log('🔌 Ethernet disconnected');
   }
 }
 
@@ -464,10 +464,10 @@ class WiredEthernetInterface {
  */
 class PowerlineInterface {
   async initialize() {
-    console.log('âš¡ Testing powerline networking...');
+    console.log('⚡ Testing powerline networking...');
     return new Promise((resolve) => {
       setTimeout(() => {
-        console.log('   âœ… Powerline ready (uses electrical cables)');
+        console.log('   ✅ Powerline ready (uses electrical cables)');
         resolve(true);
       }, 100);
     });
@@ -479,7 +479,7 @@ class PowerlineInterface {
   }
   
   async disconnect() {
-    console.log('âš¡ Powerline disconnected');
+    console.log('⚡ Powerline disconnected');
   }
 }
 
@@ -488,10 +488,10 @@ class PowerlineInterface {
  */
 class DMX512HardwiredInterface {
   async initialize() {
-    console.log('ðŸ”— Testing DMX512 hardwired connection...');
+    console.log('🔗 Testing DMX512 hardwired connection...');
     return new Promise((resolve) => {
       setTimeout(() => {
-        console.log('   âœ… DMX512 ready (hardwired backup)');
+        console.log('   ✅ DMX512 ready (hardwired backup)');
         resolve(true);
       }, 150);
     });
@@ -503,7 +503,7 @@ class DMX512HardwiredInterface {
   }
   
   async disconnect() {
-    console.log('ðŸ”— DMX512 disconnected');
+    console.log('🔗 DMX512 disconnected');
   }
 }
 
@@ -512,7 +512,7 @@ class DMX512HardwiredInterface {
  */
 class DedicatedWiFiInterface {
   async initialize() {
-    console.log('ðŸ“¶ Testing dedicated WiFi connection...');
+    console.log('📶 Testing dedicated WiFi connection...');
     return new Promise((resolve, reject) => {
       // Simulate WiFi reliability issues
       if (Math.random() > 0.85) { // 15% chance of WiFi failure
@@ -521,7 +521,7 @@ class DedicatedWiFiInterface {
         }, 200);
       } else {
         setTimeout(() => {
-          console.log('   âš ï¸ WiFi ready (use as last resort only)');
+          console.log('   ⚠️ WiFi ready (use as last resort only)');
           resolve(true);
         }, 300);
       }
@@ -537,7 +537,7 @@ class DedicatedWiFiInterface {
   }
   
   async disconnect() {
-    console.log('ðŸ“¶ WiFi disconnected');
+    console.log('📶 WiFi disconnected');
   }
 }
 

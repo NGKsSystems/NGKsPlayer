@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: FXSettings.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic

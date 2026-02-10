@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: AutomationTimeline.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -547,8 +547,8 @@ const AutomationTimeline = ({
 
       {/* Instructions */}
       <div className="p-2 bg-gray-800 text-xs text-gray-400">
-        Click timeline to seek â€¢ Click lanes to add points â€¢ Drag points to edit â€¢ 
-        Ctrl+scroll to zoom â€¢ G for grid â€¢ S for snap â€¢ Del to delete selected
+        Click timeline to seek • Click lanes to add points • Drag points to edit • 
+        Ctrl+scroll to zoom • G for grid • S for snap • Del to delete selected
       </div>
     </div>
   );

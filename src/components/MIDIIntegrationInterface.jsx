@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: MIDIIntegrationInterface.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -349,7 +349,7 @@ const MIDIIntegrationInterface = ({ audioContext, onAutomationData, isActive = t
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Input Devices */}
                 <div className="bg-gray-800 rounded-lg p-4">
-                    <h4 className="text-white font-medium mb-3">ðŸ“¥ MIDI Inputs</h4>
+                    <h4 className="text-white font-medium mb-3">📥 MIDI Inputs</h4>
                     <div className="space-y-2">
                         {connectedDevices.filter(d => d.type === 'input').map(device => (
                             <div key={device.device.id} className="flex items-center justify-between p-2 bg-gray-700 rounded">
@@ -372,7 +372,7 @@ const MIDIIntegrationInterface = ({ audioContext, onAutomationData, isActive = t
                 
                 {/* Output Devices */}
                 <div className="bg-gray-800 rounded-lg p-4">
-                    <h4 className="text-white font-medium mb-3">ðŸ“¤ MIDI Outputs</h4>
+                    <h4 className="text-white font-medium mb-3">📤 MIDI Outputs</h4>
                     <div className="space-y-2">
                         {connectedDevices.filter(d => d.type === 'output').map(device => (
                             <div key={device.device.id} className="flex items-center justify-between p-2 bg-gray-700 rounded">
@@ -396,7 +396,7 @@ const MIDIIntegrationInterface = ({ audioContext, onAutomationData, isActive = t
             
             {/* MIDI Activity Monitor */}
             <div className="bg-gray-800 rounded-lg p-4">
-                <h4 className="text-white font-medium mb-3">ðŸŽ¹ MIDI Activity</h4>
+                <h4 className="text-white font-medium mb-3">🎹 MIDI Activity</h4>
                 <div className="bg-black rounded p-3 h-32 overflow-y-auto font-mono text-xs">
                     {midiActivity.map(activity => (
                         <div key={activity.id} className="text-green-400 mb-1">
@@ -526,7 +526,7 @@ const MIDIIntegrationInterface = ({ audioContext, onAutomationData, isActive = t
         <div className="space-y-4">
             {/* Recording Controls */}
             <div className="bg-gray-800 rounded-lg p-4">
-                <h4 className="text-white font-medium mb-3">ðŸŽ›ï¸ Automation Recording</h4>
+                <h4 className="text-white font-medium mb-3">🎛️ Automation Recording</h4>
                 
                 <div className="flex items-center space-x-3 mb-4">
                     <button
@@ -537,7 +537,7 @@ const MIDIIntegrationInterface = ({ audioContext, onAutomationData, isActive = t
                                 : 'bg-green-600 hover:bg-green-700'
                         }`}
                     >
-                        {isRecordingAutomation ? 'â¹ï¸ Stop Recording' : 'âºï¸ Start Recording'}
+                        {isRecordingAutomation ? '⏹️ Stop Recording' : '⏺️ Start Recording'}
                     </button>
                     
                     {isRecordingAutomation && (
@@ -558,7 +558,7 @@ const MIDIIntegrationInterface = ({ audioContext, onAutomationData, isActive = t
             
             {/* MIDI Learn */}
             <div className="bg-gray-800 rounded-lg p-4">
-                <h4 className="text-white font-medium mb-3">ðŸŽ¯ MIDI Learn</h4>
+                <h4 className="text-white font-medium mb-3">🎯 MIDI Learn</h4>
                 
                 {isLearningMode && learningParameter ? (
                     <div className="bg-blue-900 border border-blue-600 rounded p-3 mb-4">
@@ -598,7 +598,7 @@ const MIDIIntegrationInterface = ({ audioContext, onAutomationData, isActive = t
                                 <div key={mapping.id} className="flex items-center justify-between p-2 bg-gray-700 rounded">
                                     <div className="text-sm">
                                         <span className="text-white">CH{mapping.channel + 1} CC{mapping.controller}</span>
-                                        <span className="text-gray-400 mx-2">â†’</span>
+                                        <span className="text-gray-400 mx-2">→</span>
                                         <span className="text-blue-400">{mapping.parameter.name}</span>
                                     </div>
                                     <button
@@ -607,7 +607,7 @@ const MIDIIntegrationInterface = ({ audioContext, onAutomationData, isActive = t
                                         }}
                                         className="text-red-400 hover:text-red-300 text-sm"
                                     >
-                                        Ã—
+                                        ×
                                     </button>
                                 </div>
                             ))}
@@ -641,7 +641,7 @@ const MIDIIntegrationInterface = ({ audioContext, onAutomationData, isActive = t
                         }}
                         className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-500 transition-colors"
                     >
-                        ðŸŽ¹ Open Piano Roll Editor
+                        🎹 Open Piano Roll Editor
                     </button>
                     
                     <button
@@ -662,7 +662,7 @@ const MIDIIntegrationInterface = ({ audioContext, onAutomationData, isActive = t
                         }}
                         className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-500 transition-colors"
                     >
-                        ðŸ“ Load Sample Data
+                        📝 Load Sample Data
                     </button>
                 </div>
                 
@@ -670,24 +670,24 @@ const MIDIIntegrationInterface = ({ audioContext, onAutomationData, isActive = t
                     <div className="bg-gray-700 rounded p-3">
                         <h5 className="text-white text-sm font-medium mb-2">Features</h5>
                         <ul className="text-gray-300 text-xs space-y-1">
-                            <li>â€¢ Grid-based note editing</li>
-                            <li>â€¢ Velocity editing lanes</li>
-                            <li>â€¢ Quantization tools</li>
-                            <li>â€¢ Scale highlighting</li>
-                            <li>â€¢ Copy/paste operations</li>
-                            <li>â€¢ Real-time playback</li>
+                            <li>• Grid-based note editing</li>
+                            <li>• Velocity editing lanes</li>
+                            <li>• Quantization tools</li>
+                            <li>• Scale highlighting</li>
+                            <li>• Copy/paste operations</li>
+                            <li>• Real-time playback</li>
                         </ul>
                     </div>
                     
                     <div className="bg-gray-700 rounded p-3">
                         <h5 className="text-white text-sm font-medium mb-2">Keyboard Shortcuts</h5>
                         <ul className="text-gray-300 text-xs space-y-1">
-                            <li>â€¢ Space: Play/Pause</li>
-                            <li>â€¢ Delete: Remove notes</li>
-                            <li>â€¢ Ctrl+C: Copy notes</li>
-                            <li>â€¢ Ctrl+V: Paste notes</li>
-                            <li>â€¢ Ctrl+Q: Quantize</li>
-                            <li>â€¢ Ctrl+A: Select all</li>
+                            <li>• Space: Play/Pause</li>
+                            <li>• Delete: Remove notes</li>
+                            <li>• Ctrl+C: Copy notes</li>
+                            <li>• Ctrl+V: Paste notes</li>
+                            <li>• Ctrl+Q: Quantize</li>
+                            <li>• Ctrl+A: Select all</li>
                         </ul>
                     </div>
                 </div>

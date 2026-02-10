@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: graph.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -13,7 +13,7 @@
  */
 // src/audio/graph.js
 
-// ===== Public helpers to fix â€œloads but wonâ€™t playâ€ =====
+// ===== Public helpers to fix “loads but won’t play” =====
 // Keep a reference to the single AudioContext so the renderer can resume it.
 let ctxRef = null;
 

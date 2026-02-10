@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: useAppInitialization.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -43,7 +43,7 @@ export function useAppInitialization() {
 
       // Check if all systems are ready
       if (status.isFullyReady) {
-        console.log('[AppInit] âœ… APP FULLY INITIALIZED');
+        console.log('[AppInit] ✅ APP FULLY INITIALIZED');
         setAppReady(true);
       }
     });

@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: useEssentiaBeatDetection.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -31,10 +31,10 @@ async function loadEssentia() {
     
     // Create instance
     const essentia = new EssentiaClass(wasmModule);
-    console.log('âœ… Essentia.js WASM loaded successfully');
+    console.log('✅ Essentia.js WASM loaded successfully');
     return essentia;
   } catch (err) {
-    console.error('âŒ Failed to load Essentia.js:', err);
+    console.error('❌ Failed to load Essentia.js:', err);
     throw err;
   }
 }
@@ -117,7 +117,7 @@ export const useEssentiaBeatDetection = ({
         if (mounted) {
           essentiaRef.current = essentia;
           setIsReady(true);
-          console.log('âœ… Essentia ready for beat detection');
+          console.log('✅ Essentia ready for beat detection');
         }
       } catch (err) {
         if (mounted) setIsReady(false);
@@ -224,7 +224,7 @@ export const useEssentiaBeatDetection = ({
             confidence: confidence
           });
 
-          console.log(`ðŸ¥ Beat | ${onsetStrength.toFixed(3)} | Conf: ${confidence.toFixed(2)} | BPM: ${beatGridRef.current.bpm.toFixed(0)}`);
+          console.log(`🥁 Beat | ${onsetStrength.toFixed(3)} | Conf: ${confidence.toFixed(2)} | BPM: ${beatGridRef.current.bpm.toFixed(0)}`);
         }
 
         // Cleanup
@@ -242,7 +242,7 @@ export const useEssentiaBeatDetection = ({
     processor.connect(audioContext.destination);
     processorRef.current = processor;
 
-    console.log(`ðŸŽµ Essentia active | Method: ${activeOnsetMethod} | Threshold: ${activeOnsetThreshold} | Confidence: ${confidenceGate}`);
+    console.log(`🎵 Essentia active | Method: ${activeOnsetMethod} | Threshold: ${activeOnsetThreshold} | Confidence: ${confidenceGate}`);
 
     return () => {
       if (processor) {

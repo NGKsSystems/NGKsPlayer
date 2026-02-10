@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: StreamingSetup.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -33,7 +33,7 @@ const StreamingSetup = ({ streamingController, onComplete }) => {
   const services = {
     soundcloud: {
       name: 'SoundCloud',
-      icon: 'ðŸŸ ',
+      icon: '🟠',
       color: '#ff5500',
       description: 'Access 320M+ tracks including underground and independent artists',
       features: ['Full streaming', 'DJ-friendly tracks', 'Playlists', 'Likes sync', 'Upload integration'],
@@ -53,7 +53,7 @@ const StreamingSetup = ({ streamingController, onComplete }) => {
     },
     spotify: {
       name: 'Spotify',
-      icon: 'ðŸŸ¢',
+      icon: '🟢',
       color: '#1ed760',
       description: '100M+ tracks with AI-powered recommendations and audio analysis',
       features: ['Track metadata', 'Audio features', 'Playlists', 'Recommendations', 'Artist info'],
@@ -73,7 +73,7 @@ const StreamingSetup = ({ streamingController, onComplete }) => {
     },
     apple_music: {
       name: 'Apple Music',
-      icon: 'ðŸ”´',
+      icon: '🔴',
       color: '#fa243c',
       description: '100M+ tracks with spatial audio and lossless quality',
       features: ['Lossless streaming', 'Spatial Audio', 'Playlists', 'Artist Connect', 'Music Videos'],
@@ -93,7 +93,7 @@ const StreamingSetup = ({ streamingController, onComplete }) => {
     },
     tidal: {
       name: 'Tidal',
-      icon: 'ðŸ”µ',
+      icon: '🔵',
       color: '#000000',
       description: '80M+ tracks with Master Quality and exclusive content',
       features: ['Master Quality (MQA)', 'Hi-Fi streaming', 'Exclusive releases', 'Music videos', 'Editorial content'],
@@ -113,7 +113,7 @@ const StreamingSetup = ({ streamingController, onComplete }) => {
     },
     beatport: {
       name: 'Beatport',
-      icon: 'ðŸŸ¡',
+      icon: '🟡',
       color: '#01ff01',
       description: '15M+ electronic music tracks, the world\'s largest DJ store',
       features: ['DJ-focused catalog', 'Extended previews', 'Genre charts', 'Professional quality', 'Remix packs'],
@@ -133,7 +133,7 @@ const StreamingSetup = ({ streamingController, onComplete }) => {
     },
     beatsource: {
       name: 'Beatsource',
-      icon: 'ðŸŸ£',
+      icon: '🟣',
       color: '#6441a4',
       description: '12M+ open format tracks including hip-hop, Latin, and clean edits',
       features: ['Open format focus', 'Clean versions', 'DJ edits', 'Hip-hop & Latin', 'Intro/outro edits'],
@@ -372,7 +372,7 @@ const StreamingSetup = ({ streamingController, onComplete }) => {
                   <div className={`mt-2 p-2 rounded text-xs ${
                     testResult.success ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
                   }`}>
-                    {testResult.success ? 'âœ… Connection verified' : `âŒ ${testResult.error}`}
+                    {testResult.success ? '✅ Connection verified' : `❌ ${testResult.error}`}
                   </div>
                 )}
               </div>
@@ -437,7 +437,7 @@ const StreamingSetup = ({ streamingController, onComplete }) => {
           onClick={() => setSetupStage('overview')}
           className="mb-6 text-blue-400 hover:text-blue-300 flex items-center gap-2"
         >
-          â† Back to Overview
+          ← Back to Overview
         </button>
 
         {/* Service Header */}

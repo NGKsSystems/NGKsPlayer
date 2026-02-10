@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: AnalyzerCalibration.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -12,7 +12,7 @@
  * Owner: NGKsSystems
  */
 // AnalyzerCalibration.js
-// Self-calibrating analyzer â€” learns from ground truth for BPM, Key, LUFS
+// Self-calibrating analyzer — learns from ground truth for BPM, Key, LUFS
 
 class AnalyzerCalibration {
   constructor() {
@@ -103,7 +103,7 @@ class AnalyzerCalibration {
 
   async calibrate(analyzer) {
     if (this.groundTruth.length < 10) {
-      throw new Error("Need â‰¥10 ground truth tracks");
+      throw new Error("Need ≥10 ground truth tracks");
     }
 
     console.log(
@@ -146,7 +146,7 @@ class AnalyzerCalibration {
       `Key Acc: ${(this.profile.stats.keyAccuracy * 100).toFixed(1)}%`
     );
     console.log(`LUFS Offset: ${this.profile.lufs.offsetDb.toFixed(1)} dB`);
-    console.log(`Multiplier: ${this.profile.bpm.preferredMultiplier}Ã—`);
+    console.log(`Multiplier: ${this.profile.bpm.preferredMultiplier}×`);
 
     return this.profile;
   }

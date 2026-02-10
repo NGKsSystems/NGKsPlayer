@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: StreamingServices.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -23,7 +23,7 @@ const StreamingServices = ({ onClose }) => {
     {
       id: 'spotify',
       name: 'Spotify',
-      icon: 'ðŸŽµ',
+      icon: '🎵',
       color: '#1DB954',
       description: 'Access millions of songs, playlists, and podcasts',
       authUrl: 'https://www.spotify.com/signup',
@@ -33,7 +33,7 @@ const StreamingServices = ({ onClose }) => {
     {
       id: 'soundcloud',
       name: 'SoundCloud',
-      icon: 'â˜ï¸',
+      icon: '☁️',
       color: '#FF5500',
       description: 'Discover emerging artists and underground tracks',
       authUrl: 'https://soundcloud.com/signup',
@@ -43,7 +43,7 @@ const StreamingServices = ({ onClose }) => {
     {
       id: 'tidal',
       name: 'Tidal',
-      icon: 'ðŸŒŠ',
+      icon: '🌊',
       color: '#00FFFF',
       description: 'High-fidelity lossless audio streaming',
       authUrl: 'https://tidal.com/signup',
@@ -53,7 +53,7 @@ const StreamingServices = ({ onClose }) => {
     {
       id: 'beatport',
       name: 'Beatport',
-      icon: 'ðŸŽ§',
+      icon: '🎧',
       color: '#94D500',
       description: 'DJ-focused electronic music platform',
       authUrl: 'https://www.beatport.com/signup',
@@ -63,7 +63,7 @@ const StreamingServices = ({ onClose }) => {
     {
       id: 'apple-music',
       name: 'Apple Music',
-      icon: 'ðŸŽ',
+      icon: '🍎',
       color: '#FA243C',
       description: 'Access your iTunes library and Apple Music catalog',
       authUrl: 'https://music.apple.com/subscribe',
@@ -73,7 +73,7 @@ const StreamingServices = ({ onClose }) => {
     {
       id: 'youtube-music',
       name: 'YouTube Music',
-      icon: 'â–¶ï¸',
+      icon: '▶️',
       color: '#FF0000',
       description: 'Music videos and audio from YouTube',
       authUrl: 'https://music.youtube.com',
@@ -83,7 +83,7 @@ const StreamingServices = ({ onClose }) => {
     {
       id: 'deezer',
       name: 'Deezer',
-      icon: 'ðŸŽ¼',
+      icon: '🎼',
       color: '#FF9900',
       description: 'Global music streaming with smart recommendations',
       authUrl: 'https://www.deezer.com/signup',
@@ -93,7 +93,7 @@ const StreamingServices = ({ onClose }) => {
     {
       id: 'bandcamp',
       name: 'Bandcamp',
-      icon: 'ðŸŽ¸',
+      icon: '🎸',
       color: '#629AA9',
       description: 'Support independent artists directly',
       authUrl: 'https://bandcamp.com/signup',
@@ -132,16 +132,16 @@ const StreamingServices = ({ onClose }) => {
         });
         
         if (result.success) {
-          alert(`âœ… Connected to ${availableServices.find(s => s.id === serviceId).name}!`);
+          alert(`✅ Connected to ${availableServices.find(s => s.id === serviceId).name}!`);
           loadServiceStatus();
           setSelectedService(null);
         } else {
-          alert(`âŒ Failed to connect: ${result.message}`);
+          alert(`❌ Failed to connect: ${result.message}`);
         }
       }
     } catch (error) {
       console.error('Failed to connect:', error);
-      alert(`âŒ Connection error: ${error.message}`);
+      alert(`❌ Connection error: ${error.message}`);
     }
   };
 
@@ -163,12 +163,12 @@ const StreamingServices = ({ onClose }) => {
       <div className="streaming-services-panel">
         <div className="streaming-services-header">
           <div>
-            <h2>ðŸŒ Streaming Music Services</h2>
+            <h2>🌐 Streaming Music Services</h2>
             <p className="streaming-services-subtitle">
               Connect your streaming accounts to access millions of songs
             </p>
           </div>
-          <button className="close-btn" onClick={onClose}>âœ•</button>
+          <button className="close-btn" onClick={onClose}>✕</button>
         </div>
 
         <div className="streaming-services-content">
@@ -195,7 +195,7 @@ const StreamingServices = ({ onClose }) => {
 
                   <div className="service-features">
                     {service.features.map((feature, idx) => (
-                      <span key={idx} className="feature-tag">âœ“ {feature}</span>
+                      <span key={idx} className="feature-tag">✓ {feature}</span>
                     ))}
                   </div>
 
@@ -203,7 +203,7 @@ const StreamingServices = ({ onClose }) => {
                     {isConnected ? (
                       <>
                         <div className="connected-badge">
-                          âœ… Connected
+                          ✅ Connected
                         </div>
                         <button 
                           className="btn-disconnect"
@@ -227,7 +227,7 @@ const StreamingServices = ({ onClose }) => {
                           rel="noopener noreferrer"
                           className="signup-link"
                         >
-                          Don't have an account? Sign up â†’
+                          Don't have an account? Sign up →
                         </a>
                       </>
                     )}
@@ -245,7 +245,7 @@ const StreamingServices = ({ onClose }) => {
                 <p>Enter your credentials to connect your account</p>
                 
                 <div className="auth-instructions">
-                  <h4>ðŸ“‹ Setup Instructions:</h4>
+                  <h4>📋 Setup Instructions:</h4>
                   <ol>
                     <li>Sign up or log in to {selectedService.name} in your browser</li>
                     <li>Go to your account settings / developer section</li>
@@ -307,7 +307,7 @@ const StreamingServices = ({ onClose }) => {
 
                 <div className="help-links">
                   <a href={selectedService.authUrl} target="_blank" rel="noopener noreferrer">
-                    â†’ Get API credentials
+                    → Get API credentials
                   </a>
                 </div>
               </div>
@@ -316,7 +316,7 @@ const StreamingServices = ({ onClose }) => {
 
           {/* Info Section */}
           <div className="services-info">
-            <h3>ðŸ’¡ How It Works</h3>
+            <h3>💡 How It Works</h3>
             <ul>
               <li><strong>Free to connect:</strong> NGKs Player is free. You need your own streaming service account.</li>
               <li><strong>Your accounts:</strong> Set up and pay for subscriptions directly with each service.</li>

@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: LayerRemover.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -26,23 +26,23 @@ export default function LayerRemover({ onNavigate }) {
   const methods = [
     {
       id: 'karaoke',
-      name: 'ðŸŽ¤ Karaoke Mode',
+      name: '🎤 Karaoke Mode',
       description: 'Advanced vocal removal with instrumental enhancement. Perfect for karaoke backing tracks.',
       default: true
     },
     {
       id: 'vocal_isolation',
-      name: 'ðŸŽ™ï¸ Vocal Isolation',
+      name: '🎙️ Vocal Isolation',
       description: 'Extract and isolate vocal parts from the center channel. Great for acapella versions.'
     },
     {
       id: 'harmonic_percussive',
-      name: 'ðŸ¥ Harmonic/Percussive',
+      name: '🥁 Harmonic/Percussive',
       description: 'Separate melodic elements from drums and percussion. Creates two tracks.'
     },
     {
       id: 'spectral',
-      name: 'ðŸ”¬ Spectral Removal',
+      name: '🔬 Spectral Removal',
       description: 'Advanced frequency-domain vocal removal. Alternative vocal removal method.'
     }
   ];
@@ -148,9 +148,9 @@ export default function LayerRemover({ onNavigate }) {
             onClick={() => onNavigate('library')}
             className="px-4 py-2 bg-zinc-700 hover:bg-zinc-600 rounded-lg transition-colors"
           >
-            â† Library
+            ← Library
           </button>
-          <h1 className="text-xl font-semibold">ðŸŽµ Music Layer Remover</h1>
+          <h1 className="text-xl font-semibold">🎵 Music Layer Remover</h1>
         </div>
         <div className="flex gap-2">
           <button
@@ -172,7 +172,7 @@ export default function LayerRemover({ onNavigate }) {
         {/* File Selection */}
         <div className="mb-8">
           <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-            ðŸ“ Select Audio File
+            📁 Select Audio File
           </h2>
           <div
             className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors cursor-pointer ${
@@ -193,7 +193,7 @@ export default function LayerRemover({ onNavigate }) {
             />
             {selectedFile ? (
               <div>
-                <div className="text-2xl mb-2">âœ…</div>
+                <div className="text-2xl mb-2">✅</div>
                 <div className="text-lg font-medium">{selectedFile.name}</div>
                 <div className="text-sm text-zinc-400 mt-1">
                   Click to select a different file
@@ -201,7 +201,7 @@ export default function LayerRemover({ onNavigate }) {
               </div>
             ) : (
               <div>
-                <div className="text-4xl mb-4">ðŸŽ¤</div>
+                <div className="text-4xl mb-4">🎤</div>
                 <div className="text-lg mb-2">Click here or drag & drop your audio file</div>
                 <div className="text-sm text-zinc-400">
                   Supports: MP3, WAV, FLAC, M4A
@@ -214,7 +214,7 @@ export default function LayerRemover({ onNavigate }) {
         {/* Methods Selection */}
         <div className="mb-8">
           <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-            ðŸ› ï¸ Separation Methods
+            🛠️ Separation Methods
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {methods.map((method) => (
@@ -247,7 +247,7 @@ export default function LayerRemover({ onNavigate }) {
         {/* Output Settings */}
         <div className="mb-8">
           <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-            ðŸ“‚ Output Settings
+            📂 Output Settings
           </h2>
           <div className="bg-zinc-800 rounded-lg p-4">
             <label className="block text-sm font-medium mb-2">Output Directory:</label>
@@ -283,14 +283,14 @@ export default function LayerRemover({ onNavigate }) {
                 : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transform hover:scale-105'
             }`}
           >
-            {processing ? 'â³ Processing...' : 'ðŸš€ Start Processing'}
+            {processing ? '⏳ Processing...' : '🚀 Start Processing'}
           </button>
         </div>
 
         {/* Error Display */}
         {error && (
           <div className="mb-6 p-4 bg-red-500/20 border border-red-500 rounded-lg">
-            <div className="text-red-400">âŒ {error}</div>
+            <div className="text-red-400">❌ {error}</div>
           </div>
         )}
 
@@ -316,12 +316,12 @@ export default function LayerRemover({ onNavigate }) {
         {results && (
           <div className="bg-zinc-800 rounded-lg p-6">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold">ðŸŽ‰ Generated Files</h3>
+              <h3 className="text-lg font-semibold">🎉 Generated Files</h3>
               <button
                 onClick={openOutputFolder}
                 className="px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg transition-colors"
               >
-                ðŸ“‚ Open Folder
+                📂 Open Folder
               </button>
             </div>
             <div className="space-y-2">

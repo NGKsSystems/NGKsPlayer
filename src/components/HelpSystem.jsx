@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: HelpSystem.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -196,7 +196,7 @@ const HelpSystem = () => {
                   {item.content && <p>{item.content}</p>}
                   {item.url && (
                     <a href={item.url} target="_blank" rel="noopener noreferrer">
-                      View Full Documentation â†’
+                      View Full Documentation →
                     </a>
                   )}
                 </li>
@@ -214,16 +214,16 @@ const HelpSystem = () => {
       <h4>Quick Actions</h4>
       <div className="action-buttons">
         <button onClick={() => startGuidedTour('basicUsage')}>
-          ðŸŽ¯ Basic Usage Tour
+          🎯 Basic Usage Tour
         </button>
         <button onClick={() => startGuidedTour('proClipper')}>
-          âœ‚ï¸ Pro Clipper Tour
+          ✂️ Pro Clipper Tour
         </button>
         <button onClick={() => window.open('/docs/reference/keyboard-shortcuts.md')}>
-          âŒ¨ï¸ Keyboard Shortcuts
+          ⌨️ Keyboard Shortcuts
         </button>
         <button onClick={() => window.open('/docs/media/video-tutorials.md')}>
-          ðŸŽ¥ Video Tutorials
+          🎥 Video Tutorials
         </button>
       </div>
     </div>
@@ -244,7 +244,7 @@ const HelpSystem = () => {
           {searchResults.map((result, index) => (
             <div key={index} className="search-result">
               <h5>{result.title}</h5>
-              <p className="result-context">{result.context} â†’ {result.section}</p>
+              <p className="result-context">{result.context} → {result.section}</p>
               {result.content && <p className="result-content">{result.content}</p>}
             </div>
           ))}
@@ -324,7 +324,7 @@ const HelpSystem = () => {
         onClick={() => setIsOpen(!isOpen)}
         title="Help (F1)"
       >
-        â“
+        ❓
       </button>
 
       {/* Main help panel */}
@@ -337,7 +337,7 @@ const HelpSystem = () => {
                 className="close-button"
                 onClick={() => setIsOpen(false)}
               >
-                âœ•
+                ✕
               </button>
             </div>
 
@@ -374,7 +374,7 @@ const HelpSystem = () => {
                     searchResults.map((result, index) => (
                       <div key={index} className="search-result">
                         <h5>{result.title}</h5>
-                        <p className="result-context">{result.context} â†’ {result.section}</p>
+                        <p className="result-context">{result.context} → {result.section}</p>
                         {result.content && <p className="result-content">{result.content}</p>}
                       </div>
                     ))
@@ -390,13 +390,13 @@ const HelpSystem = () => {
 
             <div className="help-footer">
               <a href="/docs/" target="_blank" rel="noopener noreferrer">
-                ðŸ“š Full Documentation
+                📚 Full Documentation
               </a>
               <a href="/docs/media/video-tutorials.md" target="_blank" rel="noopener noreferrer">
-                ðŸŽ¥ Video Tutorials
+                🎥 Video Tutorials
               </a>
               <a href="/docs/support/contact.md" target="_blank" rel="noopener noreferrer">
-                ðŸ’¬ Contact Support
+                💬 Contact Support
               </a>
             </div>
           </div>

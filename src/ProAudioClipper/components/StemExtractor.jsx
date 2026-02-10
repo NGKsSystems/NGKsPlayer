@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: StemExtractor.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -125,7 +125,7 @@ const StemExtractor = ({ audioFilePath, onStemsExtracted, onClose }) => {
     return (
       <div className="stem-extractor-modal">
         <div className="python-error">
-          <h3>âš ï¸ Python Not Available</h3>
+          <h3>⚠️ Python Not Available</h3>
           <p>Stem separation requires Python 3.8+ with Demucs installed.</p>
           
           <div className="install-instructions">
@@ -167,7 +167,7 @@ const StemExtractor = ({ audioFilePath, onStemsExtracted, onClose }) => {
   return (
     <div className="stem-extractor-modal">
       <div className="stem-extractor-content">
-        <h2>ðŸŽµ Extract Stems</h2>
+        <h2>🎵 Extract Stems</h2>
         <p className="subtitle">Separate audio into individual instrument tracks</p>
         
         <div className="quality-selector">
@@ -187,7 +187,7 @@ const StemExtractor = ({ audioFilePath, onStemsExtracted, onClose }) => {
               checked={selectedStems.vocals}
               onChange={() => handleStemToggle('vocals')}
             />
-            <span className="stem-icon">ðŸŽ¤</span> Vocals
+            <span className="stem-icon">🎤</span> Vocals
           </label>
           
           {stemsCount !== '2stems' && (
@@ -198,7 +198,7 @@ const StemExtractor = ({ audioFilePath, onStemsExtracted, onClose }) => {
                   checked={selectedStems.drums}
                   onChange={() => handleStemToggle('drums')}
                 />
-                <span className="stem-icon">ðŸ¥</span> Drums
+                <span className="stem-icon">🥁</span> Drums
               </label>
               
               <label className={!selectedStems.bass ? 'disabled' : ''}>
@@ -207,7 +207,7 @@ const StemExtractor = ({ audioFilePath, onStemsExtracted, onClose }) => {
                   checked={selectedStems.bass}
                   onChange={() => handleStemToggle('bass')}
                 />
-                <span className="stem-icon">ðŸŽ¸</span> Bass
+                <span className="stem-icon">🎸</span> Bass
               </label>
             </>
           )}
@@ -218,13 +218,13 @@ const StemExtractor = ({ audioFilePath, onStemsExtracted, onClose }) => {
               checked={selectedStems.other}
               onChange={() => handleStemToggle('other')}
             />
-            <span className="stem-icon">ðŸŽ¹</span> {stemsCount === '2stems' ? 'Accompaniment' : 'Other'}
+            <span className="stem-icon">🎹</span> {stemsCount === '2stems' ? 'Accompaniment' : 'Other'}
           </label>
         </div>
         
         <div className="info-box">
-          <p><strong>â±ï¸ Processing Time:</strong> ~1-5 minutes per song</p>
-          <p><strong>ðŸ’¾ File Location:</strong> Stems saved to userData/stems/</p>
+          <p><strong>⏱️ Processing Time:</strong> ~1-5 minutes per song</p>
+          <p><strong>💾 File Location:</strong> Stems saved to userData/stems/</p>
         </div>
         
         <div className="button-group">

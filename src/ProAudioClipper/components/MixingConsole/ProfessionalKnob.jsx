@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: ProfessionalKnob.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -48,17 +48,17 @@ const ProfessionalKnob = ({
     }
   }, [value, isDragging]);
 
-  // Convert value to angle (-135Â° to +135Â°, 270Â° total range)
+  // Convert value to angle (-135° to +135°, 270° total range)
   const getAngle = useCallback(() => {
     const normalizedValue = logarithmic 
       ? (Math.log(localValue / min) / Math.log(max / min))
       : (localValue - min) / (max - min);
     
     if (bipolar) {
-      // Bipolar: center at 0Â°, -135Â° to +135Â°
+      // Bipolar: center at 0°, -135° to +135°
       return (normalizedValue - 0.5) * 270;
     } else {
-      // Unipolar: -135Â° to +135Â°
+      // Unipolar: -135° to +135°
       return -135 + (normalizedValue * 270);
     }
   }, [localValue, min, max, bipolar, logarithmic]);
@@ -197,7 +197,7 @@ const ProfessionalKnob = ({
   // Format display value
   const formatValue = useCallback((val) => {
     if (unit === 'dB') {
-      if (val <= min && logarithmic) return '-âˆž';
+      if (val <= min && logarithmic) return '-∞';
       return val >= 0 ? `+${val.toFixed(1)}` : val.toFixed(1);
     } else if (unit === 'Hz') {
       if (val >= 1000) return `${(val / 1000).toFixed(1)}k`;

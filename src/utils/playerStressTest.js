@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: playerStressTest.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -346,9 +346,9 @@ export class PlayerStressTest {
     this.errors = [];
     this.warnings = [];
 
-    this.log('â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—');
-    this.log('â•‘     PLAYER STRESS TEST - STARTING             â•‘');
-    this.log('â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•');
+    this.log('╔════════════════════════════════════════════════╗');
+    this.log('║     PLAYER STRESS TEST - STARTING             ║');
+    this.log('╚════════════════════════════════════════════════╝');
 
     try {
       // Test 1: Rapid track switching
@@ -399,9 +399,9 @@ export class PlayerStressTest {
     const duration = ((this.stats.endTime - this.stats.startTime) / 1000).toFixed(2);
 
     console.log('\n');
-    this.log('â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—');
-    this.log('â•‘     STRESS TEST REPORT                         â•‘');
-    this.log('â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•');
+    this.log('╔════════════════════════════════════════════════╗');
+    this.log('║     STRESS TEST REPORT                         ║');
+    this.log('╚════════════════════════════════════════════════╝');
     this.log('');
     this.log(`Duration: ${duration} seconds`);
     this.log(`Tracks Loaded: ${this.stats.tracksLoaded}`);
@@ -439,7 +439,7 @@ export class PlayerStressTest {
  */
 export function createStressTestButton(audioRef, tracks, onComplete) {
   const button = document.createElement('button');
-  button.textContent = 'âš¡ Run Stress Test';
+  button.textContent = '⚡ Run Stress Test';
   button.className = 'px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded font-bold';
   
   let test = null;
@@ -447,11 +447,11 @@ export function createStressTestButton(audioRef, tracks, onComplete) {
   button.onclick = async () => {
     if (test && test.isRunning) {
       test.stop();
-      button.textContent = 'âš¡ Run Stress Test';
+      button.textContent = '⚡ Run Stress Test';
       return;
     }
 
-    button.textContent = 'â¸ Stop Stress Test';
+    button.textContent = '⏸ Stop Stress Test';
     test = new PlayerStressTest(audioRef, tracks);
     
     const result = await test.runAllTests({
@@ -464,7 +464,7 @@ export function createStressTestButton(audioRef, tracks, onComplete) {
       includeConcurrent: true
     });
 
-    button.textContent = 'âš¡ Run Stress Test';
+    button.textContent = '⚡ Run Stress Test';
     
     if (onComplete) {
       onComplete(result);

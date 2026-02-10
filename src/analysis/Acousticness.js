@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: Acousticness.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -23,9 +23,9 @@ export function computeAcousticnessFast(
   genre = "",
   cfg = {}
 ) {
-  // Fast: crude proxy â€” lower energy + lower brightness = more acoustic
-  const energyScore = (100 - energyVal) * 0.6; // Lower energy â†’ more acoustic
-  const brightnessScore = (1 - spectralCentroid) * 100 * 0.4; // Lower centroid â†’ warmer
+  // Fast: crude proxy — lower energy + lower brightness = more acoustic
+  const energyScore = (100 - energyVal) * 0.6; // Lower energy → more acoustic
+  const brightnessScore = (1 - spectralCentroid) * 100 * 0.4; // Lower centroid → warmer
   let raw = energyScore + brightnessScore;
 
   const rules = GenreRules.getAcousticnessRules(genre) || {};
@@ -48,7 +48,7 @@ export function computeAcousticnessDeep(
   const energyVariance =
     trajectory.reduce((s, v) => s + Math.pow(v - meanEnergy, 2), 0) /
     trajectory.length;
-  const dynamicScore = Math.min(100, Math.sqrt(energyVariance) * 300); // Higher variance â†’ more acoustic
+  const dynamicScore = Math.min(100, Math.sqrt(energyVariance) * 300); // Higher variance → more acoustic
 
   // 2. Spectral centroid (lower = warmer, less "bright"/electronic)
   let centroidScore = 80;

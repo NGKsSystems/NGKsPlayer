@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: AudioTestingRobot.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -102,7 +102,7 @@ export class AudioTestingRobot {
    * Test all audio processing capabilities
    */
   async testAudioProcessing() {
-    console.log('ðŸŽµ Testing audio processing capabilities...');
+    console.log('🎵 Testing audio processing capabilities...');
     
     const tests = [
       { name: 'Basic Audio Buffer Creation', test: () => this.testAudioBufferCreation() },
@@ -129,7 +129,7 @@ export class AudioTestingRobot {
    * Test audio effects processing
    */
   async testAudioEffects() {
-    console.log('ðŸŽ›ï¸ Testing audio effects...');
+    console.log('🎛️ Testing audio effects...');
     
     const effects = [
       { name: 'Gain/Volume', test: () => this.testGainEffect() },
@@ -157,7 +157,7 @@ export class AudioTestingRobot {
    * Test codec support and quality
    */
   async testAudioCodecs() {
-    console.log('ðŸ“ Testing audio codecs...');
+    console.log('📁 Testing audio codecs...');
     
     const codecs = [
       { name: 'WAV', test: () => this.testWAVCodec() },
@@ -181,7 +181,7 @@ export class AudioTestingRobot {
    * Test performance and latency
    */
   async testPerformance() {
-    console.log('âš¡ Testing audio performance...');
+    console.log('⚡ Testing audio performance...');
     
     const tests = [
       { name: 'Buffer Processing Latency', test: () => this.testBufferProcessingLatency() },
@@ -216,14 +216,14 @@ export class AudioTestingRobot {
     };
 
     try {
-      console.log(`  ðŸ§ª Testing: ${name}`);
+      console.log(`  🧪 Testing: ${name}`);
       const metrics = await testFunction();
       result.metrics = metrics || {};
-      console.log(`  âœ… ${name} passed`);
+      console.log(`  ✅ ${name} passed`);
     } catch (error) {
       result.status = 'failed';
       result.error = error.message;
-      console.log(`  âŒ ${name} failed: ${error.message}`);
+      console.log(`  ❌ ${name} failed: ${error.message}`);
     }
 
     result.duration = performance.now() - startTime;

@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: ProAudioClipperMultiTrack.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -236,7 +236,7 @@ const ProAudioClipper = ({ onNavigate }) => {
             className="back-btn"
             title="Back to Home"
           >
-            â† Back
+            ← Back
           </button>
           <h1>Pro Audio Clipper</h1>
         </div>

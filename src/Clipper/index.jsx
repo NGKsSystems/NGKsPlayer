@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: index.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -101,7 +101,7 @@ const ProClipperSimple = ({ onNavigate }) => {
   return (
     <div style={{ padding: '20px', background: '#000', color: '#fff', minHeight: '100vh' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '30px' }}>
-        <h1 style={{ color: '#00ff00', fontSize: '32px' }}>âœ… SIMPLE WORKING CLIPPER</h1>
+        <h1 style={{ color: '#00ff00', fontSize: '32px' }}>✅ SIMPLE WORKING CLIPPER</h1>
         <button onClick={() => onNavigate?.('library')} style={{ padding: '15px 30px', background: '#ff4444' }}>
           Back to Library
         </button>
@@ -133,7 +133,7 @@ const ProClipperSimple = ({ onNavigate }) => {
                 borderRadius: '10px'
               }}
             >
-              {isPlaying ? 'â¸ PAUSE' : 'â–¶ PLAY'}
+              {isPlaying ? '⏸ PAUSE' : '▶ PLAY'}
             </button>
             <span style={{ marginLeft: '20px', fontSize: '20px', color: '#ffff00' }}>
               Time: {formatTime(currentTime)} / {formatTime(duration)}

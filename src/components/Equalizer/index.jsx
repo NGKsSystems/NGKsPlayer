@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: index.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -44,7 +44,7 @@ export default function Equalizer({
   return (
     <div style={styles.card}>
       <div style={styles.headerRow}>
-        <div style={styles.title}>Equalizer â€” Player {playerLabel}</div>
+        <div style={styles.title}>Equalizer — Player {playerLabel}</div>
         <div style={styles.headerRight}>
           <label style={styles.label}>Preset</label>
           <select
@@ -56,7 +56,7 @@ export default function Equalizer({
               e.target.value = '__'
             }}
           >
-            <option value="__">Chooseâ€¦</option>
+            <option value="__">Choose…</option>
             <option value="Flat">Flat</option>
             <option value="BassBoost">BassBoost</option>
             <option value="TrebleBoost">TrebleBoost</option>
@@ -88,7 +88,7 @@ export default function Equalizer({
                   onDoubleClick={() => onChangeBand?.(i, 0)}
                   style={styles.sliderVertical}
                   aria-label={`EQ ${BAND_LABELS[i]} band`}
-                  title={`${BAND_LABELS[i]} â€¢ ${g.toFixed(1)} dB`}
+                  title={`${BAND_LABELS[i]} • ${g.toFixed(1)} dB`}
                 />
                 <div style={styles.freqLabel}>{BAND_LABELS[i]}</div>
                 <div style={styles.dbLabel}>{g.toFixed(1)} dB</div>

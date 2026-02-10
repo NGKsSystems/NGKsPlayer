@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: AudioAnalysisDashboard.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -30,9 +30,9 @@ export const AudioAnalysisDashboard = ({ audioEngine, className = "" }) => {
   const [dashboardMode, setDashboardMode] = useState('compact'); // compact, expanded
 
   const tabs = [
-    { id: 'spectrum', label: 'Spectrum', icon: 'ðŸ“Š' },
-    { id: 'phase', label: 'Phase', icon: 'ðŸ”„' },
-    { id: 'combo', label: 'Combined', icon: 'ðŸ“ˆ' }
+    { id: 'spectrum', label: 'Spectrum', icon: '📊' },
+    { id: 'phase', label: 'Phase', icon: '🔄' },
+    { id: 'combo', label: 'Combined', icon: '📈' }
   ];
 
   const toggleMode = useCallback(() => {
@@ -60,7 +60,7 @@ export const AudioAnalysisDashboard = ({ audioEngine, className = "" }) => {
           alignItems: 'center',
           gap: '8px'
         }}>
-          ðŸŽ¯ Professional Audio Analysis
+          🎯 Professional Audio Analysis
           {!audioEngine?.audioContext && (
             <span style={{
               fontSize: '11px',
@@ -85,7 +85,7 @@ export const AudioAnalysisDashboard = ({ audioEngine, className = "" }) => {
               fontSize: '10px'
             }}
           >
-            {dashboardMode === 'compact' ? 'ðŸ” Expand' : 'ðŸ“Š Compact'}
+            {dashboardMode === 'compact' ? '🔍 Expand' : '📊 Compact'}
           </button>
         </div>
       </div>
@@ -176,7 +176,7 @@ export const AudioAnalysisDashboard = ({ audioEngine, className = "" }) => {
           color: '#999'
         }}>
           <div>
-            <span style={{ color: '#66ff66' }}>â—</span> AudioWorklet: {audioEngine?.workletSupported ? 'Active' : 'Fallback'}
+            <span style={{ color: '#66ff66' }}>●</span> AudioWorklet: {audioEngine?.workletSupported ? 'Active' : 'Fallback'}
           </div>
           <div>
             Sample Rate: {audioEngine?.audioContext?.sampleRate || 'N/A'}Hz

@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: index.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -287,9 +287,9 @@ const EQB = ({ id, deck = 'B', audioContext, gainNode, pannerNode, onStyleChange
             title={minimized ? 'Expand EQ' : 'Collapse EQ'}
             onMouseDown={(e) => e.stopPropagation()}
           >
-            {minimized ? 'â–¼' : 'â–²'}
+            {minimized ? '▼' : '▲'}
           </button>
-          <span className="drag-handle">â‹®â‹®</span>
+          <span className="drag-handle">⋮⋮</span>
         </div>
       </div>
       {!minimized && (
@@ -313,7 +313,7 @@ const EQB = ({ id, deck = 'B', audioContext, gainNode, pannerNode, onStyleChange
             onMouseDown={handleControlMouseDown}
             title={bypassEQ ? 'EQ Bypassed - Click to activate' : 'EQ Active - Click to bypass'}
           >
-            {bypassEQ ? 'âŠ˜' : 'â—'}
+            {bypassEQ ? '⊘' : '●'}
           </button>
           <button 
             className="eq-reset-btn-compact" 
@@ -321,7 +321,7 @@ const EQB = ({ id, deck = 'B', audioContext, gainNode, pannerNode, onStyleChange
             onMouseDown={handleControlMouseDown}
             title="Reset to Flat"
           >
-            âŸ²
+            ⟲
           </button>
         </div>
         
@@ -360,7 +360,7 @@ const EQB = ({ id, deck = 'B', audioContext, gainNode, pannerNode, onStyleChange
           onMouseDown={handleResizeMouseDown}
           title="Drag to resize"
         >
-          âŸ²
+          ⟲
         </div>
       )}
     </div>

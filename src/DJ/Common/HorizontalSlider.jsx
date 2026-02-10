@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: HorizontalSlider.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -53,7 +53,7 @@ const HorizontalSlider = ({
       <div className="horizontal-slider-wrapper">
         <div className="crossfader-labels">
           <span className="cf-label-a">A</span>
-          <span className="cf-label-center">âŠ•</span>
+          <span className="cf-label-center">⊕</span>
           <span className="cf-label-b">B</span>
         </div>
         <input

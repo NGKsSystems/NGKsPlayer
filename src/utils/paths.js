@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: paths.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -14,11 +14,11 @@
 // src/utils/paths.js
 export function toLocal(p) {
   if (!p) return p;
-  // if it's already a URL, normalize file:// â†’ file://
+  // if it's already a URL, normalize file:// → file://
   if (/^(local|file|https?):\/\//i.test(p)) {
     return p.replace(/^local:\/\//i, 'file://').replace(/\\/g, '/');
   }
-  // raw Windows path â†’ file://C:/...
+  // raw Windows path → file://C:/...
   return `file://${p.replace(/\\/g, '/')}`;
 }
 

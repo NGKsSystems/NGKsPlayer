@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: NGKsMobileApp.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -68,7 +68,7 @@ const NGKsMobileApp = ({ websocketUrl = 'ws://localhost:8080' }) => {
       websocketRef.current = new WebSocket(websocketUrl);
       
       websocketRef.current.onopen = () => {
-        console.log('ðŸ“± Connected to NGKs Player');
+        console.log('📱 Connected to NGKs Player');
         setConnectionStatus('connected');
         
         // Send mobile app identification
@@ -90,7 +90,7 @@ const NGKsMobileApp = ({ websocketUrl = 'ws://localhost:8080' }) => {
       };
 
       websocketRef.current.onclose = () => {
-        console.log('ðŸ“± Disconnected from NGKs Player');
+        console.log('📱 Disconnected from NGKs Player');
         setConnectionStatus('disconnected');
         
         // Attempt reconnection
@@ -272,7 +272,7 @@ const NGKsMobileApp = ({ websocketUrl = 'ws://localhost:8080' }) => {
     return (
       <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center p-4">
         <div className="text-center">
-          <div className="text-6xl mb-4">ðŸ“±</div>
+          <div className="text-6xl mb-4">📱</div>
           <h1 className="text-2xl font-bold mb-2">NGKs Mobile</h1>
           <p className="text-gray-400 mb-4">Connecting to NGKs Player...</p>
           <div className="animate-pulse">
@@ -287,7 +287,7 @@ const NGKsMobileApp = ({ websocketUrl = 'ws://localhost:8080' }) => {
     <div className="min-h-screen bg-gray-900 text-white">
       {/* Header */}
       <div className="bg-black p-4 flex justify-between items-center">
-        <h1 className="text-xl font-bold">ðŸ“± NGKs Mobile</h1>
+        <h1 className="text-xl font-bold">📱 NGKs Mobile</h1>
         <div className={`w-3 h-3 rounded-full ${
           connectionStatus === 'connected' ? 'bg-green-500' : 'bg-red-500'
         }`}></div>
@@ -346,7 +346,7 @@ const NGKsMobileApp = ({ websocketUrl = 'ws://localhost:8080' }) => {
                     deckA.playing ? 'bg-green-600' : 'bg-gray-600'
                   }`}
                 >
-                  {deckA.playing ? 'â¸ï¸' : 'â–¶ï¸'}
+                  {deckA.playing ? '⏸️' : '▶️'}
                 </button>
                 <button
                   onClick={() => setCue('A')}
@@ -401,7 +401,7 @@ const NGKsMobileApp = ({ websocketUrl = 'ws://localhost:8080' }) => {
                     deckB.playing ? 'bg-green-600' : 'bg-gray-600'
                   }`}
                 >
-                  {deckB.playing ? 'â¸ï¸' : 'â–¶ï¸'}
+                  {deckB.playing ? '⏸️' : '▶️'}
                 </button>
                 <button
                   onClick={() => setCue('B')}
@@ -478,7 +478,7 @@ const NGKsMobileApp = ({ websocketUrl = 'ws://localhost:8080' }) => {
                   <div className="font-semibold truncate">{track.title}</div>
                   <div className="text-sm text-gray-400 truncate">{track.artist}</div>
                   <div className="text-xs text-gray-500">
-                    {track.bpm} BPM â€¢ {track.key}
+                    {track.bpm} BPM • {track.key}
                   </div>
                 </div>
                 <div className="flex gap-1 ml-2">
@@ -505,7 +505,7 @@ const NGKsMobileApp = ({ websocketUrl = 'ws://localhost:8080' }) => {
       {activeTab === 'effects' && (
         <div className="p-4">
           <div className="text-center text-gray-400">
-            <div className="text-4xl mb-4">ðŸŽ›ï¸</div>
+            <div className="text-4xl mb-4">🎛️</div>
             <h3 className="text-xl font-bold mb-2">Effects Panel</h3>
             <p>Touch-based effects coming soon!</p>
           </div>
@@ -520,7 +520,7 @@ const NGKsMobileApp = ({ websocketUrl = 'ws://localhost:8080' }) => {
             hapticEnabled ? 'bg-green-600' : 'bg-gray-600'
           } flex items-center justify-center`}
         >
-          ðŸ“³
+          📳
         </button>
       </div>
     </div>

@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: CalibrationPanel.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -180,8 +180,8 @@ const CalibrationPanel = ({ onClose }) => {
   return (
     <div className="calibration-panel">
       <div className="calibration-header">
-        <h2>ðŸŽ¯ Analyzer Calibration</h2>
-        <button className="close-button" onClick={onClose}>Ã—</button>
+        <h2>🎯 Analyzer Calibration</h2>
+        <button className="close-button" onClick={onClose}>×</button>
       </div>
 
       <div className="calibration-content">
@@ -205,7 +205,7 @@ const CalibrationPanel = ({ onClose }) => {
         {/* Calibration Status */}
         {calibrationStatus && calibrationStatus.calibrated && (
           <div className="calibration-section status-display">
-            <h3>ðŸ“Š Current Calibration</h3>
+            <h3>📊 Current Calibration</h3>
             <div className="status-grid">
               <div className="status-card">
                 <div className="status-label">BPM Accuracy</div>
@@ -241,10 +241,10 @@ const CalibrationPanel = ({ onClose }) => {
                 + Add Files
               </button>
               <button className="btn-secondary" onClick={handleImport}>
-                ðŸ“¥ Import
+                📥 Import
               </button>
               <button className="btn-secondary" onClick={handleExport}>
-                ðŸ“¤ Export
+                📤 Export
               </button>
             </div>
           </div>
@@ -283,7 +283,7 @@ const CalibrationPanel = ({ onClose }) => {
               </>
             ) : (
               <>
-                ðŸŽ¯ Start Calibration
+                🎯 Start Calibration
                 {!canCalibrate && ` (need ${10 - validTracks} more)`}
               </>
             )}
@@ -299,7 +299,7 @@ const CalibrationPanel = ({ onClose }) => {
         {/* Results */}
         {showResults && calibrationStatus && (
           <div className="calibration-section results">
-            <h3>âœ… Calibration Results</h3>
+            <h3>✅ Calibration Results</h3>
             <div className="results-details">
               <div className="result-group">
                 <h4>BPM Detection</h4>
@@ -308,8 +308,8 @@ const CalibrationPanel = ({ onClose }) => {
                   <li>Accuracy: <strong>{(calibrationStatus.bpmAccuracy * 100).toFixed(1)}%</strong></li>
                   <li>
                     {calibrationStatus.preferredMultiplier === 1.0
-                      ? 'âœ… No octave correction needed'
-                      : 'ðŸ”§ Octave doubling/halving correction applied'}
+                      ? '✅ No octave correction needed'
+                      : '🔧 Octave doubling/halving correction applied'}
                   </li>
                 </ul>
               </div>
@@ -319,8 +319,8 @@ const CalibrationPanel = ({ onClose }) => {
                   <li>Accuracy: <strong>{(calibrationStatus.keyAccuracy * 100).toFixed(1)}%</strong></li>
                   <li>
                     {calibrationStatus.relativeFix
-                      ? 'ðŸ”§ Relative major/minor correction enabled'
-                      : 'âœ… No relative correction needed'}
+                      ? '🔧 Relative major/minor correction enabled'
+                      : '✅ No relative correction needed'}
                   </li>
                   {calibrationStatus.commonMistakes && calibrationStatus.commonMistakes.length > 0 && (
                     <li>
@@ -396,16 +396,16 @@ const TrackRow = ({ track, isEditing, onEdit, onSave, onRemove }) => {
   return (
     <div className={`track-row ${isComplete ? 'complete' : 'incomplete'}`}>
       <div className="track-status">
-        {isComplete ? 'âœ…' : 'âš ï¸'}
+        {isComplete ? '✅' : '⚠️'}
       </div>
       <div className="track-info">
         <div className="track-name">{track.fileName}</div>
         <div className="track-details">
           {track.bpm ? `${track.bpm} BPM` : 'BPM not set'}
-          {' â€¢ '}
+          {' • '}
           {track.key ? track.key : 'Key not set'}
-          {track.lufs && ` â€¢ ${track.lufs} LUFS`}
-          {track.genre && ` â€¢ ${track.genre}`}
+          {track.lufs && ` • ${track.lufs} LUFS`}
+          {track.genre && ` • ${track.genre}`}
         </div>
       </div>
       <div className="track-actions">

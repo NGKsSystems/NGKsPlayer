@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: ExportMasteringInterface.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -850,7 +850,7 @@ const ExportMasteringInterface = ({ audioContext, audioFile, onExportComplete, i
                 disabled={processingState.isProcessing || !audioFile}
                 className="w-full py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 disabled:bg-gray-600 disabled:cursor-not-allowed"
             >
-                {processingState.isProcessing ? 'Processing...' : 'ðŸ“¦ Export Audio'}
+                {processingState.isProcessing ? 'Processing...' : '📦 Export Audio'}
             </button>
         </div>
     );

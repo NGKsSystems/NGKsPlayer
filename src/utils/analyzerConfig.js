@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: analyzerConfig.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -300,7 +300,7 @@ export function addAuditEntry(entry) {
   saveConfig();
 }
 
-// Node persistence (unchanged â€” good as-is)
+// Node persistence (unchanged — good as-is)
 export async function enableNodePersistence(filePath) {
   if (!filePath) return false;
   try {

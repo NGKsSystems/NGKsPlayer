@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: ExportPanel.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -132,7 +132,7 @@ const ExportPanel = ({ clips, audioBuffer, audioContext, onNavigate }) => {
   return (
     <div className="export-panel">
       <div className="panel-header">
-        <h3>ðŸ“¤ Export Clips</h3>
+        <h3>📤 Export Clips</h3>
       </div>
 
       <div className="export-options">
@@ -165,7 +165,7 @@ const ExportPanel = ({ clips, audioBuffer, audioContext, onNavigate }) => {
           className="btn-advanced-toggle"
           onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}
         >
-          {showAdvancedOptions ? 'ðŸ”½' : 'ðŸ”¼'} Advanced Options
+          {showAdvancedOptions ? '🔽' : '🔼'} Advanced Options
         </button>
 
         {showAdvancedOptions && (
@@ -223,7 +223,7 @@ const ExportPanel = ({ clips, audioBuffer, audioContext, onNavigate }) => {
           onClick={handleSelectAll}
           disabled={clips.length === 0}
         >
-          {selectedClips.size === clips.length ? 'â˜ Deselect All' : 'â˜‘ Select All'}
+          {selectedClips.size === clips.length ? '☐ Deselect All' : '☑ Select All'}
         </button>
 
         <div className="selection-list">
@@ -257,7 +257,7 @@ const ExportPanel = ({ clips, audioBuffer, audioContext, onNavigate }) => {
           }}
           disabled={exporting || selectedClips.size !== 1}
         >
-          ðŸ“¥ Export Selected
+          📥 Export Selected
         </button>
 
         <button
@@ -265,14 +265,14 @@ const ExportPanel = ({ clips, audioBuffer, audioContext, onNavigate }) => {
           onClick={handleBatchExport}
           disabled={exporting || selectedClips.size === 0}
         >
-          ðŸ“¦ Batch Export ({selectedClips.size})
+          📦 Batch Export ({selectedClips.size})
         </button>
       </div>
 
       <div className="export-info">
-        <p className="info-text">ðŸ’¡ Clips export as WAV format with original sample rate</p>
-        <p className="info-text">ðŸ’¾ Exports saved to your browser's default download location</p>
-        <p className="info-text">ðŸ“ Check your Downloads folder or browser settings to change save location</p>
+        <p className="info-text">💡 Clips export as WAV format with original sample rate</p>
+        <p className="info-text">💾 Exports saved to your browser's default download location</p>
+        <p className="info-text">📁 Check your Downloads folder or browser settings to change save location</p>
       </div>
     </div>
   );

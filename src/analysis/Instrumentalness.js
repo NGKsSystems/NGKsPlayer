@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: Instrumentalness.js
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: TODO – describe responsibility
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -52,7 +52,7 @@ export function computeInstrumentalnessDeep(
     const avgVocal =
       spectralData.vocalEnergy.reduce((s, v) => s + v, 0) /
       spectralData.vocalEnergy.length;
-    // Normalized 0-1: high = strong vocal presence â†’ low instrumentalness
+    // Normalized 0-1: high = strong vocal presence → low instrumentalness
     vocalScore = (1 - avgVocal) * 100;
   }
 
@@ -62,7 +62,7 @@ export function computeInstrumentalnessDeep(
     trajectory.reduce((s, v) => s + Math.pow(v - mean, 2), 0) /
     trajectory.length;
   const stdDev = Math.sqrt(variance);
-  const consistencyBonus = Math.min(30, stdDev < 0.15 ? 30 : 0); // Very steady â†’ bonus
+  const consistencyBonus = Math.min(30, stdDev < 0.15 ? 30 : 0); // Very steady → bonus
 
   // Combine: flatness and low vocal energy = high instrumentalness
   let raw = flatnessScore * 0.5 + vocalScore * 0.4 + consistencyBonus;
