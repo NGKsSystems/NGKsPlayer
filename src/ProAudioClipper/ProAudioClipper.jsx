@@ -14,9 +14,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Play, Pause, Square, SkipBack, SkipForward, Volume2, Download, Save, FolderOpen, Scissors, MousePointer, ZoomIn, ZoomOut, RotateCcw, RotateCw, X, Plus, Trash2 } from 'lucide-react';
 import ProfessionalTimeline from './components/ProfessionalTimeline';
-import TrackHeader from './components/TrackHeader';
 import TransportControls from './components/TransportControls';
-import ToolPanel from './components/ToolPanel';
 import ExportPanel from './components/ExportPanel';
 import ProjectManager from './components/ProjectManager';
 import TrackEffectsPanel from './components/TrackEffectsPanel';
@@ -43,7 +41,6 @@ import { useUndoRedoController } from './hooks/useUndoRedoController';
 import { useTransportController } from './hooks/useTransportController';
 import { useTrackController } from './hooks/useTrackController';
 // import './ProAudioClipper.css';
-import './components/TrackHeader.css';
 import './components/TrackEffectsPanel.css';
 
 /**
@@ -651,6 +648,22 @@ const ProAudioClipper = ({ onNavigate }) => {
       }}
     >
       {/* Header Bar */}
+      {/* Hidden file input for track imports */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="audio/*"
+        multiple
+        onChange={(e) => {
+          const files = Array.from(e.target.files);
+          if (files.length > 0) {
+            files.forEach(file => {
+              handleFileLoad(file);
+            });
+          }
+        }}
+        style={{ display: 'none' }}
+      />
       <div 
         className="header-bar"
         style={{
@@ -918,99 +931,30 @@ const ProAudioClipper = ({ onNavigate }) => {
           overflow: 'hidden'
         }}
       >
-        {/* Left Panel - Track Headers */}
-        <div 
-          className="left-panel"
-          style={{
-            width: '300px',
-            background: '#252525',
-            borderRight: '1px solid #404040',
-            display: 'flex',
-            flexDirection: 'column',
-            overflow: 'auto',
-            flexShrink: 0
-          }}
-        >
-          {/* File Import */}
-          <div className="import-section" style={{ display: 'none' }}>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="audio/*"
-              multiple
-              onChange={(e) => {
-                const files = Array.from(e.target.files);
-                if (files.length > 0) {
-                  // Process multiple files
-                  files.forEach(file => {
-                    handleFileLoad(file);
-                  });
-                }
-              }}
-              style={{ display: 'none' }}
+
+        {/* Left Panel - Effects (collapsible) */}
+        {showEffectsPanel && effectsPanelTrackId && (
+          <div
+            className="effects-sidebar"
+            style={{
+              width: '350px',
+              minWidth: '350px',
+              display: 'flex',
+              flexDirection: 'column',
+              borderRight: '2px solid #404040',
+              background: '#1e1e1e',
+              overflow: 'hidden',
+              position: 'relative'
+            }}
+          >
+            <TrackEffectsPanel
+              trackId={effectsPanelTrackId}
+              trackName={trackManager.tracks.find(t => t.id === effectsPanelTrackId)?.name || 'Track'}
+              effectsEngine={multiTrackEngine.effectsEngine}
+              onClose={handleCloseEffectsPanel}
             />
           </div>
-
-          {/* Track Headers */}
-          <div className="tracks-container">
-            {trackManager.tracks.map((track, index) => (
-              <TrackHeader
-                key={track.id}
-                track={track}
-                isActive={trackManager.activeTrackId === track.id}
-                onSelect={trackController.handleTrackSelect}
-                onMute={trackController.handleTrackMute}
-                onSolo={trackController.handleTrackSolo}
-                onVolumeChange={trackController.handleTrackVolumeChange}
-                onPanChange={trackController.handleTrackPanChange}
-                onPlaybackRateChange={trackController.handleTrackPlaybackRateChange}
-                onReverseToggle={trackController.handleTrackReverseToggle}
-                onNameChange={trackController.handleTrackNameChange}
-                onDelete={trackController.handleTrackDelete}
-                onOpenEffects={handleOpenEffectsPanel}
-                onMoveUp={() => trackManager.reorderTracks(index, index - 1)}
-                onMoveDown={() => trackManager.reorderTracks(index, index + 1)}
-                canMoveUp={index > 0}
-                canMoveDown={index < trackManager.tracks.length - 1}
-                style={{ height: '80px' }}
-              />
-            ))}
-            
-            {trackManager.tracks.length === 0 && (
-              <div className="no-tracks">
-                <p>No tracks yet. Add an audio file to get started.</p>
-              </div>
-            )}
-          </div>
-
-          {/* Master Controls */}
-          <div className="master-controls">
-            <h3>Master</h3>
-            <div className="master-volume">
-              <label>Volume</label>
-              <input
-                type="range"
-                min="0"
-                max="2"
-                step="0.01"
-                value={masterVolume}
-                onChange={(e) => setMasterVolume(parseFloat(e.target.value))}
-                className="master-volume-slider"
-              />
-              <span>{((masterVolume || 1) * 100).toFixed(0)}%</span>
-            </div>
-          </div>
-
-          {/* Tool Panel */}
-          <ToolPanel
-            selectedTool={selectedTool}
-            onToolChange={setSelectedTool}
-            zoomLevel={zoomLevel}
-            onZoomChange={handleZoom}
-            playbackRate={playbackRate}
-            onPlaybackRateChange={setPlaybackRate}
-          />
-        </div>
+        )}
 
         {/* Center Panel - Timeline */}
         <div 
@@ -1069,6 +1013,8 @@ const ProAudioClipper = ({ onNavigate }) => {
               onPlaybackRateChange={setPlaybackRate}
               autoScroll={autoScroll}
               onAutoScrollToggle={handleAutoScrollToggle}
+              masterVolume={masterVolume}
+              onMasterVolumeChange={setMasterVolume}
             />
           </div>
 
@@ -1110,6 +1056,8 @@ const ProAudioClipper = ({ onNavigate }) => {
             zoomLevel={zoomLevel}
             viewportStart={viewportStart}
             selectedTool={selectedTool}
+            onToolChange={setSelectedTool}
+            onZoomChange={handleZoom}
             activeTrackId={trackManager.activeTrackId}
             onTimelineClick={seek}
             onClipSelect={handleTimelineSelection}
@@ -1173,15 +1121,6 @@ const ProAudioClipper = ({ onNavigate }) => {
           currentProject={currentProject}
           onLoadProject={handleLoadProject}
           onClose={() => setShowProjectManager(false)}
-        />
-      )}
-
-      {showEffectsPanel && effectsPanelTrackId && (
-        <TrackEffectsPanel
-          trackId={effectsPanelTrackId}
-          trackName={trackManager.tracks.find(t => t.id === effectsPanelTrackId)?.name || 'Track'}
-          effectsEngine={multiTrackEngine.effectsEngine}
-          onClose={handleCloseEffectsPanel}
         />
       )}
 

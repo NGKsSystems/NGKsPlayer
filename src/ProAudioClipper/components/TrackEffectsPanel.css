@@ -20,6 +20,17 @@
   color: #ffffff;
 }
 
+/* When used inline inside the effects sidebar */
+.effects-sidebar .track-effects-panel {
+  position: relative;
+  top: auto;
+  right: auto;
+  width: 100%;
+  height: 100%;
+  z-index: auto;
+  border-left: none;
+}
+
 /* Header */
 .effects-panel-header {
   display: flex;

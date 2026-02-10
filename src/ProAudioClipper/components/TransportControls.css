@@ -231,6 +231,34 @@
   border-top: 1px solid #333;
 }
 
+.shortcuts-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 11px;
+  cursor: pointer;
+  padding: 4px 0;
+  width: 100%;
+  text-align: left;
+}
+
+.shortcuts-toggle-btn:hover {
+  color: #ccc;
+}
+
+.shortcuts-toggle-arrow {
+  display: inline-block;
+  font-size: 8px;
+  transition: transform 0.2s ease;
+}
+
+.shortcuts-toggle-arrow.open {
+  transform: rotate(90deg);
+}
+
 .shortcuts-list {
   display: flex;
   flex-wrap: wrap;

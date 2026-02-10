@@ -53,6 +53,8 @@ const ProfessionalTimeline = React.forwardRef(({
   onOpenEffects,
   onViewportChange, // Add viewport change handler
   onTrackContextMenu, // Add context menu handler
+  onToolChange,
+  onZoomChange,
   onUndo,
   onRedo,
   canUndo,
@@ -111,6 +113,7 @@ const ProfessionalTimeline = React.forwardRef(({
     onTrackMoveUp,
     onTrackMoveDown,
     onTrackContextMenu,
+    onToolChange,
     onUndo,
     onRedo,
     canUndo,
@@ -146,6 +149,155 @@ const ProfessionalTimeline = React.forwardRef(({
         }}>
           🎵 Professional Multi-Track Timeline
         </h3>
+
+        {/* Add Track Button */}
+        <button
+          onClick={onAddTrack}
+          style={{
+            background: '#ff6b35',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            padding: '4px 8px',
+            fontSize: '11px',
+            cursor: 'pointer',
+            marginLeft: '12px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4px'
+          }}
+          title="Add Audio Track"
+        >
+          + Add Track
+        </button>
+
+        {/* Tool Buttons */}
+        <div style={{
+          marginLeft: '16px',
+          display: 'flex',
+          gap: '4px',
+          alignItems: 'center'
+        }}>
+          <button
+            onClick={() => onToolChange && onToolChange('selection')}
+            title="Selection Tool (V)"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px',
+              padding: '4px 10px',
+              background: selectedTool === 'selection' ? '#00d4ff' : 'rgba(255,255,255,0.08)',
+              color: selectedTool === 'selection' ? '#000' : '#ccc',
+              border: selectedTool === 'selection' ? '1px solid #00d4ff' : '1px solid rgba(255,255,255,0.15)',
+              borderRadius: '4px',
+              fontSize: '11px',
+              cursor: 'pointer',
+              fontWeight: selectedTool === 'selection' ? '600' : '400'
+            }}
+          >
+            ☞ Selection
+          </button>
+          <button
+            onClick={() => onToolChange && onToolChange('razor')}
+            title="Razor Tool (C)"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px',
+              padding: '4px 10px',
+              background: selectedTool === 'razor' ? '#00d4ff' : 'rgba(255,255,255,0.08)',
+              color: selectedTool === 'razor' ? '#000' : '#ccc',
+              border: selectedTool === 'razor' ? '1px solid #00d4ff' : '1px solid rgba(255,255,255,0.15)',
+              borderRadius: '4px',
+              fontSize: '11px',
+              cursor: 'pointer',
+              fontWeight: selectedTool === 'razor' ? '600' : '400'
+            }}
+          >
+            ✂ Razor
+          </button>
+        </div>
+
+        {/* Zoom Controls */}
+        <div style={{
+          marginLeft: '16px',
+          display: 'flex',
+          gap: '4px',
+          alignItems: 'center'
+        }}>
+          <button
+            onClick={() => onZoomChange && onZoomChange(Math.max(0.1, zoomLevel / 1.5))}
+            title="Zoom Out (−)"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '24px',
+              height: '24px',
+              background: 'rgba(255,255,255,0.08)',
+              color: '#ccc',
+              border: '1px solid rgba(255,255,255,0.15)',
+              borderRadius: '4px',
+              fontSize: '14px',
+              cursor: 'pointer'
+            }}
+          >
+            −
+          </button>
+          <span style={{ fontSize: '11px', color: '#aaa', minWidth: '36px', textAlign: 'center' }}>
+            {Math.round(zoomLevel * 100)}%
+          </span>
+          <button
+            onClick={() => onZoomChange && onZoomChange(Math.min(20, zoomLevel * 1.5))}
+            title="Zoom In (+)"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '24px',
+              height: '24px',
+              background: 'rgba(255,255,255,0.08)',
+              color: '#ccc',
+              border: '1px solid rgba(255,255,255,0.15)',
+              borderRadius: '4px',
+              fontSize: '14px',
+              cursor: 'pointer'
+            }}
+          >
+            +
+          </button>
+        </div>
+
+        {/* Precision Controls */}
+        <div style={{
+          marginLeft: '16px',
+          display: 'flex',
+          gap: '8px',
+          alignItems: 'center',
+          fontSize: '11px'
+        }}>
+          <label style={{ display: 'flex', alignItems: 'center', gap: '3px', color: '#aaa', cursor: 'pointer' }}>
+            <input type="checkbox" defaultChecked style={{ accentColor: '#00d4ff', width: '12px', height: '12px' }} />
+            Snap
+          </label>
+          <label style={{ display: 'flex', alignItems: 'center', gap: '3px', color: '#aaa', cursor: 'pointer' }}>
+            <input type="checkbox" style={{ accentColor: '#00d4ff', width: '12px', height: '12px' }} />
+            Grid
+          </label>
+          <select defaultValue="0.1" style={{
+            padding: '2px 4px',
+            background: 'rgba(255,255,255,0.08)',
+            border: '1px solid rgba(255,255,255,0.15)',
+            borderRadius: '3px',
+            color: '#ccc',
+            fontSize: '10px'
+          }}>
+            <option value="0.01">10ms</option>
+            <option value="0.1">100ms</option>
+            <option value="1">1s</option>
+            <option value="5">5s</option>
+          </select>
+        </div>
         
         <div style={{
           marginLeft: 'auto',
@@ -157,28 +309,7 @@ const ProfessionalTimeline = React.forwardRef(({
           <span>Tracks: {tracks.length}</span>
           <span>Markers: {markers.length}</span>
           <span>Loops: {loopRegions.length}</span>
-          <span className="tool-indicator">Tool: {selectedTool}</span>
           <span>Time: {(currentTime || 0).toFixed(2)}s</span>
-          
-          <button
-            onClick={onAddTrack}
-            style={{
-              background: '#ff6b35',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              padding: '4px 8px',
-              fontSize: '11px',
-              cursor: 'pointer',
-              marginLeft: '8px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px'
-            }}
-            title="Add Audio Track"
-          >
-            + Add Track
-          </button>
         </div>
       </div>
 
@@ -606,6 +737,35 @@ const ProfessionalTimeline = React.forwardRef(({
               : (contextMenuTrack?.name || `Track ${tracks.indexOf(contextMenuTrack) + 1}`)
             }
           </div>
+
+          {/* Tool Selection */}
+          <div
+            style={{
+              padding: '6px 12px',
+              cursor: 'pointer',
+              transition: 'background 0.2s',
+              background: selectedTool === 'selection' ? 'rgba(0, 212, 255, 0.15)' : 'transparent'
+            }}
+            onMouseEnter={(e) => e.target.style.background = selectedTool === 'selection' ? 'rgba(0, 212, 255, 0.2)' : 'rgba(255, 107, 53, 0.1)'}
+            onMouseLeave={(e) => e.target.style.background = selectedTool === 'selection' ? 'rgba(0, 212, 255, 0.15)' : 'transparent'}
+            onClick={() => { onToolChange && onToolChange('selection'); closeContextMenu(); }}
+          >
+            ☞ Selection Tool {selectedTool === 'selection' ? '✓' : ''}
+          </div>
+          <div
+            style={{
+              padding: '6px 12px',
+              cursor: 'pointer',
+              transition: 'background 0.2s',
+              background: selectedTool === 'razor' ? 'rgba(0, 212, 255, 0.15)' : 'transparent'
+            }}
+            onMouseEnter={(e) => e.target.style.background = selectedTool === 'razor' ? 'rgba(0, 212, 255, 0.2)' : 'rgba(255, 107, 53, 0.1)'}
+            onMouseLeave={(e) => e.target.style.background = selectedTool === 'razor' ? 'rgba(0, 212, 255, 0.15)' : 'transparent'}
+            onClick={() => { onToolChange && onToolChange('razor'); closeContextMenu(); }}
+          >
+            ✂️ Razor Tool {selectedTool === 'razor' ? '✓' : ''}
+          </div>
+          <div style={{ height: '1px', background: '#404040', margin: '4px 0' }} />
 
           {/* Clip Menu Items */}
           {contextMenuClip && (

@@ -11,7 +11,7 @@
  *
  * Owner: NGKsSystems
  */
-import React from 'react';
+import React, { useState } from 'react';
 import { Play, Pause, Square, SkipBack, SkipForward, Volume2, Repeat, Shuffle } from 'lucide-react';
 import './TransportControls.css';
 
@@ -31,12 +31,15 @@ const TransportControls = ({
   duration,
   playbackRate,
   autoScroll = true,
+  masterVolume = 1,
   onPlayPause,
   onStop,
   onSeek,
   onPlaybackRateChange,
-  onAutoScrollToggle
+  onAutoScrollToggle,
+  onMasterVolumeChange
 }) => {
+  const [shortcutsOpen, setShortcutsOpen] = useState(false);
   // Format time to MM:SS.fff
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -154,10 +157,11 @@ const TransportControls = ({
             <input
               type="range"
               min="0"
-              max="100"
-              defaultValue="80"
+              max="200"
+              value={Math.round(masterVolume * 100)}
+              onChange={(e) => onMasterVolumeChange && onMasterVolumeChange(parseInt(e.target.value) / 100)}
               className="volume-slider"
-              title="Master Volume"
+              title={`Master Volume: ${Math.round(masterVolume * 100)}%`}
             />
           </div>
         </div>
@@ -182,9 +186,17 @@ const TransportControls = ({
         </div>
       </div>
 
-      {/* Keyboard Shortcuts Info */}
+      {/* Keyboard Shortcuts Info - Collapsible */}
       <div className="shortcuts-info">
-        <div className="shortcuts-columns-container" style={{ 
+        <button
+          className="shortcuts-toggle-btn"
+          onClick={() => setShortcutsOpen(prev => !prev)}
+          title={shortcutsOpen ? 'Hide Keyboard Shortcuts' : 'Show Keyboard Shortcuts'}
+        >
+          <span className={`shortcuts-toggle-arrow ${shortcutsOpen ? 'open' : ''}`}>▶</span>
+          <span>Keyboard Shortcuts</span>
+        </button>
+        {shortcutsOpen && <div className="shortcuts-columns-container" style={{ 
           display: 'flex', 
           flexDirection: 'row',
           gap: '20px', 
@@ -243,7 +255,7 @@ const TransportControls = ({
             <span className="shortcut" style={{ fontSize: '10px', color: '#888', opacity: '0.8' }}>🔄 <strong>Reverse:</strong> Click reverse button per track</span>
             <span className="shortcut" style={{ fontSize: '10px', color: '#888', opacity: '0.8' }}>🏆 <strong>Pro Tip:</strong> Use speed/reverse for creative effects!</span>
           </div>
-        </div>
+        </div>}
       </div>
     </div>
   );
