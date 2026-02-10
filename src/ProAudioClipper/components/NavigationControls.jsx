@@ -37,7 +37,6 @@ const NavigationControls = ({
   const jogRef = useRef(null);
   const shuttleRef = useRef(null);
   const scrubRef = useRef(null);
-  const animationRef = useRef(null);
 
   // Interaction state & handlers from hook
   const {
