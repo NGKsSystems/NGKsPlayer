@@ -1,9 +1,10 @@
-﻿/**
+/**
  * NGKsSystems
  * NGKsPlayer
  *
- * Module: index.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Module: DJDeck.jsx
+ * Purpose: Unified DJ deck component — renders any deck (A/B/C/D) from a single
+ *          parameterized source. Deck identity is driven by the `deckId` prop.
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -12,13 +13,22 @@
  * Owner: NGKsSystems
  */
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import './styles.css';
+import './DJDeck.css';
 
-const DeckA = ({ 
+/** Per-deck accent colour map (CSS custom-property values). */
+const DECK_ACCENTS = {
+  A: { r: 255, g: 140, b: 0,   hex: '#ff8c00' },
+  B: { r: 139, g: 0,   b: 255, hex: '#8b00ff' },
+  C: { r: 0,   g: 200, b: 255, hex: '#00c8ff' },
+  D: { r: 0,   g: 255, b: 100, hex: '#00ff64' },
+};
+
+const DJDeck = ({
+  deckId = 'A',
   id,
-  track = null, 
-  isPlaying = false, 
-  position = 0, 
+  track = null,
+  isPlaying = false,
+  position = 0,
   duration = 0,
   onPlayPause = () => {},
   onSeek = () => {},
@@ -27,7 +37,7 @@ const DeckA = ({
   onStyleChange = () => {},
   audioManager = null,
   style = {},
-  ...props 
+  ...props
 }) => {
   const [isCued, setIsCued] = useState(false);
   const [waveformData, setWaveformData] = useState([]);
@@ -41,6 +51,8 @@ const DeckA = ({
   const animationFrameRef = useRef(null);
   const elementRef = useRef(null);
 
+  const accent = DECK_ACCENTS[deckId] || DECK_ACCENTS.A;
+
   const formatTime = (seconds) => {
     if (isNaN(seconds) || !seconds) return '0:00';
     const mins = Math.floor(seconds / 60);
@@ -49,13 +61,11 @@ const DeckA = ({
   };
 
   useEffect(() => {
-    // Only update style from props when NOT actively dragging/resizing
     if (!isDragging && !isResizing) {
       setCurrentStyle(style);
     }
   }, [style, isDragging, isResizing]);
 
-  // Notify parent of style changes
   useEffect(() => {
     if (onStyleChange && (isDragging || isResizing)) {
       onStyleChange(id, {
@@ -77,12 +87,11 @@ const DeckA = ({
     }
 
     const updateVisualization = () => {
-      // 1) TIME-DOMAIN "waveform" bars (post-fader, post-EQ analyser)
-      const timeData = audioManager.getTimeDomainData?.('A'); // Float32 [âˆ’1..1] or Uint8 [0..255]
+      const timeData = audioManager.getTimeDomainData?.(deckId);
       if (timeData && timeData.length) {
         const arr = (timeData instanceof Float32Array)
           ? timeData
-          : Float32Array.from(timeData, v => (v - 128) / 128); // normalize if Uint8
+          : Float32Array.from(timeData, v => (v - 128) / 128);
         const barCount = 48;
         const samplesPerBar = Math.floor(arr.length / barCount);
         const bars = new Array(barCount).fill(0).map((_, i) => {
@@ -91,14 +100,12 @@ const DeckA = ({
             const s = Math.abs(arr[i * samplesPerBar + j] || 0);
             if (s > peak) peak = s;
           }
-          // map peak (0..1) â†’ percent height
           return Math.min(100, Math.max(2, peak * 100));
         });
         setWaveformData(bars);
       }
 
-      // 2) VU: accept 0..1 or 0..100, convert to percent and clamp (post-fader, post-EQ)
-      let vu = audioManager.getVULevel('A');
+      let vu = audioManager.getVULevel(deckId);
       if (vu <= 1) vu *= 100;
       vu = Math.max(0, Math.min(100, vu));
       setVuLevel(vu);
@@ -114,16 +121,14 @@ const DeckA = ({
         animationFrameRef.current = null;
       }
     };
-  }, [audioManager, isPlaying]);
+  }, [audioManager, isPlaying, deckId]);
 
   const handleProgressClick = useCallback((e) => {
     if (!duration) return;
-    
     const rect = e.currentTarget.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
     const progressPercent = clickX / rect.width;
     const newTime = progressPercent * duration;
-    
     onSeek(newTime);
   }, [duration, onSeek]);
 
@@ -144,11 +149,11 @@ const DeckA = ({
     onCue(!isCued);
   }, [isCued, onCue]);
 
+  /* ---- Drag ---- */
   const handleMouseDown = useCallback((e) => {
     if (e.target.closest('.transport-controls') || e.target.closest('.quick-controls') || e.target.closest('.track-info') || e.target.closest('.fine-tune-section')) {
       return;
     }
-    
     setIsDragging(true);
     setDragOffset({
       x: e.clientX - (currentStyle.left || 0),
@@ -158,7 +163,6 @@ const DeckA = ({
 
   const handleMouseMove = useCallback((e) => {
     if (!isDragging) return;
-    
     setCurrentStyle(prev => ({
       ...prev,
       left: e.clientX - dragOffset.x,
@@ -174,7 +178,6 @@ const DeckA = ({
     if (isDragging) {
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mouseup', handleMouseUp);
-      
       return () => {
         document.removeEventListener('mousemove', handleMouseMove);
         document.removeEventListener('mouseup', handleMouseUp);
@@ -182,6 +185,7 @@ const DeckA = ({
     }
   }, [isDragging, handleMouseMove, handleMouseUp]);
 
+  /* ---- Resize ---- */
   const handleResizeMouseDown = useCallback((e) => {
     setIsResizing(true);
     setResizeStart({ x: e.clientX, y: e.clientY });
@@ -191,16 +195,13 @@ const DeckA = ({
 
   const handleResizeMouseMove = useCallback((e) => {
     if (!isResizing) return;
-    
     const deltaX = e.clientX - resizeStart.x;
     const deltaY = e.clientY - resizeStart.y;
-    
     setCurrentStyle(prev => ({
       ...prev,
       width: Math.max(200, (prev.width || 300) + deltaX),
       height: Math.max(250, (prev.height || 350) + deltaY)
     }));
-    
     setResizeStart({ x: e.clientX, y: e.clientY });
   }, [isResizing, resizeStart]);
 
@@ -212,7 +213,6 @@ const DeckA = ({
     if (isResizing) {
       document.addEventListener('mousemove', handleResizeMouseMove);
       document.addEventListener('mouseup', handleResizeMouseUp);
-      
       return () => {
         document.removeEventListener('mousemove', handleResizeMouseMove);
         document.removeEventListener('mouseup', handleResizeMouseUp);
@@ -220,19 +220,28 @@ const DeckA = ({
     }
   }, [isResizing, handleResizeMouseMove, handleResizeMouseUp]);
 
+  /* ---- CSS custom-property style block ---- */
+  const accentVars = {
+    '--deck-r': accent.r,
+    '--deck-g': accent.g,
+    '--deck-b': accent.b,
+    '--deck-hex': accent.hex,
+  };
+
   return (
-    <div 
+    <div
       ref={elementRef}
-      className={`deck-a-widget ${isDragging ? 'dragging' : ''}`}
+      className={`dj-deck-widget ${isDragging ? 'dragging' : ''}`}
       style={{
         position: 'absolute',
+        ...accentVars,
         ...currentStyle
       }}
       onMouseDown={handleMouseDown}
       {...props}
     >
-      <div className="deck-a-header">
-        <div className="deck-title">DECK A</div>
+      <div className="dj-deck-header">
+        <div className="deck-title">DECK {deckId}</div>
         <div className="deck-info">
           <div className="info-item">
             <span>BPM:</span>
@@ -242,15 +251,13 @@ const DeckA = ({
               onChange={async (e) => {
                 const newBpm = parseInt(e.target.value);
                 if (track && newBpm && newBpm > 0 && newBpm <= 300) {
-                  // Update database
                   await window.api.invoke('library:updateAnalysis', { trackId: track.id, bpm: newBpm, key: track.key });
-                  // Update local state
-                  audioManager.decks.A.track = {
-                    ...audioManager.decks.A.track,
+                  audioManager.decks[deckId].track = {
+                    ...audioManager.decks[deckId].track,
                     bpm: newBpm
                   };
                   if (audioManager.onTrackLoaded) {
-                    audioManager.onTrackLoaded('A', audioManager.decks.A.track);
+                    audioManager.onTrackLoaded(deckId, audioManager.decks[deckId].track);
                   }
                 }
               }}
@@ -275,15 +282,13 @@ const DeckA = ({
               onChange={async (e) => {
                 const newKey = e.target.value;
                 if (track && newKey) {
-                  // Update database (NOT MP3 metadata - just SQLite)
                   await window.api.invoke('library:updateAnalysis', { trackId: track.id, bpm: track.bpm, key: newKey });
-                  // Update local state
-                  audioManager.decks.A.track = {
-                    ...audioManager.decks.A.track,
+                  audioManager.decks[deckId].track = {
+                    ...audioManager.decks[deckId].track,
                     key: newKey
                   };
                   if (audioManager.onTrackLoaded) {
-                    audioManager.onTrackLoaded('A', audioManager.decks.A.track);
+                    audioManager.onTrackLoaded(deckId, audioManager.decks[deckId].track);
                   }
                 }
               }}
@@ -327,26 +332,22 @@ const DeckA = ({
             </select>
           </div>
           {track && audioManager && (
-            <button 
+            <button
               className="reanalyze-button"
               onClick={async () => {
-                console.log('[Deck A] Re-analyzing track:', track.title);
-                // Force re-analysis by temporarily removing bpm/key
+                console.log(`[Deck ${deckId}] Re-analyzing track:`, track.title);
                 const trackToAnalyze = { ...track, bpm: null, key: null };
                 const result = await audioManager.analyzeTrack(trackToAnalyze);
-                console.log('[Deck A] Re-analysis complete:', result);
-                
-                // Force update the deck's stored track
+                console.log(`[Deck ${deckId}] Re-analysis complete:`, result);
                 if (result && result.analyzed) {
-                  audioManager.decks.A.track = {
-                    ...audioManager.decks.A.track,
+                  audioManager.decks[deckId].track = {
+                    ...audioManager.decks[deckId].track,
                     bpm: result.bpm,
                     key: result.key,
                     analyzed: true
                   };
-                  // Trigger the callback to update UI
                   if (audioManager.onTrackLoaded) {
-                    audioManager.onTrackLoaded('A', audioManager.decks.A.track);
+                    audioManager.onTrackLoaded(deckId, audioManager.decks[deckId].track);
                   }
                 }
               }}
@@ -362,22 +363,20 @@ const DeckA = ({
                 marginLeft: '4px'
               }}
             >
-              â†»
+              ↻
             </button>
           )}
         </div>
       </div>
 
-      <div className="deck-a-content">
-        {/* NEW INTEGRATED TRACK CONTROL SECTION */}
+      <div className="dj-deck-content">
         <div className={`integrated-track-control ${
-          isPlaying ? 'state-playing' : 
-          isCued ? 'state-cued' : 
-          track ? 'state-ready' : 
+          isPlaying ? 'state-playing' :
+          isCued ? 'state-cued' :
+          track ? 'state-ready' :
           'state-empty'
         }`}>
-          {/* Track Title with BPM/KEY */}
-          <div 
+          <div
             className="itc-track-title"
             onClick={() => {
               if (track?.id && window.api?.invoke) {
@@ -392,7 +391,7 @@ const DeckA = ({
                 if (track?.title) return track.title;
                 if (track?.fileName) return track.fileName.replace(/\.[^/.]+$/, "");
                 if (audioManager) {
-                  const audioManagerTrack = audioManager.getCurrentTrack('A');
+                  const audioManagerTrack = audioManager.getCurrentTrack(deckId);
                   if (audioManagerTrack?.title) return audioManagerTrack.title;
                   if (audioManagerTrack?.fileName) return audioManagerTrack.fileName.replace(/\.[^/.]+$/, "");
                   if (audioManagerTrack?.filePath) {
@@ -401,7 +400,7 @@ const DeckA = ({
                   }
                 }
                 if (audioManager) {
-                  const audioElement = audioManager.decks?.A?.audio;
+                  const audioElement = audioManager.decks?.[deckId]?.audio;
                   if (audioElement && audioElement.src) {
                     const srcUrl = audioElement.src;
                     const match = srcUrl.match(/[^\/\\]+(?=\.[^.]*$)/);
@@ -418,74 +417,45 @@ const DeckA = ({
             </div>
             {track && (track.bpm || track.key || track.loudness || track.gainRecommendation) && (
               <div className="track-metadata">
-                {track.bpm && <span className="metadata-bpm" title="BPM">â™© {Math.round(track.bpm)}</span>}
+                {track.bpm && <span className="metadata-bpm" title="BPM">♩ {Math.round(track.bpm)}</span>}
                 {track.key && <span className="metadata-key" title="Key">{track.key}{track.mode?.charAt(0) || ''}</span>}
-                {track.loudness && <span className="metadata-loudness" title="Loudness (0-100)">ðŸ”Š {track.loudness}</span>}
+                {track.loudness && <span className="metadata-loudness" title="Loudness (0-100)">🔊 {track.loudness}</span>}
                 {track.gainRecommendation && <span className="metadata-gain" title="Gain adjustment">{track.gainRecommendation}</span>}
               </div>
             )}
           </div>
 
-          {/* Transport Controls */}
           <div className="itc-transport-controls">
-            <button 
-              className="itc-btn itc-skip-backward"
-              onClick={handleSkipBackward}
-              title="Skip backward 30s"
-            >
-              â®ï¸
+            <button className="itc-btn itc-skip-backward" onClick={handleSkipBackward} title="Skip backward 30s">
+              ⏮️
             </button>
-            
-            <button 
-              className={`itc-btn itc-play-pause ${isPlaying ? 'playing' : ''}`}
-              onClick={handlePlayPause}
-              title={isPlaying ? 'Pause' : 'Play'}
-            >
-              {isPlaying ? 'â¸ï¸' : 'â–¶ï¸'}
+            <button className={`itc-btn itc-play-pause ${isPlaying ? 'playing' : ''}`} onClick={handlePlayPause} title={isPlaying ? 'Pause' : 'Play'}>
+              {isPlaying ? '⏸️' : '▶️'}
             </button>
-            
-            <button 
-              className="itc-btn itc-skip-forward"
-              onClick={handleSkipForward}
-              title="Skip forward 30s"
-            >
-              â­ï¸
+            <button className="itc-btn itc-skip-forward" onClick={handleSkipForward} title="Skip forward 30s">
+              ⭮️
             </button>
-
-            <button 
-              className={`itc-btn itc-cue-btn ${isCued ? 'active' : ''}`}
-              onClick={handleCueToggle}
-              title="Cue (Monitor)"
-            >
+            <button className={`itc-btn itc-cue-btn ${isCued ? 'active' : ''}`} onClick={handleCueToggle} title="Cue (Monitor)">
               CUE
             </button>
           </div>
 
-          {/* Progress Bar */}
           <div className="itc-progress-container">
-            <div 
-              className="itc-progress-bar"
-              onClick={handleProgressClick}
-            >
-              <div 
-                className="itc-progress-fill"
-                style={{ width: `${duration > 0 ? (position / duration) * 100 : 0}%` }}
-              />
+            <div className="itc-progress-bar" onClick={handleProgressClick}>
+              <div className="itc-progress-fill" style={{ width: `${duration > 0 ? (position / duration) * 100 : 0}%` }} />
             </div>
           </div>
 
-          {/* Track Time */}
           <div className="itc-track-time">
             {formatTime(position)} / {formatTime(duration)}
           </div>
 
-          {/* Fine Tune Controls */}
           <div className="itc-fine-tune">
             <div className="itc-fine-tune-header">
               <span className="itc-fine-tune-label">FINE TUNE</span>
               <span className="itc-fine-tune-value">{fineTune > 0 ? '+' : ''}{fineTune.toFixed(2)}s</span>
             </div>
-            <div 
+            <div
               className="itc-fine-tune-slider"
               onClick={(e) => {
                 const rect = e.currentTarget.getBoundingClientRect();
@@ -497,10 +467,7 @@ const DeckA = ({
                 onSeek(newPosition);
               }}
             >
-              <div 
-                className="itc-fine-tune-handle"
-                style={{ left: `${((fineTune + 0.2) / 0.4) * 100}%` }}
-              />
+              <div className="itc-fine-tune-handle" style={{ left: `${((fineTune + 0.2) / 0.4) * 100}%` }} />
             </div>
             <div className="itc-fine-tune-buttons">
               <button className="itc-fine-btn" onClick={() => onSeek(Math.max(0, position - 5))}>-5s</button>
@@ -513,20 +480,16 @@ const DeckA = ({
           </div>
         </div>
 
-        {/* VU & Waveform */}
         <div className="vu-waveform-container">
-          {/* Compact VU Meter */}
           <div className="vu-meter">
-            <div 
+            <div
               className="vu-meter-bar"
-              style={{ 
+              style={{
                 height: `${vuLevel}%`,
                 backgroundColor: vuLevel > 85 ? '#ef4444' : vuLevel > 70 ? '#f59e0b' : '#22c55e'
               }}
             />
           </div>
-          
-          {/* Waveform */}
           <div className="waveform">
             {Array.from({ length: 48 }, (_, i) => {
               let height;
@@ -538,10 +501,10 @@ const DeckA = ({
                 height = 2;
               }
               return (
-                <div 
-                  key={i} 
+                <div
+                  key={i}
                   className="waveform-bar"
-                  style={{ 
+                  style={{
                     height: `${height}%`,
                     opacity: isPlaying ? 0.9 : 0.5
                   }}
@@ -552,17 +515,15 @@ const DeckA = ({
         </div>
       </div>
 
-      {/* Resize Handle */}
-      <div 
+      <div
         className={`resize-handle ${isResizing ? 'active' : ''}`}
         onMouseDown={handleResizeMouseDown}
         title="Drag to resize"
       >
-        âŸ²
+        ⟲
       </div>
     </div>
   );
 };
 
-export default DeckA;
-
+export default DJDeck;

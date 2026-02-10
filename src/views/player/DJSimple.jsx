@@ -20,10 +20,7 @@ import RequestQueue from '../../components/RequestQueue';
 import StreamingServices from '../../components/StreamingServices';
 import CalibrationPanel from '../../components/CalibrationPanel';
 // Import new modular DJ components
-import DeckA from '../../DJ/Deck/Deck A';
-import DeckB from '../../DJ/Deck/Deck B';
-import DeckC from '../../DJ/Deck/Deck C';
-import DeckD from '../../DJ/Deck/Deck D';
+import DJDeck from '../../DJ/Deck/DJDeck';
 import SimpleSampler from '../../DJ/SimpleSampler';
 import EQA from '../../DJ/EQ/EQ A';
 import EQB from '../../DJ/EQ/EQ B';
@@ -1396,7 +1393,8 @@ const saveLayout = async (layout, currentDeckMode) => {
         )}
 
       {/* Deck A - Standalone */}
-      <DeckA 
+      <DJDeck 
+        deckId="A"
         id="deckA"
         track={deckState.A.track}
         isPlaying={deckState.A.isPlaying}
@@ -1419,7 +1417,8 @@ const saveLayout = async (layout, currentDeckMode) => {
       />
 
       {/* Deck B - Standalone */}
-      <DeckB 
+      <DJDeck 
+        deckId="B"
         id="deckB"
         track={deckState.B.track}
         isPlaying={deckState.B.isPlaying}
@@ -1459,7 +1458,8 @@ const saveLayout = async (layout, currentDeckMode) => {
 
       {/* Deck C - Standalone (4-deck mode only) */}
       {deckMode === '4deck' && (
-        <DeckC 
+        <DJDeck 
+          deckId="C"
           id="deckC"
           track={deckState.C.track}
           isPlaying={deckState.C.isPlaying}
@@ -1484,7 +1484,8 @@ const saveLayout = async (layout, currentDeckMode) => {
 
       {/* Deck D - Standalone (4-deck mode only) */}
       {deckMode === '4deck' && (
-        <DeckD 
+        <DJDeck 
+          deckId="D"
           id="deckD"
           track={deckState.D.track}
           isPlaying={deckState.D.isPlaying}
