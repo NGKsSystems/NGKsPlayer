@@ -932,6 +932,29 @@ const ProAudioClipper = ({ onNavigate }) => {
         }}
       >
 
+        {/* Left Panel - Effects Sidebar */}
+        {showEffectsPanel && effectsPanelTrackId && (
+          <div
+            className="effects-sidebar"
+            style={{
+              width: '320px',
+              minWidth: '320px',
+              display: 'flex',
+              flexDirection: 'column',
+              borderRight: '1px solid #404040',
+              background: '#1e1e1e',
+              overflow: 'hidden'
+            }}
+          >
+            <TrackEffectsPanel
+              trackId={effectsPanelTrackId}
+              trackName={trackManager.tracks.find(t => t.id === effectsPanelTrackId)?.name || 'Track'}
+              effectsEngine={multiTrackEngine.effectsEngine}
+              onClose={handleCloseEffectsPanel}
+            />
+          </div>
+        )}
+
         {/* Center Panel - Timeline */}
         <div 
           className="center-panel"
@@ -1053,6 +1076,8 @@ const ProAudioClipper = ({ onNavigate }) => {
             onTrackMoveDown={trackManager.moveTrackDown}
             onAddTrack={trackController.handleAddTrackWithFile}
             onOpenEffects={handleOpenEffectsPanel}
+            showEffectsPanel={showEffectsPanel}
+            onToggleEffects={() => { if (showEffectsPanel) { handleCloseEffectsPanel(); } else if (trackManager.activeTrackId) { handleOpenEffectsPanel(trackManager.activeTrackId); } }}
             onViewportChange={handleViewportChange}
             onTrackContextMenu={handleTrackContextMenu}
             onUndo={undo}
@@ -1097,15 +1122,6 @@ const ProAudioClipper = ({ onNavigate }) => {
           currentProject={currentProject}
           onLoadProject={handleLoadProject}
           onClose={() => setShowProjectManager(false)}
-        />
-      )}
-
-      {showEffectsPanel && effectsPanelTrackId && (
-        <TrackEffectsPanel
-          trackId={effectsPanelTrackId}
-          trackName={trackManager.tracks.find(t => t.id === effectsPanelTrackId)?.name || 'Track'}
-          effectsEngine={multiTrackEngine.effectsEngine}
-          onClose={handleCloseEffectsPanel}
         />
       )}
 

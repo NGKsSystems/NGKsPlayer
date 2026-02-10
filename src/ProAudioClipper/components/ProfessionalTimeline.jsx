@@ -51,6 +51,8 @@ const ProfessionalTimeline = React.forwardRef(({
   onTrackMoveUp,
   onTrackMoveDown,
   onOpenEffects,
+  showEffectsPanel,
+  onToggleEffects,
   onViewportChange, // Add viewport change handler
   onTrackContextMenu, // Add context menu handler
   onToolChange,
@@ -150,6 +152,24 @@ const ProfessionalTimeline = React.forwardRef(({
         }}>
           🎵 PMTT
         </span>
+
+        {/* FX Toggle */}
+        <button
+          onClick={onToggleEffects}
+          title={showEffectsPanel ? 'Hide Effects Panel' : 'Show Effects Panel'}
+          style={{
+            padding: '2px 6px',
+            background: showEffectsPanel ? '#ff6b35' : 'rgba(255,255,255,0.08)',
+            color: showEffectsPanel ? '#fff' : '#999',
+            border: 'none',
+            borderRadius: '3px',
+            fontSize: '10px',
+            cursor: 'pointer',
+            fontWeight: showEffectsPanel ? '600' : '400'
+          }}
+        >
+          FX
+        </button>
 
         <div style={{ width: '1px', height: '18px', background: 'rgba(255,255,255,0.15)' }} />
 

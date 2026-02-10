@@ -20,6 +20,15 @@
   color: #ffffff;
 }
 
+/* Inline mode when inside effects sidebar */
+.effects-sidebar .track-effects-panel {
+  position: static;
+  width: 100%;
+  height: 100%;
+  z-index: auto;
+  border-left: none;
+}
+
 /* Header */
 .effects-panel-header {
   display: flex;
