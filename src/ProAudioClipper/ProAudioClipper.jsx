@@ -40,6 +40,7 @@ import { useTrackManager } from './hooks/useTrackManager';
 import { useProjectState } from './hooks/useProjectState';
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
 import { useUndoRedo } from './hooks/useUndoRedo';
+import { useTransportController } from './hooks/useTransportController';
 // import './ProAudioClipper.css';
 import './components/TrackHeader.css';
 import './components/TrackEffectsPanel.css';
@@ -398,31 +399,16 @@ const ProAudioClipper = ({ onNavigate }) => {
     }
   }, [multiTrackEngine, trackManager, projectState, zoomLevel, viewportStart]);
 
-  // Playback controls for multi-track
-  const togglePlayback = useCallback(() => {
-    if (trackManager.tracks.length === 0) return;
-    
-    if (isPlaying) {
-      multiTrackEngine.pauseTracks();
-      setIsPlaying(false);
-    } else {
-      multiTrackEngine.playTracks(trackManager.tracks, currentTime, playbackRate);
-      setIsPlaying(true);
-    }
-  }, [trackManager.tracks, isPlaying, currentTime, playbackRate, multiTrackEngine]);
-
-  const stop = useCallback(() => {
-    multiTrackEngine.stopTracks();
-    setIsPlaying(false);
-    setCurrentTime(0);
-  }, [multiTrackEngine]);
-
-  const seek = useCallback((time) => {
-    multiTrackEngine.seekTracks(trackManager.tracks, time);
-    if (!isPlaying) {
-      setCurrentTime(time);
-    }
-  }, [multiTrackEngine, trackManager.tracks, isPlaying]);
+  // Transport (extracted to useTransportController)
+  const { togglePlayback, stop, seek } = useTransportController({
+    multiTrackEngine,
+    trackManager,
+    isPlaying,
+    setIsPlaying,
+    currentTime,
+    setCurrentTime,
+    playbackRate
+  });
 
   // Track management functions with undo/redo support
   const handleTrackSelect = useCallback((trackId) => {
