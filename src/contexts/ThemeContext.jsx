@@ -112,6 +112,12 @@ export const ThemeProvider = ({ children }) => {
   useEffect(() => {
     console.log('🔥 loadTheme useEffect FIRED - currentTheme:', currentTheme, 'currentHash:', currentHash)
     const loadTheme = async () => {
+      // ========== THEMES DISABLED — bleed issues, tackle later ==========
+      // The entire loadTheme body is short-circuited. UI buttons remain
+      // but no CSS variables, data-theme, effect flags, or dynamic
+      // imports will be applied at runtime.
+      return;
+      // =================================================================
       const root = document.documentElement
       
       // ========== SOLUTION: NO DYNAMIC CSS IMPORTS ==========
@@ -404,6 +410,9 @@ export const ThemeProvider = ({ children }) => {
   }, [currentTheme, currentHash]); // Add currentHash to dependencies
 
   const changeTheme = (themeId) => {
+    // THEMES DISABLED — bleed issues, tackle later
+    console.log('🎨 Theme system disabled — changeTheme blocked for:', themeId)
+    return
     // Don't change themes on non-theme routes
     if (isNoThemeRoute()) {
       console.log('🎨 Theme change blocked on non-theme route:', window.location.hash)

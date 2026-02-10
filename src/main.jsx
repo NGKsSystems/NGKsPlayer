@@ -82,14 +82,10 @@ window.__DEBUG__.help();
 
 import "./styles.css";
 import "./views/styles/DJMixer.css";
-import "./styles/theme-effects.css";
-import "./styles/theme-overrides.css"; // Re-enabled for OLD theme system (excludes chromaticChaos)
-
-// ========== NEW MODULAR THEME SYSTEM (TESTING) ==========
-// Import chromaticChaos CSS statically - the ONLY new modular theme
-// Once this works correctly, other themes will be migrated to this system
-import "./themes/chromaticChaos/chromaticChaos.css";
-// ========================================================
+// THEMES DISABLED — bleed issues to be tackled later
+// import "./styles/theme-effects.css";
+// import "./styles/theme-overrides.css";
+// import "./themes/chromaticChaos/chromaticChaos.css";
 
 // Load Professional Audio Analysis Engine
 import "./audio/professional-engine.js";
