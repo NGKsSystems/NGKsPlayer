@@ -39,7 +39,7 @@ import { useMultiTrackAudioEngine } from './hooks/useMultiTrackAudioEngine';
 import { useTrackManager } from './hooks/useTrackManager';
 import { useProjectState } from './hooks/useProjectState';
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
-import { useUndoRedo } from './hooks/useUndoRedo';
+import { useUndoRedoController } from './hooks/useUndoRedoController';
 import { useTransportController } from './hooks/useTransportController';
 // import './ProAudioClipper.css';
 import './components/TrackHeader.css';
@@ -168,8 +168,7 @@ const ProAudioClipper = ({ onNavigate }) => {
     console.log('Project loaded successfully:', project.name);
   }, [projectState, zoomLevel, viewportStart, trackManager.tracks, setZoomLevel, setViewportStart]);
   
-  // Professional Undo/Redo System
-  const undoRedo = useUndoRedo(trackManager);
+  // Professional Undo/Redo System (extracted to useUndoRedoController)
   const { 
     executeCommand, 
     undo, 
@@ -179,7 +178,7 @@ const ProAudioClipper = ({ onNavigate }) => {
     nextUndoDescription, 
     nextRedoDescription,
     CommandFactory 
-  } = undoRedo;
+  } = useUndoRedoController({ trackManager });
 
   // Initialize FX Engine
   useEffect(() => {
