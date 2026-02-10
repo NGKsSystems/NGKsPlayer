@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: OBSIntegration.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useEffect } from 'react';
 import './OBSIntegration.css';
 
@@ -12,11 +25,11 @@ export default function OBSIntegration({ onClose }) {
   const [selectedSoftware, setSelectedSoftware] = useState('obs');
 
   const streamingSoftware = [
-    { id: 'obs', name: 'OBS Studio', icon: '🎥', description: 'Free, open-source (Most Popular)' },
-    { id: 'streamlabs', name: 'Streamlabs Desktop', icon: '📺', description: 'OBS-based with extra features' },
-    { id: 'xsplit', name: 'XSplit Broadcaster', icon: '🎬', description: 'Professional streaming solution' },
-    { id: 'vmix', name: 'vMix', icon: '🎞️', description: 'Advanced production software' },
-    { id: 'other', name: 'Other Software', icon: '🖥️', description: 'Any software with window capture' }
+    { id: 'obs', name: 'OBS Studio', icon: 'ðŸŽ¥', description: 'Free, open-source (Most Popular)' },
+    { id: 'streamlabs', name: 'Streamlabs Desktop', icon: 'ðŸ“º', description: 'OBS-based with extra features' },
+    { id: 'xsplit', name: 'XSplit Broadcaster', icon: 'ðŸŽ¬', description: 'Professional streaming solution' },
+    { id: 'vmix', name: 'vMix', icon: 'ðŸŽžï¸', description: 'Advanced production software' },
+    { id: 'other', name: 'Other Software', icon: 'ðŸ–¥ï¸', description: 'Any software with window capture' }
   ];
 
   const themes = [
@@ -73,8 +86,8 @@ export default function OBSIntegration({ onClose }) {
     <div className="obs-integration-overlay" onClick={onClose}>
       <div className="obs-integration-panel" onClick={(e) => e.stopPropagation()}>
         <div className="obs-header">
-          <h2>🎥 Live Streaming Setup</h2>
-          <button className="obs-close-btn" onClick={onClose}>×</button>
+          <h2>ðŸŽ¥ Live Streaming Setup</h2>
+          <button className="obs-close-btn" onClick={onClose}>Ã—</button>
         </div>
 
         <div className="obs-content">
@@ -93,7 +106,7 @@ export default function OBSIntegration({ onClose }) {
               marginBottom: '20px'
             }}>
               <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: '48px', marginBottom: '10px' }}>1️⃣</div>
+                <div style={{ fontSize: '48px', marginBottom: '10px' }}>1ï¸âƒ£</div>
                 <div style={{ fontSize: '14px', fontWeight: '600', color: 'white', marginBottom: '5px' }}>
                   First Time
                 </div>
@@ -102,15 +115,15 @@ export default function OBSIntegration({ onClose }) {
                 </div>
               </div>
               
-              <div style={{ fontSize: '36px', color: 'rgba(255, 255, 255, 0.3)' }}>→</div>
+              <div style={{ fontSize: '36px', color: 'rgba(255, 255, 255, 0.3)' }}>â†’</div>
               
               <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: '48px', marginBottom: '10px' }}>2️⃣</div>
+                <div style={{ fontSize: '48px', marginBottom: '10px' }}>2ï¸âƒ£</div>
                 <div style={{ fontSize: '14px', fontWeight: '600', color: 'white', marginBottom: '5px' }}>
                   Every Stream
                 </div>
                 <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.7)' }}>
-                  Click "Open"<br/>Start streaming<br/><strong style={{ color: '#00ff88' }}>Done! 🎉</strong>
+                  Click "Open"<br/>Start streaming<br/><strong style={{ color: '#00ff88' }}>Done! ðŸŽ‰</strong>
                 </div>
               </div>
             </div>
@@ -187,12 +200,12 @@ export default function OBSIntegration({ onClose }) {
             <div className="obs-controls">
               {!isOpen ? (
                 <button className="obs-btn obs-btn-primary" onClick={handleOpenBroadcast}>
-                  <span className="btn-icon">📺</span>
+                  <span className="btn-icon">ðŸ“º</span>
                   Open Broadcast Window
                 </button>
               ) : (
                 <button className="obs-btn obs-btn-danger" onClick={handleCloseBroadcast}>
-                  <span className="btn-icon">⏹️</span>
+                  <span className="btn-icon">â¹ï¸</span>
                   Close Broadcast Window
                 </button>
               )}
@@ -210,7 +223,7 @@ export default function OBSIntegration({ onClose }) {
               marginBottom: '20px',
               border: '1px solid rgba(0, 255, 136, 0.3)'
             }}>
-              <strong style={{ color: '#00ff88', fontSize: '16px' }}>⚡ After First-Time Setup:</strong>
+              <strong style={{ color: '#00ff88', fontSize: '16px' }}>âš¡ After First-Time Setup:</strong>
               <p style={{ margin: '8px 0 0 0', color: 'rgba(255, 255, 255, 0.9)' }}>
                 Just click "Open Broadcast Window" and start streaming! Your streaming software will already be configured to capture it.
                 Setup below is <strong>ONE-TIME ONLY</strong>.
@@ -220,7 +233,7 @@ export default function OBSIntegration({ onClose }) {
             {/* OBS Studio Instructions */}
             {selectedSoftware === 'obs' && (
               <div>
-                <h4 style={{ color: '#00d4ff', marginBottom: '10px' }}>📋 First-Time Setup (Do Once):</h4>
+                <h4 style={{ color: '#00d4ff', marginBottom: '10px' }}>ðŸ“‹ First-Time Setup (Do Once):</h4>
                 <ol>
                   <li>
                     <strong>Open Broadcast Window:</strong> Click the button below to open a window for capture
@@ -228,7 +241,7 @@ export default function OBSIntegration({ onClose }) {
                 <li>
                   <strong>In OBS Studio:</strong>
                   <ul>
-                    <li>Click <strong>+</strong> in Sources → Select <strong>Window Capture</strong></li>
+                    <li>Click <strong>+</strong> in Sources â†’ Select <strong>Window Capture</strong></li>
                     <li>Choose <strong>"NGKs Player - Broadcast Output"</strong> from the window list</li>
                     <li>Adjust size and position in your scene</li>
                   </ul>
@@ -236,7 +249,7 @@ export default function OBSIntegration({ onClose }) {
                 <li>
                   <strong>Add Camera (Optional):</strong>
                   <ul>
-                    <li>Add another source → <strong>Video Capture Device</strong></li>
+                    <li>Add another source â†’ <strong>Video Capture Device</strong></li>
                     <li>Select your webcam or camera</li>
                     <li>Layer broadcast overlay on top or beside camera</li>
                   </ul>
@@ -251,10 +264,10 @@ export default function OBSIntegration({ onClose }) {
                 </li>
               </ol>
               
-              <h4 style={{ color: '#00d4ff', marginTop: '20px', marginBottom: '10px' }}>🚀 Every Stream After That:</h4>
+              <h4 style={{ color: '#00d4ff', marginTop: '20px', marginBottom: '10px' }}>ðŸš€ Every Stream After That:</h4>
               <ol style={{ fontSize: '15px', fontWeight: '600' }}>
                 <li>Click "Open Broadcast Window" in NGKs Player</li>
-                <li>Start streaming in OBS - Done! 🎉</li>
+                <li>Start streaming in OBS - Done! ðŸŽ‰</li>
               </ol>
               </div>
             )}
@@ -262,7 +275,7 @@ export default function OBSIntegration({ onClose }) {
             {/* Streamlabs Desktop Instructions */}
             {selectedSoftware === 'streamlabs' && (
               <div>
-                <h4 style={{ color: '#00d4ff', marginBottom: '10px' }}>📋 First-Time Setup (Do Once):</h4>
+                <h4 style={{ color: '#00d4ff', marginBottom: '10px' }}>ðŸ“‹ First-Time Setup (Do Once):</h4>
                 <ol>
                 <li>
                   <strong>Open Broadcast Window:</strong> Click the button below
@@ -270,7 +283,7 @@ export default function OBSIntegration({ onClose }) {
                 <li>
                   <strong>In Streamlabs Desktop:</strong>
                   <ul>
-                    <li>Click <strong>+</strong> in Sources → Select <strong>Window Capture</strong></li>
+                    <li>Click <strong>+</strong> in Sources â†’ Select <strong>Window Capture</strong></li>
                     <li>Find <strong>"NGKs Player - Broadcast Output"</strong></li>
                     <li>Enable <strong>"Capture Cursor"</strong> (optional)</li>
                     <li>Position and resize as needed</li>
@@ -285,10 +298,10 @@ export default function OBSIntegration({ onClose }) {
                 </li>
               </ol>
               
-              <h4 style={{ color: '#00d4ff', marginTop: '20px', marginBottom: '10px' }}>🚀 Every Stream After That:</h4>
+              <h4 style={{ color: '#00d4ff', marginTop: '20px', marginBottom: '10px' }}>ðŸš€ Every Stream After That:</h4>
               <ol style={{ fontSize: '15px', fontWeight: '600' }}>
                 <li>Click "Open Broadcast Window" in NGKs Player</li>
-                <li>Start streaming in Streamlabs - Done! 🎉</li>
+                <li>Start streaming in Streamlabs - Done! ðŸŽ‰</li>
               </ol>
               </div>
             )}
@@ -296,7 +309,7 @@ export default function OBSIntegration({ onClose }) {
             {/* XSplit Instructions */}
             {selectedSoftware === 'xsplit' && (
               <div>
-                <h4 style={{ color: '#00d4ff', marginBottom: '10px' }}>📋 First-Time Setup (Do Once):</h4>
+                <h4 style={{ color: '#00d4ff', marginBottom: '10px' }}>ðŸ“‹ First-Time Setup (Do Once):</h4>
                 <ol>
                 <li>
                   <strong>Open Broadcast Window:</strong> Click the button below
@@ -304,7 +317,7 @@ export default function OBSIntegration({ onClose }) {
                 <li>
                   <strong>In XSplit Broadcaster:</strong>
                   <ul>
-                    <li>Click <strong>Add Source</strong> → <strong>Screen Capture</strong> → <strong>Window</strong></li>
+                    <li>Click <strong>Add Source</strong> â†’ <strong>Screen Capture</strong> â†’ <strong>Window</strong></li>
                     <li>Select <strong>"NGKs Player - Broadcast Output"</strong></li>
                     <li>Adjust in scene editor</li>
                   </ul>
@@ -312,16 +325,16 @@ export default function OBSIntegration({ onClose }) {
                 <li>
                   <strong>Camera Setup:</strong>
                   <ul>
-                    <li>Add Source → <strong>Devices (Webcam)</strong></li>
+                    <li>Add Source â†’ <strong>Devices (Webcam)</strong></li>
                     <li>Use XSplit's built-in effects and transitions</li>
                   </ul>
                 </li>
               </ol>
               
-              <h4 style={{ color: '#00d4ff', marginTop: '20px', marginBottom: '10px' }}>🚀 Every Stream After That:</h4>
+              <h4 style={{ color: '#00d4ff', marginTop: '20px', marginBottom: '10px' }}>ðŸš€ Every Stream After That:</h4>
               <ol style={{ fontSize: '15px', fontWeight: '600' }}>
                 <li>Click "Open Broadcast Window" in NGKs Player</li>
-                <li>Start streaming in XSplit - Done! 🎉</li>
+                <li>Start streaming in XSplit - Done! ðŸŽ‰</li>
               </ol>
               </div>
             )}
@@ -329,7 +342,7 @@ export default function OBSIntegration({ onClose }) {
             {/* vMix Instructions */}
             {selectedSoftware === 'vmix' && (
               <div>
-                <h4 style={{ color: '#00d4ff', marginBottom: '10px' }}>📋 First-Time Setup (Do Once):</h4>
+                <h4 style={{ color: '#00d4ff', marginBottom: '10px' }}>ðŸ“‹ First-Time Setup (Do Once):</h4>
                 <ol>
                 <li>
                   <strong>Open Broadcast Window:</strong> Click the button below
@@ -337,7 +350,7 @@ export default function OBSIntegration({ onClose }) {
                 <li>
                   <strong>In vMix:</strong>
                   <ul>
-                    <li><strong>Add Input</strong> → <strong>Desktop Capture</strong></li>
+                    <li><strong>Add Input</strong> â†’ <strong>Desktop Capture</strong></li>
                     <li>Select <strong>"NGKs Player - Broadcast Output"</strong> window</li>
                     <li>Use vMix's powerful mixing capabilities</li>
                   </ul>
@@ -352,10 +365,10 @@ export default function OBSIntegration({ onClose }) {
                 </li>
               </ol>
               
-              <h4 style={{ color: '#00d4ff', marginTop: '20px', marginBottom: '10px' }}>🚀 Every Stream After That:</h4>
+              <h4 style={{ color: '#00d4ff', marginTop: '20px', marginBottom: '10px' }}>ðŸš€ Every Stream After That:</h4>
               <ol style={{ fontSize: '15px', fontWeight: '600' }}>
                 <li>Click "Open Broadcast Window" in NGKs Player</li>
-                <li>Start streaming in vMix - Done! 🎉</li>
+                <li>Start streaming in vMix - Done! ðŸŽ‰</li>
               </ol>
               </div>
             )}
@@ -363,7 +376,7 @@ export default function OBSIntegration({ onClose }) {
             {/* Other Software Instructions */}
             {selectedSoftware === 'other' && (
               <div>
-                <h4 style={{ color: '#00d4ff', marginBottom: '10px' }}>📋 First-Time Setup (Do Once):</h4>
+                <h4 style={{ color: '#00d4ff', marginBottom: '10px' }}>ðŸ“‹ First-Time Setup (Do Once):</h4>
                 <ol>
                 <li>
                   <strong>Open Broadcast Window:</strong> Click the button below
@@ -385,10 +398,10 @@ export default function OBSIntegration({ onClose }) {
                 </li>
               </ol>
               
-              <h4 style={{ color: '#00d4ff', marginTop: '20px', marginBottom: '10px' }}>🚀 Every Stream After That:</h4>
+              <h4 style={{ color: '#00d4ff', marginTop: '20px', marginBottom: '10px' }}>ðŸš€ Every Stream After That:</h4>
               <ol style={{ fontSize: '15px', fontWeight: '600' }}>
                 <li>Click "Open Broadcast Window" in NGKs Player</li>
-                <li>Start streaming in your software - Done! 🎉</li>
+                <li>Start streaming in your software - Done! ðŸŽ‰</li>
               </ol>
               </div>
             )}
@@ -396,18 +409,18 @@ export default function OBSIntegration({ onClose }) {
 
           {/* Tips */}
           <div className="obs-section obs-tips">
-            <h3>💡 Pro Tips</h3>
+            <h3>ðŸ’¡ Pro Tips</h3>
             <ul>
-              <li><strong>⚡ Super Easy:</strong> After initial setup, just 1 click in NGKs + start streaming = LIVE!</li>
-              <li><strong>🔄 Auto-Updates:</strong> Track info updates automatically as you mix - zero manual work</li>
-              <li><strong>💾 Saved Scenes:</strong> Your streaming software remembers the setup - just reuse your scenes</li>
-              <li><strong>📹 Camera Setup:</strong> Layer "Bar" or "Minimal" theme over your DJ camera for pro broadcasts</li>
-              <li><strong>🎥 Multi-Cam:</strong> Use multiple cameras (overhead for decks, face cam) and switch between them</li>
-              <li><strong>🎬 Scene Ideas:</strong> "DJ Cam + Overlay", "Full Track Info", "Camera Only", "Split Screen"</li>
-              <li><strong>📺 Resolution:</strong> 1080p works best for YouTube, Twitch, Facebook streaming</li>
-              <li><strong>🖥️ Monitor Setup:</strong> Second monitor? Put broadcast window there to monitor what viewers see</li>
-              <li><strong>💚 Green Screen:</strong> Use "Minimal" theme with green screen for custom backgrounds</li>
-              <li><strong>💡 Lighting:</strong> Good lighting beats expensive cameras - invest in lights!</li>
+              <li><strong>âš¡ Super Easy:</strong> After initial setup, just 1 click in NGKs + start streaming = LIVE!</li>
+              <li><strong>ðŸ”„ Auto-Updates:</strong> Track info updates automatically as you mix - zero manual work</li>
+              <li><strong>ðŸ’¾ Saved Scenes:</strong> Your streaming software remembers the setup - just reuse your scenes</li>
+              <li><strong>ðŸ“¹ Camera Setup:</strong> Layer "Bar" or "Minimal" theme over your DJ camera for pro broadcasts</li>
+              <li><strong>ðŸŽ¥ Multi-Cam:</strong> Use multiple cameras (overhead for decks, face cam) and switch between them</li>
+              <li><strong>ðŸŽ¬ Scene Ideas:</strong> "DJ Cam + Overlay", "Full Track Info", "Camera Only", "Split Screen"</li>
+              <li><strong>ðŸ“º Resolution:</strong> 1080p works best for YouTube, Twitch, Facebook streaming</li>
+              <li><strong>ðŸ–¥ï¸ Monitor Setup:</strong> Second monitor? Put broadcast window there to monitor what viewers see</li>
+              <li><strong>ðŸ’š Green Screen:</strong> Use "Minimal" theme with green screen for custom backgrounds</li>
+              <li><strong>ðŸ’¡ Lighting:</strong> Good lighting beats expensive cameras - invest in lights!</li>
             </ul>
           </div>
         </div>
@@ -415,3 +428,4 @@ export default function OBSIntegration({ onClose }) {
     </div>
   );
 }
+

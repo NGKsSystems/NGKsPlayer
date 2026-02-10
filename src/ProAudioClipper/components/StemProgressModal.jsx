@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: StemProgressModal.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React from 'react';
 import './StemProgressModal.css';
 
@@ -30,19 +43,19 @@ const StemProgressModal = ({ progress, onCancel }) => {
   const getStatusEmoji = () => {
     switch (progress.status) {
       case 'initializing':
-        return '⚙️';
+        return 'âš™ï¸';
       case 'separating':
-        return '🎵';
+        return 'ðŸŽµ';
       case 'processing':
-        return '⚡';
+        return 'âš¡';
       case 'complete':
-        return '✅';
+        return 'âœ…';
       case 'error':
-        return '❌';
+        return 'âŒ';
       case 'cancelled':
-        return '🛑';
+        return 'ðŸ›‘';
       default:
-        return '⏳';
+        return 'â³';
     }
   };
 
@@ -78,3 +91,4 @@ const StemProgressModal = ({ progress, onCancel }) => {
 };
 
 export default StemProgressModal;
+

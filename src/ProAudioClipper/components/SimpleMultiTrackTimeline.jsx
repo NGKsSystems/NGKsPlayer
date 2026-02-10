@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: SimpleMultiTrackTimeline.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useRef, useEffect, useCallback } from 'react';
 import { timeToPixels, pixelsToTime } from '../timeline/timelineMath.js';
 import './MultiTrackTimeline.css';
@@ -250,7 +263,7 @@ const SimpleMultiTrackTimeline = React.forwardRef(({
         borderRadius: '3px',
         zIndex: 10
       }}>
-        📊 Timeline: {tracks.length} tracks | Tool: {selectedTool} | Time: {currentTime.toFixed(1)}s
+        ðŸ“Š Timeline: {tracks.length} tracks | Tool: {selectedTool} | Time: {currentTime.toFixed(1)}s
       </div>
       
       <canvas

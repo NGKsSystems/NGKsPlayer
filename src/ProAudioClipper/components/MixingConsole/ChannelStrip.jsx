@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: ChannelStrip.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import ProfessionalFader from './ProfessionalFader';
 import ProfessionalKnob from './ProfessionalKnob';
@@ -197,7 +210,7 @@ const ChannelStrip = ({
               onClick={handlePhaseInvert}
               title="Phase Invert"
             >
-              Ø
+              Ã˜
             </button>
           </div>
         </div>
@@ -287,7 +300,7 @@ const ChannelStrip = ({
             <div className="meter-mark">-12</div>
             <div className="meter-mark">-18</div>
             <div className="meter-mark">-24</div>
-            <div className="meter-mark">-∞</div>
+            <div className="meter-mark">-âˆž</div>
           </div>
           <div className="stereo-meters">
             <div className="meter-bar left">
@@ -320,7 +333,7 @@ const ChannelStrip = ({
           }}
           title="Record Enable"
         >
-          ●
+          â—
         </button>
         
         <button 
@@ -357,7 +370,7 @@ const ChannelStrip = ({
         />
         
         <div className="fader-readout">
-          {localGain > -60 ? `${localGain.toFixed(1)}dB` : '-∞'}
+          {localGain > -60 ? `${localGain.toFixed(1)}dB` : '-âˆž'}
         </div>
       </div>
     </div>

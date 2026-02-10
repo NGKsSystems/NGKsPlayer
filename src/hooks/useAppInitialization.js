@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: useAppInitialization.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * App Initialization Hook
  * 
@@ -30,7 +43,7 @@ export function useAppInitialization() {
 
       // Check if all systems are ready
       if (status.isFullyReady) {
-        console.log('[AppInit] ✅ APP FULLY INITIALIZED');
+        console.log('[AppInit] âœ… APP FULLY INITIALIZED');
         setAppReady(true);
       }
     });
@@ -59,3 +72,4 @@ export function useAppInitialization() {
 }
 
 export default useAppInitialization;
+

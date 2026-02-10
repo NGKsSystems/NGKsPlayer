@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: analyzerConfig.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 // analyzerConfig.js
 // Local, persistent configuration for the AudioAnalyzer.
 // Stores per-genre/subgenre overrides, era rules, and persisted global defaults.
@@ -287,7 +300,7 @@ export function addAuditEntry(entry) {
   saveConfig();
 }
 
-// Node persistence (unchanged — good as-is)
+// Node persistence (unchanged â€” good as-is)
 export async function enableNodePersistence(filePath) {
   if (!filePath) return false;
   try {
@@ -439,3 +452,4 @@ export default {
   writeOverrideToPersistence,
   writeGlobalToPersistence,
 };
+

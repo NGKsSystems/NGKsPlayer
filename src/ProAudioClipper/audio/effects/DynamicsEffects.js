@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: DynamicsEffects.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * Dynamics Effects - Real DynamicsCompressorNode and custom DSP implementations
  */
@@ -238,3 +251,4 @@ export class DeEsser extends BaseAudioEffect {
     super.destroy();
   }
 }
+

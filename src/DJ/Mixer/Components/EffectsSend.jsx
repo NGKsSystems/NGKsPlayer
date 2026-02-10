@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: EffectsSend.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useEffect, useRef } from 'react';
 import { Power, RotateCcw, Zap, Clock, Sliders, Filter, Waves, Volume2 } from 'lucide-react';
 import AdvancedAudioFXEngine from '../../../audio/AdvancedAudioFXEngine';
@@ -61,19 +74,19 @@ const EffectsSend = ({
     const ctx = audioContext || audioManager?.getAudioContext?.();
     
     if (ctx && !fxEngine && audioManager && channel) {
-      console.log(`🎛️ Initializing FX Unit for Deck ${channel}...`);
+      console.log(`ðŸŽ›ï¸ Initializing FX Unit for Deck ${channel}...`);
       
       const engine = new AdvancedAudioFXEngine(ctx);
       
-      // Map deck letter to chain ID (A→1, B→2, C→3, D→4)
+      // Map deck letter to chain ID (Aâ†’1, Bâ†’2, Câ†’3, Dâ†’4)
       // FX chains are already created in the engine constructor
       const chainId = { A: 1, B: 2, C: 3, D: 4 }[channel] || 1;
-      console.log(`🔗 Using chain ID ${chainId} for Deck ${channel}`);
+      console.log(`ðŸ”— Using chain ID ${chainId} for Deck ${channel}`);
       
       // Get the specific chain for this deck
       const chain = engine.fxChains.get(chainId);
       if (!chain) {
-        console.error(`❌ Chain ${chainId} not found!`);
+        console.error(`âŒ Chain ${chainId} not found!`);
         return;
       }
       
@@ -93,7 +106,7 @@ const EffectsSend = ({
       } catch (err) {
         console.error('EffectsSend: error routing engine <-> chain:', err);
       }
-      console.log(`🔗 Engine routed through chain ${chainId}`);
+      console.log(`ðŸ”— Engine routed through chain ${chainId}`);
       
       // Add default filter effect
       engine.addEffect(chainId, 'filter', {
@@ -110,11 +123,11 @@ const EffectsSend = ({
       );
       
       if (connected) {
-        console.log(`✅ FX Unit connected to Deck ${channel} audio chain`);
+        console.log(`âœ… FX Unit connected to Deck ${channel} audio chain`);
         setFxEngine(engine);
         setChainId(chainId); // Store chain ID for later use
       } else {
-        console.error(`❌ Failed to connect FX Unit to Deck ${channel}`);
+        console.error(`âŒ Failed to connect FX Unit to Deck ${channel}`);
       }
     }
     
@@ -122,7 +135,7 @@ const EffectsSend = ({
     return () => {
       if (fxEngine && audioManager && channel) {
         audioManager.disconnectFXChain(channel, fxEngine.input, fxEngine.output);
-        console.log(`🔌 FX Unit disconnected from Deck ${channel}`);
+        console.log(`ðŸ”Œ FX Unit disconnected from Deck ${channel}`);
       }
     };
   }, [audioContext, fxEngine, audioManager, channel]);
@@ -207,7 +220,7 @@ const EffectsSend = ({
     
     if (fxEngine && chainId) {
       fxEngine.setChainEnabled(chainId, newEnabled);
-      console.log(`🎛️ FX on Deck ${channel} (chain ${chainId}) ${newEnabled ? 'ENABLED' : 'DISABLED'}`);
+      console.log(`ðŸŽ›ï¸ FX on Deck ${channel} (chain ${chainId}) ${newEnabled ? 'ENABLED' : 'DISABLED'}`);
     }
     
     onSendLevelChange?.(sendNumber, newEnabled ? parameters.mix : 0);
@@ -224,7 +237,7 @@ const EffectsSend = ({
         bpmSync: bpmSynced,
         ...parameters
       });
-      console.log(`🎚️ FX type changed to ${newType} on Deck ${channel}`);
+      console.log(`ðŸŽšï¸ FX type changed to ${newType} on Deck ${channel}`);
     }
     
     onEffectChange?.(sendNumber, newType, parameters);

@@ -1,4 +1,17 @@
-﻿import React, { useState, useCallback, useRef, useEffect } from 'react';
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: DJSimple.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Music, Disc, Headphones, BarChart3, Layers, Volume2, Users, Zap, Scissors, MousePointer } from 'lucide-react';
 import DraggableWidget from '../../components/DraggableWidget';
@@ -1841,3 +1854,4 @@ const DJSimpleWithSettings = ({ onNavigate }) => {
 };
 
 export default DJSimpleWithSettings;
+

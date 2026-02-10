@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: HardwareController.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * NGKs Player - Revolutionary Hardware Controller System
  * 
@@ -120,7 +133,7 @@ class HardwareController extends EventEmitter {
     });
 
     // More controllers would be added here...
-    console.log(`📱 Loaded ${this.controllerDatabase.size} controller definitions`);
+    console.log(`ðŸ“± Loaded ${this.controllerDatabase.size} controller definitions`);
   }
 
   /**
@@ -128,7 +141,7 @@ class HardwareController extends EventEmitter {
    */
   async initialize() {
     try {
-      console.log('🎛️ Initializing NGKs Hardware Controller System...');
+      console.log('ðŸŽ›ï¸ Initializing NGKs Hardware Controller System...');
       
       // Request MIDI access
       this.midiAccess = await navigator.requestMIDIAccess({ sysex: true });
@@ -144,7 +157,7 @@ class HardwareController extends EventEmitter {
       // Start monitoring
       this.startMonitoring();
       
-      console.log('✅ Hardware Controller System initialized');
+      console.log('âœ… Hardware Controller System initialized');
       console.log(`   Controllers detected: ${this.controllers.size}`);
       
       this.emit('initialized', {
@@ -154,7 +167,7 @@ class HardwareController extends EventEmitter {
       
       return true;
     } catch (error) {
-      console.error('❌ Hardware controller initialization failed:', error);
+      console.error('âŒ Hardware controller initialization failed:', error);
       this.emit('error', error);
       return false;
     }
@@ -166,7 +179,7 @@ class HardwareController extends EventEmitter {
   async scanForControllers() {
     if (!this.midiAccess) return;
     
-    console.log('🔍 Scanning for MIDI controllers...');
+    console.log('ðŸ” Scanning for MIDI controllers...');
     
     for (const input of this.midiAccess.inputs.values()) {
       await this.detectController(input);
@@ -186,7 +199,7 @@ class HardwareController extends EventEmitter {
       const controller = this.identifyController(midiInput);
       
       if (controller) {
-        console.log(`🎛️ Detected: ${controller.name}`);
+        console.log(`ðŸŽ›ï¸ Detected: ${controller.name}`);
         
         // Set up controller
         const controllerInstance = new ControllerInstance(controller, midiInput);
@@ -214,7 +227,7 @@ class HardwareController extends EventEmitter {
         });
         
       } else {
-        console.log(`❓ Unknown MIDI device: ${midiInput.name}`);
+        console.log(`â“ Unknown MIDI device: ${midiInput.name}`);
         // Create generic mapping for unknown controllers
         this.createGenericMapping(midiInput);
       }
@@ -485,7 +498,7 @@ class HardwareController extends EventEmitter {
       this.mappingEngine.loadMapping(controllerInstance, controllerInstance.definition.mapping);
       this.stats.mappingsActive++;
       
-      console.log(`✅ Mapping applied for ${controllerInstance.definition.name}`);
+      console.log(`âœ… Mapping applied for ${controllerInstance.definition.name}`);
       
     } catch (error) {
       console.error('Failed to apply mapping:', error);
@@ -516,7 +529,7 @@ class HardwareController extends EventEmitter {
   sendHapticFeedback(controllerInstance, action) {
     // Implementation would depend on controller capabilities
     // This is a placeholder for haptic feedback
-    console.log(`🔄 Haptic feedback for ${action.type}`);
+    console.log(`ðŸ”„ Haptic feedback for ${action.type}`);
   }
 
   /**
@@ -605,7 +618,7 @@ class HardwareController extends EventEmitter {
 
   createGenericMapping(midiInput) {
     // Create a basic mapping for unknown controllers
-    console.log(`🔧 Creating generic mapping for ${midiInput.name}`);
+    console.log(`ðŸ”§ Creating generic mapping for ${midiInput.name}`);
   }
 
   createPioneerDDJFLX4Mapping() {
@@ -646,7 +659,7 @@ class HardwareController extends EventEmitter {
   handleControllerDisconnection(port) {
     if (this.controllers.has(port.id)) {
       const controller = this.controllers.get(port.id);
-      console.log(`🔌 Controller disconnected: ${controller.definition.name}`);
+      console.log(`ðŸ”Œ Controller disconnected: ${controller.definition.name}`);
       
       this.controllers.delete(port.id);
       this.stats.controllersConnected--;
@@ -711,7 +724,7 @@ class ControllerInstance {
   }
 
   async initialize() {
-    console.log(`🎛️ Initializing ${this.definition.name}...`);
+    console.log(`ðŸŽ›ï¸ Initializing ${this.definition.name}...`);
     // Controller-specific initialization
   }
 }

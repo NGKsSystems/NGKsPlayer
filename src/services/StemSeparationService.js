@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: StemSeparationService.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * Stem Separation Service
  * Bridge between React and Electron for Spleeter stem separation
@@ -11,7 +24,7 @@ class StemSeparationService {
   setupProgressListener() {
     if (window.electron?.on) {
       window.electron.on('stem-separation:progress', (event, update) => {
-        console.log('📊 Stem progress update:', update);
+        console.log('ðŸ“Š Stem progress update:', update);
         // Notify all registered callbacks
         this.progressCallbacks.forEach(callback => {
           try {
@@ -22,7 +35,7 @@ class StemSeparationService {
         });
       });
     } else {
-      console.warn('⚠️  Electron IPC not available - running in development mode?');
+      console.warn('âš ï¸  Electron IPC not available - running in development mode?');
     }
   }
 
@@ -33,7 +46,7 @@ class StemSeparationService {
     
     try {
       const result = await window.electron.invoke('stem-separation:check-python');
-      console.log('🐍 Python check result:', result);
+      console.log('ðŸ Python check result:', result);
       return result;
     } catch (error) {
       console.error('Python check failed:', error);
@@ -53,16 +66,16 @@ class StemSeparationService {
     }
 
     try {
-      console.log(`🎵 Starting stem separation: ${filePath}`);
+      console.log(`ðŸŽµ Starting stem separation: ${filePath}`);
       const result = await window.electron.invoke('stem-separation:separate', {
         filePath,
         stemsCount
       });
 
-      console.log('✅ Separation result:', result);
+      console.log('âœ… Separation result:', result);
       return result;
     } catch (error) {
-      console.error('❌ Separation failed:', error);
+      console.error('âŒ Separation failed:', error);
       throw error;
     } finally {
       // Cleanup callback
@@ -79,7 +92,7 @@ class StemSeparationService {
     
     try {
       const result = await window.electron.invoke('stem-separation:cancel');
-      console.log('🛑 Cancel result:', result);
+      console.log('ðŸ›‘ Cancel result:', result);
       return result;
     } catch (error) {
       console.error('Cancel failed:', error);
@@ -94,3 +107,4 @@ class StemSeparationService {
 }
 
 export default new StemSeparationService();
+

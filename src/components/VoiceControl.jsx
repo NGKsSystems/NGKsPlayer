@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: VoiceControl.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useEffect, useCallback } from 'react';
 import { Mic, MicOff } from 'lucide-react';
 import voiceRecognition from '../services/VoiceRecognition';
@@ -97,7 +110,7 @@ export default function VoiceControl({
       {/* Feedback popup */}
       {showFeedback && showTranscript && (
         <div className="mb-3 px-4 py-2 rounded-lg bg-zinc-800 border border-zinc-700 text-white text-sm shadow-lg animate-fade-in">
-          🎤 "{lastCommand}"
+          ðŸŽ¤ "{lastCommand}"
         </div>
       )}
 
@@ -135,3 +148,4 @@ export default function VoiceControl({
     </div>
   );
 }
+

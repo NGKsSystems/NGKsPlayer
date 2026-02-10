@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: AutoTaggerMainProcess.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * AutoTagger Main Process Integration
  * 
@@ -197,3 +210,4 @@ class AutoTaggerMainProcess {
 }
 
 module.exports = AutoTaggerMainProcess;
+

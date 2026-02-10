@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: index.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import './styles.css';
 
@@ -22,7 +35,7 @@ const PlayerA = ({
   const [seeking, setSeeking] = useState(false);
   const [waveformData, setWaveformData] = useState([]);
   const [vuLevel, setVuLevel] = useState(0);
-  const [fineTune, setFineTune] = useState(0); // Fine position adjustment (±0.20 seconds)
+  const [fineTune, setFineTune] = useState(0); // Fine position adjustment (Â±0.20 seconds)
   const animationFrameRef = useRef(null);
 
   // Format time helper
@@ -293,7 +306,7 @@ const PlayerA = ({
             onClick={handleSkipBackward}
             title="Skip backward 30s"
           >
-            ⏮️
+            â®ï¸
           </button>
           
           <button 
@@ -301,7 +314,7 @@ const PlayerA = ({
             onClick={handlePlayPause}
             title={isPlaying ? 'Pause' : 'Play'}
           >
-            {isPlaying ? '⏸️' : '▶️'}
+            {isPlaying ? 'â¸ï¸' : 'â–¶ï¸'}
           </button>
           
           <button 
@@ -309,7 +322,7 @@ const PlayerA = ({
             onClick={handleSkipForward}
             title="Skip forward 30s"
           >
-            ⏭️
+            â­ï¸
           </button>
 
           <button 
@@ -432,7 +445,7 @@ const PlayerA = ({
               onSeek(newPosition);
             }}
             className="fine-tune-slider"
-            title="Fine position adjustment (±0.20 seconds)"
+            title="Fine position adjustment (Â±0.20 seconds)"
           />
         </div>
       </div>

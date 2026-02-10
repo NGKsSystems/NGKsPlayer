@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: PatchBayInterface.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * Professional Patch Bay Interface
  * Provides visual drag-and-drop routing matrix for professional audio routing
@@ -511,9 +524,9 @@ const PatchBayInterface = ({
 
       {/* Instructions */}
       <div className="p-2 bg-gray-800 border-t text-xs text-gray-400">
-        Drag from output ports to input ports to create connections • 
-        Drag modules to move • Ctrl+scroll to zoom • 
-        G for grid • L for labels • Del to delete selected module
+        Drag from output ports to input ports to create connections â€¢ 
+        Drag modules to move â€¢ Ctrl+scroll to zoom â€¢ 
+        G for grid â€¢ L for labels â€¢ Del to delete selected module
       </div>
     </div>
   );

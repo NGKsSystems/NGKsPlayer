@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: index.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useCallback, useEffect, useMemo, useRef } from "react";
 import './styles.css';
 
@@ -267,25 +280,25 @@ const LibraryB = ({ id, deck = 'B', onTrackLoad = () => {}, onTrackPreview = () 
             className={`sort-btn track-column ${libraryState.sortBy === 'title' ? 'active' : ''}`}
             onClick={() => handleSortChange('title')}
           >
-            TRACK {libraryState.sortBy === 'title' && (libraryState.sortOrder === 'asc' ? '↑' : '↓')}
+            TRACK {libraryState.sortBy === 'title' && (libraryState.sortOrder === 'asc' ? 'â†‘' : 'â†“')}
           </button>
           <button 
             className={`sort-btn bpm-column ${libraryState.sortBy === 'bpm' ? 'active' : ''}`}
             onClick={() => handleSortChange('bpm')}
           >
-            BPM {libraryState.sortBy === 'bpm' && (libraryState.sortOrder === 'asc' ? '↑' : '↓')}
+            BPM {libraryState.sortBy === 'bpm' && (libraryState.sortOrder === 'asc' ? 'â†‘' : 'â†“')}
           </button>
           <button 
             className={`sort-btn key-column ${libraryState.sortBy === 'key' ? 'active' : ''}`}
             onClick={() => handleSortChange('key')}
           >
-            KEY {libraryState.sortBy === 'key' && (libraryState.sortOrder === 'asc' ? '↑' : '↓')}
+            KEY {libraryState.sortBy === 'key' && (libraryState.sortOrder === 'asc' ? 'â†‘' : 'â†“')}
           </button>
           <button 
             className={`sort-btn time-column ${libraryState.sortBy === 'duration' ? 'active' : ''}`}
             onClick={() => handleSortChange('duration')}
           >
-            TIME {libraryState.sortBy === 'duration' && (libraryState.sortOrder === 'asc' ? '↑' : '↓')}
+            TIME {libraryState.sortBy === 'duration' && (libraryState.sortOrder === 'asc' ? 'â†‘' : 'â†“')}
           </button>
         </div>
 
@@ -332,7 +345,7 @@ const LibraryB = ({ id, deck = 'B', onTrackLoad = () => {}, onTrackPreview = () 
         onMouseDown={handleResizeMouseDown}
         title="Drag to resize"
       >
-        ⟲
+        âŸ²
       </div>
     </div>
   );

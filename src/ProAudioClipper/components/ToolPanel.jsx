@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: ToolPanel.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React from 'react';
 import { MousePointer, Scissors, ZoomIn, ZoomOut, RotateCcw, RotateCw, Grid, Crosshair } from 'lucide-react';
 import './ToolPanel.css';

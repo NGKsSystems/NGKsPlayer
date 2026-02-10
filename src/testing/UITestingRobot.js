@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: UITestingRobot.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * UI Testing Robot - Automated Component and Interface Testing
  * 
@@ -85,7 +98,7 @@ export class UITestingRobot {
    * Test a single React component
    */
   async testComponent(name, Component, props = {}) {
-    console.log(`🧪 Testing component: ${name}`);
+    console.log(`ðŸ§ª Testing component: ${name}`);
     
     const testSuite = {
       component: name,
@@ -141,12 +154,12 @@ export class UITestingRobot {
       const inputs = container.querySelectorAll('input, textarea, select');
       
       testSuite.passed++;
-      console.log(`  ✅ Basic rendering test passed`);
+      console.log(`  âœ… Basic rendering test passed`);
       
     } catch (error) {
       testSuite.failed++;
       testSuite.errors.push(`Basic rendering: ${error.message}`);
-      console.log(`  ❌ Basic rendering test failed: ${error.message}`);
+      console.log(`  âŒ Basic rendering test failed: ${error.message}`);
     }
   }
 
@@ -173,12 +186,12 @@ export class UITestingRobot {
       }
       
       testSuite.passed++;
-      console.log(`  ✅ Props handling test passed`);
+      console.log(`  âœ… Props handling test passed`);
       
     } catch (error) {
       testSuite.failed++;
       testSuite.errors.push(`Props handling: ${error.message}`);
-      console.log(`  ❌ Props handling test failed: ${error.message}`);
+      console.log(`  âŒ Props handling test failed: ${error.message}`);
     }
   }
 
@@ -215,12 +228,12 @@ export class UITestingRobot {
       await this.testKeyboardNavigation(container);
       
       testSuite.passed++;
-      console.log(`  ✅ User interactions test passed`);
+      console.log(`  âœ… User interactions test passed`);
       
     } catch (error) {
       testSuite.failed++;
       testSuite.errors.push(`User interactions: ${error.message}`);
-      console.log(`  ❌ User interactions test failed: ${error.message}`);
+      console.log(`  âŒ User interactions test failed: ${error.message}`);
     }
   }
 
@@ -299,17 +312,17 @@ export class UITestingRobot {
       
       if (accessibilityPercentage >= 80) {
         testSuite.passed++;
-        console.log(`  ✅ Accessibility test passed (${accessibilityPercentage.toFixed(1)}%)`);
+        console.log(`  âœ… Accessibility test passed (${accessibilityPercentage.toFixed(1)}%)`);
       } else {
         testSuite.failed++;
         testSuite.errors.push(`Low accessibility score: ${accessibilityPercentage.toFixed(1)}%`);
-        console.log(`  ⚠️  Accessibility test warning (${accessibilityPercentage.toFixed(1)}%)`);
+        console.log(`  âš ï¸  Accessibility test warning (${accessibilityPercentage.toFixed(1)}%)`);
       }
       
     } catch (error) {
       testSuite.failed++;
       testSuite.errors.push(`Accessibility: ${error.message}`);
-      console.log(`  ❌ Accessibility test failed: ${error.message}`);
+      console.log(`  âŒ Accessibility test failed: ${error.message}`);
     }
   }
 
@@ -332,12 +345,12 @@ export class UITestingRobot {
       expect(container).toBeInTheDocument();
       
       testSuite.passed++;
-      console.log(`  ✅ Error handling test passed`);
+      console.log(`  âœ… Error handling test passed`);
       
     } catch (error) {
       // Some errors are expected, so we're lenient here
       testSuite.passed++;
-      console.log(`  ✅ Error handling test passed (error caught: ${error.message})`);
+      console.log(`  âœ… Error handling test passed (error caught: ${error.message})`);
     }
   }
 
@@ -367,7 +380,7 @@ export class UITestingRobot {
    * Test a single user workflow
    */
   async testWorkflow(workflow) {
-    console.log(`🔄 Testing workflow: ${workflow.name}`);
+    console.log(`ðŸ”„ Testing workflow: ${workflow.name}`);
     
     const result = {
       workflow: workflow.name,

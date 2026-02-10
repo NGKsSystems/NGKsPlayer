@@ -1,8 +1,21 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: index.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 // src/themes/chromaticChaos/index.js
 
 import './chromaticChaos.css';
 import { intensifyRGBSplit, applyChannelTear, applyFeedbackTunnel, applyChromaticChaos } from './effects.js';
-// import { updateParticles, initParticles, cleanupParticles } from './particles-config.js';  // ← uncomment when you have particle draw logic
+// import { updateParticles, initParticles, cleanupParticles } from './particles-config.js';  // â† uncomment when you have particle draw logic
 
 // Optional: export theme colors if waveform draws via ctx (fallback to CSS vars)
 export const colors = {
@@ -22,7 +35,7 @@ export function initTheme() {
   }
 }
 
-// Main per-frame effect — replace your current applyEffect
+// Main per-frame effect â€” replace your current applyEffect
 export function applyEffect(canvas, ctx, beatStrength, isSuperPeak) {
   // Use the wrapper from effects.js (it calls the three effects safely)
   applyChromaticChaos(canvas, ctx, beatStrength, isSuperPeak);

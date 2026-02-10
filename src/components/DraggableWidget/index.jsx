@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: index.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import LayoutControls from '../LayoutControls';
 import { useLayoutManager } from '../../hooks/useLayoutManager';
@@ -105,7 +118,7 @@ const DraggableWidget = ({
           const allPositions = getAllWidgetPositions();
           if (Object.keys(allPositions).length > 0) {
             layoutManager.saveLayout(null, allPositions);
-            console.log(`🔄 Auto-saved layout with ${Object.keys(allPositions).length} widgets`);
+            console.log(`ðŸ”„ Auto-saved layout with ${Object.keys(allPositions).length} widgets`);
           }
         } catch (error) {
           console.warn('Auto-save failed:', error);
@@ -146,12 +159,12 @@ const DraggableWidget = ({
           };
           
           // Reduced console logging for performance
-          // console.log(`[${widgetId}] 💾 Saving position:`, widgets[widgetId]);
+          // console.log(`[${widgetId}] ðŸ’¾ Saving position:`, widgets[widgetId]);
         }
       });
       
       // Reduced console logging for performance
-      // console.log(`🔄 Collected ${Object.keys(widgets).length} major widget positions:`, Object.keys(widgets));
+      // console.log(`ðŸ”„ Collected ${Object.keys(widgets).length} major widget positions:`, Object.keys(widgets));
     } catch (error) {
       console.error('Error collecting widget positions:', error);
     }
@@ -164,7 +177,7 @@ const DraggableWidget = ({
     
     const allPositions = getAllWidgetPositions();
     const savedName = layoutState.saveLayout(null, allPositions);
-    console.log(`💾 Layout saved as "${savedName}" with ${Object.keys(allPositions).length} widgets`);
+    console.log(`ðŸ’¾ Layout saved as "${savedName}" with ${Object.keys(allPositions).length} widgets`);
   }, [getAllWidgetPositions, layoutState]);
 
   const handleSaveAsLayout = useCallback((newName) => {
@@ -172,7 +185,7 @@ const DraggableWidget = ({
     
     const allPositions = getAllWidgetPositions();
     const savedName = layoutState.saveAsLayout(newName, allPositions);
-    console.log(`💾 Layout saved as "${savedName}" with ${Object.keys(allPositions).length} widgets`);
+    console.log(`ðŸ’¾ Layout saved as "${savedName}" with ${Object.keys(allPositions).length} widgets`);
   }, [getAllWidgetPositions, layoutState]);
 
   const handleLoadLayout = useCallback((layoutName) => {
@@ -180,11 +193,11 @@ const DraggableWidget = ({
     
     const widgets = layoutState.loadLayout(layoutName);
     if (!widgets) {
-      console.warn(`❌ No widgets found for layout "${layoutName}"`);
+      console.warn(`âŒ No widgets found for layout "${layoutName}"`);
       return;
     }
     
-    console.log(`📍 Loading layout "${layoutName}" with ${Object.keys(widgets).length} widgets`);
+    console.log(`ðŸ“ Loading layout "${layoutName}" with ${Object.keys(widgets).length} widgets`);
     
     // Update this widget's state if it's in the loaded layout
     if (widgets[id]) {
@@ -406,7 +419,7 @@ const DraggableWidget = ({
               onClick={toggleMinimize}
               title={isMinimized ? "Restore" : "Minimize"}
             >
-              {isMinimized ? '□' : '−'}
+              {isMinimized ? 'â–¡' : 'âˆ’'}
             </button>
           </div>
         </div>
@@ -421,7 +434,7 @@ const DraggableWidget = ({
             onPointerDown={handleResizePointerDown}
             title="Resize"
           >
-            ⟲
+            âŸ²
           </div>
         </>
       )}

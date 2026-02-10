@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: FXOutputMeter.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useEffect, useState } from 'react';
 import { Activity } from 'lucide-react';
 import './FXOutputMeter.css';
@@ -64,3 +77,4 @@ const FXOutputMeter = ({ level = 0, color = '#3498db', isActive = false }) => {
 };
 
 export default FXOutputMeter;
+

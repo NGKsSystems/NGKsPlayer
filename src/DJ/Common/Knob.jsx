@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: Knob.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useEffect, useRef } from 'react';
 import './Knob.css';
 
@@ -45,7 +58,7 @@ const Knob = ({
       
       switch(controlType) {
         case 'gain':
-          // Convert 0-100 scale to 0-2 gain scale (0 = -∞, 1 = 0dB, 2 = +6dB)
+          // Convert 0-100 scale to 0-2 gain scale (0 = -âˆž, 1 = 0dB, 2 = +6dB)
           const gainValue = (normalizedValue) * 2; // 0-2 range
           audioManager.setGain?.(channel, gainValue);
           break;
@@ -94,7 +107,7 @@ const Knob = ({
     if (controlType === 'gain') {
       // Convert 0-100 to -12dB to 0dB
       // 100 = 0dB (reference), 0 = -12dB (silent)
-      if (currentValue === 0) return '-∞';
+      if (currentValue === 0) return '-âˆž';
       const db = ((currentValue / 100) * 12) - 12; // Maps 100 to 0dB, 0 to -12dB
       return `${db.toFixed(1)}dB`;
     } else if (controlType === 'pitch') {
@@ -103,7 +116,7 @@ const Knob = ({
       return `${pitch > 0 ? '+' : ''}${pitch}%`;
     } else if (controlType === 'filter') {
       // Convert 0-100 to frequency range (20Hz to 20kHz)
-      if (currentValue === 100) return '∞';
+      if (currentValue === 100) return 'âˆž';
       if (currentValue === 0) return '20Hz';
       const minFreq = 20;
       const maxFreq = 20000;
@@ -155,7 +168,7 @@ const Knob = ({
         </div>
       </div>
       <div className="knob-controls-static">
-        <button className="knob-btn knob-minus" onClick={handleDecrement}>−</button>
+        <button className="knob-btn knob-minus" onClick={handleDecrement}>âˆ’</button>
         <button className="knob-btn knob-plus" onClick={handleIncrement}>+</button>
       </div>
     </div>

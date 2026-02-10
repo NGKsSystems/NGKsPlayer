@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: performanceMonitor.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 // Simple performance monitoring utility
 export class PerformanceMonitor {
   constructor(componentName) {
@@ -40,3 +53,4 @@ export class PerformanceMonitor {
 // Create monitors for key components
 export const clipperMonitor = new PerformanceMonitor('Clipper');
 export const waveformMonitor = new PerformanceMonitor('WaveformEditor');
+

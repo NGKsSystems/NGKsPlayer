@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: EnergyAnalyzer.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 // EnergyAnalyzer.js
 // Optimized multi-factor energy + trajectory (moved copy)
 
@@ -114,3 +127,4 @@ export function analyzeEnergyTrajectory(
 
   return { trajectory: norm, description: desc };
 }
+

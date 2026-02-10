@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: lighting-integration-example.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * NGKs Player Lighting Integration Example
  * Add this to your main NGKs Player file to enable lighting control
@@ -7,7 +20,7 @@ import { NGKsLightingSystem, initializeNGKsLighting, autoInitializeLighting } fr
 
 // Example 1: Manual initialization with existing NGKs Player instance
 async function addLightingToNGKsPlayer(ngksPlayerInstance) {
-  console.log('🎭 Adding lighting control to NGKs Player...');
+  console.log('ðŸŽ­ Adding lighting control to NGKs Player...');
   
   try {
     // Initialize lighting system
@@ -23,8 +36,8 @@ async function addLightingToNGKsPlayer(ngksPlayerInstance) {
       ngksPlayerInstance.lightingRainbow = () => lightingSystem.startRainbow();
       ngksPlayerInstance.lightingSetColor = (r, g, b, intensity) => lightingSystem.setColor(r, g, b, intensity);
       
-      console.log('✅ Lighting control added to NGKs Player');
-      console.log('📖 Available methods:');
+      console.log('âœ… Lighting control added to NGKs Player');
+      console.log('ðŸ“– Available methods:');
       console.log('  - ngksPlayer.lightingBlackout()');
       console.log('  - ngksPlayer.lightingStrobe()');
       console.log('  - ngksPlayer.lightingRainbow()');
@@ -34,22 +47,22 @@ async function addLightingToNGKsPlayer(ngksPlayerInstance) {
       return lightingSystem;
     }
   } catch (error) {
-    console.error('❌ Failed to add lighting to NGKs Player:', error);
+    console.error('âŒ Failed to add lighting to NGKs Player:', error);
     return null;
   }
 }
 
 // Example 2: Auto-initialization (tries to find NGKs Player automatically)
 async function autoAddLighting() {
-  console.log('🔍 Auto-detecting NGKs Player for lighting integration...');
+  console.log('ðŸ” Auto-detecting NGKs Player for lighting integration...');
   
   const lightingSystem = await autoInitializeLighting();
   
   if (lightingSystem) {
-    console.log('✅ Lighting system auto-initialized');
+    console.log('âœ… Lighting system auto-initialized');
     return lightingSystem;
   } else {
-    console.log('❌ Could not auto-initialize lighting system');
+    console.log('âŒ Could not auto-initialize lighting system');
     return null;
   }
 }
@@ -77,31 +90,31 @@ class NGKsPlayerWithLighting {
       // Initialize lighting system
       await this.initializeLightingSystem();
       
-      console.log('🎉 NGKs Player with Lighting initialized');
+      console.log('ðŸŽ‰ NGKs Player with Lighting initialized');
     } catch (error) {
-      console.error('❌ Failed to initialize NGKs Player with Lighting:', error);
+      console.error('âŒ Failed to initialize NGKs Player with Lighting:', error);
     }
   }
   
   async initializeAudioSystem() {
     // Your existing audio initialization code
-    console.log('🎵 Initializing audio system...');
+    console.log('ðŸŽµ Initializing audio system...');
     // ... your code here ...
   }
   
   async initializeLightingSystem() {
-    console.log('🎭 Initializing lighting system...');
+    console.log('ðŸŽ­ Initializing lighting system...');
     
     this.lighting = new NGKsLightingSystem(this);
     const success = await this.lighting.initialize();
     
     if (success) {
-      console.log('✅ Lighting system ready');
+      console.log('âœ… Lighting system ready');
       
       // Connect lighting to audio events
       this.setupLightingEvents();
     } else {
-      console.log('⚠️ Lighting system initialization failed - continuing without lighting');
+      console.log('âš ï¸ Lighting system initialization failed - continuing without lighting');
     }
   }
   
@@ -109,21 +122,21 @@ class NGKsPlayerWithLighting {
     // Connect playback events to lighting
     this.on('play', () => {
       if (this.lighting) {
-        console.log('▶️ Playback started - activating lighting');
+        console.log('â–¶ï¸ Playback started - activating lighting');
         this.lighting.enableBeatSync(true);
       }
     });
     
     this.on('pause', () => {
       if (this.lighting) {
-        console.log('⏸️ Playback paused - dimming lighting');
+        console.log('â¸ï¸ Playback paused - dimming lighting');
         this.lighting.setColor(255, 255, 255, 0.3);
       }
     });
     
     this.on('stop', () => {
       if (this.lighting) {
-        console.log('⏹️ Playback stopped - blackout');
+        console.log('â¹ï¸ Playback stopped - blackout');
         this.lighting.blackout();
       }
     });
@@ -137,7 +150,7 @@ class NGKsPlayerWithLighting {
     // Emit event for lighting
     this.emit('play', { track: this.currentTrack });
     
-    console.log('▶️ Playing with lighting sync');
+    console.log('â–¶ï¸ Playing with lighting sync');
   }
   
   pause() {
@@ -147,7 +160,7 @@ class NGKsPlayerWithLighting {
     // Emit event for lighting
     this.emit('pause', { track: this.currentTrack });
     
-    console.log('⏸️ Paused with lighting sync');
+    console.log('â¸ï¸ Paused with lighting sync');
   }
   
   stop() {
@@ -158,7 +171,7 @@ class NGKsPlayerWithLighting {
     // Emit event for lighting
     this.emit('stop');
     
-    console.log('⏹️ Stopped with lighting sync');
+    console.log('â¹ï¸ Stopped with lighting sync');
   }
   
   // Manual lighting controls
@@ -202,7 +215,7 @@ class NGKsPlayerWithLighting {
 // Example 4: Simple HTML integration
 function createLightingButton() {
   const button = document.createElement('button');
-  button.textContent = '🎭 Add Lighting';
+  button.textContent = 'ðŸŽ­ Add Lighting';
   button.style.cssText = `
     position: fixed;
     top: 20px;
@@ -218,19 +231,19 @@ function createLightingButton() {
   `;
   
   button.addEventListener('click', async () => {
-    button.textContent = '⏳ Initializing...';
+    button.textContent = 'â³ Initializing...';
     button.disabled = true;
     
     const lightingSystem = await autoAddLighting();
     
     if (lightingSystem) {
-      button.textContent = '✅ Lighting Active';
+      button.textContent = 'âœ… Lighting Active';
       button.style.background = '#2196F3';
       
       // Add some manual control buttons
       addManualControlButtons(lightingSystem);
     } else {
-      button.textContent = '❌ Lighting Failed';
+      button.textContent = 'âŒ Lighting Failed';
       button.style.background = '#f44336';
       button.disabled = false;
     }
@@ -253,13 +266,13 @@ function addManualControlButtons(lightingSystem) {
   `;
   
   const buttons = [
-    { text: '⚫ Blackout', action: () => lightingSystem.blackout() },
-    { text: '⚡ Strobe', action: () => lightingSystem.startStrobe() },
-    { text: '🌈 Rainbow', action: () => lightingSystem.startRainbow() },
-    { text: '🔴 Red', action: () => lightingSystem.setColor(255, 0, 0) },
-    { text: '🟢 Green', action: () => lightingSystem.setColor(0, 255, 0) },
-    { text: '🔵 Blue', action: () => lightingSystem.setColor(0, 0, 255) },
-    { text: '⚪ White', action: () => lightingSystem.setColor(255, 255, 255) }
+    { text: 'âš« Blackout', action: () => lightingSystem.blackout() },
+    { text: 'âš¡ Strobe', action: () => lightingSystem.startStrobe() },
+    { text: 'ðŸŒˆ Rainbow', action: () => lightingSystem.startRainbow() },
+    { text: 'ðŸ”´ Red', action: () => lightingSystem.setColor(255, 0, 0) },
+    { text: 'ðŸŸ¢ Green', action: () => lightingSystem.setColor(0, 255, 0) },
+    { text: 'ðŸ”µ Blue', action: () => lightingSystem.setColor(0, 0, 255) },
+    { text: 'âšª White', action: () => lightingSystem.setColor(255, 255, 255) }
   ];
   
   buttons.forEach(({ text, action }) => {
@@ -295,8 +308,8 @@ if (typeof window !== 'undefined') {
   window.initNGKsLighting = autoAddLighting;
   window.createLightingButton = createLightingButton;
   
-  console.log('🎭 NGKs Lighting Integration loaded!');
-  console.log('📖 Try these commands:');
+  console.log('ðŸŽ­ NGKs Lighting Integration loaded!');
+  console.log('ðŸ“– Try these commands:');
   console.log('  - await initNGKsLighting() // Auto-initialize lighting');
   console.log('  - createLightingButton() // Add lighting button to page');
 }

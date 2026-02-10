@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: FXAutomation.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useEffect, useRef } from 'react';
 import { Play, Square, Circle, Trash2, Download, Upload } from 'lucide-react';
 import './FXAutomation.css';
@@ -327,3 +340,4 @@ const FXAutomation = ({ effectType, parameters, onAutomationChange, color }) => 
 };
 
 export default FXAutomation;
+

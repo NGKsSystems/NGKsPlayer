@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: index.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useEffect } from 'react';
 import './styles.css';
 
@@ -37,7 +50,7 @@ const Toast = ({ message, type = 'info', title, onClose, duration = 3000 }) => {
           onClick={onClose}
           aria-label="Close notification"
         >
-          ×
+          Ã—
         </button>
       )}
     </div>

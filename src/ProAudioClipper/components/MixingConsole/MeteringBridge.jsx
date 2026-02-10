@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: MeteringBridge.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { forwardRef, useEffect, useState, useRef } from 'react';
 import './MeteringBridge.css';
 
@@ -96,7 +109,7 @@ const MeteringBridge = forwardRef(({ tracks, buses, audioEngine, consoleSize }, 
         
         {meterMode !== 'peak' && levels.rms && (
           <div className="rms-display">
-            {levels.rms > -60 ? `${levels.rms.toFixed(1)}` : '-∞'}
+            {levels.rms > -60 ? `${levels.rms.toFixed(1)}` : '-âˆž'}
           </div>
         )}
       </div>
@@ -165,7 +178,7 @@ const MeteringBridge = forwardRef(({ tracks, buses, audioEngine, consoleSize }, 
           <div className="scale-mark" style={{ left: '50%' }}>-24</div>
           <div className="scale-mark" style={{ left: '30%' }}>-36</div>
           <div className="scale-mark" style={{ left: '10%' }}>-48</div>
-          <div className="scale-mark" style={{ left: '0%' }}>-∞</div>
+          <div className="scale-mark" style={{ left: '0%' }}>-âˆž</div>
         </div>
       </div>
 

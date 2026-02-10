@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: randomizer.test.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import { pickNextIndex, pickPrevIndex, readBag, writeBag, getCachedNext, setCachedNext, clearCachedNext, bagKey, cacheKey } from '../../utils/randomizer'
 
 describe('randomizer utilities', () => {
@@ -72,3 +85,4 @@ describe('randomizer utilities', () => {
     expect(typeof cacheKey === 'function' ? cacheKey(q) : '').toBeDefined()
   })
 })
+

@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: simpleDualDriver.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 // Simple dual channel audio driver - just routes audio to left/right channels
 export class SimpleDualDriver {
   constructor() {
@@ -51,3 +64,4 @@ export class SimpleDualDriver {
     this.routeDeck(deckId, enabled);
   }
 }
+

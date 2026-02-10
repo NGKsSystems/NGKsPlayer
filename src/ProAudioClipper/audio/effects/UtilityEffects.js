@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: UtilityEffects.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * Utility Effects - Basic audio processing using standard nodes
  */
@@ -231,3 +244,4 @@ export class GainEffect extends BaseAudioEffect {
     super.destroy();
   }
 }
+

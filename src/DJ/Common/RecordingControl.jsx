@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: RecordingControl.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useEffect } from 'react';
 import './RecordingControl.css';
 
@@ -88,7 +101,7 @@ const RecordingControl = ({ audioManager }) => {
         )}
         {fileName && (
           <div className="recording-saved">
-            ✓ Saved
+            âœ“ Saved
           </div>
         )}
         {!isRecording && !fileName && (
@@ -117,7 +130,7 @@ const RecordingControl = ({ audioManager }) => {
             onClick={handleStartRecording}
             title="Start Recording"
           >
-            ● REC
+            â— REC
           </button>
         ) : (
           <button
@@ -125,7 +138,7 @@ const RecordingControl = ({ audioManager }) => {
             onClick={handleStopRecording}
             title="Stop Recording"
           >
-            ◼ STOP
+            â—¼ STOP
           </button>
         )}
       </div>
@@ -134,3 +147,4 @@ const RecordingControl = ({ audioManager }) => {
 };
 
 export default RecordingControl;
+

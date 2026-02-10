@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: ProfessionalDeck.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useEffect, useRef } from 'react';
 import { Play, Pause, Square, RotateCcw, Volume2, Headphones } from 'lucide-react';
 import './ProfessionalDeck.css';
@@ -72,7 +85,7 @@ const ProfessionalDeck = ({
       // Generate waveform data
       generateWaveform(trackData);
       
-      console.log(`🎵 Track loaded to Deck ${deckId}:`, trackData.title);
+      console.log(`ðŸŽµ Track loaded to Deck ${deckId}:`, trackData.title);
     } catch (error) {
       console.error(`Failed to load track to Deck ${deckId}:`, error);
     }
@@ -188,7 +201,7 @@ const ProfessionalDeck = ({
       <div className="deck-header">
         <div className="deck-label">DECK {deckId}</div>
         <div className="deck-status">
-          {isPlaying && <div className="playing-indicator">●</div>}
+          {isPlaying && <div className="playing-indicator">â—</div>}
           {cue && <div className="cue-indicator">CUE</div>}
           {sync && <div className="sync-indicator">SYNC</div>}
         </div>

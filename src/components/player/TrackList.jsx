@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: TrackList.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React from 'react';
 import { TrackItem } from './TrackItem';
 
@@ -27,7 +40,7 @@ export function TrackList({
         <div className="flex gap-3 items-center">
           <input
             type="text"
-            placeholder="🔍 Search tracks..."
+            placeholder="ðŸ” Search tracks..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="flex-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded text-sm text-white placeholder-gray-400 focus:outline-none focus:border-blue-500"
@@ -52,7 +65,7 @@ export function TrackList({
             className="px-3 py-2 bg-gray-700 hover:bg-gray-600 border border-gray-600 rounded text-sm flex items-center gap-1 whitespace-nowrap"
             title={sortOrder === 'asc' ? 'Ascending' : 'Descending'}
           >
-            {sortOrder === 'asc' ? '↑ A-Z' : '↓ Z-A'}
+            {sortOrder === 'asc' ? 'â†‘ A-Z' : 'â†“ Z-A'}
           </button>
           
           <button
@@ -63,7 +76,7 @@ export function TrackList({
             className="px-3 py-2 bg-blue-600 hover:bg-blue-700 border border-blue-500 rounded text-sm text-white font-medium focus:outline-none focus:border-blue-400"
             title="Rescan Music Library"
           >
-            🔄 Rescan
+            ðŸ”„ Rescan
           </button>
         </div>
       </div>
@@ -99,3 +112,4 @@ export function TrackList({
     </div>
   );
 }
+

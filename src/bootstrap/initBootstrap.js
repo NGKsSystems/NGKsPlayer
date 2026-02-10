@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: initBootstrap.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * Initialization Bootstrap Module
  * 
@@ -24,25 +37,25 @@ export function bootstrapAppInitialization() {
   function setupIPCListeners() {
     // window.api should be available now (preload has run)
     if (!window.api) {
-      console.warn('[Bootstrap] ⚠️  window.api not yet available, retrying...');
+      console.warn('[Bootstrap] âš ï¸  window.api not yet available, retrying...');
       // Retry after a brief delay
       setTimeout(setupIPCListeners, 100);
       return;
     }
 
-    console.log('[Bootstrap] ✅ window.api is available, setting up IPC listeners');
+    console.log('[Bootstrap] âœ… window.api is available, setting up IPC listeners');
 
     // Listen for readiness signals from Electron main process via IPC
     if (window.api.onAppDatabaseReady) {
       window.api.onAppDatabaseReady(() => {
-        console.log('[Bootstrap] ✅ Received database-ready signal from main process');
+        console.log('[Bootstrap] âœ… Received database-ready signal from main process');
         initCoordinator.setReady('database', true);
       });
     }
 
     if (window.api.onAppReady) {
       window.api.onAppReady(() => {
-        console.log('[Bootstrap] ✅ Received app-ready signal from main process');
+        console.log('[Bootstrap] âœ… Received app-ready signal from main process');
         initCoordinator.setReady('database', true);
         initCoordinator.setReady('ipcBridge', true);
       });
@@ -57,10 +70,11 @@ export function bootstrapAppInitialization() {
   // This prevents app from getting stuck if main process doesn't signal
   setTimeout(() => {
     if (!initCoordinator.isReady('database')) {
-      console.warn('[Bootstrap] ⚠️  Database ready signal not received, marking ready anyway');
+      console.warn('[Bootstrap] âš ï¸  Database ready signal not received, marking ready anyway');
       initCoordinator.setReady('database', true);
     }
   }, 5000);
 }
 
 export default bootstrapAppInitialization;
+

@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: LightingController.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * Professional Lighting Controller System
  * 
@@ -50,7 +63,7 @@ export class LightingController {
     this.isRunning = false;
     this.updateInterval = null;
 
-    console.log('🎨 Professional Lighting Controller initialized');
+    console.log('ðŸŽ¨ Professional Lighting Controller initialized');
     console.log(`   Protocol: ${this.options.protocol}`);
     console.log(`   Interface: ${this.options.interface}`);
     console.log(`   Universe: ${this.options.universe}`);
@@ -61,7 +74,7 @@ export class LightingController {
    */
   async initialize() {
     try {
-      console.log('🔌 Initializing lighting interface...');
+      console.log('ðŸ”Œ Initializing lighting interface...');
       
       switch (this.options.protocol) {
         case 'DMX512':
@@ -80,11 +93,11 @@ export class LightingController {
       // Start the lighting update loop
       this.startUpdateLoop();
       
-      console.log('✅ Lighting controller ready');
+      console.log('âœ… Lighting controller ready');
       return true;
 
     } catch (error) {
-      console.error('❌ Failed to initialize lighting controller:', error.message);
+      console.error('âŒ Failed to initialize lighting controller:', error.message);
       throw error;
     }
   }
@@ -98,21 +111,21 @@ export class LightingController {
       const interfaces = await this.scanDMXInterfaces();
       
       if (interfaces.length === 0) {
-        console.warn('⚠️ No DMX interfaces found. Using virtual mode.');
+        console.warn('âš ï¸ No DMX interfaces found. Using virtual mode.');
         this.dmxInterface = new VirtualDMXInterface();
       } else {
-        console.log(`🔌 Found ${interfaces.length} DMX interface(s)`);
+        console.log(`ðŸ”Œ Found ${interfaces.length} DMX interface(s)`);
         this.dmxInterface = new USBDMXInterface(interfaces[0]);
       }
 
       await this.dmxInterface.connect();
-      console.log('✅ DMX512 interface connected');
+      console.log('âœ… DMX512 interface connected');
 
     } catch (error) {
-      console.error('❌ DMX512 initialization failed:', error.message);
+      console.error('âŒ DMX512 initialization failed:', error.message);
       // Fallback to virtual interface
       this.dmxInterface = new VirtualDMXInterface();
-      console.log('🔄 Falling back to virtual DMX interface');
+      console.log('ðŸ”„ Falling back to virtual DMX interface');
     }
   }
 
@@ -125,7 +138,7 @@ export class LightingController {
     this.artNetSocket = createSocket('udp4');
     this.artNetSocket.bind(6454); // Standard Art-Net port
 
-    console.log('✅ Art-Net interface initialized on port 6454');
+    console.log('âœ… Art-Net interface initialized on port 6454');
     
     // Send Art-Net poll to discover nodes
     this.sendArtNetPoll();
@@ -140,7 +153,7 @@ export class LightingController {
     this.sacnSocket = createSocket('udp4');
     this.sacnSocket.bind(5568); // Standard sACN port
 
-    console.log('✅ sACN interface initialized on port 5568');
+    console.log('âœ… sACN interface initialized on port 5568');
   }
 
   /**
@@ -154,7 +167,7 @@ export class LightingController {
     try {
       // Mock scanning - in real implementation, use node-usb or similar
       // to scan for devices with specific vendor/product IDs
-      console.log('🔍 Scanning for DMX interfaces...');
+      console.log('ðŸ” Scanning for DMX interfaces...');
       
       // Simulate finding interfaces
       if (Math.random() > 0.7) { // 30% chance of finding interface
@@ -167,7 +180,7 @@ export class LightingController {
       }
       
     } catch (error) {
-      console.warn('⚠️ Error scanning DMX interfaces:', error.message);
+      console.warn('âš ï¸ Error scanning DMX interfaces:', error.message);
     }
 
     return interfaces;
@@ -188,11 +201,11 @@ export class LightingController {
       
       beatDetector.on('tempo', (bpm) => {
         this.bpm = bpm;
-        console.log(`🎵 Tempo detected: ${bpm} BPM`);
+        console.log(`ðŸŽµ Tempo detected: ${bpm} BPM`);
       });
     }
 
-    console.log('🎵 Audio analyzer connected for lighting sync');
+    console.log('ðŸŽµ Audio analyzer connected for lighting sync');
   }
 
   /**
@@ -222,7 +235,7 @@ export class LightingController {
       model: fixture.model || 'Generic'
     });
 
-    console.log(`🔆 Added fixture: ${fixture.manufacturer} ${fixture.model} (${fixture.channels}ch) at channel ${fixture.startChannel}`);
+    console.log(`ðŸ”† Added fixture: ${fixture.manufacturer} ${fixture.model} (${fixture.channels}ch) at channel ${fixture.startChannel}`);
   }
 
   /**
@@ -288,7 +301,7 @@ export class LightingController {
       timestamp: Date.now()
     });
 
-    console.log(`💾 Scene saved: ${name}`);
+    console.log(`ðŸ’¾ Scene saved: ${name}`);
   }
 
   /**
@@ -303,7 +316,7 @@ export class LightingController {
     this.universe = [...scene.universe];
     this.sendUpdate();
 
-    console.log(`🎬 Scene loaded: ${name}`);
+    console.log(`ðŸŽ¬ Scene loaded: ${name}`);
   }
 
   /**
@@ -316,7 +329,7 @@ export class LightingController {
     }
 
     this.effectEngine.startSequence(sequence, this.universe);
-    console.log(`🎪 Started sequence: ${sequenceName}`);
+    console.log(`ðŸŽª Started sequence: ${sequenceName}`);
   }
 
   /**
@@ -332,7 +345,7 @@ export class LightingController {
       this.update();
     }, updateInterval);
 
-    console.log(`🔄 Lighting update loop started (${this.options.refreshRate} Hz)`);
+    console.log(`ðŸ”„ Lighting update loop started (${this.options.refreshRate} Hz)`);
   }
 
   /**
@@ -347,7 +360,7 @@ export class LightingController {
       this.updateInterval = null;
     }
 
-    console.log('⏹️ Lighting update loop stopped');
+    console.log('â¹ï¸ Lighting update loop stopped');
   }
 
   /**
@@ -382,7 +395,7 @@ export class LightingController {
           break;
       }
     } catch (error) {
-      console.error('❌ Failed to send lighting update:', error.message);
+      console.error('âŒ Failed to send lighting update:', error.message);
     }
   }
 
@@ -494,7 +507,7 @@ export class LightingController {
    * Cleanup and disconnect
    */
   async disconnect() {
-    console.log('🔌 Disconnecting lighting controller...');
+    console.log('ðŸ”Œ Disconnecting lighting controller...');
     
     this.stopUpdateLoop();
     
@@ -510,7 +523,7 @@ export class LightingController {
       this.sacnSocket.close();
     }
 
-    console.log('✅ Lighting controller disconnected');
+    console.log('âœ… Lighting controller disconnected');
   }
 }
 
@@ -524,7 +537,7 @@ class VirtualDMXInterface {
 
   async connect() {
     this.connected = true;
-    console.log('🔌 Virtual DMX interface connected');
+    console.log('ðŸ”Œ Virtual DMX interface connected');
   }
 
   send(universe) {
@@ -534,13 +547,13 @@ class VirtualDMXInterface {
     ).filter(Boolean);
     
     if (activeChannels.length > 0) {
-      console.log(`📡 DMX: ${activeChannels.join(' ')}`);
+      console.log(`ðŸ“¡ DMX: ${activeChannels.join(' ')}`);
     }
   }
 
   async disconnect() {
     this.connected = false;
-    console.log('🔌 Virtual DMX interface disconnected');
+    console.log('ðŸ”Œ Virtual DMX interface disconnected');
   }
 }
 
@@ -556,19 +569,19 @@ class USBDMXInterface {
   async connect() {
     // Real implementation would use node-usb or similar
     this.connected = true;
-    console.log(`🔌 USB DMX interface connected: ${this.device.name}`);
+    console.log(`ðŸ”Œ USB DMX interface connected: ${this.device.name}`);
   }
 
   send(universe) {
     if (!this.connected) return;
     
     // Real implementation would send via USB
-    console.log(`📡 USB DMX: Sending ${universe.filter(v => v > 0).length} active channels`);
+    console.log(`ðŸ“¡ USB DMX: Sending ${universe.filter(v => v > 0).length} active channels`);
   }
 
   async disconnect() {
     this.connected = false;
-    console.log('🔌 USB DMX interface disconnected');
+    console.log('ðŸ”Œ USB DMX interface disconnected');
   }
 }
 
@@ -652,7 +665,7 @@ class LightingEffectEngine {
 
   startSequence(sequence, universe) {
     // Start automated sequence
-    console.log(`🎪 Starting sequence: ${sequence.name}`);
+    console.log(`ðŸŽª Starting sequence: ${sequence.name}`);
   }
 
   hsvToRgb(h, s, v) {

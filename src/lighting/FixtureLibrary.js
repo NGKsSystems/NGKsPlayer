@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: FixtureLibrary.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * Professional Lighting Fixture Library
  * 
@@ -278,7 +291,7 @@ export class FixtureManager {
       dateAdded: new Date().toISOString()
     });
     
-    console.log(`📦 Added custom fixture: ${fixture.name}`);
+    console.log(`ðŸ“¦ Added custom fixture: ${fixture.name}`);
   }
 
   /**
@@ -287,7 +300,7 @@ export class FixtureManager {
   removeCustomFixture(id) {
     if (this.customFixtures.has(id)) {
       this.customFixtures.delete(id);
-      console.log(`🗑️ Removed custom fixture: ${id}`);
+      console.log(`ðŸ—‘ï¸ Removed custom fixture: ${id}`);
       return true;
     }
     return false;
@@ -418,7 +431,7 @@ export class FixtureManager {
         }
       });
       
-      console.log(`📦 Imported ${imported} custom fixtures`);
+      console.log(`ðŸ“¦ Imported ${imported} custom fixtures`);
       return imported;
       
     } catch (error) {

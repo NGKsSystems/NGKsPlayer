@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: KeyAnalyzer.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 // KeyAnalyzer.js
 // Optimized key detection with fast/deep support
 
@@ -27,7 +40,7 @@ function hann(n, N) {
   return 0.5 - 0.5 * Math.cos((2 * Math.PI * n) / (N - 1));
 }
 
-// Fast magnitude DFT (O(N²) but small N — fine for key)
+// Fast magnitude DFT (O(NÂ²) but small N â€” fine for key)
 function getMagnitude(frame) {
   const N = frame.length;
   const mag = new Float32Array(N / 2);
@@ -200,3 +213,4 @@ export async function detectKey(audioBuffer, opts = {}) {
   const result = await detectKeyWithCandidates(audioBuffer, opts);
   return result.primary;
 }
+

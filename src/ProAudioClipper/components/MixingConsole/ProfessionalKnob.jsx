@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: ProfessionalKnob.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import './ProfessionalKnob.css';
 
@@ -35,17 +48,17 @@ const ProfessionalKnob = ({
     }
   }, [value, isDragging]);
 
-  // Convert value to angle (-135° to +135°, 270° total range)
+  // Convert value to angle (-135Â° to +135Â°, 270Â° total range)
   const getAngle = useCallback(() => {
     const normalizedValue = logarithmic 
       ? (Math.log(localValue / min) / Math.log(max / min))
       : (localValue - min) / (max - min);
     
     if (bipolar) {
-      // Bipolar: center at 0°, -135° to +135°
+      // Bipolar: center at 0Â°, -135Â° to +135Â°
       return (normalizedValue - 0.5) * 270;
     } else {
-      // Unipolar: -135° to +135°
+      // Unipolar: -135Â° to +135Â°
       return -135 + (normalizedValue * 270);
     }
   }, [localValue, min, max, bipolar, logarithmic]);
@@ -184,7 +197,7 @@ const ProfessionalKnob = ({
   // Format display value
   const formatValue = useCallback((val) => {
     if (unit === 'dB') {
-      if (val <= min && logarithmic) return '-∞';
+      if (val <= min && logarithmic) return '-âˆž';
       return val >= 0 ? `+${val.toFixed(1)}` : val.toFixed(1);
     } else if (unit === 'Hz') {
       if (val >= 1000) return `${(val / 1000).toFixed(1)}k`;

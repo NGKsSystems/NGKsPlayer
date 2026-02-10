@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: GenreRules.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 // src/audio/GenreRules.js
 // Central genre-specific tuning rules
 // Used by all feature modules (BPM, Energy, Danceability, Key, etc.)
@@ -159,3 +172,4 @@ export default class GenreRules {
     return this.getRules(genre, subgenre).transition || {};
   }
 }
+

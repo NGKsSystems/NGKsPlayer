@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: DJProfessional.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useEffect, useRef } from 'react';
 import '../styles/DJMixer.css';
 // import '../components/SoundSnippetPads/styles.css';
@@ -224,9 +237,9 @@ function DJProfessional({ onNavigate }) {
 
   // Connect audio with effects
   const connectAudioEffects = (audio, deck) => {
-    console.log(`🔗 CONNECTING: Audio effects for deck ${deck}`);
+    console.log(`ðŸ”— CONNECTING: Audio effects for deck ${deck}`);
     if (!audioContextRef.current || !audio) {
-      console.warn(`❌ CONNECTING: Missing audioContext (${!!audioContextRef.current}) or audio (${!!audio})`);
+      console.warn(`âŒ CONNECTING: Missing audioContext (${!!audioContextRef.current}) or audio (${!!audio})`);
       return;
     }
 
@@ -234,14 +247,14 @@ function DJProfessional({ onNavigate }) {
     
     // Check if already connected to avoid multiple MediaElementSource creation
     if (audio._audioSourceConnected) {
-      console.log(`✅ CONNECTING: Deck ${deck} already connected`);
+      console.log(`âœ… CONNECTING: Deck ${deck} already connected`);
       return;
     }
     
     try {
       const source = audioContext.createMediaElementSource(audio);
       audio._audioSourceConnected = true;
-      console.log(`✅ CONNECTING: Created MediaElementSource for deck ${deck}`);
+      console.log(`âœ… CONNECTING: Created MediaElementSource for deck ${deck}`);
       
       // Keep HTML5 audio volume for volume controls, Web Audio handles effects
       // Don't mute HTML5 audio - let it handle volume/crossfader
@@ -255,7 +268,7 @@ function DJProfessional({ onNavigate }) {
         reverbNodeA.current.connect(wetGainA.current);
         dryGainA.current.connect(audioContext.destination);
         wetGainA.current.connect(audioContext.destination);
-        console.log(`✅ CONNECTING: Deck A audio chain connected`);
+        console.log(`âœ… CONNECTING: Deck A audio chain connected`);
       } else {
         // B: source -> EQ source -> EQ output -> gain -> [dry/wet split] -> destination
         source.connect(deckBSourceRef.current);
@@ -265,16 +278,16 @@ function DJProfessional({ onNavigate }) {
         reverbNodeB.current.connect(wetGainB.current);
         dryGainB.current.connect(audioContext.destination);
         wetGainB.current.connect(audioContext.destination);
-        console.log(`✅ CONNECTING: Deck B audio chain connected`);
+        console.log(`âœ… CONNECTING: Deck B audio chain connected`);
       }
     } catch (error) {
-      console.warn(`❌ CONNECTING: Failed to connect audio effects for deck ${deck}:`, error);
+      console.warn(`âŒ CONNECTING: Failed to connect audio effects for deck ${deck}:`, error);
     }
   };
 
   // Update gain
   const handleGainChange = async (value, deck) => {
-    console.log(`🎛️ GAIN: Deck ${deck} changing to ${value}`);
+    console.log(`ðŸŽ›ï¸ GAIN: Deck ${deck} changing to ${value}`);
     await ensureAudioContextStarted();
     
     const newGain = parseFloat(value);
@@ -282,24 +295,24 @@ function DJProfessional({ onNavigate }) {
       setGainA(newGain);
       if (gainNodeA.current) {
         gainNodeA.current.gain.value = newGain;
-        console.log(`✅ GAIN: Deck A set to ${newGain}, actual value: ${gainNodeA.current.gain.value}`);
+        console.log(`âœ… GAIN: Deck A set to ${newGain}, actual value: ${gainNodeA.current.gain.value}`);
       } else {
-        console.warn(`❌ GAIN: Deck A gainNodeA.current is null!`);
+        console.warn(`âŒ GAIN: Deck A gainNodeA.current is null!`);
       }
     } else {
       setGainB(newGain);
       if (gainNodeB.current) {
         gainNodeB.current.gain.value = newGain;
-        console.log(`✅ GAIN: Deck B set to ${newGain}, actual value: ${gainNodeB.current.gain.value}`);
+        console.log(`âœ… GAIN: Deck B set to ${newGain}, actual value: ${gainNodeB.current.gain.value}`);
       } else {
-        console.warn(`❌ GAIN: Deck B gainNodeB.current is null!`);
+        console.warn(`âŒ GAIN: Deck B gainNodeB.current is null!`);
       }
     }
   };
 
   // Update reverb
   const handleReverbChange = async (value, deck) => {
-    console.log(`🔊 REVERB: Deck ${deck} changing to ${value}`);
+    console.log(`ðŸ”Š REVERB: Deck ${deck} changing to ${value}`);
     await ensureAudioContextStarted();
     
     const newReverb = parseFloat(value);
@@ -308,18 +321,18 @@ function DJProfessional({ onNavigate }) {
       if (dryGainA.current && wetGainA.current) {
         dryGainA.current.gain.value = 1 - newReverb;
         wetGainA.current.gain.value = newReverb;
-        console.log(`✅ REVERB: Deck A dry=${1 - newReverb}, wet=${newReverb}`);
+        console.log(`âœ… REVERB: Deck A dry=${1 - newReverb}, wet=${newReverb}`);
       } else {
-        console.warn(`❌ REVERB: Deck A nodes missing! dry=${!!dryGainA.current}, wet=${!!wetGainA.current}`);
+        console.warn(`âŒ REVERB: Deck A nodes missing! dry=${!!dryGainA.current}, wet=${!!wetGainA.current}`);
       }
     } else {
       setReverbB(newReverb);
       if (dryGainB.current && wetGainB.current) {
         dryGainB.current.gain.value = 1 - newReverb;
         wetGainB.current.gain.value = newReverb;
-        console.log(`✅ REVERB: Deck B dry=${1 - newReverb}, wet=${newReverb}`);
+        console.log(`âœ… REVERB: Deck B dry=${1 - newReverb}, wet=${newReverb}`);
       } else {
-        console.warn(`❌ REVERB: Deck B nodes missing! dry=${!!dryGainB.current}, wet=${!!wetGainB.current}`);
+        console.warn(`âŒ REVERB: Deck B nodes missing! dry=${!!dryGainB.current}, wet=${!!wetGainB.current}`);
       }
     }
   };
@@ -885,9 +898,9 @@ function DJProfessional({ onNavigate }) {
         }
       }, 50);
       
-      console.log(`✅ Seek applied for deck ${deck}`);
+      console.log(`âœ… Seek applied for deck ${deck}`);
     } else {
-      console.log(`⏳ Waiting for deck ${deck} to be ready for seeking`);
+      console.log(`â³ Waiting for deck ${deck} to be ready for seeking`);
       const seekWhenReady = () => {
         audioElement.currentTime = clampedTime;
         if (deck === 'A') {
@@ -895,7 +908,7 @@ function DJProfessional({ onNavigate }) {
         } else {
           setPositionB(clampedTime);
         }
-        console.log(`✅ Delayed seek successful for deck ${deck}`);
+        console.log(`âœ… Delayed seek successful for deck ${deck}`);
         audioElement.removeEventListener('loadedmetadata', seekWhenReady);
       };
       audioElement.addEventListener('loadedmetadata', seekWhenReady);
@@ -931,7 +944,7 @@ function DJProfessional({ onNavigate }) {
           onClick={() => onNavigate?.('library')}
           className="library-button"
         >
-          📚 Library
+          ðŸ“š Library
         </button>
       </div>
 
@@ -962,7 +975,7 @@ function DJProfessional({ onNavigate }) {
                 {trackA?.title || 'No Track Loaded'}
               </div>
               <div className="track-artist">
-                {trackA?.artist} • {trackA?.album}
+                {trackA?.artist} â€¢ {trackA?.album}
               </div>
             </div>
           </div>
@@ -974,21 +987,21 @@ function DJProfessional({ onNavigate }) {
               className="transport-btn rewind-btn"
               disabled={!trackA}
             >
-              ⏪ REV
+              âª REV
             </button>
             <button
               onClick={() => togglePlay('A')}
               className={`play-button ${isPlayingA ? 'playing' : 'stopped'}`}
               disabled={!trackA}
             >
-              {isPlayingA ? '⏸️ PAUSE' : '▶️ PLAY'}
+              {isPlayingA ? 'â¸ï¸ PAUSE' : 'â–¶ï¸ PLAY'}
             </button>
             <button
               onClick={() => fastForward('A')}
               className="transport-btn ff-btn"
               disabled={!trackA}
             >
-              ⏩ FF
+              â© FF
             </button>
           </div>
 
@@ -1033,7 +1046,7 @@ function DJProfessional({ onNavigate }) {
                   onClick={() => handleFineTuneA(fineTuneA - 0.1)}
                   style={{padding: '2px 8px', fontSize: '10px', background: '#333', color: '#fff', border: '1px solid #555'}}
                 >
-                  ⏪ -0.1s
+                  âª -0.1s
                 </button>
                 <button 
                   onClick={() => handleFineTuneA(0)}
@@ -1045,7 +1058,7 @@ function DJProfessional({ onNavigate }) {
                   onClick={() => handleFineTuneA(fineTuneA + 0.1)}
                   style={{padding: '2px 8px', fontSize: '10px', background: '#333', color: '#fff', border: '1px solid #555'}}
                 >
-                  ⏩ +0.1s
+                  â© +0.1s
                 </button>
               </div>
             </div>
@@ -1058,7 +1071,7 @@ function DJProfessional({ onNavigate }) {
                   onClick={() => libraryDetachedA ? reattachLibrary('a') : detachLibrary('a')}
                   className={`detach-button ${libraryDetachedA ? 'detached' : ''}`}
                 >
-                  {libraryDetachedA ? '📎 Reattach' : '🔗 Detach'}
+                  {libraryDetachedA ? 'ðŸ“Ž Reattach' : 'ðŸ”— Detach'}
                 </button>
               </div>
 
@@ -1138,19 +1151,19 @@ function DJProfessional({ onNavigate }) {
                       onClick={() => adjustGain('A', -0.1)}
                       style={{padding: '1px 4px', fontSize: '8px', background: '#333', color: '#fff', border: '1px solid #555'}}
                     >
-                      ↺
+                      â†º
                     </button>
                     <button 
                       onClick={() => resetGain('A')}
                       style={{padding: '1px 4px', fontSize: '8px', background: '#333', color: '#fff', border: '1px solid #555'}}
                     >
-                      ●
+                      â—
                     </button>
                     <button 
                       onClick={() => adjustGain('A', 0.1)}
                       style={{padding: '1px 4px', fontSize: '8px', background: '#333', color: '#fff', border: '1px solid #555'}}
                     >
-                      ↻
+                      â†»
                     </button>
                   </div>
                 </div>
@@ -1180,19 +1193,19 @@ function DJProfessional({ onNavigate }) {
                       onClick={() => adjustReverb('A', -0.1)}
                       style={{padding: '1px 4px', fontSize: '8px', background: '#333', color: '#fff', border: '1px solid #555'}}
                     >
-                      ↺
+                      â†º
                     </button>
                     <button 
                       onClick={() => resetReverb('A')}
                       style={{padding: '1px 4px', fontSize: '8px', background: '#333', color: '#fff', border: '1px solid #555'}}
                     >
-                      ●
+                      â—
                     </button>
                     <button 
                       onClick={() => adjustReverb('A', 0.1)}
                       style={{padding: '1px 4px', fontSize: '8px', background: '#333', color: '#fff', border: '1px solid #555'}}
                     >
-                      ↻
+                      â†»
                     </button>
                   </div>
                 </div>
@@ -1241,7 +1254,7 @@ function DJProfessional({ onNavigate }) {
                       }}
                       title="Reset all libraries to attached state (Ctrl+L)"
                     >
-                      📚 Reset Libraries
+                      ðŸ“š Reset Libraries
                     </button>
                   </div>
 
@@ -1303,7 +1316,7 @@ function DJProfessional({ onNavigate }) {
                       <div className="crossfader-track">
                         <div className="crossfader-labels">
                           <span className="crossfader-label-a">A</span>
-                          <span className="crossfader-label-center">⚬</span>
+                          <span className="crossfader-label-center">âš¬</span>
                           <span className="crossfader-label-b">B</span>
                         </div>
                         <input
@@ -1363,19 +1376,19 @@ function DJProfessional({ onNavigate }) {
                       onClick={() => adjustGain('B', -0.1)}
                       style={{padding: '1px 4px', fontSize: '8px', background: '#333', color: '#fff', border: '1px solid #555'}}
                     >
-                      ↺
+                      â†º
                     </button>
                     <button 
                       onClick={() => resetGain('B')}
                       style={{padding: '1px 4px', fontSize: '8px', background: '#333', color: '#fff', border: '1px solid #555'}}
                     >
-                      ●
+                      â—
                     </button>
                     <button 
                       onClick={() => adjustGain('B', 0.1)}
                       style={{padding: '1px 4px', fontSize: '8px', background: '#333', color: '#fff', border: '1px solid #555'}}
                     >
-                      ↻
+                      â†»
                     </button>
                   </div>
                 </div>
@@ -1405,19 +1418,19 @@ function DJProfessional({ onNavigate }) {
                       onClick={() => adjustReverb('B', -0.1)}
                       style={{padding: '1px 4px', fontSize: '8px', background: '#333', color: '#fff', border: '1px solid #555'}}
                     >
-                      ↺
+                      â†º
                     </button>
                     <button 
                       onClick={() => resetReverb('B')}
                       style={{padding: '1px 4px', fontSize: '8px', background: '#333', color: '#fff', border: '1px solid #555'}}
                     >
-                      ●
+                      â—
                     </button>
                     <button 
                       onClick={() => adjustReverb('B', 0.1)}
                       style={{padding: '1px 4px', fontSize: '8px', background: '#333', color: '#fff', border: '1px solid #555'}}
                     >
-                      ↻
+                      â†»
                     </button>
                   </div>
                 </div>
@@ -1456,7 +1469,7 @@ function DJProfessional({ onNavigate }) {
                 {trackB?.title || 'No Track Loaded'}
               </div>
               <div className="track-artist">
-                {trackB?.artist} • {trackB?.album}
+                {trackB?.artist} â€¢ {trackB?.album}
               </div>
             </div>
           </div>
@@ -1468,21 +1481,21 @@ function DJProfessional({ onNavigate }) {
               className="transport-btn rewind-btn"
               disabled={!trackB}
             >
-              ⏪ REV
+              âª REV
             </button>
             <button
               onClick={() => togglePlay('B')}
               className={`play-button ${isPlayingB ? 'playing' : 'stopped'}`}
               disabled={!trackB}
             >
-              {isPlayingB ? '⏸️ PAUSE' : '▶️ PLAY'}
+              {isPlayingB ? 'â¸ï¸ PAUSE' : 'â–¶ï¸ PLAY'}
             </button>
             <button
               onClick={() => fastForward('B')}
               className="transport-btn ff-btn"
               disabled={!trackB}
             >
-              ⏩ FF
+              â© FF
             </button>
           </div>
 
@@ -1527,7 +1540,7 @@ function DJProfessional({ onNavigate }) {
                   onClick={() => handleFineTuneB(fineTuneB - 0.1)}
                   style={{padding: '2px 8px', fontSize: '10px', background: '#333', color: '#fff', border: '1px solid #555'}}
                 >
-                  ⏪ -0.1s
+                  âª -0.1s
                 </button>
                 <button 
                   onClick={() => handleFineTuneB(0)}
@@ -1539,7 +1552,7 @@ function DJProfessional({ onNavigate }) {
                   onClick={() => handleFineTuneB(fineTuneB + 0.1)}
                   style={{padding: '2px 8px', fontSize: '10px', background: '#333', color: '#fff', border: '1px solid #555'}}
                 >
-                  ⏩ +0.1s
+                  â© +0.1s
                 </button>
               </div>
             </div>
@@ -1552,7 +1565,7 @@ function DJProfessional({ onNavigate }) {
                   onClick={() => libraryDetachedB ? reattachLibrary('b') : detachLibrary('b')}
                   className={`detach-button ${libraryDetachedB ? 'detached' : ''}`}
                 >
-                  {libraryDetachedB ? '📎 Reattach' : '🔗 Detach'}
+                  {libraryDetachedB ? 'ðŸ“Ž Reattach' : 'ðŸ”— Detach'}
                 </button>
               </div>
 
@@ -1601,7 +1614,7 @@ function DJProfessional({ onNavigate }) {
             <div className="eq-deck-a">
               <div className="eq-header" onClick={() => setEqCollapsedA(!eqCollapsedA)}>
                 <span>EQ Deck A</span>
-                <span className="eq-toggle">{eqCollapsedA ? '▼' : '▲'}</span>
+                <span className="eq-toggle">{eqCollapsedA ? 'â–¼' : 'â–²'}</span>
               </div>
               {!eqCollapsedA && audioContextRef.current && (
                 <DJEqualizer
@@ -1618,7 +1631,7 @@ function DJProfessional({ onNavigate }) {
             <div className="eq-deck-b">
               <div className="eq-header" onClick={() => setEqCollapsedB(!eqCollapsedB)}>
                 <span>EQ Deck B</span>
-                <span className="eq-toggle">{eqCollapsedB ? '▼' : '▲'}</span>
+                <span className="eq-toggle">{eqCollapsedB ? 'â–¼' : 'â–²'}</span>
               </div>
               {!eqCollapsedB && audioContextRef.current && (
                 <DJEqualizer
@@ -1650,3 +1663,4 @@ function DJProfessional({ onNavigate }) {
 }
 
 export default DJProfessional;
+

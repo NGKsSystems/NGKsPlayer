@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: AutomationControlPanel.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * Professional Automation Control Panel
  * Provides automation recording controls, parameter management,
@@ -253,7 +266,7 @@ const AutomationControlPanel = ({
             }`}
             title="Enable/Disable"
           >
-            {lane.enabled ? '✓' : '✗'}
+            {lane.enabled ? 'âœ“' : 'âœ—'}
           </button>
 
           <button
@@ -267,7 +280,7 @@ const AutomationControlPanel = ({
             }`}
             title="Show/Hide"
           >
-            👁
+            ðŸ‘
           </button>
 
           <button
@@ -281,7 +294,7 @@ const AutomationControlPanel = ({
             }`}
             title="Lock/Unlock"
           >
-            🔒
+            ðŸ”’
           </button>
 
           {isRecording && isSelected && (

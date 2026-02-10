@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: ProfessionalFader.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import './ProfessionalFader.css';
 
@@ -194,7 +207,7 @@ const ProfessionalFader = ({
 
   // Format display value
   const formatValue = useCallback((val) => {
-    if (val <= min) return '-∞';
+    if (val <= min) return '-âˆž';
     if (val === 0) return '0';
     return val > 0 ? `+${val.toFixed(1)}` : val.toFixed(1);
   }, [min]);
@@ -249,7 +262,7 @@ const ProfessionalFader = ({
             <span>+12</span>
           </div>
           <div className="scale-mark min" style={{[bottomStyle]: '0%'}}>
-            <span>-∞</span>
+            <span>-âˆž</span>
           </div>
         </div>
 

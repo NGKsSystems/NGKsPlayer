@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: importPipeline.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import { planForFolder, calculateStats } from "../lib/filenameNormalizer.js";
 import path from "node:path";
 import fs from "node:fs/promises";
@@ -52,7 +65,7 @@ async function executeNormalization(plans) {
         status: 'renamed'
       });
       
-      console.log(`[executeNormalization] Renamed: ${path.basename(plan.srcPath)} → ${path.basename(plan.dstPath)}`);
+      console.log(`[executeNormalization] Renamed: ${path.basename(plan.srcPath)} â†’ ${path.basename(plan.dstPath)}`);
     } catch (error) {
       results.push({
         ...plan,
@@ -66,3 +79,4 @@ async function executeNormalization(plans) {
   
   return results;
 }
+

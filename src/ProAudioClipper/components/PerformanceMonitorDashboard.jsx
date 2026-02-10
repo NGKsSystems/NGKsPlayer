@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: PerformanceMonitorDashboard.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * Performance Monitor Dashboard Component
  * 
@@ -312,7 +325,7 @@ const PerformanceMonitorDashboard = ({ isVisible = true, position = 'bottom-righ
             const memBefore = memoryInfo?.usedMB || 0;
             setTimeout(() => {
               const memAfter = memoryInfo?.usedMB || 0;
-              alert(`Memory usage: ${memBefore.toFixed(1)}MB → ${memAfter.toFixed(1)}MB`);
+              alert(`Memory usage: ${memBefore.toFixed(1)}MB â†’ ${memAfter.toFixed(1)}MB`);
             }, 1000);
           }}
           className="w-full px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded text-sm"

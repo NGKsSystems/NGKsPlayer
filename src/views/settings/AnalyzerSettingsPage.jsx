@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: AnalyzerSettingsPage.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React from 'react'
 import AnalyzerSettings from './AnalyzerSettings.jsx'
 
@@ -45,3 +58,4 @@ export default function AnalyzerSettingsPage({ onNavigate }) {
     </div>
   )
 }
+

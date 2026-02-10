@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: layerRemover.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 // Layer Remover for NGKsPlayer
 // Provides vocal removal, instrumental isolation, and frequency layer extraction
 
@@ -395,3 +408,4 @@ export class LayerRemover {
 }
 
 export default LayerRemover;
+

@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: DVSIntegration.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * NGKs Player - DVS Integration Component
  * 
@@ -37,7 +50,7 @@ const DVSIntegration = ({ onDeckUpdate, audioContext }) => {
 
         // Set up event listeners
         controller.on('initialized', () => {
-          console.log('🎧 DVS Ready - Turntables detected!');
+          console.log('ðŸŽ§ DVS Ready - Turntables detected!');
           setIsActive(true);
         });
 
@@ -50,11 +63,11 @@ const DVSIntegration = ({ onDeckUpdate, audioContext }) => {
         });
 
         controller.on('scratchStart', (data) => {
-          console.log(`🎵 Scratch detected on ${data.deck} deck`);
+          console.log(`ðŸŽµ Scratch detected on ${data.deck} deck`);
         });
 
         controller.on('signalLoss', (data) => {
-          console.warn(`⚠️ Signal loss on ${data.deck} deck`);
+          console.warn(`âš ï¸ Signal loss on ${data.deck} deck`);
         });
 
         controller.on('calibrationUpdate', (data) => {
@@ -67,7 +80,7 @@ const DVSIntegration = ({ onDeckUpdate, audioContext }) => {
         await controller.initialize();
         
       } catch (error) {
-        console.error('❌ DVS initialization failed:', error);
+        console.error('âŒ DVS initialization failed:', error);
       }
     };
 
@@ -197,7 +210,7 @@ const DVSIntegration = ({ onDeckUpdate, audioContext }) => {
     return (
       <div className="dvs-container p-6 bg-gray-900 text-white rounded-lg">
         <div className="text-center">
-          <h3 className="text-xl font-bold mb-4">🎧 NGKs DVS Controller</h3>
+          <h3 className="text-xl font-bold mb-4">ðŸŽ§ NGKs DVS Controller</h3>
           <div className="animate-pulse">
             <div className="text-blue-400">Initializing turntable connection...</div>
             <div className="text-sm text-gray-400 mt-2">
@@ -212,7 +225,7 @@ const DVSIntegration = ({ onDeckUpdate, audioContext }) => {
   return (
     <div className="dvs-container p-6 bg-gray-900 text-white rounded-lg">
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-xl font-bold">🎧 DVS Controller</h3>
+        <h3 className="text-xl font-bold">ðŸŽ§ DVS Controller</h3>
         <div className="flex items-center space-x-2">
           <div className={`w-3 h-3 rounded-full ${isActive ? 'bg-green-500' : 'bg-red-500'}`}></div>
           <span className="text-sm">
@@ -271,7 +284,7 @@ const DVSIntegration = ({ onDeckUpdate, audioContext }) => {
             <h4 className="font-bold mb-2">Left Deck</h4>
             <div>Position: {status.leftDeck.position.toFixed(0)}</div>
             <div>Speed: {status.leftDeck.speed.toFixed(2)}x</div>
-            <div>Status: {status.leftDeck.isScratching ? '🎵 SCRATCHING' : '▶️ PLAYING'}</div>
+            <div>Status: {status.leftDeck.isScratching ? 'ðŸŽµ SCRATCHING' : 'â–¶ï¸ PLAYING'}</div>
             <div>Quality: {(calibration.leftQuality * 100).toFixed(0)}%</div>
           </div>
 
@@ -279,7 +292,7 @@ const DVSIntegration = ({ onDeckUpdate, audioContext }) => {
             <h4 className="font-bold mb-2">Right Deck</h4>
             <div>Position: {status.rightDeck.position.toFixed(0)}</div>
             <div>Speed: {status.rightDeck.speed.toFixed(2)}x</div>
-            <div>Status: {status.rightDeck.isScratching ? '🎵 SCRATCHING' : '▶️ PLAYING'}</div>
+            <div>Status: {status.rightDeck.isScratching ? 'ðŸŽµ SCRATCHING' : 'â–¶ï¸ PLAYING'}</div>
             <div>Quality: {(calibration.rightQuality * 100).toFixed(0)}%</div>
           </div>
         </div>

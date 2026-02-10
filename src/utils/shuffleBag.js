@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: shuffleBag.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 export function createShuffleBag(size) {
   let bag = [...Array(size).keys()];
   let i = 0;
@@ -12,3 +25,4 @@ export function createShuffleBag(size) {
     reset(n) { bag = [...Array(n).keys()]; i = 0; }
   };
 }
+

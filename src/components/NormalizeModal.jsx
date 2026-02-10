@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: NormalizeModal.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React from 'react';
 
 const NormalizeModal = ({ isOpen, onClose, folderPath }) => {
@@ -8,7 +21,7 @@ const NormalizeModal = ({ isOpen, onClose, folderPath }) => {
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h3>Normalize Audio</h3>
-          <button className="modal-close" onClick={onClose}>×</button>
+          <button className="modal-close" onClick={onClose}>Ã—</button>
         </div>
         <div className="modal-body">
           <p>Normalize audio files in: {folderPath}</p>

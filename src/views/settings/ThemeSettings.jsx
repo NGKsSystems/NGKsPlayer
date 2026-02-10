@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: ThemeSettings.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState } from 'react'
 import { useTheme } from '../../contexts/ThemeContext';
 import { useNavigate } from 'react-router-dom'
@@ -94,7 +107,7 @@ const ThemeSettings = () => {
             >
               {/* Checkmark + Name */}
               <div className="font-bold mb-2 flex items-center gap-2">
-                {currentTheme === theme.id && <span className="text-lg">✓</span>}
+                {currentTheme === theme.id && <span className="text-lg">âœ“</span>}
                 <span>{theme.name}</span>
               </div>
 
@@ -121,7 +134,7 @@ const ThemeSettings = () => {
               color: 'var(--text-primary)'
             }}
           >
-            📥 Import Theme
+            ðŸ“¥ Import Theme
           </button>
           <button
             onClick={handleExport}
@@ -132,7 +145,7 @@ const ThemeSettings = () => {
               color: 'var(--text-primary)'
             }}
           >
-            📤 Export Current Theme
+            ðŸ“¤ Export Current Theme
           </button>
         </div>
         {importError && (
@@ -148,19 +161,19 @@ const ThemeSettings = () => {
           <div className="p-3 rounded" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
             <div className="text-sm font-semibold mb-1">Scanlines</div>
             <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>
-              {themes[currentTheme]?.effects.scanlines ? '✅ Enabled' : '❌ Disabled'}
+              {themes[currentTheme]?.effects.scanlines ? 'âœ… Enabled' : 'âŒ Disabled'}
             </div>
           </div>
           <div className="p-3 rounded" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
             <div className="text-sm font-semibold mb-1">Glow Effects</div>
             <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>
-              {themes[currentTheme]?.effects.glow ? '✅ Enabled' : '❌ Disabled'}
+              {themes[currentTheme]?.effects.glow ? 'âœ… Enabled' : 'âŒ Disabled'}
             </div>
           </div>
           <div className="p-3 rounded" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
             <div className="text-sm font-semibold mb-1">Pixelated</div>
             <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>
-              {themes[currentTheme]?.effects.pixelated ? '✅ Enabled' : '❌ Disabled'}
+              {themes[currentTheme]?.effects.pixelated ? 'âœ… Enabled' : 'âŒ Disabled'}
             </div>
           </div>
         </div>
@@ -175,12 +188,12 @@ const ThemeSettings = () => {
           href="#"
           onClick={(e) => {
             e.preventDefault()
-            alert('Theme documentation: Edit the JSON file to customize:\n\n• colors: All color values (hex or rgba)\n• fonts: Font families\n• effects: scanlines, glow, pixelated (true/false)\n\nSave and import to use your custom theme!')
+            alert('Theme documentation: Edit the JSON file to customize:\n\nâ€¢ colors: All color values (hex or rgba)\nâ€¢ fonts: Font families\nâ€¢ effects: scanlines, glow, pixelated (true/false)\n\nSave and import to use your custom theme!')
           }}
           style={{ color: 'var(--accent-primary)' }}
           className="text-sm underline"
         >
-          View theme JSON structure →
+          View theme JSON structure â†’
         </a>
       </div>
     </div>

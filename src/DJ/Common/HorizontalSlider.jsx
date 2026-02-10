@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: HorizontalSlider.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useEffect } from 'react';
 import './HorizontalSlider.css';
 
@@ -40,7 +53,7 @@ const HorizontalSlider = ({
       <div className="horizontal-slider-wrapper">
         <div className="crossfader-labels">
           <span className="cf-label-a">A</span>
-          <span className="cf-label-center">⊕</span>
+          <span className="cf-label-center">âŠ•</span>
           <span className="cf-label-b">B</span>
         </div>
         <input

@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: DJInterface.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useEffect, useRef } from 'react';
 import { toLocal } from '../utils/paths.js';
 import { Toast } from '../DJ/Mixer/Common/Toast';
@@ -189,7 +202,7 @@ export default function DJInterface({ onNavigate }) {
           onClick={() => onNavigate?.('library')}
           className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded flex items-center space-x-2"
         >
-          <span>📚</span>
+          <span>ðŸ“š</span>
           <span>Library</span>
         </button>
       </div>
@@ -236,14 +249,14 @@ export default function DJInterface({ onNavigate }) {
               className="px-4 py-2 bg-green-600 hover:bg-green-700 rounded"
               disabled={!trackA}
             >
-              {isPlayingA ? '⏸ Pause' : '▶ Play'}
+              {isPlayingA ? 'â¸ Pause' : 'â–¶ Play'}
             </button>
             <button
               onClick={() => stop('A')}
               className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded"
               disabled={!trackA}
             >
-              ⏹ Stop
+              â¹ Stop
             </button>
           </div>
 
@@ -300,7 +313,7 @@ export default function DJInterface({ onNavigate }) {
           </div>
           
           <div className="text-center text-sm text-gray-400">
-            {Math.round((1 - crossfader) * 100)}% A • {Math.round(crossfader * 100)}% B
+            {Math.round((1 - crossfader) * 100)}% A â€¢ {Math.round(crossfader * 100)}% B
           </div>
         </div>
 
@@ -344,14 +357,14 @@ export default function DJInterface({ onNavigate }) {
               className="px-4 py-2 bg-green-600 hover:bg-green-700 rounded"
               disabled={!trackB}
             >
-              {isPlayingB ? '⏸ Pause' : '▶ Play'}
+              {isPlayingB ? 'â¸ Pause' : 'â–¶ Play'}
             </button>
             <button
               onClick={() => stop('B')}
               className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded"
               disabled={!trackB}
             >
-              ⏹ Stop
+              â¹ Stop
             </button>
           </div>
 
@@ -397,7 +410,7 @@ export default function DJInterface({ onNavigate }) {
                 <div>
                   <div className="font-medium">{track.title || 'Unknown Title'}</div>
                   <div className="text-sm text-gray-400">
-                    {track.artist || 'Unknown Artist'} • {track.album || 'Unknown Album'}
+                    {track.artist || 'Unknown Artist'} â€¢ {track.album || 'Unknown Album'}
                   </div>
                 </div>
                 <div className="flex space-x-2">
@@ -431,3 +444,4 @@ export default function DJInterface({ onNavigate }) {
     </div>
   );
 }
+

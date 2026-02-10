@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: index.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import './styles.css';
 
@@ -65,7 +78,7 @@ const DeckA = ({
 
     const updateVisualization = () => {
       // 1) TIME-DOMAIN "waveform" bars (post-fader, post-EQ analyser)
-      const timeData = audioManager.getTimeDomainData?.('A'); // Float32 [−1..1] or Uint8 [0..255]
+      const timeData = audioManager.getTimeDomainData?.('A'); // Float32 [âˆ’1..1] or Uint8 [0..255]
       if (timeData && timeData.length) {
         const arr = (timeData instanceof Float32Array)
           ? timeData
@@ -78,7 +91,7 @@ const DeckA = ({
             const s = Math.abs(arr[i * samplesPerBar + j] || 0);
             if (s > peak) peak = s;
           }
-          // map peak (0..1) → percent height
+          // map peak (0..1) â†’ percent height
           return Math.min(100, Math.max(2, peak * 100));
         });
         setWaveformData(bars);
@@ -349,7 +362,7 @@ const DeckA = ({
                 marginLeft: '4px'
               }}
             >
-              ↻
+              â†»
             </button>
           )}
         </div>
@@ -405,9 +418,9 @@ const DeckA = ({
             </div>
             {track && (track.bpm || track.key || track.loudness || track.gainRecommendation) && (
               <div className="track-metadata">
-                {track.bpm && <span className="metadata-bpm" title="BPM">♩ {Math.round(track.bpm)}</span>}
+                {track.bpm && <span className="metadata-bpm" title="BPM">â™© {Math.round(track.bpm)}</span>}
                 {track.key && <span className="metadata-key" title="Key">{track.key}{track.mode?.charAt(0) || ''}</span>}
-                {track.loudness && <span className="metadata-loudness" title="Loudness (0-100)">🔊 {track.loudness}</span>}
+                {track.loudness && <span className="metadata-loudness" title="Loudness (0-100)">ðŸ”Š {track.loudness}</span>}
                 {track.gainRecommendation && <span className="metadata-gain" title="Gain adjustment">{track.gainRecommendation}</span>}
               </div>
             )}
@@ -420,7 +433,7 @@ const DeckA = ({
               onClick={handleSkipBackward}
               title="Skip backward 30s"
             >
-              ⏮️
+              â®ï¸
             </button>
             
             <button 
@@ -428,7 +441,7 @@ const DeckA = ({
               onClick={handlePlayPause}
               title={isPlaying ? 'Pause' : 'Play'}
             >
-              {isPlaying ? '⏸️' : '▶️'}
+              {isPlaying ? 'â¸ï¸' : 'â–¶ï¸'}
             </button>
             
             <button 
@@ -436,7 +449,7 @@ const DeckA = ({
               onClick={handleSkipForward}
               title="Skip forward 30s"
             >
-              ⏭️
+              â­ï¸
             </button>
 
             <button 
@@ -545,10 +558,11 @@ const DeckA = ({
         onMouseDown={handleResizeMouseDown}
         title="Drag to resize"
       >
-        ⟲
+        âŸ²
       </div>
     </div>
   );
 };
 
 export default DeckA;
+

@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: nowPlayingHelpers.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * Utility functions for NowPlaying component
  */
@@ -43,3 +56,4 @@ export const ss = {
   get: (k, def) => { try { return JSON.parse(sessionStorage.getItem(k)) ?? def } catch { return def } },
   set: (k, v) => sessionStorage.setItem(k, JSON.stringify(v))
 }
+

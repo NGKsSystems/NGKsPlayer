@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: index.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useCallback, useContext, createContext, useEffect, useMemo, useRef } from 'react';
 import DraggableWidget from '../DraggableWidget';
 import { useMixerLayout } from '../../hooks/useMixerLayout.js';
@@ -158,31 +171,31 @@ export const LibraryWidget = LibraryAWidget; // Default to LibraryA for compatib
 
 // Global debug functions for new mixer layout system
 window.debugMixerLayout = () => {
-  console.log('🔍 Mixer Layout Debug Info');
+  console.log('ðŸ” Mixer Layout Debug Info');
   const saved = localStorage.getItem('mixer-layout-v1');
   if (saved) {
-    console.log('📋 Saved Layout:', JSON.parse(saved));
+    console.log('ðŸ“‹ Saved Layout:', JSON.parse(saved));
   } else {
-    console.log('❌ No saved layout found');
+    console.log('âŒ No saved layout found');
   }
 };
 
 window.resetMixerLayout = () => {
   localStorage.removeItem('mixer-layout-v1');
-  console.log('🔄 Mixer layout reset - refresh page to see default positions with all new professional components');
+  console.log('ðŸ”„ Mixer layout reset - refresh page to see default positions with all new professional components');
   window.location.reload();
 };
 
 window.showMixerComponents = () => {
-  console.log('🎛️ Professional DJ Mixer Components Available:');
-  console.log('• DeckSettings - ATTACK/QUANT toggles and A-B deck selection');
-  console.log('• SyncTempo - Dual SYNC buttons and BPM displays');
-  console.log('• LoopControls - 1/8 to 16 beat loop controls with AUTO/EXIT');
-  console.log('• CuePoints - 8-point cue grid with deck A/B selection');
-  console.log('• PitchControls - Professional pitch sliders with fine adjustment');
-  console.log('• EnhancedMasterSection - CUE/MASTER/BOOTH/PHONES volume controls');
-  console.log('• EnhancedMicSection - MIC INPUT, GAIN, EQ, Effects controls');
-  console.log('📝 Run resetMixerLayout() to see all components!');
+  console.log('ðŸŽ›ï¸ Professional DJ Mixer Components Available:');
+  console.log('â€¢ DeckSettings - ATTACK/QUANT toggles and A-B deck selection');
+  console.log('â€¢ SyncTempo - Dual SYNC buttons and BPM displays');
+  console.log('â€¢ LoopControls - 1/8 to 16 beat loop controls with AUTO/EXIT');
+  console.log('â€¢ CuePoints - 8-point cue grid with deck A/B selection');
+  console.log('â€¢ PitchControls - Professional pitch sliders with fine adjustment');
+  console.log('â€¢ EnhancedMasterSection - CUE/MASTER/BOOTH/PHONES volume controls');
+  console.log('â€¢ EnhancedMicSection - MIC INPUT, GAIN, EQ, Effects controls');
+  console.log('ðŸ“ Run resetMixerLayout() to see all components!');
 };
 
 // Placeholder components for missing exports

@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: PianoRollMIDIEditor_Original.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * Professional Piano Roll MIDI Editor
  * Complete MIDI note editing interface with grid-based editing, velocity control, and timing quantization
@@ -661,21 +674,21 @@ const PianoRollMIDIEditor = ({
             onClick={() => setTool('pencil')}
             title="Pencil Tool (Create Notes)"
           >
-            ✏️
+            âœï¸
           </button>
           <button
             className={`tool-btn ${tool === 'select' ? 'active' : ''}`}
             onClick={() => setTool('select')}
             title="Select Tool"
           >
-            🔲
+            ðŸ”²
           </button>
           <button
             className={`tool-btn ${tool === 'erase' ? 'active' : ''}`}
             onClick={() => setTool('erase')}
             title="Erase Tool"
           >
-            🗑️
+            ðŸ—‘ï¸
           </button>
         </div>
         
@@ -702,7 +715,7 @@ const PianoRollMIDIEditor = ({
             onClick={() => setIsLooping(!isLooping)}
             title="Loop"
           >
-            🔄
+            ðŸ”„
           </button>
         </div>
         
@@ -736,13 +749,13 @@ const PianoRollMIDIEditor = ({
         
         <div className="edit-group">
           <button onClick={quantizeNotes} title="Quantize (Ctrl+Q)">
-            📐 Quantize
+            ðŸ“ Quantize
           </button>
           <button onClick={copyNotes} title="Copy (Ctrl+C)">
-            📋 Copy
+            ðŸ“‹ Copy
           </button>
           <button onClick={pasteNotes} title="Paste (Ctrl+V)">
-            📝 Paste
+            ðŸ“ Paste
           </button>
         </div>
         
@@ -763,7 +776,7 @@ const PianoRollMIDIEditor = ({
         </div>
         
         <div className="close-group">
-          <button onClick={onClose} className="close-btn">❌</button>
+          <button onClick={onClose} className="close-btn">âŒ</button>
         </div>
       </div>
       

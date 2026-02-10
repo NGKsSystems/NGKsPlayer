@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: FXSettings.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useEffect } from 'react';
 import { Settings, X } from 'lucide-react';
 import './FXSettings.css';
@@ -239,3 +252,4 @@ const FXSettings = ({ onSettingsChange, currentSettings = {} }) => {
 };
 
 export default FXSettings;
+

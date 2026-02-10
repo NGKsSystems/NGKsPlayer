@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: useLayoutManager.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import { useReducer, useCallback, useEffect, useRef, useState } from 'react';
 
 const initialState = {
@@ -117,7 +130,7 @@ export const useLayoutManager = () => {
   const saveLayout = useCallback((layoutName = null, widgetPositions = {}) => {
     const name = layoutName || state.currentLayout;
     
-    console.log(`💾 Saving layout "${name}" with widgets:`, Object.keys(widgetPositions));
+    console.log(`ðŸ’¾ Saving layout "${name}" with widgets:`, Object.keys(widgetPositions));
     
     const newLayouts = {
       ...state.layouts,
@@ -130,7 +143,7 @@ export const useLayoutManager = () => {
     dispatch({ type: 'UPDATE_LAYOUTS', layouts: newLayouts });
     
     // Reduced console logging for performance
-    // console.log(`✅ Layout "${name}" saved successfully!`);
+    // console.log(`âœ… Layout "${name}" saved successfully!`);
     return name;
   }, [state.layouts, state.currentLayout]);
 
@@ -156,15 +169,15 @@ export const useLayoutManager = () => {
 
   // Load a specific layout
   const loadLayout = useCallback((layoutName) => {
-    console.log(`📍 Loading layout "${layoutName}"...`);
+    console.log(`ðŸ“ Loading layout "${layoutName}"...`);
     
     if (state.layouts[layoutName]) {
       dispatch({ type: 'SET_CURRENT_LAYOUT', layout: layoutName });
-      console.log(`✅ Layout "${layoutName}" loaded with widgets:`, Object.keys(state.layouts[layoutName].widgets || {}));
+      console.log(`âœ… Layout "${layoutName}" loaded with widgets:`, Object.keys(state.layouts[layoutName].widgets || {}));
       return state.layouts[layoutName].widgets;
     }
     
-    console.warn(`❌ Layout "${layoutName}" not found!`);
+    console.warn(`âŒ Layout "${layoutName}" not found!`);
     return null;
   }, [state.layouts]);
 

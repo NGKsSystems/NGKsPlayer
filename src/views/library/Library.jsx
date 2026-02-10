@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: Library.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useEffect, useState, useCallback, useMemo } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { Toast } from '../../DJ/Mixer/Common/Toast'
@@ -169,7 +182,7 @@ export default function Library() {
 
   // ------------ play helper (use whatever bridge exists) ------------
   const doPlay = useCallback((absPath) => {
-    console.log('🎵 Play button clicked for:', absPath, 'DJ Mode:', djMode, 'Playlist filter:', filter.playlist);
+    console.log('ðŸŽµ Play button clicked for:', absPath, 'DJ Mode:', djMode, 'Playlist filter:', filter.playlist);
 
     // If we're currently viewing a playlist, load the whole playlist as the autoplay queue
     if (filter.playlist) {
@@ -180,7 +193,7 @@ export default function Library() {
         sessionStorage.setItem('ngks_autoplay_index', String(Math.max(0, idx)));
         sessionStorage.setItem('ngks_autoplay_route', djMode ? '/now' : '/player');
         if (djMode) sessionStorage.setItem('ngks_no_autoplay', 'true');
-        console.log(`🎵 Loaded playlist autoplay queue (${allPaths.length} tracks), start index: ${idx}`);
+        console.log(`ðŸŽµ Loaded playlist autoplay queue (${allPaths.length} tracks), start index: ${idx}`);
       } catch (e) {
         console.warn('Failed to create autoplay queue from playlist:', e);
         // Fallback to single-track behavior below
@@ -189,14 +202,14 @@ export default function Library() {
         if (djMode) sessionStorage.setItem('ngks_no_autoplay', 'true');
       }
     } else {
-      console.log('🎵 Play button clicked for single track (not playlist context)');
+      console.log('ðŸŽµ Play button clicked for single track (not playlist context)');
       if (djMode) {
-        console.log('🎧 DJ Mode: Loading single track without auto-play');
+        console.log('ðŸŽ§ DJ Mode: Loading single track without auto-play');
         sessionStorage.setItem('ngks_dj_single_load', absPath);
         sessionStorage.setItem('ngks_no_autoplay', 'true');
         sessionStorage.setItem('ngks_autoplay_route', '/now');
       } else {
-        console.log('🎵 Normal Mode: Loading single track with auto-play');
+        console.log('ðŸŽµ Normal Mode: Loading single track with auto-play');
         sessionStorage.setItem('ngks_autoplay', absPath);
         sessionStorage.setItem('ngks_autoplay_route', '/player');
       }
@@ -208,7 +221,7 @@ export default function Library() {
 
   // ------------ Play Playlist helper ------------
   const playPlaylist = useCallback(async (playlistId) => {
-    console.log('🎵 Play Playlist button clicked for playlist:', playlistId, 'DJ Mode:', djMode);
+    console.log('ðŸŽµ Play Playlist button clicked for playlist:', playlistId, 'DJ Mode:', djMode);
     
     try {
       // Get all tracks from this playlist
@@ -218,7 +231,7 @@ export default function Library() {
         return;
       }
       
-      console.log(`🎵 Playing playlist with ${playlistTracks.length} tracks`);
+      console.log(`ðŸŽµ Playing playlist with ${playlistTracks.length} tracks`);
       
       // Send playlist context to Now Playing player via sessionStorage
       sessionStorage.setItem('ngks_library_context', JSON.stringify({ type: 'playlist', playlistId }));
@@ -233,13 +246,13 @@ export default function Library() {
       
       if (djMode) {
         // In DJ mode: Just load the queue, don't auto-play
-        console.log('🎧 DJ Mode: Loading playlist queue without auto-play');
+        console.log('ðŸŽ§ DJ Mode: Loading playlist queue without auto-play');
         sessionStorage.setItem('ngks_autoplay_queue', JSON.stringify(allPaths));
         sessionStorage.setItem('ngks_no_autoplay', 'true');
         sessionStorage.setItem('ngks_autoplay_route', '/now');
       } else {
         // Normal mode: Load queue and auto-play in single deck player
-        console.log('🎵 Normal Mode: Loading playlist queue with auto-play');
+        console.log('ðŸŽµ Normal Mode: Loading playlist queue with auto-play');
         sessionStorage.setItem('ngks_autoplay_queue', JSON.stringify(allPaths));
         sessionStorage.setItem('ngks_autoplay_route', '/player');
       }
@@ -254,14 +267,14 @@ export default function Library() {
 
   // ------------ Play All helper ------------
   const doPlayAll = useCallback(() => {
-    console.log('🎵 Play All button clicked, DJ Mode:', djMode);
+    console.log('ðŸŽµ Play All button clicked, DJ Mode:', djMode);
     
     if (!songs.length) {
       setToast({ type: 'error', message: 'No songs to play' });
       return;
     }
     
-    console.log(`🎵 Playing all ${songs.length} songs`);
+    console.log(`ðŸŽµ Playing all ${songs.length} songs`);
     
     // Get all song file paths
     const allPaths = songs.map(song => song.filePath).filter(path => path);
@@ -281,13 +294,13 @@ export default function Library() {
     
     if (djMode) {
   // In DJ mode: Just load the queue, don't auto-play
-  console.log('🎧 DJ Mode: Loading queue without auto-play');
+  console.log('ðŸŽ§ DJ Mode: Loading queue without auto-play');
   sessionStorage.setItem('ngks_autoplay_queue', JSON.stringify(allPaths));
   sessionStorage.setItem('ngks_no_autoplay', 'true'); // Set no-autoplay flag
   sessionStorage.setItem('ngks_autoplay_route', '/now');
     } else {
       // Normal mode: Load queue and auto-play in single deck player
-      console.log('🎵 Normal Mode: Loading queue with auto-play');
+      console.log('ðŸŽµ Normal Mode: Loading queue with auto-play');
       sessionStorage.setItem('ngks_autoplay_queue', JSON.stringify(allPaths));
       sessionStorage.setItem('ngks_autoplay_route', '/player');
     }
@@ -298,7 +311,7 @@ export default function Library() {
 
   // ------------ Voice Command Handler ------------
   const handleVoiceCommand = useCallback((command) => {
-    console.log('🎤 Voice command:', command);
+    console.log('ðŸŽ¤ Voice command:', command);
 
     switch (command.type) {
       case 'play':
@@ -736,7 +749,7 @@ export default function Library() {
 
       setToast({ 
         type: 'success', 
-        message: `Updated: "${track.artist} - ${track.title}" → "${correctedArtist} - ${correctedTitle}"` 
+        message: `Updated: "${track.artist} - ${track.title}" â†’ "${correctedArtist} - ${correctedTitle}"` 
       });
 
       // Refresh the current view
@@ -829,7 +842,7 @@ export default function Library() {
   //               title: newTitle
   //             });
               
-  //             console.log(`[MetadataFix] Updated: "${track.title}" → "${newTitle}" by "${newArtist}"`);
+  //             console.log(`[MetadataFix] Updated: "${track.title}" â†’ "${newTitle}" by "${newArtist}"`);
   //             fixed++;
   //           }
   //         } else {
@@ -1095,7 +1108,7 @@ export default function Library() {
     }
     
     setContextMenu(null);
-    setToast({ type: 'info', message: '🔄 Renaming file...' });
+    setToast({ type: 'info', message: 'ðŸ”„ Renaming file...' });
     
     try {
       // Extract extension safely from the file path
@@ -1115,23 +1128,23 @@ export default function Library() {
       const result = await window.api.renameTrack(track.filePath, finalNewName);
       
       if (result && result.success) {
-        setToast({ type: 'success', message: '✅ File renamed successfully! Updating library...' });
+        setToast({ type: 'success', message: 'âœ… File renamed successfully! Updating library...' });
         
         // Auto-rescan library after successful rename
         try {
           await window.api.invoke('library:autoScan', {});
           loadSongs(); // Refresh the library
-          setToast({ type: 'success', message: '🎵 Library updated! File renamed and rescanned.' });
+          setToast({ type: 'success', message: 'ðŸŽµ Library updated! File renamed and rescanned.' });
         } catch (scanErr) {
-          setToast({ type: 'warning', message: '✅ File renamed, but library rescan failed. Refresh manually.' });
+          setToast({ type: 'warning', message: 'âœ… File renamed, but library rescan failed. Refresh manually.' });
         }
       } else {
         const errorMsg = result?.error || 'Unknown error occurred';
-        setToast({ type: 'error', message: `❌ Rename failed: ${errorMsg}` });
+        setToast({ type: 'error', message: `âŒ Rename failed: ${errorMsg}` });
       }
     } catch (err) {
       console.error('Rename error:', err);
-      setToast({ type: 'error', message: '❌ Critical rename error' });
+      setToast({ type: 'error', message: 'âŒ Critical rename error' });
     }
     
     setShowRenameInput(false);
@@ -1270,7 +1283,7 @@ export default function Library() {
                   : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'
               }`}
             >
-              {label} {sortBy === key && (sortOrder === 'asc' ? '↑' : '↓')}
+              {label} {sortBy === key && (sortOrder === 'asc' ? 'â†‘' : 'â†“')}
             </button>
           ))}
         </div>
@@ -1288,15 +1301,15 @@ export default function Library() {
                     <div className="flex items-center gap-3">
                       <div className="px-2 py-1 rounded bg-zinc-800/60 border border-zinc-700">
                         <span className="font-semibold">Fast:</span>{' '}
-                        <span className="ml-1">{batchFastElapsed != null ? fmt(batchFastElapsed) : '—'}</span>
+                        <span className="ml-1">{batchFastElapsed != null ? fmt(batchFastElapsed) : 'â€”'}</span>
                       </div>
                       <div className="px-2 py-1 rounded bg-zinc-800/60 border border-zinc-700">
                         <span className="font-semibold">Deep:</span>{' '}
-                        <span className="ml-1">{batchDeepElapsed != null ? fmt(batchDeepElapsed) : '—'}</span>
+                        <span className="ml-1">{batchDeepElapsed != null ? fmt(batchDeepElapsed) : 'â€”'}</span>
                       </div>
                       <div className="px-2 py-1 rounded bg-zinc-800/60 border border-zinc-700">
                         <span className="font-semibold">Total:</span>{' '}
-                        <span className="ml-1">{batchOverallElapsed != null ? fmt(batchOverallElapsed) : '—'}</span>
+                        <span className="ml-1">{batchOverallElapsed != null ? fmt(batchOverallElapsed) : 'â€”'}</span>
                       </div>
                     </div>
                   </div>
@@ -1307,13 +1320,13 @@ export default function Library() {
                   onClick={handleBulkAnalyze}
                   className="text-xs bg-purple-600 hover:bg-purple-500 border-purple-500"
                 >
-                  🔍 Analyze
+                  ðŸ” Analyze
                 </BarButton>
                 {/* <BarButton
                   onClick={handleBulkMetadataFix}
                   className="text-xs bg-blue-600 hover:bg-blue-500 border-blue-500"
                 >
-                  🛠️ Fix Metadata
+                  ðŸ› ï¸ Fix Metadata
                 </BarButton> */}
                 <BarButton
                   onClick={() => selectAllSongs(sortedList)}
@@ -1397,7 +1410,7 @@ export default function Library() {
                                   : 'text-gray-600 hover:text-yellow-400'
                               }`}
                             >
-                              ★
+                              â˜…
                             </button>
                           ))}
                         </div>
@@ -1472,7 +1485,7 @@ export default function Library() {
                             }
                           }}
                         >
-                          ⚠️ Corrupted
+                          âš ï¸ Corrupted
                         </div>
                       )}
                       {t.duration && (
@@ -1482,7 +1495,7 @@ export default function Library() {
                       )}
                       {t.bpm && (
                         <div className="text-xs text-blue-200 bg-blue-900/70 px-2.5 py-1 rounded-full font-medium border border-blue-600/70">
-                          ♩ {t.bpm}
+                          â™© {t.bpm}
                         </div>
                       )}
                       {t.key && (
@@ -1503,7 +1516,7 @@ export default function Library() {
                         }}
                         className="text-xs px-2.5 py-1 bg-purple-700/80 hover:bg-purple-600 border border-purple-600/70 hover:border-purple-500 text-purple-100"
                       >
-                        ℹ️ Info
+                        â„¹ï¸ Info
                       </BarButton>
                     </div>
                   </div>
@@ -1519,7 +1532,7 @@ export default function Library() {
                       }}
                       className="text-xs px-2 py-1 bg-red-600 hover:bg-red-500 border-red-500"
                     >
-                      ✕
+                      âœ•
                     </BarButton>
                   )}
                   
@@ -1558,7 +1571,7 @@ export default function Library() {
                                 }}
                                 className="block w-full text-left px-3 py-2 text-zinc-100 hover:bg-zinc-700 first:rounded-t-lg last:rounded-b-lg transition-colors text-sm"
                               >
-                                📋 {playlist.name}
+                                ðŸ“‹ {playlist.name}
                               </button>
                             ))}
                           </div>
@@ -1589,7 +1602,7 @@ export default function Library() {
           {loading ? 'Scanning...' : 'Add Music Folder'}
         </BarButton>
         <BarButton onClick={handleNormalize} disabled={loading}>
-          🏷️ Normalize Filenames
+          ðŸ·ï¸ Normalize Filenames
         </BarButton>
       </div>
     </div>
@@ -1636,7 +1649,7 @@ export default function Library() {
             className="ml-3 p-2 rounded-lg text-red-400 hover:text-red-300 hover:bg-red-900/30 transition-colors"
             title="Remove folder from library"
           >
-            ✕
+            âœ•
           </button>
         </div>
       ))}
@@ -1728,13 +1741,13 @@ export default function Library() {
                     onClick={() => onClickPlaylist(playlist.id)}
                     className="px-2 py-1 text-xs rounded bg-blue-700 text-blue-100 hover:bg-blue-600"
                   >
-                    👁 View
+                    ðŸ‘ View
                   </button>
                   <button
                     onClick={() => playPlaylist(playlist.id)}
                     className="px-2 py-1 text-xs rounded bg-green-700 text-green-100 hover:bg-green-600"
                   >
-                    ▶ Play
+                    â–¶ Play
                   </button>
                   <button
                     onClick={() => setEditingPlaylist(playlist.id)}
@@ -1767,7 +1780,7 @@ export default function Library() {
       const playlist = playlists.find(p => p.id == filter.playlist);
       if (playlist) parts.push(`Playlist: ${playlist.name}`);
     }
-    return parts.join("  •  ");
+    return parts.join("  â€¢  ");
   }, [filter, playlists]);
 
   return (
@@ -1777,35 +1790,35 @@ export default function Library() {
           <div className="flex space-x-2">
           <button
             onClick={() => {
-              console.error('🎵 PLAYER BUTTON CLICKED');
-              console.error('🎵 Setting hash to #/player');
+              console.error('ðŸŽµ PLAYER BUTTON CLICKED');
+              console.error('ðŸŽµ Setting hash to #/player');
               window.location.hash = '#/player';
-              console.error('🎵 Hash set, should navigate now');
+              console.error('ðŸŽµ Hash set, should navigate now');
             }}
             className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-xl text-white flex items-center space-x-2"
           >
-            <span>🎵</span>
+            <span>ðŸŽµ</span>
             <span>Player</span>
           </button>
           <button
             onClick={() => navigate('/now')}
             className="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-xl text-white flex items-center space-x-2"
           >
-            <span>🎧</span>
+            <span>ðŸŽ§</span>
             <span>DJ Mode</span>
           </button>
           <button
             onClick={() => navigate('/4deck')}
             className="px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 rounded-xl text-white flex items-center space-x-2 border border-cyan-400"
           >
-            <span>🎛️</span>
+            <span>ðŸŽ›ï¸</span>
             <span>4-Deck Pro</span>
           </button>
           <button
             onClick={() => navigate('/clipper')}
             className="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 rounded-xl text-white flex items-center space-x-2"
           >
-            <span>🎬</span>
+            <span>ðŸŽ¬</span>
             <span>Clipper</span>
           </button>
         </div>
@@ -1824,7 +1837,7 @@ export default function Library() {
         {/* Full-width Search Bar */}
         <input
           className="w-full px-4 py-3 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-100 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all"
-          placeholder="🔍 Search title • artist • album • genre (Ctrl+A to select all)"
+          placeholder="ðŸ” Search title â€¢ artist â€¢ album â€¢ genre (Ctrl+A to select all)"
           value={search}
           onChange={(e) => {
             setSearch(e.target.value);
@@ -1856,23 +1869,23 @@ export default function Library() {
               onClick={doPlayAll} 
               className="px-3 py-2 rounded-xl border border-blue-600 bg-blue-600 text-white hover:bg-blue-500"
             >
-              ▶ Play All ({songs.length})
+              â–¶ Play All ({songs.length})
             </BarButton>
           )}
 
           <BarButton onClick={handleAddFolder}>Add Folder</BarButton>
-          <BarButton onClick={handleNormalize}>🏷️ Normalize</BarButton>
+          <BarButton onClick={handleNormalize}>ðŸ·ï¸ Normalize</BarButton>
           <BarButton onClick={goNowPlaying}>Now Playing</BarButton>
           <BarButton onClick={goTagEditor}>Tag Editor</BarButton>
-          <BarButton onClick={goLayerRemover}>🎵 Layer Remover</BarButton>
-          <BarButton onClick={goSettings}>⚙️ Settings</BarButton>
+          <BarButton onClick={goLayerRemover}>ðŸŽµ Layer Remover</BarButton>
+          <BarButton onClick={goSettings}>âš™ï¸ Settings</BarButton>
         </div>
 
       {/* Active filter pill */}
       {(filter.artist || filter.album || filter.genre || filter.playlist) && (
         <div className="mb-2">
           <Pill active onClick={clearFilters}>
-            {activeFilterLabel} — Clear
+            {activeFilterLabel} â€” Clear
           </Pill>
         </div>
       )}
@@ -1881,10 +1894,10 @@ export default function Library() {
       <Section
         title={
           tab === "Songs"
-            ? (filter.artist || filter.album || filter.genre || filter.playlist ? `Songs • ${activeFilterLabel}` : "Songs")
-            : filter.artist || filter.album || filter.genre || filter.playlist ? `${tab} • ${activeFilterLabel}` : tab
+            ? (filter.artist || filter.album || filter.genre || filter.playlist ? `Songs â€¢ ${activeFilterLabel}` : "Songs")
+            : filter.artist || filter.album || filter.genre || filter.playlist ? `${tab} â€¢ ${activeFilterLabel}` : tab
         }
-        right={loading ? <span className="text-zinc-500 text-sm">Loading…</span> : null}
+        right={loading ? <span className="text-zinc-500 text-sm">Loadingâ€¦</span> : null}
       >
         {loading ? null : (
           <>
@@ -1939,7 +1952,7 @@ export default function Library() {
                     className="ml-2 p-2 rounded text-red-400 hover:text-red-300 hover:bg-red-900/20 transition-colors"
                     title="Remove folder from library"
                   >
-                    ✕
+                    âœ•
                   </button>
                 </div>
               ))}
@@ -1950,7 +1963,7 @@ export default function Library() {
                 onClick={handleBrowseForFolder}
                 className="w-full p-3 rounded bg-blue-600 hover:bg-blue-700 transition-colors text-center"
               >
-                📁 Browse for Other Folder...
+                ðŸ“ Browse for Other Folder...
               </button>
               
               <button
@@ -1987,7 +2000,7 @@ export default function Library() {
         <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-3">
           <div className="bg-gray-900/95 backdrop-blur-lg border border-gray-700 rounded-2xl shadow-2xl px-8 py-5 text-white">
             <div className="text-lg font-medium mb-2">
-              Analyzing {analyzing.total} tracks…
+              Analyzing {analyzing.total} tracksâ€¦
             </div>
 
             <div className="text-sm text-gray-400 mb-3">
@@ -2056,3 +2069,4 @@ export default function Library() {
     </div>
   );
 }
+

@@ -1,7 +1,20 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: loudness.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 // src/analysis/loudness.js (moved copy)
 import { LoudnessMeter } from "@domchristie/needles";
 
-console.log('[Loudness] Module loaded – using Needles (analysis copy)');
+console.log('[Loudness] Module loaded â€“ using Needles (analysis copy)');
 
 export async function analyzeLoudnessFromArrayBuffer(arrayBuffer, target = -16) {
   const OfflineAudioContext = window.OfflineAudioContext || window.webkitOfflineAudioContext;
@@ -56,3 +69,4 @@ export async function analyzeLoudnessFromArrayBuffer(arrayBuffer, target = -16) 
     offlineContext.startRendering().catch(reject);
   });
 }
+

@@ -1,6 +1,19 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: graph.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 // src/audio/graph.js
 
-// ===== Public helpers to fix “loads but won’t play” =====
+// ===== Public helpers to fix â€œloads but wonâ€™t playâ€ =====
 // Keep a reference to the single AudioContext so the renderer can resume it.
 let ctxRef = null;
 
@@ -314,3 +327,4 @@ export const EQ_PRESETS = {
   Jazz:      [ 0, 0, 1, 1, 2, 2, 1, 0, 0, 1, 2, 2, 1, 1, 0, 0 ],
   Classical: [ -1,-1, 0, 1, 2, 2, 1, 0, 0, 1, 2, 2, 1, 0,-1,-1 ],
 };
+

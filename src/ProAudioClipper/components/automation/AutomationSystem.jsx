@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: AutomationSystem.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * Professional Automation System
  * 
@@ -134,7 +147,7 @@ const AutomationSystem = ({
             marginRight: '15px'
           }}
         >
-          {isRecording ? '● Stop Recording' : '○ Start Recording'}
+          {isRecording ? 'â— Stop Recording' : 'â—‹ Start Recording'}
         </button>
 
         {/* Clear All */}

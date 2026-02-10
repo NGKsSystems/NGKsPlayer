@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: DeepScanAnalyzer.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 // src/audio/DeepScanAnalyzer.js
 import { getMonoData, calculateEnergyEnvelope, formatTime } from "./utils.js";
 import { detectBPMDrift } from "./BpmAnalyzer.js";
@@ -17,7 +30,7 @@ export class DeepScanAnalyzer {
       return fastResult;
     }
 
-    console.log('[DeepScanAnalyzer] Starting deep analyze — duration:', audioBuffer.duration, 'sampleRate:', audioBuffer.sampleRate, 'length:', audioBuffer.length);
+    console.log('[DeepScanAnalyzer] Starting deep analyze â€” duration:', audioBuffer.duration, 'sampleRate:', audioBuffer.sampleRate, 'length:', audioBuffer.length);
     const channelData = getMonoData(audioBuffer);
     const sampleRate = audioBuffer.sampleRate || 22050;
     console.log('[DeepScanAnalyzer] channelData length:', channelData.length, 'sampleRate:', sampleRate);
@@ -127,3 +140,4 @@ export class DeepScanAnalyzer {
     };
   }
 }
+

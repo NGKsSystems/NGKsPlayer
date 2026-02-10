@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: index.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * Reusable MenuItem component for context menus
  */
@@ -13,3 +26,4 @@ export const MenuItem = ({ children, onClick, disabled, danger }) => (
     {children}
   </div>
 )
+

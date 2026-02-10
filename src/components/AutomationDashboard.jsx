@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: AutomationDashboard.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * Professional Automation Dashboard
  * Combines automation timeline, control panel, and parameter monitoring
@@ -186,7 +199,7 @@ const AutomationDashboard = ({
             )}
             
             <div className={`px-2 py-1 rounded ${isPlaying ? 'bg-green-600' : 'bg-gray-600'}`}>
-              {isPlaying ? '▶ Playing' : '⏸ Stopped'}
+              {isPlaying ? 'â–¶ Playing' : 'â¸ Stopped'}
             </div>
 
             <div className="px-2 py-1 bg-gray-600 rounded">
@@ -202,7 +215,7 @@ const AutomationDashboard = ({
             className="px-3 py-1 bg-gray-600 rounded text-sm"
             title="Toggle Compact Mode"
           >
-            {isCompact ? '⛶' : '⚏'}
+            {isCompact ? 'â›¶' : 'âš'}
           </button>
           
           <button
@@ -210,7 +223,7 @@ const AutomationDashboard = ({
             className="px-3 py-1 bg-gray-600 rounded text-sm"
             title="Toggle Panel (Ctrl+H)"
           >
-            {showPanel ? '◧' : '◨'}
+            {showPanel ? 'â—§' : 'â—¨'}
           </button>
         </div>
       </div>
@@ -328,7 +341,7 @@ const AutomationMonitor = ({ automationValues, lanes, isPlaying, currentTime }) 
               
               <div className="flex items-center justify-between mt-1 text-xs text-gray-400">
                 <span>{lane.points.length} points</span>
-                <span>{lane.recording ? '🔴 Recording' : ''}</span>
+                <span>{lane.recording ? 'ðŸ”´ Recording' : ''}</span>
               </div>
             </div>
           );

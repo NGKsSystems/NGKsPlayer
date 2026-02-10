@@ -23,14 +23,14 @@
     "test:integration": "pnpm exec jest --testPathPattern=integration",
     "test-autotagger": "node src/analysis/quickTest.js",
     "test-autotagger-full": "node src/analysis/AutoTaggerTester.js",
-    "test:robot": "node run-testing-robot.js",
-    "test:robot:audio": "node run-testing-robot.js -- --audio",
-    "test:robot:ui": "node run-testing-robot.js -- --ui",
-    "test:robot:quick": "node run-testing-robot.js -- --quick",
-    "test:robot:verbose": "node run-testing-robot.js -- --verbose",
-    "verify": "node verify.js",
-    "calibrate": "node calibrate-analyzer.js",
-    "calibrate:verbose": "node calibrate-analyzer.js --verbose"
+    "test:robot": "node scripts/run-testing-robot.js",
+    "test:robot:audio": "node scripts/run-testing-robot.js -- --audio",
+    "test:robot:ui": "node scripts/run-testing-robot.js -- --ui",
+    "test:robot:quick": "node scripts/run-testing-robot.js -- --quick",
+    "test:robot:verbose": "node scripts/run-testing-robot.js -- --verbose",
+    "verify": "node scripts/verify.js",
+    "calibrate": "node scripts/calibrate-analyzer.js",
+    "calibrate:verbose": "node scripts/calibrate-analyzer.js --verbose"
   },
   "dependencies": {
     "@domchristie/needles": "^0.0.2-1",

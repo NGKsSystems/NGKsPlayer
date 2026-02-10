@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: KaraokeDisplay.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import './KaraokeDisplay.css';
 
@@ -129,7 +142,7 @@ const KaraokeDisplay = ({
     return (
       <div className={`karaoke-display karaoke-${displayMode} karaoke-empty`}>
         <div className="karaoke-placeholder">
-          <div className="karaoke-icon">🎤</div>
+          <div className="karaoke-icon">ðŸŽ¤</div>
           <h2>No Lyrics Available</h2>
           <p>Transcribe audio to display synchronized lyrics</p>
         </div>
@@ -149,7 +162,7 @@ const KaraokeDisplay = ({
       {/* Close button (not for OBS mode) */}
       {displayMode !== 'obs' && onClose && (
         <button className="karaoke-close" onClick={onClose} title="Close Karaoke Display">
-          ✕
+          âœ•
         </button>
       )}
 
@@ -231,3 +244,4 @@ const KaraokeDisplay = ({
 };
 
 export default KaraokeDisplay;
+

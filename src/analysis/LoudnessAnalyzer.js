@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: LoudnessAnalyzer.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 // LoudnessAnalyzer.js
 // Lightweight loudness & LUFS calculations (moved copy)
 
@@ -18,3 +31,4 @@ export function calculateLoudnessRange(energyEnvelope) {
   const min = Math.min(...energyEnvelope);
   return Math.round((max - min) * 10) / 10;
 }
+

@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: index.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useCallback, useEffect, useMemo, useRef } from "react";
 import './styles.css';
 
@@ -267,25 +280,25 @@ const LibraryA = ({ id, deck = 'A', onTrackLoad = () => {}, onTrackPreview = () 
             className={`sort-btn ${libraryState.sortBy === 'title' ? 'active' : ''}`}
             onClick={() => handleSortChange('title')}
           >
-            TRACK {libraryState.sortBy === 'title' && (libraryState.sortOrder === 'asc' ? '↑' : '↓')}
+            TRACK {libraryState.sortBy === 'title' && (libraryState.sortOrder === 'asc' ? 'â†‘' : 'â†“')}
           </button>
           <button 
             className={`sort-btn ${libraryState.sortBy === 'bpm' ? 'active' : ''}`}
             onClick={() => handleSortChange('bpm')}
           >
-            BPM {libraryState.sortBy === 'bpm' && (libraryState.sortOrder === 'asc' ? '↑' : '↓')}
+            BPM {libraryState.sortBy === 'bpm' && (libraryState.sortOrder === 'asc' ? 'â†‘' : 'â†“')}
           </button>
           <button 
             className={`sort-btn ${libraryState.sortBy === 'key' ? 'active' : ''}`}
             onClick={() => handleSortChange('key')}
           >
-            KEY {libraryState.sortBy === 'key' && (libraryState.sortOrder === 'asc' ? '↑' : '↓')}
+            KEY {libraryState.sortBy === 'key' && (libraryState.sortOrder === 'asc' ? 'â†‘' : 'â†“')}
           </button>
           <button 
             className={`sort-btn ${libraryState.sortBy === 'duration' ? 'active' : ''}`}
             onClick={() => handleSortChange('duration')}
           >
-            TIME {libraryState.sortBy === 'duration' && (libraryState.sortOrder === 'asc' ? '↑' : '↓')}
+            TIME {libraryState.sortBy === 'duration' && (libraryState.sortOrder === 'asc' ? 'â†‘' : 'â†“')}
           </button>
         </div>
 
@@ -332,7 +345,7 @@ const LibraryA = ({ id, deck = 'A', onTrackLoad = () => {}, onTrackPreview = () 
         onMouseDown={handleResizeMouseDown}
         title="Drag to resize"
       >
-        ⟲
+        âŸ²
       </div>
     </div>
   );

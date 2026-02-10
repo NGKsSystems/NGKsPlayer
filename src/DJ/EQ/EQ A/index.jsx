@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: index.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import './styles.css';
 
@@ -274,9 +287,9 @@ const EQA = ({ id, deck = 'A', audioContext, gainNode, pannerNode, onStyleChange
             title={minimized ? 'Expand EQ' : 'Collapse EQ'}
             onMouseDown={(e) => e.stopPropagation()}
           >
-            {minimized ? '▼' : '▲'}
+            {minimized ? 'â–¼' : 'â–²'}
           </button>
-          <span className="drag-handle">⋮⋮</span>
+          <span className="drag-handle">â‹®â‹®</span>
         </div>
       </div>
       {!minimized && (
@@ -300,7 +313,7 @@ const EQA = ({ id, deck = 'A', audioContext, gainNode, pannerNode, onStyleChange
             onMouseDown={handleControlMouseDown}
             title={bypassEQ ? 'EQ Bypassed - Click to activate' : 'EQ Active - Click to bypass'}
           >
-            {bypassEQ ? '⊘' : '●'}
+            {bypassEQ ? 'âŠ˜' : 'â—'}
           </button>
           <button 
             className="eq-reset-btn-compact" 
@@ -308,7 +321,7 @@ const EQA = ({ id, deck = 'A', audioContext, gainNode, pannerNode, onStyleChange
             onMouseDown={handleControlMouseDown}
             title="Reset to Flat"
           >
-            ⟲
+            âŸ²
           </button>
         </div>
         
@@ -347,7 +360,7 @@ const EQA = ({ id, deck = 'A', audioContext, gainNode, pannerNode, onStyleChange
           onMouseDown={handleResizeMouseDown}
           title="Drag to resize"
         >
-          ⟲
+          âŸ²
         </div>
       )}
     </div>

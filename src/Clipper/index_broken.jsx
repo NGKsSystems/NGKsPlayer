@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: index_broken.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useRef, useEffect } from 'react';
 
 // BRAND NEW PRO CLIPPER - STARTING FROM ABSOLUTE ZERO
@@ -138,7 +151,7 @@ const ProClipperBrandNew = ({ onNavigate }) => {
   return (
     <div style={{ padding: '20px', background: '#000', color: '#fff', minHeight: '100vh' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '30px' }}>
-        <h1 style={{ color: '#ff0000', fontSize: '32px' }}>🔥 BRAND NEW CLIPPER - REBUILT FROM ZERO</h1>
+        <h1 style={{ color: '#ff0000', fontSize: '32px' }}>ðŸ”¥ BRAND NEW CLIPPER - REBUILT FROM ZERO</h1>
         <button onClick={() => onNavigate?.('library')} style={{ padding: '15px 30px', background: '#ff4444' }}>
           Back to Library
         </button>
@@ -170,7 +183,7 @@ const ProClipperBrandNew = ({ onNavigate }) => {
                 borderRadius: '10px'
               }}
             >
-              {isPlaying ? '⏸ PAUSE' : '▶ PLAY'}
+              {isPlaying ? 'â¸ PAUSE' : 'â–¶ PLAY'}
             </button>
             <span style={{ marginLeft: '20px', fontSize: '20px', color: '#ffff00' }}>
               Time: {formatTime(currentTime)}

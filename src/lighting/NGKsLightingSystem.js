@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: NGKsLightingSystem.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * NGKs Player Lighting System Main Component
  * Easy integration with existing NGKs Player interface
@@ -12,7 +25,7 @@ export class NGKsLightingSystem {
     this.initialized = false;
     this.panelElement = null;
     
-    console.log('🎭 NGKs Lighting System created');
+    console.log('ðŸŽ­ NGKs Lighting System created');
   }
   
   /**
@@ -20,7 +33,7 @@ export class NGKsLightingSystem {
    */
   async initialize() {
     if (this.initialized) {
-      console.log('⚠️ Lighting system already initialized');
+      console.log('âš ï¸ Lighting system already initialized');
       return true;
     }
     
@@ -44,13 +57,13 @@ export class NGKsLightingSystem {
         // Create and add lighting panel to UI
         this.addLightingPanelToUI();
         
-        console.log('✅ NGKs Lighting System initialized successfully');
+        console.log('âœ… NGKs Lighting System initialized successfully');
         return true;
       } else {
         throw new Error('Failed to initialize lighting integration');
       }
     } catch (error) {
-      console.error('❌ Failed to initialize NGKs Lighting System:', error);
+      console.error('âŒ Failed to initialize NGKs Lighting System:', error);
       return false;
     }
   }
@@ -151,7 +164,7 @@ export class NGKsLightingSystem {
    * Handle track loaded event
    */
   onTrackLoaded(track) {
-    console.log('🎵 Track loaded for lighting:', track.name || 'Unknown');
+    console.log('ðŸŽµ Track loaded for lighting:', track.name || 'Unknown');
     
     // Connect to new audio source if available
     if (track.audioSource) {
@@ -169,7 +182,7 @@ export class NGKsLightingSystem {
    * Handle track analysis results
    */
   onTrackAnalyzed(analysis) {
-    console.log('📊 Track analysis received for lighting:', analysis);
+    console.log('ðŸ“Š Track analysis received for lighting:', analysis);
     
     // Use analysis data for lighting
     if (analysis.bpm) {
@@ -194,17 +207,17 @@ export class NGKsLightingSystem {
     
     switch (state.type) {
       case 'play':
-        console.log('▶️ Playback started - enabling lighting');
+        console.log('â–¶ï¸ Playback started - enabling lighting');
         this.lightingIntegration.enableAutoMode();
         break;
         
       case 'pause':
-        console.log('⏸️ Playback paused - dimming lights');
+        console.log('â¸ï¸ Playback paused - dimming lights');
         lightingController.dimTo(0.3, 1000);
         break;
         
       case 'stop':
-        console.log('⏹️ Playback stopped - blackout');
+        console.log('â¹ï¸ Playback stopped - blackout');
         lightingController.fadeOut(2000);
         break;
     }
@@ -222,11 +235,11 @@ export class NGKsLightingSystem {
     
     if (targetContainer) {
       targetContainer.appendChild(this.panelElement);
-      console.log('🎨 Lighting panel added to UI');
+      console.log('ðŸŽ¨ Lighting panel added to UI');
     } else {
       // Fallback: add to body
       document.body.appendChild(this.panelElement);
-      console.log('🎨 Lighting panel added to body (no container found)');
+      console.log('ðŸŽ¨ Lighting panel added to body (no container found)');
     }
     
     // Start updating display
@@ -327,7 +340,7 @@ export class NGKsLightingSystem {
     this.lightingIntegration.disconnect();
     this.initialized = false;
     
-    console.log('🔌 NGKs Lighting System shutdown');
+    console.log('ðŸ”Œ NGKs Lighting System shutdown');
   }
 }
 
@@ -340,10 +353,10 @@ export async function initializeNGKsLighting(ngksPlayerInstance) {
   const success = await lightingSystem.initialize();
   
   if (success) {
-    console.log('🎉 NGKs Lighting System ready!');
+    console.log('ðŸŽ‰ NGKs Lighting System ready!');
     return lightingSystem;
   } else {
-    console.error('❌ Failed to initialize NGKs Lighting System');
+    console.error('âŒ Failed to initialize NGKs Lighting System');
     return null;
   }
 }
@@ -368,7 +381,7 @@ export async function autoInitializeLighting() {
   if (ngksPlayer) {
     return await initializeNGKsLighting(ngksPlayer);
   } else {
-    console.warn('⚠️ Could not find NGKs Player instance for auto-initialization');
+    console.warn('âš ï¸ Could not find NGKs Player instance for auto-initialization');
     return null;
   }
 }

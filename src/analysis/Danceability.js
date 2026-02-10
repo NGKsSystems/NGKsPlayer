@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: Danceability.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 // src/audio/Danceability.js
 // Genre-aware danceability: base calc + per-genre adjustments from GenreRules
 
@@ -52,3 +65,4 @@ export function computeDanceabilityDeep(
 }
 
 export default { computeDanceabilityFast, computeDanceabilityDeep };
+

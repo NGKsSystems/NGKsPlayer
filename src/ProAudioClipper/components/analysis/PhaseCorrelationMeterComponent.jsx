@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: PhaseCorrelationMeterComponent.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { PhaseCorrelationMeter } from '../../audio/analysis/PhaseCorrelationMeter.js';
 
@@ -369,7 +382,7 @@ export const PhaseCorrelationMeterComponent = ({
           fontSize: '11px',
           color: '#ff9999'
         }}>
-          <strong>⚠ Mono Compatibility Issues:</strong>
+          <strong>âš  Mono Compatibility Issues:</strong>
           <ul style={{ margin: '5px 0 0 15px', padding: 0 }}>
             {monoCompatibility.warnings.map((warning, index) => (
               <li key={index}>{warning}</li>

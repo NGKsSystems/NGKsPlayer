@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: MultiTrackTimeline.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useRef, useEffect, useCallback, useState } from 'react';
 import { formatTime } from '../utils/timeUtils';
 import { snapTime, timeToPixels, calculateTimelineWidth } from '../timeline/timelineMath.js';
@@ -387,7 +400,7 @@ const MultiTrackTimeline = React.forwardRef(({
       ctx.fillStyle = '#e74c3c';
       ctx.font = '12px monospace';
       ctx.textAlign = 'center';
-      ctx.fillText('✂', razorGuideX, RULER_HEIGHT - 5);
+      ctx.fillText('âœ‚', razorGuideX, RULER_HEIGHT - 5);
     }
 
     // Draw drag over track highlight

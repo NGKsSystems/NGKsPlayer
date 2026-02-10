@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: useMixerLayout.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 // Single source of truth for mixer widget layout
 import { useState, useEffect, useCallback, useRef } from 'react';
 
@@ -48,7 +61,7 @@ export const useMixerLayout = () => {
             parsed.widgets.crossfader.hN = 0.15; // Back to normal height
           }
           setLayout(parsed.widgets);
-          console.log('✅ Layout restored from storage with crossfader override');
+          console.log('âœ… Layout restored from storage with crossfader override');
           return;
         }
       }
@@ -58,7 +71,7 @@ export const useMixerLayout = () => {
     
     // Use default layout
     setLayout(DEFAULT_LAYOUT.widgets);
-    console.log('📐 Using default layout');
+    console.log('ðŸ“ Using default layout');
   }, [containerSize]);
 
   // Convert normalized to pixels
@@ -107,7 +120,7 @@ export const useMixerLayout = () => {
   const resetLayout = useCallback(() => {
     setLayout(DEFAULT_LAYOUT.widgets);
     localStorage.removeItem(LAYOUT_KEY);
-    console.log('🔄 Layout reset to default');
+    console.log('ðŸ”„ Layout reset to default');
   }, []);
 
   // Setup ResizeObserver for container
@@ -120,7 +133,7 @@ export const useMixerLayout = () => {
       const { width, height } = entry.contentRect;
       if (width > 0 && height > 0) {
         setContainerSize({ width, height });
-        console.log(`📏 Container size: ${width}x${height}`);
+        console.log(`ðŸ“ Container size: ${width}x${height}`);
       }
     });
     

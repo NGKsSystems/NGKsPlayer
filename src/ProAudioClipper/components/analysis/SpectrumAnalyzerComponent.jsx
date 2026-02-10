@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: SpectrumAnalyzerComponent.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { SpectrumAnalyzer } from '../../audio/analysis/SpectrumAnalyzer.js';
 

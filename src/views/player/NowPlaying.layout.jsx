@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: NowPlaying.layout.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Link } from 'react-router-dom'
@@ -22,7 +35,7 @@ const fmt = (s = 0) => {
 const dbToAmp = (db) => Math.pow(10, db / 20)
 const fileBase = (p = '') => (p.split(/[\\/]/).pop() || '').replace(/\.[^/.]+$/, '')
 const labelFor = (meta, path) => {
-  if (meta?.artist && meta?.title) return `${meta.artist} — ${meta.title}`
+  if (meta?.artist && meta?.title) return `${meta.artist} â€” ${meta.title}`
   if (meta?.title) return meta.title
   return fileBase(path)
 }
@@ -418,7 +431,7 @@ export default function NowPlaying() {
     if (!queue.length) return
     if (idx === currentIndex) {
       // When removing the current track we only want to preview the next
-      // candidate — do a non-destructive peek so we don't mutate any
+      // candidate â€” do a non-destructive peek so we don't mutate any
       // randomNoRepeat bag state used by playback.
       const nextIdx = pickNextIndex(playMode, queue, currentIndex, { mutate: false })
       const nextPath = queue[nextIdx]
@@ -514,7 +527,7 @@ export default function NowPlaying() {
 
         {djMode && (
           <div className="flex items-center gap-3">
-            <label className="text-sm opacity-70">A ↔ B</label>
+            <label className="text-sm opacity-70">A â†” B</label>
             <input type="range" min="0" max="1" step="0.01" value={djXfader}
               onChange={e => { const x = Number(e.target.value); setDjXfader(x); graph.current.setCrossfader(x) }}
               style={{ width: 260 }} />
@@ -570,7 +583,7 @@ export default function NowPlaying() {
                     onClick={(e) => openMenuAt(e, i)}
                     onContextMenu={(e) => openMenuAt(e, i)}
                   >
-                    ⋯
+                    â‹¯
                   </button>
                 </div>
               </div>
@@ -602,13 +615,13 @@ export default function NowPlaying() {
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <MenuItem onClick={() => { closeMenu(); start(menu.idx) }}>▶ Play now</MenuItem>
-            <MenuItem onClick={() => { closeMenu(); playNextAt(menu.idx) }}>⏭ Play next</MenuItem>
+            <MenuItem onClick={() => { closeMenu(); start(menu.idx) }}>â–¶ Play now</MenuItem>
+            <MenuItem onClick={() => { closeMenu(); playNextAt(menu.idx) }}>â­ Play next</MenuItem>
             <hr style={{ border: 'none', borderTop: '1px solid rgba(255,255,255,0.12)', margin: 0 }} />
-            <MenuItem onClick={() => { closeMenu(); moveUpAt(menu.idx) }} disabled={menu.idx <= 0}>↑ Move up</MenuItem>
-            <MenuItem onClick={() => { closeMenu(); moveDownAt(menu.idx) }} disabled={menu.idx >= queue.length - 1}>↓ Move down</MenuItem>
+            <MenuItem onClick={() => { closeMenu(); moveUpAt(menu.idx) }} disabled={menu.idx <= 0}>â†‘ Move up</MenuItem>
+            <MenuItem onClick={() => { closeMenu(); moveDownAt(menu.idx) }} disabled={menu.idx >= queue.length - 1}>â†“ Move down</MenuItem>
             <hr style={{ border: 'none', borderTop: '1px solid rgba(255,255,255,0.12)', margin: 0 }} />
-            <MenuItem onClick={() => { closeMenu(); removeAt(menu.idx) }} danger>✖ Remove</MenuItem>
+            <MenuItem onClick={() => { closeMenu(); removeAt(menu.idx) }} danger>âœ– Remove</MenuItem>
           </div>
         </>,
         document.body
@@ -618,3 +631,4 @@ export default function NowPlaying() {
     </div>
   )
 }
+

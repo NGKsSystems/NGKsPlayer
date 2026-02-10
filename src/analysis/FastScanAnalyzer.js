@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: FastScanAnalyzer.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 // src/audio/FastScanAnalyzer.js
 import { getMonoData, calculateEnergyEnvelope, formatTime, detectCuePoints, formatCueTime, generateCueDescription } from "./utils.js";
 import { detectBPMWithCandidates } from "./BpmAnalyzer.js";
@@ -39,7 +52,7 @@ function calculateGainRecommendation(loudness, targetLoudness = 70) {
 
 export class FastScanAnalyzer {
   static async analyze(audioBuffer, genre = "", cfg = {}) {
-    console.log("[FastScanAnalyzer] START — buffer duration:", audioBuffer?.duration, "sampleRate:", audioBuffer?.sampleRate, "length:", audioBuffer?.length);
+    console.log("[FastScanAnalyzer] START â€” buffer duration:", audioBuffer?.duration, "sampleRate:", audioBuffer?.sampleRate, "length:", audioBuffer?.length);
 
     // Robust duration check: some reconstructed audio-like objects may not have
     // `duration` set; compute from length/sampleRate when missing.
@@ -164,3 +177,4 @@ export class FastScanAnalyzer {
     return result;
   }
 }
+

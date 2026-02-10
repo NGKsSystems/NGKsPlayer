@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: VisualDisplay.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useEffect, useRef } from 'react';
 import './VisualDisplay.css';
 
@@ -178,7 +191,7 @@ const VisualDisplay = ({
       {/* Close Button */}
       {displayMode !== 'obs' && onClose && showControls && (
         <button className="visual-close" onClick={onClose}>
-          ✕
+          âœ•
         </button>
       )}
 
@@ -300,3 +313,4 @@ const VisualDisplay = ({
 };
 
 export default VisualDisplay;
+

@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: BeatDetectionPanel.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import { useState } from 'react';
 
 export default function BeatDetectionPanel({
@@ -99,7 +112,7 @@ export default function BeatDetectionPanel({
           });
         }}
       >
-        <h3 className="text-lg font-bold text-gray-200">⚙️ Beat Detection</h3>
+        <h3 className="text-lg font-bold text-gray-200">âš™ï¸ Beat Detection</h3>
         <div className="flex items-center gap-2">
           <button
             onClick={(e) => {
@@ -108,13 +121,13 @@ export default function BeatDetectionPanel({
             }}
             className="text-gray-400 hover:text-white text-base leading-none"
           >
-            {panelExpanded ? '▼' : '▶'}
+            {panelExpanded ? 'â–¼' : 'â–¶'}
           </button>
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-white text-lg leading-none"
           >
-            ✕
+            âœ•
           </button>
         </div>
       </div>
@@ -135,15 +148,15 @@ export default function BeatDetectionPanel({
             <div className="grid grid-cols-3 gap-2 mt-2 pt-2 border-t border-gray-700">
               <div className={`text-center p-1 rounded ${debugValues.spike ? 'bg-green-600' : 'bg-red-900'}`}>
                 <div className="text-xs">Spike</div>
-                <div className="font-bold">{debugValues.spike ? '✓' : '✗'}</div>
+                <div className="font-bold">{debugValues.spike ? 'âœ“' : 'âœ—'}</div>
               </div>
               <div className={`text-center p-1 rounded ${debugValues.min ? 'bg-green-600' : 'bg-red-900'}`}>
                 <div className="text-xs">Min</div>
-                <div className="font-bold">{debugValues.min ? '✓' : '✗'}</div>
+                <div className="font-bold">{debugValues.min ? 'âœ“' : 'âœ—'}</div>
               </div>
               <div className={`text-center p-1 rounded ${debugValues.gate ? 'bg-green-600' : 'bg-red-900'}`}>
                 <div className="text-xs">Gate</div>
-                <div className="font-bold">{debugValues.gate ? '✓' : '✗'}</div>
+                <div className="font-bold">{debugValues.gate ? 'âœ“' : 'âœ—'}</div>
               </div>
             </div>
           </div>
@@ -155,7 +168,7 @@ export default function BeatDetectionPanel({
             <div>
               <h4 className="text-base font-bold text-blue-400">Essentia.js Beat Detection</h4>
               <p className="text-sm text-gray-400 mt-1">Professional ML-based beat tracking</p>
-              {essentiaReady && <p className="text-sm text-green-400 mt-1">✓ WASM Loaded</p>}
+              {essentiaReady && <p className="text-sm text-green-400 mt-1">âœ“ WASM Loaded</p>}
             </div>
             <button
               onClick={() => setUseEssentiaBeats(!useEssentiaBeats)}
@@ -182,8 +195,8 @@ export default function BeatDetectionPanel({
               onClick={() => setShowAdvanced(!showAdvanced)}
               className="w-full p-2 bg-gray-800 hover:bg-gray-700 rounded border border-gray-600 text-left flex items-center justify-between"
             >
-              <span className="text-base font-bold text-blue-300">⚡ Advanced (Essentia ML)</span>
-              <span className="text-gray-400">{showAdvanced ? '▼' : '▶'}</span>
+              <span className="text-base font-bold text-blue-300">âš¡ Advanced (Essentia ML)</span>
+              <span className="text-gray-400">{showAdvanced ? 'â–¼' : 'â–¶'}</span>
             </button>
             
             {showAdvanced && (
@@ -350,7 +363,7 @@ export default function BeatDetectionPanel({
               <button
                 onClick={() => setBeatSpikeThreshold(Math.max(1.0, beatSpikeThreshold - 0.1))}
                 className="bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded text-sm"
-              >▼</button>
+              >â–¼</button>
               <input
                 type="range"
                 min="1.0"
@@ -363,7 +376,7 @@ export default function BeatDetectionPanel({
               <button
                 onClick={() => setBeatSpikeThreshold(Math.min(3.0, beatSpikeThreshold + 0.1))}
                 className="bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded text-sm"
-              >▲</button>
+              >â–²</button>
             </div>
             <p className="text-gray-500 text-xs mt-1">Higher = only strong drum hits</p>
           </div>
@@ -378,7 +391,7 @@ export default function BeatDetectionPanel({
               <button
                 onClick={() => setBeatMinimum(Math.max(20, beatMinimum - 5))}
                 className="bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded text-sm"
-              >▼</button>
+              >â–¼</button>
               <input
                 type="range"
                 min="20"
@@ -391,7 +404,7 @@ export default function BeatDetectionPanel({
               <button
                 onClick={() => setBeatMinimum(Math.min(200, beatMinimum + 5))}
                 className="bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded text-sm"
-              >▲</button>
+              >â–²</button>
             </div>
             <p className="text-gray-500 text-xs mt-1">Higher = ignores quiet sections</p>
           </div>
@@ -406,7 +419,7 @@ export default function BeatDetectionPanel({
               <button
                 onClick={() => setBeatGate(Math.max(100, beatGate - 10))}
                 className="bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded text-sm"
-              >▼</button>
+              >â–¼</button>
               <input
                 type="range"
                 min="100"
@@ -419,7 +432,7 @@ export default function BeatDetectionPanel({
               <button
                 onClick={() => setBeatGate(Math.min(500, beatGate + 10))}
                 className="bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded text-sm"
-              >▲</button>
+              >â–²</button>
             </div>
             <p className="text-gray-500 text-xs mt-1">Higher = prevents rapid triggers</p>
           </div>
@@ -434,7 +447,7 @@ export default function BeatDetectionPanel({
               <button
                 onClick={() => setBeatHistoryLength(Math.max(10, beatHistoryLength - 1))}
                 className="bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded text-sm"
-              >▼</button>
+              >â–¼</button>
               <input
                 type="range"
                 min="10"
@@ -447,7 +460,7 @@ export default function BeatDetectionPanel({
               <button
                 onClick={() => setBeatHistoryLength(Math.min(100, beatHistoryLength + 1))}
                 className="bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded text-sm"
-              >▲</button>
+              >â–²</button>
             </div>
             <p className="text-gray-500 text-xs mt-1">Lower = faster adaptation</p>
           </div>
@@ -489,3 +502,4 @@ export default function BeatDetectionPanel({
     </div>
   );
 }
+

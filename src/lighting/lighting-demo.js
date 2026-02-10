@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: lighting-demo.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * Lighting Controller Integration Demo
  * 
@@ -47,7 +60,7 @@ class MockAudioAnalyzer {
       });
     }, beatInterval);
 
-    console.log(`🎵 Mock audio started - ${this.bpm} BPM`);
+    console.log(`ðŸŽµ Mock audio started - ${this.bpm} BPM`);
   }
 
   stop() {
@@ -56,7 +69,7 @@ class MockAudioAnalyzer {
       clearInterval(this.beatInterval);
       this.beatInterval = null;
     }
-    console.log('🎵 Mock audio stopped');
+    console.log('ðŸŽµ Mock audio stopped');
   }
 
   setBPM(bpm) {
@@ -72,7 +85,7 @@ class MockAudioAnalyzer {
 
 // Demo function
 export async function demonstrateLightingIntegration() {
-  console.log('🎨 Starting Lighting Controller Integration Demo');
+  console.log('ðŸŽ¨ Starting Lighting Controller Integration Demo');
   console.log('='.repeat(50));
 
   try {
@@ -113,10 +126,10 @@ export async function demonstrateLightingIntegration() {
     const mockAudio = new MockAudioAnalyzer();
     lightingController.connectAudioAnalyzer(mockAudio, mockAudio);
 
-    console.log('\n🎭 Demo Sequence Starting...');
+    console.log('\nðŸŽ­ Demo Sequence Starting...');
     
     // Demo 1: Manual control
-    console.log('\n1️⃣ Manual Color Control Demo');
+    console.log('\n1ï¸âƒ£ Manual Color Control Demo');
     lightingController.setFixture('par1', { red: 255, green: 0, blue: 0 });
     lightingController.setFixture('par2', { red: 0, green: 255, blue: 0 });
     await sleep(2000);
@@ -126,7 +139,7 @@ export async function demonstrateLightingIntegration() {
     await sleep(2000);
 
     // Demo 2: Scene control
-    console.log('\n2️⃣ Scene Control Demo');
+    console.log('\n2ï¸âƒ£ Scene Control Demo');
     lightingController.saveScene('Red Scene', {});
     
     // Change to different colors
@@ -139,42 +152,42 @@ export async function demonstrateLightingIntegration() {
     
     // Load previous scene
     lightingController.loadScene('Red Scene');
-    console.log('   📸 Loaded Red Scene');
+    console.log('   ðŸ“¸ Loaded Red Scene');
     await sleep(2000);
 
     // Demo 3: Effect engine
-    console.log('\n3️⃣ Effect Engine Demo');
+    console.log('\n3ï¸âƒ£ Effect Engine Demo');
     
     // Start rainbow effect
     lightingController.effectEngine.activeEffects.add('rainbow');
-    console.log('   🌈 Rainbow effect started');
+    console.log('   ðŸŒˆ Rainbow effect started');
     await sleep(5000);
     
     // Switch to color wash
     lightingController.effectEngine.activeEffects.clear();
     lightingController.effectEngine.activeEffects.add('color-wash');
-    console.log('   🎨 Color wash effect started');
+    console.log('   ðŸŽ¨ Color wash effect started');
     await sleep(3000);
 
     // Demo 4: Beat synchronization
-    console.log('\n4️⃣ Beat Synchronization Demo');
+    console.log('\n4ï¸âƒ£ Beat Synchronization Demo');
     mockAudio.setBPM(140); // Faster tempo
     
     lightingController.effectEngine.activeEffects.clear();
     lightingController.effectEngine.activeEffects.add('beat-strobe');
-    console.log('   ⚡ Beat strobe effect started at 140 BPM');
+    console.log('   âš¡ Beat strobe effect started at 140 BPM');
     
     // Start mock audio
     mockAudio.start();
     await sleep(8000);
     
     // Change tempo
-    console.log('   🎵 Changing tempo to 100 BPM');
+    console.log('   ðŸŽµ Changing tempo to 100 BPM');
     mockAudio.setBPM(100);
     await sleep(5000);
 
     // Demo 5: Channel control
-    console.log('\n5️⃣ Direct Channel Control Demo');
+    console.log('\n5ï¸âƒ£ Direct Channel Control Demo');
     lightingController.effectEngine.activeEffects.clear();
     mockAudio.stop();
     
@@ -182,11 +195,11 @@ export async function demonstrateLightingIntegration() {
     for (let i = 1; i <= 20; i++) {
       lightingController.setChannel(i, 0);
     }
-    console.log('   ⚫ Blackout');
+    console.log('   âš« Blackout');
     await sleep(1000);
     
     // Channel chase
-    console.log('   🔄 Channel chase effect');
+    console.log('   ðŸ”„ Channel chase effect');
     for (let cycle = 0; cycle < 3; cycle++) {
       for (let i = 1; i <= 10; i++) {
         lightingController.setChannel(i, 255);
@@ -196,9 +209,9 @@ export async function demonstrateLightingIntegration() {
     }
 
     // Demo 6: Status and monitoring
-    console.log('\n6️⃣ Status Monitoring');
+    console.log('\n6ï¸âƒ£ Status Monitoring');
     const status = lightingController.getStatus();
-    console.log('   📊 Controller Status:');
+    console.log('   ðŸ“Š Controller Status:');
     console.log(`      Protocol: ${status.protocol}`);
     console.log(`      Connected: ${status.connected}`);
     console.log(`      Fixtures: ${status.fixtureCount}`);
@@ -206,23 +219,23 @@ export async function demonstrateLightingIntegration() {
     console.log(`      Refresh Rate: ${status.refreshRate}Hz`);
     console.log(`      Current BPM: ${status.bpm}`);
 
-    console.log('\n✅ Demo completed successfully!');
-    console.log('\n🎯 Key Features Demonstrated:');
-    console.log('   • DMX512 protocol support');
-    console.log('   • Fixture library integration');
-    console.log('   • Manual color/intensity control');
-    console.log('   • Scene save/load functionality');
-    console.log('   • Built-in effect engine');
-    console.log('   • Beat-synchronized lighting');
-    console.log('   • Direct channel control');
-    console.log('   • Real-time status monitoring');
+    console.log('\nâœ… Demo completed successfully!');
+    console.log('\nðŸŽ¯ Key Features Demonstrated:');
+    console.log('   â€¢ DMX512 protocol support');
+    console.log('   â€¢ Fixture library integration');
+    console.log('   â€¢ Manual color/intensity control');
+    console.log('   â€¢ Scene save/load functionality');
+    console.log('   â€¢ Built-in effect engine');
+    console.log('   â€¢ Beat-synchronized lighting');
+    console.log('   â€¢ Direct channel control');
+    console.log('   â€¢ Real-time status monitoring');
 
     // Cleanup
     mockAudio.stop();
     await lightingController.disconnect();
 
   } catch (error) {
-    console.error('❌ Demo failed:', error.message);
+    console.error('âŒ Demo failed:', error.message);
     throw error;
   }
 }
@@ -236,11 +249,11 @@ function sleep(ms) {
 if (import.meta.url === `file://${process.argv[1]}` || process.argv[1].endsWith('lighting-demo.js')) {
   demonstrateLightingIntegration()
     .then(() => {
-      console.log('\n🎉 Lighting integration demo completed!');
+      console.log('\nðŸŽ‰ Lighting integration demo completed!');
       process.exit(0);
     })
     .catch(error => {
-      console.error('\n💥 Demo failed:', error);
+      console.error('\nðŸ’¥ Demo failed:', error);
       process.exit(1);
     });
 }

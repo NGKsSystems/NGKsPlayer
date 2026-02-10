@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: FourDeckLayoutManager.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useEffect } from 'react';
 import './FourDeckLayoutManager.css';
 
@@ -109,7 +122,7 @@ const FourDeckLayoutManager = ({
     const handleResize = () => {
       const width = window.innerWidth;
       if (width < 1200 && currentLayout === '4-deck') {
-        console.log('🖥️ Screen too small for 4-deck layout, suggesting 2-deck');
+        console.log('ðŸ–¥ï¸ Screen too small for 4-deck layout, suggesting 2-deck');
         // Could auto-switch or just warn user
       }
     };
@@ -161,14 +174,14 @@ const FourDeckLayoutManager = ({
             onClick={toggleCompactMode}
             title="Toggle compact mode"
           >
-            📱 Compact
+            ðŸ“± Compact
           </button>
           <button
             className={`option-btn ${showMasterSection ? 'active' : ''}`}
             onClick={() => setShowMasterSection(!showMasterSection)}
             title="Toggle master section"
           >
-            🎛️ Master
+            ðŸŽ›ï¸ Master
           </button>
         </div>
 

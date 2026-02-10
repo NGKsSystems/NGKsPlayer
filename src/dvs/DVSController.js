@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: DVSController.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * NGKs Player - Professional Digital Vinyl System (DVS) Controller
  * 
@@ -24,7 +37,7 @@ class DVSController extends EventEmitter {
       bufferSize: 64, // Ultra-small buffer for minimal latency
       timecodeFormat: 'serato', // serato, traktor, virtual_dj
       scratchSensitivity: 1.0,
-      pitchRange: 50, // ±50% pitch range
+      pitchRange: 50, // Â±50% pitch range
       enablePhysics: true, // Real vinyl physics simulation
       calibration: {
         autoCalibrate: true,
@@ -117,7 +130,7 @@ class DVSController extends EventEmitter {
    */
   async initialize() {
     try {
-      console.log('🎧 Initializing NGKs DVS Controller...');
+      console.log('ðŸŽ§ Initializing NGKs DVS Controller...');
       
       // Create audio context with high sample rate
       this.audioContext = new (window.AudioContext || window.webkitAudioContext)({
@@ -149,14 +162,14 @@ class DVSController extends EventEmitter {
       this.isActive = true;
       this.emit('initialized');
       
-      console.log('✅ DVS Controller initialized successfully');
+      console.log('âœ… DVS Controller initialized successfully');
       console.log(`   Sample Rate: ${this.audioContext.sampleRate}Hz`);
       console.log(`   Latency: ~${this.audioContext.baseLatency * 1000}ms`);
       console.log(`   Timecode Format: ${this.options.timecodeFormat}`);
       
       return true;
     } catch (error) {
-      console.error('❌ DVS initialization failed:', error);
+      console.error('âŒ DVS initialization failed:', error);
       this.emit('error', error);
       return false;
     }
@@ -352,7 +365,7 @@ class DVSController extends EventEmitter {
   startAutoCalibration() {
     if (!this.options.calibration.autoCalibrate) return;
     
-    console.log('🎯 Starting DVS auto-calibration...');
+    console.log('ðŸŽ¯ Starting DVS auto-calibration...');
     
     // Calibration routine
     const calibrate = () => {
@@ -461,7 +474,7 @@ class DVSController extends EventEmitter {
     }
     
     this.options.timecodeFormat = format;
-    console.log(`🎵 Switched to ${format} timecode format`);
+    console.log(`ðŸŽµ Switched to ${format} timecode format`);
     this.emit('formatChanged', format);
   }
 
@@ -482,7 +495,7 @@ class DVSController extends EventEmitter {
     
     deckData.calibrated = true;
     
-    console.log(`🎯 Calibrated ${deck} deck`);
+    console.log(`ðŸŽ¯ Calibrated ${deck} deck`);
     this.emit('calibrated', { deck, adjustments });
   }
 
@@ -490,7 +503,7 @@ class DVSController extends EventEmitter {
    * Shutdown DVS system
    */
   shutdown() {
-    console.log('🛑 Shutting down DVS Controller...');
+    console.log('ðŸ›‘ Shutting down DVS Controller...');
     
     this.isActive = false;
     
@@ -499,7 +512,7 @@ class DVSController extends EventEmitter {
     }
     
     this.emit('shutdown');
-    console.log('✅ DVS Controller shutdown complete');
+    console.log('âœ… DVS Controller shutdown complete');
   }
 }
 

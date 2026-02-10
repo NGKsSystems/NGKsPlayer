@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: playerCrashProtection.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * Player Crash Protection
  * Bulletproof error handling and recovery for live DJ scenarios
@@ -206,7 +219,7 @@ export class CrashProtection {
       if (wasPlaying) {
         try {
           await this.audioRef.play();
-          console.log('[CrashProtection] ✓ Recovered with pause/resume');
+          console.log('[CrashProtection] âœ“ Recovered with pause/resume');
           this.onRecoverySuccess?.('pause-resume');
           this.reset();
           return;
@@ -226,7 +239,7 @@ export class CrashProtection {
       if (wasPlaying) {
         try {
           await this.audioRef.play();
-          console.log('[CrashProtection] ✓ Recovered with reload');
+          console.log('[CrashProtection] âœ“ Recovered with reload');
           this.onRecoverySuccess?.('reload');
           this.reset();
           return;
@@ -263,7 +276,7 @@ export class CrashProtection {
         await this.audioRef.play();
       }
 
-      console.log('[CrashProtection] ✓ Recovered with full reset');
+      console.log('[CrashProtection] âœ“ Recovered with full reset');
       this.onRecoverySuccess?.('full-reset');
       this.reset();
 
@@ -315,3 +328,4 @@ export function protectAudioElement(audioRef, options = {}) {
   protection.enable();
   return protection;
 }
+

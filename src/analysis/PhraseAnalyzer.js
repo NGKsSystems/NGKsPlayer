@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: PhraseAnalyzer.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 // PhraseAnalyzer.js
 // Lightweight phrase detection for deep analysis
 
@@ -30,3 +43,4 @@ export function detectPhrases(channelData, sampleRate, bpm) {
 
   return { phrases: phrases.map((p) => ({ time: p })), phraseLength: phrases.length };
 }
+

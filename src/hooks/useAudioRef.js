@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: useAudioRef.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import { useRef, useEffect } from 'react';
 import { pickNextIndex, setCachedNext } from '../utils/randomizer';
 
@@ -63,3 +76,4 @@ export function useAudioRef({
 
   return audioRef;
 }
+

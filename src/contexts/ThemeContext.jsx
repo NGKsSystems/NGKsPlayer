@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: ThemeContext.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import themes from '../themes/themes.json'
 
@@ -21,7 +34,7 @@ export const ThemeProvider = ({ children }) => {
   useEffect(() => {
     const handleHashChange = () => {
       const newHash = window.location.hash
-      console.log('🔄 Route change detected:', newHash)
+      console.log('ðŸ”„ Route change detected:', newHash)
       setCurrentHash(newHash)
       
       // Force immediate theme reevaluation
@@ -30,10 +43,10 @@ export const ThemeProvider = ({ children }) => {
         root.classList.add('dj-route')
         // CRITICAL FIX: Remove data-theme attribute immediately on non-theme routes
         root.removeAttribute('data-theme')
-        console.log('🚫 Added theme block and removed data-theme for route:', newHash)
+        console.log('ðŸš« Added theme block and removed data-theme for route:', newHash)
       } else {
         root.classList.remove('dj-route')
-        console.log('🎨 Removed theme block for route:', newHash)
+        console.log('ðŸŽ¨ Removed theme block for route:', newHash)
       }
     }
     
@@ -81,30 +94,30 @@ export const ThemeProvider = ({ children }) => {
   useEffect(() => {
     const root = document.documentElement
     const initialRoute = window.location.hash || window.location.pathname
-    console.log('🚀 Initial route detected:', initialRoute)
+    console.log('ðŸš€ Initial route detected:', initialRoute)
     
     // Set initial class state based on route
     if (!shouldHaveThemes()) {
       root.classList.add('dj-route')
       // CRITICAL FIX: Remove data-theme attribute on mount for non-theme routes
       root.removeAttribute('data-theme')
-      console.log('🚫 Initial theme block and removed data-theme for route:', initialRoute)
+      console.log('ðŸš« Initial theme block and removed data-theme for route:', initialRoute)
     } else {
       root.classList.remove('dj-route')
-      console.log('🎨 Initial theme enable for route:', initialRoute)
+      console.log('ðŸŽ¨ Initial theme enable for route:', initialRoute)
     }
   }, [])
 
   // Load and apply theme from folder when currentTheme changes
   useEffect(() => {
-    console.log('🔥 loadTheme useEffect FIRED - currentTheme:', currentTheme, 'currentHash:', currentHash)
+    console.log('ðŸ”¥ loadTheme useEffect FIRED - currentTheme:', currentTheme, 'currentHash:', currentHash)
     const loadTheme = async () => {
       const root = document.documentElement
       
       // ========== SOLUTION: NO DYNAMIC CSS IMPORTS ==========
       // CSS files are now statically imported in main.jsx
       // We only manage: .dj-route class, data-theme attribute, CSS variables
-      console.log('✅ Route detection + data-theme + CSS variables (NO dynamic CSS import)')
+      console.log('âœ… Route detection + data-theme + CSS variables (NO dynamic CSS import)')
       console.log('Current route:', window.location.hash)
       console.log('Should have themes?', shouldHaveThemes())
       
@@ -115,7 +128,7 @@ export const ThemeProvider = ({ children }) => {
         const themeVarKeys = ['bg-primary', 'bg-secondary', 'text-primary', 'text-secondary', 
                               'accent-primary', 'accent-secondary', 'accent-tertiary']
         themeVarKeys.forEach(key => root.style.removeProperty(`--${key}`))
-        console.log('✅ Non-theme route: .dj-route added, data-theme removed, variables cleared')
+        console.log('âœ… Non-theme route: .dj-route added, data-theme removed, variables cleared')
         return
       }
       
@@ -149,7 +162,7 @@ export const ThemeProvider = ({ children }) => {
         if (loadedTheme.effects?.chromatic) root.dataset.chromatic = 'true'
         if (loadedTheme.effects?.colorShift) root.dataset.colorShift = 'true'
         
-        console.log('✅ Theme route: Variables + effect flags loaded for', currentTheme)
+        console.log('âœ… Theme route: Variables + effect flags loaded for', currentTheme)
         // ==========================================
         
         // ========== TEST 6: THEME MODULE (JAVASCRIPT) ==========
@@ -170,12 +183,12 @@ export const ThemeProvider = ({ children }) => {
             window.currentThemeEffect = null
           }
           
-          console.log('✅ Theme module loaded:', currentTheme)
+          console.log('âœ… Theme module loaded:', currentTheme)
         } catch (moduleErr) {
           // Module doesn't exist or failed to load - that's OK
           setCurrentThemeModule(null)
           window.currentThemeEffect = null
-          console.log('ℹ️ No theme module for', currentTheme)
+          console.log('â„¹ï¸ No theme module for', currentTheme)
         }
         // =======================================================
         
@@ -191,12 +204,12 @@ export const ThemeProvider = ({ children }) => {
           }
         }))
         
-        console.log('✅ FULL THEME LOADED:', currentTheme, 'with effects:', loadedTheme.effects)
+        console.log('âœ… FULL THEME LOADED:', currentTheme, 'with effects:', loadedTheme.effects)
         // =========================================================
         
       } catch (err) {
         // NEW modular theme not found - fallback to OLD theme system (themes.json)
-        console.log('📦 Loading OLD theme system for:', currentTheme)
+        console.log('ðŸ“¦ Loading OLD theme system for:', currentTheme)
         const fallbackTheme = themes[currentTheme] || themes.modernDark
         setThemeData(fallbackTheme)
         
@@ -214,7 +227,7 @@ export const ThemeProvider = ({ children }) => {
         root.dataset.glow = fallbackTheme.effects?.glow || false
         root.dataset.pixelated = fallbackTheme.effects?.pixelated || false
         
-        console.log('✅ OLD theme loaded:', currentTheme)
+        console.log('âœ… OLD theme loaded:', currentTheme)
         
         // Dispatch event for old themes too
         window.dispatchEvent(new CustomEvent('themeChange', {
@@ -295,13 +308,13 @@ export const ThemeProvider = ({ children }) => {
           }
         }))
         
-        console.log('🚫 Theme loading blocked for route:', window.location.hash || window.location.pathname)
+        console.log('ðŸš« Theme loading blocked for route:', window.location.hash || window.location.pathname)
         
         return
       } else {
         // Remove theme-blocking marker when on theme routes
         root.classList.remove('dj-route')
-        console.log('🎨 Theme loading enabled for route:', window.location.hash || window.location.pathname)
+        console.log('ðŸŽ¨ Theme loading enabled for route:', window.location.hash || window.location.pathname)
       }
       
       try {
@@ -373,7 +386,7 @@ export const ThemeProvider = ({ children }) => {
           window.currentThemeEffect = null;
         }
 
-        console.log('🎨 Loaded theme + CSS from folder:', currentTheme);
+        console.log('ðŸŽ¨ Loaded theme + CSS from folder:', currentTheme);
         localStorage.setItem('ngks_theme', currentTheme);
       } catch (err) {
         console.error('Failed to load theme folder:', err);
@@ -393,7 +406,7 @@ export const ThemeProvider = ({ children }) => {
   const changeTheme = (themeId) => {
     // Don't change themes on non-theme routes
     if (isNoThemeRoute()) {
-      console.log('🎨 Theme change blocked on non-theme route:', window.location.hash)
+      console.log('ðŸŽ¨ Theme change blocked on non-theme route:', window.location.hash)
       return
     }
     

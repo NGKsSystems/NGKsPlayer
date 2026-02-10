@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: NowPlayingHeader.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React from 'react';
 
 /**
@@ -50,7 +63,7 @@ export function NowPlayingHeader({
               color: 'var(--accent-primary)'
             }}
           >
-            ♩ {detectedBPM}
+            â™© {detectedBPM}
           </div>
         )}
       </div>
@@ -68,9 +81,9 @@ export function NowPlayingHeader({
               border: 'none',
               cursor: 'pointer'
             }}
-            title="Test Blood Effects 🩸"
+            title="Test Blood Effects ðŸ©¸"
           >
-            🩸 BLOOD
+            ðŸ©¸ BLOOD
           </button>
         )}
         
@@ -90,7 +103,7 @@ export function NowPlayingHeader({
           }}
           title="Change Theme"
         >
-          🎨 Theme
+          ðŸŽ¨ Theme
         </button>
         
         {showThemeMenu && (
@@ -110,7 +123,7 @@ export function NowPlayingHeader({
                   currentTheme === theme.id ? 'bg-gray-700 font-bold' : ''
                 }`}
               >
-                {currentTheme === theme.id ? '✓ ' : ''}{theme.name}
+                {currentTheme === theme.id ? 'âœ“ ' : ''}{theme.name}
               </button>
             ))}
           </div>
@@ -128,9 +141,10 @@ export function NowPlayingHeader({
             cursor: 'pointer'
           }}
         >
-          📚 Back to Library
+          ðŸ“š Back to Library
         </button>
       </div>
     </div>
   );
 }
+

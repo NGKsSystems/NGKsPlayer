@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: StreamingController.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * NGKs Player - Revolutionary Streaming Integration System
  * 
@@ -61,7 +74,7 @@ class StreamingController extends EventEmitter {
       // Core streaming services (matching Serato's lineup)
       soundcloud: {
         name: 'SoundCloud',
-        icon: '🟠',
+        icon: 'ðŸŸ ',
         clientId: null, // Will be configured by user
         baseUrl: 'https://api.soundcloud.com',
         authenticated: false,
@@ -71,7 +84,7 @@ class StreamingController extends EventEmitter {
       },
       spotify: {
         name: 'Spotify',
-        icon: '🟢',
+        icon: 'ðŸŸ¢',
         clientId: null,
         baseUrl: 'https://api.spotify.com/v1',
         authenticated: false,
@@ -81,7 +94,7 @@ class StreamingController extends EventEmitter {
       },
       apple_music: {
         name: 'Apple Music',
-        icon: '🔴',
+        icon: 'ðŸ”´',
         clientId: null,
         baseUrl: 'https://api.music.apple.com/v1',
         authenticated: false,
@@ -91,7 +104,7 @@ class StreamingController extends EventEmitter {
       },
       tidal: {
         name: 'Tidal',
-        icon: '🔵',
+        icon: 'ðŸ”µ',
         clientId: null,
         baseUrl: 'https://api.tidal.com/v1',
         authenticated: false,
@@ -101,7 +114,7 @@ class StreamingController extends EventEmitter {
       },
       beatport: {
         name: 'Beatport',
-        icon: '🟡',
+        icon: 'ðŸŸ¡',
         clientId: null,
         baseUrl: 'https://api.beatport.com/v4',
         authenticated: false,
@@ -112,7 +125,7 @@ class StreamingController extends EventEmitter {
       },
       beatsource: {
         name: 'Beatsource',
-        icon: '🟣',
+        icon: 'ðŸŸ£',
         clientId: null,
         baseUrl: 'https://api.beatsource.com/v1',
         authenticated: false,
@@ -125,7 +138,7 @@ class StreamingController extends EventEmitter {
       // BONUS services (exceeding Serato's offering)
       youtube_music: {
         name: 'YouTube Music',
-        icon: '🔴',
+        icon: 'ðŸ”´',
         clientId: null,
         baseUrl: 'https://www.googleapis.com/youtube/v3',
         authenticated: false,
@@ -136,7 +149,7 @@ class StreamingController extends EventEmitter {
       },
       bandcamp: {
         name: 'Bandcamp',
-        icon: '🎵',
+        icon: 'ðŸŽµ',
         clientId: null,
         baseUrl: 'https://bandcamp.com/api',
         authenticated: false,
@@ -147,7 +160,7 @@ class StreamingController extends EventEmitter {
       },
       mixcloud: {
         name: 'Mixcloud',
-        icon: '🎧',
+        icon: 'ðŸŽ§',
         clientId: null,
         baseUrl: 'https://api.mixcloud.com',
         authenticated: false,
@@ -158,7 +171,7 @@ class StreamingController extends EventEmitter {
       },
       deezer: {
         name: 'Deezer',
-        icon: '🟠',
+        icon: 'ðŸŸ ',
         clientId: null,
         baseUrl: 'https://api.deezer.com',
         authenticated: false,
@@ -193,7 +206,7 @@ class StreamingController extends EventEmitter {
    * Initialize all enabled streaming services
    */
   async initializeServices() {
-    console.log('🎵 Initializing NGKs Streaming Controller...');
+    console.log('ðŸŽµ Initializing NGKs Streaming Controller...');
     
     for (const serviceId of this.options.enabledServices) {
       if (this.services[serviceId]) {
@@ -214,7 +227,7 @@ class StreamingController extends EventEmitter {
     const service = this.services[serviceId];
     
     try {
-      console.log(`🔌 Connecting to ${service.name}...`);
+      console.log(`ðŸ”Œ Connecting to ${service.name}...`);
       
       // Check for stored credentials
       const credentials = this.loadCredentials(serviceId);
@@ -242,7 +255,7 @@ class StreamingController extends EventEmitter {
       }
       
     } catch (error) {
-      console.error(`❌ Failed to initialize ${service.name}:`, error);
+      console.error(`âŒ Failed to initialize ${service.name}:`, error);
       this.emit('serviceError', { serviceId, error });
     }
   }
@@ -308,7 +321,7 @@ class StreamingController extends EventEmitter {
       }
     };
     
-    console.log('✅ SoundCloud initialized - Full DJ features available');
+    console.log('âœ… SoundCloud initialized - Full DJ features available');
   }
 
   /**
@@ -376,7 +389,7 @@ class StreamingController extends EventEmitter {
       }
     };
     
-    console.log('✅ Spotify initialized - Metadata and discovery available');
+    console.log('âœ… Spotify initialized - Metadata and discovery available');
   }
 
   /**
@@ -414,7 +427,7 @@ class StreamingController extends EventEmitter {
       }
     };
     
-    console.log('✅ Tidal initialized - HiFi quality streaming available');
+    console.log('âœ… Tidal initialized - HiFi quality streaming available');
   }
 
   /**
@@ -466,7 +479,7 @@ class StreamingController extends EventEmitter {
       }
     };
     
-    console.log('✅ Beatport initialized - DJ charts and extended previews available');
+    console.log('âœ… Beatport initialized - DJ charts and extended previews available');
   }
 
   /**
@@ -492,7 +505,7 @@ class StreamingController extends EventEmitter {
       }
     };
     
-    console.log('✅ YouTube Music initialized - Massive catalog access available');
+    console.log('âœ… YouTube Music initialized - Massive catalog access available');
   }
 
   /**
@@ -514,8 +527,8 @@ class StreamingController extends EventEmitter {
       maxDuration = null
     } = options;
 
-    console.log(`🔍 NGKs Universal Search: "${query}"`);
-    console.log(`📡 Searching ${services.length} streaming services simultaneously...`);
+    console.log(`ðŸ” NGKs Universal Search: "${query}"`);
+    console.log(`ðŸ“¡ Searching ${services.length} streaming services simultaneously...`);
     
     const results = {
       query,
@@ -536,7 +549,7 @@ class StreamingController extends EventEmitter {
     if (this.searchCache.has(cacheKey)) {
       this.stats.cacheHits++;
       const cached = this.searchCache.get(cacheKey);
-      console.log(`💾 Retrieved ${cached.combined.length} results from cache`);
+      console.log(`ðŸ’¾ Retrieved ${cached.combined.length} results from cache`);
       return cached;
     }
 
@@ -734,11 +747,11 @@ class StreamingController extends EventEmitter {
       this.services[serviceId].authenticated = true;
       this.stats.servicesConnected++;
       
-      console.log(`✅ Authenticated with ${this.services[serviceId].name}`);
+      console.log(`âœ… Authenticated with ${this.services[serviceId].name}`);
       this.emit('authenticated', { serviceId, service: this.services[serviceId].name });
       
     } catch (error) {
-      console.error(`❌ Authentication failed for ${serviceId}:`, error);
+      console.error(`âŒ Authentication failed for ${serviceId}:`, error);
       throw error;
     }
   }
@@ -787,13 +800,13 @@ class StreamingController extends EventEmitter {
    */
   getServiceIcon(serviceId) {
     const icons = {
-      soundcloud: '🟠',
-      spotify: '🟢',
-      tidal: '🔵',
-      beatport: '🟡',
-      youtube: '🔴'
+      soundcloud: 'ðŸŸ ',
+      spotify: 'ðŸŸ¢',
+      tidal: 'ðŸ”µ',
+      beatport: 'ðŸŸ¡',
+      youtube: 'ðŸ”´'
     };
-    return icons[serviceId] || '🎵';
+    return icons[serviceId] || 'ðŸŽµ';
   }
 
   /**

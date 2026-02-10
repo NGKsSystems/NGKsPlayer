@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: useClipperProject.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import { useState, useCallback, useEffect } from 'react';
 
 const DB_NAME = 'NGKsClipperDB';
@@ -195,3 +208,4 @@ export const useClipperProject = () => {
     deleteProject
   };
 };
+

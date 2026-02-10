@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: FourDeckDJ.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useEffect, useRef } from 'react';
 import AudioManager from '../../audio/AudioManager';
 import FourDeckLayoutManager from '../../DJ/Layout/FourDeckLayoutManager';
@@ -39,12 +52,12 @@ const FourDeckDJ = ({ onNavigate }) => {
 
   // Initialize audio manager
   useEffect(() => {
-    console.log('🎧 Initializing 4-Deck DJ System...');
+    console.log('ðŸŽ§ Initializing 4-Deck DJ System...');
     
     if (!audioManagerRef.current) {
       audioManagerRef.current = new AudioManager();
       setAudioManager(audioManagerRef.current);
-      console.log('✅ AudioManager initialized for 4 decks');
+      console.log('âœ… AudioManager initialized for 4 decks');
     }
 
     // Load music library
@@ -64,7 +77,7 @@ const FourDeckDJ = ({ onNavigate }) => {
       const result = await window.api.invoke('library:getTracks', {});
       if (result && Array.isArray(result)) {
         setTracks(result);
-        console.log(`📚 Loaded ${result.length} tracks for 4-deck DJ system`);
+        console.log(`ðŸ“š Loaded ${result.length} tracks for 4-deck DJ system`);
       }
     } catch (err) {
       console.error('Failed to load tracks:', err);
@@ -75,7 +88,7 @@ const FourDeckDJ = ({ onNavigate }) => {
   // Handle layout changes
   const handleLayoutChange = (newLayoutConfig) => {
     setLayoutConfig(newLayoutConfig);
-    console.log('🔄 Layout changed:', newLayoutConfig);
+    console.log('ðŸ”„ Layout changed:', newLayoutConfig);
     
     // Adjust mixer layout based on deck configuration
     adjustMixerForLayout(newLayoutConfig);
@@ -117,7 +130,7 @@ const FourDeckDJ = ({ onNavigate }) => {
       newDeckTracks[deckId] = track;
       setDeckTracks(newDeckTracks);
       
-      console.log(`🎵 Loading track to Deck ${deckId}:`, track.title);
+      console.log(`ðŸŽµ Loading track to Deck ${deckId}:`, track.title);
       showToast(`Track loaded to Deck ${deckId}`, 'success');
     }
   };
@@ -164,13 +177,13 @@ const FourDeckDJ = ({ onNavigate }) => {
             className="nav-btn library-btn"
             onClick={() => onNavigate('library')}
           >
-            📚 Library
+            ðŸ“š Library
           </button>
           <button 
             className="nav-btn settings-btn"
             onClick={() => onNavigate('settings')}
           >
-            ⚙️ Settings
+            âš™ï¸ Settings
           </button>
         </div>
       </div>

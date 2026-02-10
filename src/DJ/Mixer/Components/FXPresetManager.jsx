@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: FXPresetManager.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useEffect } from 'react';
 import { Save, FolderOpen, Trash2, Plus } from 'lucide-react';
 import './FXPresetManager.css';
@@ -110,3 +123,4 @@ const FXPresetManager = ({ currentEffect, currentParams, onLoadPreset, color = '
 };
 
 export default FXPresetManager;
+

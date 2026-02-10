@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: ProfessionalQuickReference.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * Pro Audio Clipper - Complete Professional Quick Reference Guide
  * Comprehensive keyboard shortcuts, features, and workflow guide
@@ -7,11 +20,11 @@
 export const PROFESSIONAL_QUICK_REFERENCE = {
   // === PLAYBACK & TRANSPORT ===
   playback: {
-    title: "🎵 Playback & Transport",
+    title: "ðŸŽµ Playback & Transport",
     shortcuts: [
       { key: "Space", action: "Play/Pause", description: "Toggle playback" },
       { key: "S", action: "Stop", description: "Stop playback and return to start" },
-      { key: "←/→", action: "Navigate", description: "Shift+←/→ Skip 10s | ←/→ Fine Seek" },
+      { key: "â†/â†’", action: "Navigate", description: "Shift+â†/â†’ Skip 10s | â†/â†’ Fine Seek" },
       { key: "Home/End", action: "Jump", description: "Go to start/end of timeline" },
       { key: "J/K/L", action: "Shuttle", description: "Reverse/Pause/Forward (like Pro Tools)" },
       { key: "Shift+Space", action: "Loop Toggle", description: "Enable/disable loop playback" }
@@ -20,7 +33,7 @@ export const PROFESSIONAL_QUICK_REFERENCE = {
 
   // === PROFESSIONAL MIXING ===
   mixing: {
-    title: "🎛️ Professional Mixing Console",
+    title: "ðŸŽ›ï¸ Professional Mixing Console",
     shortcuts: [
       { key: "M", action: "Mute Track", description: "Toggle mute on selected track" },
       { key: "S", action: "Solo Track", description: "Toggle solo on selected track" },
@@ -40,7 +53,7 @@ export const PROFESSIONAL_QUICK_REFERENCE = {
 
   // === EDITING & TOOLS ===
   editing: {
-    title: "✂️ Professional Editing Tools",
+    title: "âœ‚ï¸ Professional Editing Tools",
     shortcuts: [
       { key: "V", action: "Selection Tool", description: "Default selection/move tool" },
       { key: "C", action: "Razor Tool", description: "Cut clips at cursor position" },
@@ -55,7 +68,7 @@ export const PROFESSIONAL_QUICK_REFERENCE = {
 
   // === VIEW & NAVIGATION ===
   view: {
-    title: "🔍 View & Navigation",
+    title: "ðŸ” View & Navigation",
     shortcuts: [
       { key: "+/-", action: "Zoom", description: "Zoom in/out on timeline" },
       { key: "Ctrl+0", action: "Fit All", description: "Zoom to fit all content" },
@@ -68,7 +81,7 @@ export const PROFESSIONAL_QUICK_REFERENCE = {
 
   // === PROFESSIONAL AUDIO ANALYSIS ===
   analysis: {
-    title: "📊 Audio Analysis Dashboard",
+    title: "ðŸ“Š Audio Analysis Dashboard",
     features: [
       "Real-time spectral analysis with FFT visualization",
       "Professional loudness metering (LUFS, LKFS, LU)",
@@ -86,7 +99,7 @@ export const PROFESSIONAL_QUICK_REFERENCE = {
 
   // === AUTOMATION SYSTEM ===
   automation: {
-    title: "🤖 Professional Automation",
+    title: "ðŸ¤– Professional Automation",
     shortcuts: [
       { key: "A", action: "Automation Mode", description: "Cycle through automation modes" },
       { key: "Ctrl+A", action: "Select All Points", description: "Select all automation points" },
@@ -105,7 +118,7 @@ export const PROFESSIONAL_QUICK_REFERENCE = {
 
   // === ADVANCED ROUTING ===
   routing: {
-    title: "🔀 Advanced Audio Routing",
+    title: "ðŸ”€ Advanced Audio Routing",
     features: [
       "Flexible send/return routing system",
       "Sidechain routing for compression and gating",
@@ -119,7 +132,7 @@ export const PROFESSIONAL_QUICK_REFERENCE = {
 
   // === PROFESSIONAL EFFECTS ===
   effects: {
-    title: "🎚️ Professional Effects Engine",
+    title: "ðŸŽšï¸ Professional Effects Engine",
     shortcuts: [
       { key: "E", action: "Effects Panel", description: "Open effects for selected track" },
       { key: "Ctrl+E", action: "Bypass All", description: "Bypass all effects on track" }
@@ -138,7 +151,7 @@ export const PROFESSIONAL_QUICK_REFERENCE = {
 
   // === TIME STRETCHING & PITCH ===
   timeStretch: {
-    title: "⏱️ Time Stretching & Pitch Correction",
+    title: "â±ï¸ Time Stretching & Pitch Correction",
     features: [
       "Professional time stretching algorithms",
       "Real-time pitch shifting",
@@ -155,7 +168,7 @@ export const PROFESSIONAL_QUICK_REFERENCE = {
 
   // === EXPORT & MASTERING ===
   export: {
-    title: "📦 Export & Mastering Suite",
+    title: "ðŸ“¦ Export & Mastering Suite",
     formats: [
       "WAV: 16/24/32-bit uncompressed",
       "FLAC: Lossless compression levels 0-8",
@@ -178,7 +191,7 @@ export const PROFESSIONAL_QUICK_REFERENCE = {
 
   // === MIDI INTEGRATION ===
   midi: {
-    title: "🎹 MIDI Integration Suite",
+    title: "ðŸŽ¹ MIDI Integration Suite",
     features: [
       "Full 16-channel MIDI support",
       "Hardware MIDI controller integration",
@@ -197,7 +210,7 @@ export const PROFESSIONAL_QUICK_REFERENCE = {
 
   // === CLOUD COLLABORATION ===
   cloud: {
-    title: "☁️ Cloud Integration & Collaboration",
+    title: "â˜ï¸ Cloud Integration & Collaboration",
     features: [
       "Multi-provider cloud storage (Local, Firebase, AWS, Dropbox, Google Drive)",
       "Real-time collaboration with live editing",
@@ -217,7 +230,7 @@ export const PROFESSIONAL_QUICK_REFERENCE = {
 
   // === PROJECT MANAGEMENT ===
   project: {
-    title: "📁 Project Management",
+    title: "ðŸ“ Project Management",
     shortcuts: [
       { key: "Ctrl+N", action: "New Project", description: "Create new project" },
       { key: "Ctrl+O", action: "Open Project", description: "Open existing project" },
@@ -230,7 +243,7 @@ export const PROFESSIONAL_QUICK_REFERENCE = {
 
   // === WORKFLOW TIPS ===
   workflow: {
-    title: "💡 Professional Workflow Tips",
+    title: "ðŸ’¡ Professional Workflow Tips",
     tips: [
       "Use Group controls for multi-track editing",
       "Set up send/return buses for reverb and delay",
@@ -247,7 +260,7 @@ export const PROFESSIONAL_QUICK_REFERENCE = {
 
   // === ADVANCED FEATURES ===
   advanced: {
-    title: "🚀 Advanced Professional Features",
+    title: "ðŸš€ Advanced Professional Features",
     features: [
       "AudioWorklets for real-time processing",
       "Professional metering with broadcast standards",
@@ -266,7 +279,7 @@ export const PROFESSIONAL_QUICK_REFERENCE = {
 
   // === SYSTEM REQUIREMENTS ===
   system: {
-    title: "⚙️ System & Performance",
+    title: "âš™ï¸ System & Performance",
     requirements: [
       "Modern web browser with Web Audio API support",
       "Recommended: 8GB+ RAM for large projects",
@@ -297,7 +310,7 @@ export const generateQuickReferenceText = () => {
     if (section.features) {
       helpText += "KEY FEATURES:\n";
       section.features.forEach(feature => {
-        helpText += `  • ${feature}\n`;
+        helpText += `  â€¢ ${feature}\n`;
       });
       helpText += "\n";
     }
@@ -305,7 +318,7 @@ export const generateQuickReferenceText = () => {
     if (section.categories) {
       helpText += "CATEGORIES:\n";
       section.categories.forEach(category => {
-        helpText += `  • ${category}\n`;
+        helpText += `  â€¢ ${category}\n`;
       });
       helpText += "\n";
     }
@@ -313,7 +326,7 @@ export const generateQuickReferenceText = () => {
     if (section.formats) {
       helpText += "SUPPORTED FORMATS:\n";
       section.formats.forEach(format => {
-        helpText += `  • ${format}\n`;
+        helpText += `  â€¢ ${format}\n`;
       });
       helpText += "\n";
     }
@@ -321,7 +334,7 @@ export const generateQuickReferenceText = () => {
     if (section.mastering) {
       helpText += "MASTERING TOOLS:\n";
       section.mastering.forEach(tool => {
-        helpText += `  • ${tool}\n`;
+        helpText += `  â€¢ ${tool}\n`;
       });
       helpText += "\n";
     }
@@ -329,7 +342,7 @@ export const generateQuickReferenceText = () => {
     if (section.tips) {
       helpText += "WORKFLOW TIPS:\n";
       section.tips.forEach(tip => {
-        helpText += `  • ${tip}\n`;
+        helpText += `  â€¢ ${tip}\n`;
       });
       helpText += "\n";
     }
@@ -337,7 +350,7 @@ export const generateQuickReferenceText = () => {
     if (section.requirements) {
       helpText += "REQUIREMENTS:\n";
       section.requirements.forEach(req => {
-        helpText += `  • ${req}\n`;
+        helpText += `  â€¢ ${req}\n`;
       });
       helpText += "\n";
     }

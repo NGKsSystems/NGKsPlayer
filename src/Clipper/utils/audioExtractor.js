@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: audioExtractor.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import { AdvancedAudioCodecs } from '../../audio/AdvancedAudioCodecs.js';
 
 // Extract a specific section of audio from AudioBuffer
@@ -102,3 +115,4 @@ export const parseAudioMetadata = (buffer, filename) => {
     return { format: 'UNKNOWN', error: error.message };
   }
 };
+

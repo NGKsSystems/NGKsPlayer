@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: TimelineRuler.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useCallback, useRef, useEffect, useMemo } from 'react';
 import './TimelineRuler.css';
 import { timeToPixels, pixelsToTime, calculateTimelineWidth, generateTicks } from '../timeline/timelineMath.js';

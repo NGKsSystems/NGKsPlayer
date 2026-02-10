@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: useAudioAnalysis.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * Audio Analysis Hook for Extreme Visual Effects
  * Provides real-time audio data and beat detection for visual effects
@@ -36,9 +49,9 @@ export function useAudioAnalysis(audioElement) {
           if (existingContext.state !== 'closed') {
             audioContextRef.current = existingContext
             needsNewContext = false
-            console.log('🎵 Using existing AudioContext:', existingContext.state)
+            console.log('ðŸŽµ Using existing AudioContext:', existingContext.state)
           } else {
-            console.log('🔄 Existing AudioContext is closed, will create new one')
+            console.log('ðŸ”„ Existing AudioContext is closed, will create new one')
             audioElement.__ngksAudioAnalysisConnected = false
           }
         }
@@ -47,7 +60,7 @@ export function useAudioAnalysis(audioElement) {
         if (needsNewContext) {
           audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)()
           audioElement.__ngksAudioAnalysisContext = audioContextRef.current
-          console.log('🎵 Created new AudioContext for analysis:', audioContextRef.current.state)
+          console.log('ðŸŽµ Created new AudioContext for analysis:', audioContextRef.current.state)
         }
         
         // Create analyser
@@ -64,7 +77,7 @@ export function useAudioAnalysis(audioElement) {
             
             // Store AudioContext reference on element for coordination
             audioElement.__ngksAudioAnalysisContext = audioContextRef.current
-            console.log('🎵 Created MediaElementSource and connected to analysis')
+            console.log('ðŸŽµ Created MediaElementSource and connected to analysis')
           } catch (error) {
             if (error.message.includes('already connected')) {
               console.warn('Audio element already connected, reusing existing connection')
@@ -74,7 +87,7 @@ export function useAudioAnalysis(audioElement) {
             }
           }
         } else {
-          console.log('🎵 Audio element already connected, reusing connection')
+          console.log('ðŸŽµ Audio element already connected, reusing connection')
           return
         }
         
@@ -84,12 +97,12 @@ export function useAudioAnalysis(audioElement) {
         
         // Resume context if needed
         if (audioContextRef.current.state === 'suspended') {
-          console.log('🎵 Resuming AudioContext for analysis...')
+          console.log('ðŸŽµ Resuming AudioContext for analysis...')
           await audioContextRef.current.resume()
         }
         
         setIsSetup(true)
-        console.log('🎵 Audio analysis setup complete')
+        console.log('ðŸŽµ Audio analysis setup complete')
         
         // Start analysis loop
         startAnalysis()

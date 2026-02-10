@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: musicData.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * Professional Music Production Data
  * Ported from NGKsStudios comprehensive music database
@@ -291,3 +304,4 @@ export default {
   SONG_STRUCTURES,
   STRUCTURE_TAGS
 };
+

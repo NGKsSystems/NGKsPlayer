@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: ContextMenu.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React from 'react';
 import { PlaylistSubmenu } from './PlaylistSubmenu';
 
@@ -72,7 +85,7 @@ export function ContextMenu({
           }}
           className="w-full text-left px-4 py-2 hover:bg-gray-700 text-sm flex items-center gap-2"
         >
-          <span>▶️</span> Play Now
+          <span>â–¶ï¸</span> Play Now
         </button>
         
         {/* Add to Playlist */}
@@ -82,9 +95,9 @@ export function ContextMenu({
             className="w-full text-left px-4 py-2 hover:bg-gray-700 text-sm flex items-center justify-between"
           >
             <span className="flex items-center gap-2">
-              <span>💾</span> Add to Playlist
+              <span>ðŸ’¾</span> Add to Playlist
             </span>
-            <span>▶</span>
+            <span>â–¶</span>
           </button>
           
           {/* Playlist Submenu */}
@@ -111,7 +124,7 @@ export function ContextMenu({
             }}
             className="w-full text-left px-4 py-2 hover:bg-gray-700 text-sm flex items-center gap-2"
           >
-            <span>📁</span> Show in File Explorer
+            <span>ðŸ“</span> Show in File Explorer
           </button>
           
           {/* Copy File Path */}
@@ -122,7 +135,7 @@ export function ContextMenu({
             }}
             className="w-full text-left px-4 py-2 hover:bg-gray-700 text-sm flex items-center gap-2"
           >
-            <span>📋</span> Copy File Path
+            <span>ðŸ“‹</span> Copy File Path
           </button>
           
           {/* Analyze Track */}
@@ -133,7 +146,7 @@ export function ContextMenu({
             }}
             className="w-full text-left px-4 py-2 hover:bg-gray-700 text-sm flex items-center gap-2"
           >
-            <span>🔍</span> Analyze BPM/Key
+            <span>ðŸ”</span> Analyze BPM/Key
           </button>
           
           {/* Rename File */}
@@ -142,7 +155,7 @@ export function ContextMenu({
               onClick={() => onStartRename(contextMenu.track)}
               className="w-full text-left px-4 py-2 hover:bg-gray-700 text-sm flex items-center gap-2"
             >
-              <span>✏️</span> Rename File
+              <span>âœï¸</span> Rename File
             </button>
           ) : (
             <div className="px-4 py-2 border-t border-gray-700" onClick={(e) => e.stopPropagation()}>
@@ -205,7 +218,7 @@ export function ContextMenu({
             }}
             className="w-full text-left px-4 py-2 hover:bg-orange-900 text-sm flex items-center gap-2 text-orange-400"
           >
-            <span>🗑️</span> Remove from Library
+            <span>ðŸ—‘ï¸</span> Remove from Library
           </button>
           
           <button
@@ -215,10 +228,11 @@ export function ContextMenu({
             }}
             className="w-full text-left px-4 py-2 hover:bg-red-900 text-sm flex items-center gap-2 text-red-400"
           >
-            <span>⚠️</span> Delete File Permanently
+            <span>âš ï¸</span> Delete File Permanently
           </button>
         </div>
       </div>
     </div>
   );
 }
+

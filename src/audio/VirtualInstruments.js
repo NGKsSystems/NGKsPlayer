@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: VirtualInstruments.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * Professional Virtual Instrument Engine
  * Advanced synthesizer and sampler engine for MIDI integration
@@ -12,7 +25,7 @@ export class VirtualInstrument {
         this.masterVolume = 1.0;
         this.masterPan = 0;
         this.pitchBend = 0; // In semitones
-        this.pitchBendRange = 2; // ±2 semitones
+        this.pitchBendRange = 2; // Â±2 semitones
         
         // Master output nodes
         this.masterGain = audioContext.createGain();

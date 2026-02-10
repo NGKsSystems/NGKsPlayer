@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: features.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 // src/state/features.js
 // Simple feature flags with localStorage + a tiny React hook.
 // No external deps.
@@ -66,3 +79,4 @@ export function useFeaturesAll() {
   const snapshot = () => features.all()
   return useSyncExternalStore(subscribe, snapshot, snapshot)
 }
+

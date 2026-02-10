@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: FXMIDILearn.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useEffect, useCallback } from 'react';
 import { Radio, X, Check, Trash2 } from 'lucide-react';
 import './FXMIDILearn.css';
@@ -218,3 +231,4 @@ const FXMIDILearn = ({ effectType, parameters, onMIDIMapping, color }) => {
 };
 
 export default FXMIDILearn;
+

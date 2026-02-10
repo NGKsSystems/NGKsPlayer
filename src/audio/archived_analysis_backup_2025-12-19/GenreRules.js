@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: GenreRules.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 // GenreRules.js
 // Genre-aware validation with config override support
 
@@ -47,7 +60,7 @@ class GenreRules {
               bpm: Math.round(corrected),
               adjustment: `acoustic-harmonic-${r}x`,
               confidence: 0.8,
-              reason: `Acoustic correction: ${detectedBPM} → ${Math.round(
+              reason: `Acoustic correction: ${detectedBPM} â†’ ${Math.round(
                 corrected
               )} (${r}x ratio)`,
             };
@@ -128,3 +141,4 @@ class GenreRules {
 }
 
 export default GenreRules;
+

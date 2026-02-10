@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: LightingControlPanel.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * Professional Lighting Control Interface
  * 
@@ -217,7 +230,7 @@ const LightingControlPanel = ({ audioAnalyzer, beatDetector }) => {
     <div className="lighting-control-panel bg-gray-900 text-white p-6 rounded-lg">
       <div className="mb-6">
         <h2 className="text-2xl font-bold mb-4 flex items-center">
-          🎨 Professional Lighting Control
+          ðŸŽ¨ Professional Lighting Control
           <span className={`ml-3 px-2 py-1 rounded text-sm ${
             isConnected ? 'bg-green-600' : 'bg-red-600'
           }`}>
@@ -284,7 +297,7 @@ const LightingControlPanel = ({ audioAnalyzer, beatDetector }) => {
         
         {/* Effects Control */}
         <div className="bg-gray-800 p-4 rounded">
-          <h3 className="text-lg font-semibold mb-3">🎪 Effects</h3>
+          <h3 className="text-lg font-semibold mb-3">ðŸŽª Effects</h3>
           <div className="grid grid-cols-2 gap-2">
             {effects.map(effect => (
               <button
@@ -304,7 +317,7 @@ const LightingControlPanel = ({ audioAnalyzer, beatDetector }) => {
 
         {/* Color Presets */}
         <div className="bg-gray-800 p-4 rounded">
-          <h3 className="text-lg font-semibold mb-3">🎨 Color Presets</h3>
+          <h3 className="text-lg font-semibold mb-3">ðŸŽ¨ Color Presets</h3>
           <div className="grid grid-cols-4 gap-2">
             {colorPresets.map(color => (
               <button
@@ -324,7 +337,7 @@ const LightingControlPanel = ({ audioAnalyzer, beatDetector }) => {
 
       {/* Fixture Control */}
       <div className="mb-6">
-        <h3 className="text-lg font-semibold mb-3">🔆 Fixture Control</h3>
+        <h3 className="text-lg font-semibold mb-3">ðŸ”† Fixture Control</h3>
         <div className="grid grid-cols-2 gap-4">
           {fixtures.map(fixture => (
             <div key={fixture.id} className="bg-gray-800 p-3 rounded">
@@ -412,7 +425,7 @@ const LightingControlPanel = ({ audioAnalyzer, beatDetector }) => {
 
       {/* Channel Faders */}
       <div className="mb-6">
-        <h3 className="text-lg font-semibold mb-3">🎛️ Channel Faders (1-32)</h3>
+        <h3 className="text-lg font-semibold mb-3">ðŸŽ›ï¸ Channel Faders (1-32)</h3>
         <div className="grid grid-cols-8 gap-2">
           {channelValues.slice(0, 32).map((value, index) => (
             <div key={index} className="text-center">
@@ -434,19 +447,19 @@ const LightingControlPanel = ({ audioAnalyzer, beatDetector }) => {
 
       {/* Scene Control */}
       <div className="mb-6">
-        <h3 className="text-lg font-semibold mb-3">🎬 Scene Control</h3>
+        <h3 className="text-lg font-semibold mb-3">ðŸŽ¬ Scene Control</h3>
         <div className="flex gap-2 mb-3">
           <button 
             onClick={saveCurrentScene}
             className="px-4 py-2 bg-green-600 hover:bg-green-700 rounded transition-colors"
           >
-            💾 Save Scene
+            ðŸ’¾ Save Scene
           </button>
           <button 
             onClick={blackout}
             className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded transition-colors"
           >
-            ⚫ Blackout
+            âš« Blackout
           </button>
         </div>
         

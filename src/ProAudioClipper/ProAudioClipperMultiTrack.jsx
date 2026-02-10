@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: ProAudioClipperMultiTrack.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Play, Pause, Square, SkipBack, SkipForward, Volume2, Download, Save, FolderOpen, Scissors, MousePointer, ZoomIn, ZoomOut, RotateCcw, RotateCw, X, Plus } from 'lucide-react';
 import MultiTrackTimeline from './components/MultiTrackTimeline';
@@ -223,7 +236,7 @@ const ProAudioClipper = ({ onNavigate }) => {
             className="back-btn"
             title="Back to Home"
           >
-            ← Back
+            â† Back
           </button>
           <h1>Pro Audio Clipper</h1>
         </div>

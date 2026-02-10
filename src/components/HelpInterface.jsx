@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: HelpInterface.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState } from 'react';
 import './HelpInterface.css';
 import { PROFESSIONAL_QUICK_REFERENCE, generateQuickReferenceText } from '../utils/ProfessionalQuickReference.js';
@@ -139,7 +152,7 @@ const HelpInterface = ({ isOpen, onClose }) => {
     <div className="help-interface-overlay">
       <div className="help-interface">
         <div className="help-header">
-          <h2>🎵 Pro Audio Clipper - Professional Quick Reference</h2>
+          <h2>ðŸŽµ Pro Audio Clipper - Professional Quick Reference</h2>
           <div className="help-header-controls">
             <div className="help-search">
               <input
@@ -151,10 +164,10 @@ const HelpInterface = ({ isOpen, onClose }) => {
               />
             </div>
             <button onClick={exportHelp} className="help-export-btn" title="Export as Markdown">
-              📄 Export
+              ðŸ“„ Export
             </button>
             <button onClick={onClose} className="help-close-btn" title="Close Help">
-              ✕
+              âœ•
             </button>
           </div>
         </div>
@@ -164,25 +177,25 @@ const HelpInterface = ({ isOpen, onClose }) => {
             className={`help-tab ${activeTab === 'shortcuts' ? 'active' : ''}`}
             onClick={() => setActiveTab('shortcuts')}
           >
-            ⌨️ Shortcuts
+            âŒ¨ï¸ Shortcuts
           </button>
           <button 
             className={`help-tab ${activeTab === 'features' ? 'active' : ''}`}
             onClick={() => setActiveTab('features')}
           >
-            🚀 Features
+            ðŸš€ Features
           </button>
           <button 
             className={`help-tab ${activeTab === 'workflow' ? 'active' : ''}`}
             onClick={() => setActiveTab('workflow')}
           >
-            💡 Workflow
+            ðŸ’¡ Workflow
           </button>
           <button 
             className={`help-tab ${activeTab === 'system' ? 'active' : ''}`}
             onClick={() => setActiveTab('system')}
           >
-            ⚙️ System
+            âš™ï¸ System
           </button>
         </div>
 
@@ -230,30 +243,30 @@ const HelpInterface = ({ isOpen, onClose }) => {
                 .map(([key, section]) => renderSection(section))}
               
               <div className="help-section">
-                <h3>🎯 Professional Capabilities</h3>
+                <h3>ðŸŽ¯ Professional Capabilities</h3>
                 <div className="capabilities-grid">
                   <div className="capability-item">
-                    <h4>✅ Complete 10-Phase Upgrade</h4>
+                    <h4>âœ… Complete 10-Phase Upgrade</h4>
                     <p>All professional features implemented and integrated</p>
                   </div>
                   <div className="capability-item">
-                    <h4>🏆 Adobe Premiere Pro Level</h4>
+                    <h4>ðŸ† Adobe Premiere Pro Level</h4>
                     <p>Industry-standard audio editing capabilities</p>
                   </div>
                   <div className="capability-item">
-                    <h4>🎛️ Professional Mixing</h4>
+                    <h4>ðŸŽ›ï¸ Professional Mixing</h4>
                     <p>Advanced console with sends, returns, and automation</p>
                   </div>
                   <div className="capability-item">
-                    <h4>☁️ Real-time Collaboration</h4>
+                    <h4>â˜ï¸ Real-time Collaboration</h4>
                     <p>Cloud storage with live multi-user editing</p>
                   </div>
                   <div className="capability-item">
-                    <h4>🎹 MIDI Integration</h4>
+                    <h4>ðŸŽ¹ MIDI Integration</h4>
                     <p>Full MIDI support with virtual instruments</p>
                   </div>
                   <div className="capability-item">
-                    <h4>📊 Professional Analysis</h4>
+                    <h4>ðŸ“Š Professional Analysis</h4>
                     <p>Broadcast-standard metering and analysis tools</p>
                   </div>
                 </div>

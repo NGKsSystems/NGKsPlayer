@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: TransitionAnalyzer.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 // TransitionAnalyzer.js
 // Analyze transitions / difficulty between song segments
 
@@ -20,3 +33,4 @@ export function analyzeTransitionDifficulty(channelData, audioBuffer, sampleRate
 
   return { difficulty, description };
 }
+

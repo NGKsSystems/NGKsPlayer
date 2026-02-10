@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: albumArtExtractor.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * Album Art Extractor
  * 
@@ -156,7 +169,7 @@ export function generatePlaceholderArt(title = 'Unknown') {
   ctx.font = 'bold 200px Arial';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText('♪', 256, 256);
+  ctx.fillText('â™ª', 256, 256);
   
   return canvas.toDataURL('image/png');
 }
@@ -191,3 +204,4 @@ export default {
   getAlbumArtOrPlaceholder,
   isMetadataExtractionSupported
 };
+

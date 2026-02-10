@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: autodj-brain.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * NGKsPlayer Auto DJ Brain - Phase 2: Advanced Intelligence
  * Professional Mix Decision Engine for Seamless Auto DJ
@@ -595,3 +608,4 @@ class PerformanceAnalytics {
 
 // Export the main Auto DJ Brain
 export default AutoDJBrain;
+

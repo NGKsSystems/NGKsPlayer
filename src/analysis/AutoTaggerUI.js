@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: AutoTaggerUI.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * AutoTagger UI Interface - Standalone Analysis Control Panel
  * 
@@ -26,7 +39,7 @@ class AutoTaggerUI {
     container.innerHTML = `
       <div class="autotagger-panel">
         <div class="autotagger-header">
-          <h2>🎵 NGKs AutoTagger - Audio Analysis System</h2>
+          <h2>ðŸŽµ NGKs AutoTagger - Audio Analysis System</h2>
           <div class="version-info">v1.0 - Independent Analysis Module</div>
         </div>
         
@@ -652,7 +665,7 @@ class AutoTaggerUI {
       </div>
       <div class="result-data">
         <div class="data-group">
-          <h4>🎵 Basic Info</h4>
+          <h4>ðŸŽµ Basic Info</h4>
           <div class="data-item">
             <span class="data-label">BPM:</span>
             <span class="data-value">${result.bpm} (${(result.bpmConfidence * 100).toFixed(0)}%)</span>
@@ -672,7 +685,7 @@ class AutoTaggerUI {
         </div>
         
         <div class="data-group">
-          <h4>🔊 Audio Analysis</h4>
+          <h4>ðŸ”Š Audio Analysis</h4>
           <div class="data-item">
             <span class="data-label">Loudness:</span>
             <span class="data-value">${result.loudnessLUFS.toFixed(1)} LUFS</span>
@@ -688,7 +701,7 @@ class AutoTaggerUI {
         </div>
         
         <div class="data-group">
-          <h4>🎯 Cue Points</h4>
+          <h4>ðŸŽ¯ Cue Points</h4>
           <div class="data-item">
             <span class="data-label">Cue In:</span>
             <span class="data-value">${result.cueInTime.toFixed(1)}s</span>
@@ -704,7 +717,7 @@ class AutoTaggerUI {
         </div>
         
         <div class="data-group">
-          <h4>🎨 Mood & Style</h4>
+          <h4>ðŸŽ¨ Mood & Style</h4>
           <div class="data-item">
             <span class="data-label">Mood Tags:</span>
             <span class="data-value">${result.moodTags.join(', ')}</span>
@@ -795,3 +808,4 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 module.exports = AutoTaggerUI;
+

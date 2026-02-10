@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: ExportPanel.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState } from 'react';
 import { extractAudioClip, generateAudioFile, getSupportedAudioFormats } from '../utils/audioExtractor';
 import { formatTime } from '../utils/timeUtils';
@@ -119,7 +132,7 @@ const ExportPanel = ({ clips, audioBuffer, audioContext, onNavigate }) => {
   return (
     <div className="export-panel">
       <div className="panel-header">
-        <h3>📤 Export Clips</h3>
+        <h3>ðŸ“¤ Export Clips</h3>
       </div>
 
       <div className="export-options">
@@ -152,7 +165,7 @@ const ExportPanel = ({ clips, audioBuffer, audioContext, onNavigate }) => {
           className="btn-advanced-toggle"
           onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}
         >
-          {showAdvancedOptions ? '🔽' : '🔼'} Advanced Options
+          {showAdvancedOptions ? 'ðŸ”½' : 'ðŸ”¼'} Advanced Options
         </button>
 
         {showAdvancedOptions && (
@@ -210,7 +223,7 @@ const ExportPanel = ({ clips, audioBuffer, audioContext, onNavigate }) => {
           onClick={handleSelectAll}
           disabled={clips.length === 0}
         >
-          {selectedClips.size === clips.length ? '☐ Deselect All' : '☑ Select All'}
+          {selectedClips.size === clips.length ? 'â˜ Deselect All' : 'â˜‘ Select All'}
         </button>
 
         <div className="selection-list">
@@ -244,7 +257,7 @@ const ExportPanel = ({ clips, audioBuffer, audioContext, onNavigate }) => {
           }}
           disabled={exporting || selectedClips.size !== 1}
         >
-          📥 Export Selected
+          ðŸ“¥ Export Selected
         </button>
 
         <button
@@ -252,17 +265,18 @@ const ExportPanel = ({ clips, audioBuffer, audioContext, onNavigate }) => {
           onClick={handleBatchExport}
           disabled={exporting || selectedClips.size === 0}
         >
-          📦 Batch Export ({selectedClips.size})
+          ðŸ“¦ Batch Export ({selectedClips.size})
         </button>
       </div>
 
       <div className="export-info">
-        <p className="info-text">💡 Clips export as WAV format with original sample rate</p>
-        <p className="info-text">💾 Exports saved to your browser's default download location</p>
-        <p className="info-text">📁 Check your Downloads folder or browser settings to change save location</p>
+        <p className="info-text">ðŸ’¡ Clips export as WAV format with original sample rate</p>
+        <p className="info-text">ðŸ’¾ Exports saved to your browser's default download location</p>
+        <p className="info-text">ðŸ“ Check your Downloads folder or browser settings to change save location</p>
       </div>
     </div>
   );
 };
 
 export default ExportPanel;
+

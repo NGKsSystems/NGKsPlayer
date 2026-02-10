@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: DistortionEffects.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * Distortion Effects - Real WaveShaperNode implementations with custom curves
  */
@@ -293,3 +306,4 @@ export class BitCrusher extends BaseAudioEffect {
     super.destroy();
   }
 }
+

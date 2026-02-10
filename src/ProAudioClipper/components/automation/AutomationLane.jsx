@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: AutomationLane.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * Professional Automation Lane Component
  * 
@@ -266,7 +279,7 @@ const AutomationLane = ({
           marginLeft: 'auto',
           color: isRecording ? '#ff4444' : '#888'
         }}>
-          {isRecording ? '● REC' : '○'}
+          {isRecording ? 'â— REC' : 'â—‹'}
         </span>
       </div>
       <canvas

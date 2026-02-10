@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: TestingRobot.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * NGKs Player Testing Robot - Comprehensive Automated Testing System
  * 
@@ -50,7 +63,7 @@ export class TestingRobot {
       afterEach: []
     };
     
-    this.log('🤖 Testing Robot initialized');
+    this.log('ðŸ¤– Testing Robot initialized');
   }
 
   /**
@@ -65,7 +78,7 @@ export class TestingRobot {
       enabled: suite.enabled !== false,
       priority: suite.priority || 0
     });
-    this.log(`📝 Registered test suite: ${name}`);
+    this.log(`ðŸ“ Registered test suite: ${name}`);
   }
 
   /**
@@ -81,7 +94,7 @@ export class TestingRobot {
    * Run all registered test suites
    */
   async runAll() {
-    this.log('🚀 Starting comprehensive testing...');
+    this.log('ðŸš€ Starting comprehensive testing...');
     this.results.startTime = performance.now();
     
     try {
@@ -103,7 +116,7 @@ export class TestingRobot {
       await this.runHooks('afterAll');
       
     } catch (error) {
-      this.log('❌ Testing failed with error:', error);
+      this.log('âŒ Testing failed with error:', error);
       this.results.errors.push({
         type: 'system',
         message: error.message,
@@ -144,7 +157,7 @@ export class TestingRobot {
    * Run a single test suite
    */
   async runSuite(suite) {
-    this.log(`🧪 Running suite: ${suite.name}`);
+    this.log(`ðŸ§ª Running suite: ${suite.name}`);
     
     try {
       // Suite setup
@@ -159,7 +172,7 @@ export class TestingRobot {
       await suite.teardown();
       
     } catch (error) {
-      this.log(`❌ Suite ${suite.name} failed:`, error);
+      this.log(`âŒ Suite ${suite.name} failed:`, error);
       this.results.errors.push({
         type: 'suite',
         suite: suite.name,
@@ -199,7 +212,7 @@ export class TestingRobot {
       await this.runHooks('afterEach');
       
       this.results.passed++;
-      this.log(`✅ ${testId} (${duration.toFixed(2)}ms)`);
+      this.log(`âœ… ${testId} (${duration.toFixed(2)}ms)`);
       
       // Store performance data
       this.results.performance[testId] = {
@@ -209,7 +222,7 @@ export class TestingRobot {
       
     } catch (error) {
       this.results.failed++;
-      this.log(`❌ ${testId}: ${error.message}`);
+      this.log(`âŒ ${testId}: ${error.message}`);
       
       this.results.errors.push({
         type: 'test',
@@ -264,7 +277,7 @@ export class TestingRobot {
       await this.generateHTMLReport(jsonReport, reportDir, timestamp);
     }
     
-    this.log(`📊 Reports generated in: ${reportDir}`);
+    this.log(`ðŸ“Š Reports generated in: ${reportDir}`);
   }
 
   /**
@@ -305,7 +318,7 @@ export class TestingRobot {
 <body>
     <div class="container">
         <div class="header">
-            <h1 class="title">🤖 NGKs Player Test Report</h1>
+            <h1 class="title">ðŸ¤– NGKs Player Test Report</h1>
             <p class="subtitle">Comprehensive Automated Testing Results - ${jsonReport.timestamp}</p>
         </div>
         
@@ -333,7 +346,7 @@ export class TestingRobot {
         </div>
         
         <div class="section">
-            <h2 class="section-title">📊 Test Results Overview</h2>
+            <h2 class="section-title">ðŸ“Š Test Results Overview</h2>
             <div class="chart-container">
                 <canvas id="resultsChart"></canvas>
             </div>
@@ -341,7 +354,7 @@ export class TestingRobot {
         
         ${jsonReport.errors.length > 0 ? `
         <div class="section">
-            <h2 class="section-title">❌ Failed Tests & Errors</h2>
+            <h2 class="section-title">âŒ Failed Tests & Errors</h2>
             <ul class="error-list">
                 ${jsonReport.errors.map(error => `
                 <li class="error-item">
@@ -354,7 +367,7 @@ export class TestingRobot {
         ` : ''}
         
         <div class="section">
-            <h2 class="section-title">⚡ Performance Metrics</h2>
+            <h2 class="section-title">âš¡ Performance Metrics</h2>
             <div class="performance-grid">
                 ${Object.entries(jsonReport.performance).slice(0, 10).map(([test, perf]) => `
                 <div class="perf-item">
@@ -405,19 +418,19 @@ export class TestingRobot {
     const passRate = ((passed / total) * 100).toFixed(2);
     
     console.log('\n' + '='.repeat(60));
-    console.log('🤖 TESTING ROBOT SUMMARY');
+    console.log('ðŸ¤– TESTING ROBOT SUMMARY');
     console.log('='.repeat(60));
-    console.log(`📊 Total Tests: ${total}`);
-    console.log(`✅ Passed: ${passed}`);
-    console.log(`❌ Failed: ${failed}`);
-    console.log(`⏭️  Skipped: ${skipped}`);
-    console.log(`⏱️  Duration: ${(duration / 1000).toFixed(2)}s`);
-    console.log(`📈 Pass Rate: ${passRate}%`);
+    console.log(`ðŸ“Š Total Tests: ${total}`);
+    console.log(`âœ… Passed: ${passed}`);
+    console.log(`âŒ Failed: ${failed}`);
+    console.log(`â­ï¸  Skipped: ${skipped}`);
+    console.log(`â±ï¸  Duration: ${(duration / 1000).toFixed(2)}s`);
+    console.log(`ðŸ“ˆ Pass Rate: ${passRate}%`);
     
     if (failed > 0) {
-      console.log('\n❌ FAILED TESTS:');
+      console.log('\nâŒ FAILED TESTS:');
       this.results.errors.forEach(error => {
-        console.log(`   • ${error.test || error.suite}: ${error.message}`);
+        console.log(`   â€¢ ${error.test || error.suite}: ${error.message}`);
       });
     }
     

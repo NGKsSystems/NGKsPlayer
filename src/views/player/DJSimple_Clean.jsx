@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: DJSimple_Clean.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useEffect, useRef } from 'react';
 import '../styles/DJSimple.css';
 import { DualAudioDriver } from '../../audio/dualDriver.js';
@@ -275,7 +288,7 @@ function DJSimple({ onNavigate }) {
       <header className="dj-header">
         <div className="header-left">
           <button className="back-btn" onClick={() => onNavigate('Dashboard')}>
-            ← Back
+            â† Back
           </button>
         </div>
         <h1 className="header-title">NGKs DJ Professional</h1>
@@ -496,7 +509,7 @@ function DJSimple({ onNavigate }) {
               className={`play-btn ${isPlayingA ? 'playing' : ''}`}
               onClick={() => togglePlay('A')}
             >
-              {isPlayingA ? '⏸️' : '▶️'}
+              {isPlayingA ? 'â¸ï¸' : 'â–¶ï¸'}
             </button>
           </div>
 
@@ -529,7 +542,7 @@ function DJSimple({ onNavigate }) {
                 className={`record-btn ${isRecording ? 'recording' : ''}`}
                 onClick={toggleRecording}
               >
-                {isRecording ? '⏹️ STOP' : '🔴 REC'}
+                {isRecording ? 'â¹ï¸ STOP' : 'ðŸ”´ REC'}
               </button>
               {isRecording && (
                 <div className="recording-time">
@@ -876,7 +889,7 @@ function DJSimple({ onNavigate }) {
               className={`play-btn ${isPlayingB ? 'playing' : ''}`}
               onClick={() => togglePlay('B')}
             >
-              {isPlayingB ? '⏸️' : '▶️'}
+              {isPlayingB ? 'â¸ï¸' : 'â–¶ï¸'}
             </button>
           </div>
 
@@ -908,7 +921,7 @@ function DJSimple({ onNavigate }) {
           <div className="eq-16band deck-a-eq">
             <div className="eq-header" onClick={() => setEqACollapsed(!eqACollapsed)}>
               <h3>DECK A - 16 BAND EQ</h3>
-              <span className={`collapse-icon ${eqACollapsed ? 'collapsed' : ''}`}>▼</span>
+              <span className={`collapse-icon ${eqACollapsed ? 'collapsed' : ''}`}>â–¼</span>
             </div>
             {!eqACollapsed && (
               <div className="eq-bands-grid">
@@ -936,7 +949,7 @@ function DJSimple({ onNavigate }) {
           <div className="eq-16band deck-b-eq">
             <div className="eq-header" onClick={() => setEqBCollapsed(!eqBCollapsed)}>
               <h3>DECK B - 16 BAND EQ</h3>
-              <span className={`collapse-icon ${eqBCollapsed ? 'collapsed' : ''}`}>▼</span>
+              <span className={`collapse-icon ${eqBCollapsed ? 'collapsed' : ''}`}>â–¼</span>
             </div>
             {!eqBCollapsed && (
               <div className="eq-bands-grid">

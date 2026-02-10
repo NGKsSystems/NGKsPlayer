@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: RestorationEffects.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * Restoration Effects - Real minimal DSP implementations
  * 
@@ -186,7 +199,7 @@ export class ClickRemoval extends BaseAudioEffect {
     this.lowpass2.frequency.value = 10000;
     this.lowpass2.Q.value = 0.707;
     
-    // Chain: compressor → lowpass filters
+    // Chain: compressor â†’ lowpass filters
     this.compressor.connect(this.lowpass1);
     this.lowpass1.connect(this.lowpass2);
     this.setProcessingChain(this.compressor, this.lowpass2);
@@ -284,3 +297,4 @@ export class Declipping extends BaseAudioEffect {
     super.destroy();
   }
 }
+

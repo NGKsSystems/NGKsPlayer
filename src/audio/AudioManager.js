@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: AudioManager.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 // src/analysis/AudioManager.js - HTML5 Audio playback for DJ decks
 // Fixed: analyzer initialization moved inside constructor to avoid top-level this undefined
 
@@ -574,3 +587,4 @@ class AudioManager {
 }
 
 export default AudioManager;
+

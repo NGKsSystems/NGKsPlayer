@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: MasterSection.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useRef, useEffect } from 'react';
 import ProfessionalFader from './ProfessionalFader';
 import ProfessionalKnob from './ProfessionalKnob';
@@ -289,7 +302,7 @@ const MasterSection = ({
             <div className="meter-mark">-18</div>
             <div className="meter-mark">-24</div>
             <div className="meter-mark">-30</div>
-            <div className="meter-mark">-∞</div>
+            <div className="meter-mark">-âˆž</div>
           </div>
           
           <div className="level-bars">
@@ -329,7 +342,7 @@ const MasterSection = ({
           <div className="meter-readout">
             <span className="meter-label">RMS</span>
             <span className="meter-value">
-              {masterLevels.rms > -60 ? `${masterLevels.rms.toFixed(1)}` : '-∞'}
+              {masterLevels.rms > -60 ? `${masterLevels.rms.toFixed(1)}` : '-âˆž'}
             </span>
           </div>
           
@@ -383,7 +396,7 @@ const MasterSection = ({
         </div>
         
         <div className="fader-readout">
-          {masterGain > -60 ? `${masterGain.toFixed(1)}dB` : '-∞'}
+          {masterGain > -60 ? `${masterGain.toFixed(1)}dB` : '-âˆž'}
         </div>
       </div>
     </div>

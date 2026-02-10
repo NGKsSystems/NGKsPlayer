@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: useCurrentTrack.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { pickNextIndex } from '../utils/randomizer';
 
@@ -72,3 +85,4 @@ export function useCurrentTrack(tracks, playMode) {
     updateCurrentTrack
   };
 }
+

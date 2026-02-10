@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: LightingIntegration.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * NGKs Player Lighting Integration
  * Connects lighting controller to audio analysis system
@@ -63,7 +76,7 @@ export class LightingIntegration {
       'D minor': { r: 139, g: 69, b: 19 }       // Saddle Brown
     };
     
-    console.log('🎭 Lighting integration initialized');
+    console.log('ðŸŽ­ Lighting integration initialized');
   }
   
   /**
@@ -83,10 +96,10 @@ export class LightingIntegration {
       // Set up event listeners for audio analysis
       this.setupAudioAnalysisListeners();
       
-      console.log('🎯 Lighting integration initialized successfully');
+      console.log('ðŸŽ¯ Lighting integration initialized successfully');
       return true;
     } catch (error) {
-      console.error('❌ Failed to initialize lighting integration:', error);
+      console.error('âŒ Failed to initialize lighting integration:', error);
       return false;
     }
   }
@@ -115,11 +128,11 @@ export class LightingIntegration {
       );
       
       this.isConnected = true;
-      console.log('🎵 Audio source connected to lighting system');
+      console.log('ðŸŽµ Audio source connected to lighting system');
       
       return true;
     } catch (error) {
-      console.error('❌ Failed to connect audio source:', error);
+      console.error('âŒ Failed to connect audio source:', error);
       return false;
     }
   }
@@ -161,7 +174,7 @@ export class LightingIntegration {
   onTempoChange(bpm, confidence) {
     if (!this.beatSyncEnabled || !this.lightingController) return;
     
-    console.log(`🎵 Tempo: ${bpm} BPM (confidence: ${(confidence * 100).toFixed(1)}%)`);
+    console.log(`ðŸŽµ Tempo: ${bpm} BPM (confidence: ${(confidence * 100).toFixed(1)}%)`);
     
     // Adjust effect speeds based on tempo
     if (bpm < 100) {
@@ -208,7 +221,7 @@ export class LightingIntegration {
   onEnergyChange(energy) {
     if (!this.effectSyncEnabled || !this.lightingController) return;
     
-    console.log(`⚡ Energy: ${(energy * 100).toFixed(1)}%`);
+    console.log(`âš¡ Energy: ${(energy * 100).toFixed(1)}%`);
     
     // Select effect based on energy level
     let effectType;
@@ -235,7 +248,7 @@ export class LightingIntegration {
   onKeyChange(key) {
     if (!this.colorSyncEnabled || !this.lightingController) return;
     
-    console.log(`🎼 Key: ${key}`);
+    console.log(`ðŸŽ¼ Key: ${key}`);
     
     const keyColor = this.getCurrentKeyColor();
     
@@ -264,7 +277,7 @@ export class LightingIntegration {
     panel.className = 'lighting-panel';
     panel.innerHTML = `
       <div class="lighting-header">
-        <h3>🎭 Lighting Control</h3>
+        <h3>ðŸŽ­ Lighting Control</h3>
         <div class="lighting-status">
           <span class="status-indicator ${this.isConnected ? 'connected' : 'disconnected'}"></span>
           <span>${this.isConnected ? 'Connected' : 'Disconnected'}</span>
@@ -360,7 +373,7 @@ export class LightingIntegration {
   enableAutoMode() {
     if (!this.lightingController) return;
     
-    console.log('🤖 Auto lighting mode enabled');
+    console.log('ðŸ¤– Auto lighting mode enabled');
     
     // Start with key-based color
     const keyColor = this.getCurrentKeyColor();
@@ -393,7 +406,7 @@ export class LightingIntegration {
    */
   async connectToProfessionalEngine(audioEngine) {
     if (!audioEngine) {
-      console.warn('⚠️ No audio engine provided');
+      console.warn('âš ï¸ No audio engine provided');
       return false;
     }
     
@@ -417,10 +430,10 @@ export class LightingIntegration {
         }
       });
       
-      console.log('🎯 Connected to NGKs Player professional audio engine');
+      console.log('ðŸŽ¯ Connected to NGKs Player professional audio engine');
       return true;
     } catch (error) {
-      console.error('❌ Failed to connect to professional audio engine:', error);
+      console.error('âŒ Failed to connect to professional audio engine:', error);
       return false;
     }
   }
@@ -439,7 +452,7 @@ export class LightingIntegration {
     }
     
     this.isConnected = false;
-    console.log('🔌 Lighting integration disconnected');
+    console.log('ðŸ”Œ Lighting integration disconnected');
   }
   
   /**

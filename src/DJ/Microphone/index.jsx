@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: index.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useEffect } from 'react';
 import VerticalSlider from '../Common/VerticalSlider';
 import Knob from '../Common/Knob';
@@ -81,7 +94,7 @@ const Microphone = ({ audioManager, micSettings = {}, onMicChange = () => {} }) 
             onClick={handleMicToggle}
           >
             <div className="toggle-icon">
-              {micState.enabled ? '🎤' : '🔇'}
+              {micState.enabled ? 'ðŸŽ¤' : 'ðŸ”‡'}
             </div>
             <div className="toggle-label">
               {micState.enabled ? 'ON' : 'OFF'}
@@ -123,7 +136,7 @@ const Microphone = ({ audioManager, micSettings = {}, onMicChange = () => {} }) 
 
       {/* Routing Info */}
       <div className="mic-routing-info">
-        <span className="routing-label">→ LEFT CHANNEL</span>
+        <span className="routing-label">â†’ LEFT CHANNEL</span>
       </div>
     </div>
   );

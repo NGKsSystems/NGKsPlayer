@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: FXRoutingSelector.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React from 'react';
 import { GitBranch } from 'lucide-react';
 import './FXRoutingSelector.css';
@@ -25,3 +38,4 @@ const FXRoutingSelector = ({ currentTarget = 'A', onTargetChange, availableTarge
 };
 
 export default FXRoutingSelector;
+

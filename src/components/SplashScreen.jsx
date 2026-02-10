@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: SplashScreen.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useEffect, useState } from 'react';
 import './SplashScreen.css';
 
@@ -47,3 +60,4 @@ const SplashScreen = ({ onComplete }) => {
 };
 
 export default SplashScreen;
+

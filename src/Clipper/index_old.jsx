@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: index_old.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useRef, useEffect } from 'react';
 import { formatTime } from './utils/timeUtils';
 import './styles.css';
@@ -279,7 +292,7 @@ const ProClipperV2 = ({ onNavigate }) => {
         </svg>
         
         <div style={{ color: '#888', marginTop: '10px' }}>
-          Click on waveform to seek • Current: {formatTime(playPosition * 1000)}
+          Click on waveform to seek â€¢ Current: {formatTime(playPosition * 1000)}
           {audioData && ` / ${formatTime(audioData.duration * 1000)}`}
         </div>
       </div>
@@ -301,12 +314,12 @@ const ProClipperV2 = ({ onNavigate }) => {
   return (
     <div style={{ padding: '20px', background: '#0a0a0a', color: '#fff', minHeight: '100vh' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-        <h1>🎬 Pro Clipper V2 - HEIGHT TEST 1200PX</h1>
+        <h1>ðŸŽ¬ Pro Clipper V2 - HEIGHT TEST 1200PX</h1>
         <button 
           onClick={() => onNavigate?.('library')}
           style={{ padding: '10px 20px', background: '#333', color: '#fff', border: 'none', borderRadius: '5px' }}
         >
-          ← Back to Library
+          â† Back to Library
         </button>
       </div>
 
@@ -329,14 +342,14 @@ const ProClipperV2 = ({ onNavigate }) => {
             onClick={togglePlay}
             style={{ padding: '15px 30px', marginRight: '10px', background: playing ? '#ef4444' : '#00aa00', color: '#fff', border: 'none', borderRadius: '5px', fontSize: '16px' }}
           >
-            {playing ? '⏸ Pause' : '▶ Play'}
+            {playing ? 'â¸ Pause' : 'â–¶ Play'}
           </button>
           
           <button 
             onClick={stopPlay}
             style={{ padding: '15px 30px', marginRight: '20px', background: '#666', color: '#fff', border: 'none', borderRadius: '5px', fontSize: '16px' }}
           >
-            ⏹ Stop
+            â¹ Stop
           </button>
           
           <button 
@@ -386,7 +399,7 @@ const ProClipperV2 = ({ onNavigate }) => {
                 <div>
                   <strong>{clip.name}</strong>
                   <div style={{ color: '#888', fontSize: '14px' }}>
-                    {formatTime(clip.start * 1000)} → {formatTime(clip.end * 1000)} 
+                    {formatTime(clip.start * 1000)} â†’ {formatTime(clip.end * 1000)} 
                     (Duration: {formatTime(clip.duration * 1000)})
                   </div>
                 </div>
@@ -406,3 +419,4 @@ const ProClipperV2 = ({ onNavigate }) => {
 };
 
 export default ProClipperV2;
+

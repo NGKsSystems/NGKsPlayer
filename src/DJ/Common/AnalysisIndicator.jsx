@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: AnalysisIndicator.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 // Analysis Indicator - Shows when audio analysis is in progress
 import React from 'react';
 import './AnalysisIndicator.css';
@@ -14,3 +27,4 @@ const AnalysisIndicator = ({ isAnalyzing, message = 'Analyzing...' }) => {
 };
 
 export default AnalysisIndicator;
+

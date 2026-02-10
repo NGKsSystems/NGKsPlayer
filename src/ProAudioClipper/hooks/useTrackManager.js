@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: useTrackManager.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import { useState, useCallback, useRef } from 'react';
 
 /**
@@ -254,10 +267,10 @@ export const useTrackManager = () => {
 
   // Reorder tracks
   const reorderTracks = useCallback((fromIndex, toIndex) => {
-    console.log(`🔄 Reordering tracks: ${fromIndex} -> ${toIndex}`);
+    console.log(`ðŸ”„ Reordering tracks: ${fromIndex} -> ${toIndex}`);
     setTracks(prev => {
       if (fromIndex < 0 || fromIndex >= prev.length || toIndex < 0 || toIndex >= prev.length) {
-        console.warn('⚠️ Invalid track reorder indices');
+        console.warn('âš ï¸ Invalid track reorder indices');
         return prev;
       }
       
@@ -271,7 +284,7 @@ export const useTrackManager = () => {
         order: index
       }));
       
-      console.log('✅ Tracks reordered:', updatedTracks.map(t => t.name));
+      console.log('âœ… Tracks reordered:', updatedTracks.map(t => t.name));
       return updatedTracks;
     });
   }, []);
@@ -375,7 +388,7 @@ export const useTrackManager = () => {
   }, [tracks]);
 
   // Undo/Redo Support Methods
-  // 🧪 ROBOT TEST: State management must be atomic and reversible
+  // ðŸ§ª ROBOT TEST: State management must be atomic and reversible
 
   // Add track (for undo/redo system)
   const addTrack = useCallback((track) => {

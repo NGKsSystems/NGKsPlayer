@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: index.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import './styles.css'; // Deck D - Green theme
 
@@ -65,7 +78,7 @@ const DeckD = ({
 
     const updateVisualization = () => {
       // 1) TIME-DOMAIN "waveform" bars (post-fader, post-EQ analyser)
-      const timeData = audioManager.getTimeDomainData?.('B'); // Float32 [−1..1] or Uint8 [0..255]
+      const timeData = audioManager.getTimeDomainData?.('B'); // Float32 [âˆ’1..1] or Uint8 [0..255]
       if (timeData && timeData.length) {
         const arr = (timeData instanceof Float32Array)
           ? timeData
@@ -78,7 +91,7 @@ const DeckD = ({
             const s = Math.abs(arr[i * samplesPerBar + j] || 0);
             if (s > peak) peak = s;
           }
-          // map peak (0..1) → percent height
+          // map peak (0..1) â†’ percent height
           return Math.min(100, Math.max(2, peak * 100));
         });
         setWaveformData(bars);
@@ -302,7 +315,7 @@ const DeckD = ({
                 marginLeft: '4px'
               }}
             >
-              ↻
+              â†»
             </button>
           )}
         </div>
@@ -354,7 +367,7 @@ const DeckD = ({
               onClick={handleSkipBackward}
               title="Skip backward 30s"
             >
-              ⏮️
+              â®ï¸
             </button>
             
             <button 
@@ -362,7 +375,7 @@ const DeckD = ({
               onClick={handlePlayPause}
               title={isPlaying ? 'Pause' : 'Play'}
             >
-              {isPlaying ? '⏸️' : '▶️'}
+              {isPlaying ? 'â¸ï¸' : 'â–¶ï¸'}
             </button>
             
             <button 
@@ -370,7 +383,7 @@ const DeckD = ({
               onClick={handleSkipForward}
               title="Skip forward 30s"
             >
-              ⏭️
+              â­ï¸
             </button>
 
             <button 
@@ -479,10 +492,11 @@ const DeckD = ({
         onMouseDown={handleResizeMouseDown}
         title="Drag to resize"
       >
-        ⟲
+        âŸ²
       </div>
     </div>
   );
 };
 
 export default DeckD;
+

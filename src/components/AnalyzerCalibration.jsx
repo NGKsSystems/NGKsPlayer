@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: AnalyzerCalibration.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * Analyzer Calibration Panel
  * 
@@ -176,13 +189,13 @@ export default function AnalyzerCalibration({
           <Settings size={24} />
           <h2>Analyzer Calibration</h2>
         </div>
-        <button className="calibration-close" onClick={onClose}>×</button>
+        <button className="calibration-close" onClick={onClose}>Ã—</button>
       </div>
       
       <div className="calibration-body">
         {/* File Selection */}
         <div className="calibration-section">
-          <h3>📁 Load Calibration Tracks</h3>
+          <h3>ðŸ“ Load Calibration Tracks</h3>
           <p className="calibration-hint">
             Select audio files from your calibration set. 
             Files will be matched against {CALIBRATION_TRACKS.length} known reference tracks.
@@ -228,7 +241,7 @@ export default function AnalyzerCalibration({
         {/* Progress Results */}
         {results.length > 0 && (
           <div className="calibration-section">
-            <h3>📊 Analysis Results</h3>
+            <h3>ðŸ“Š Analysis Results</h3>
             <div className="calibration-results">
               {results.map((result, idx) => {
                 const { file, expected, detected, bpmAccuracy, keyAccuracy, status } = result;
@@ -247,7 +260,7 @@ export default function AnalyzerCalibration({
                         <div className="result-row">
                           <span className="result-label">BPM:</span>
                           <span className="result-expected">{expected.bpm}</span>
-                          <span className="result-arrow">→</span>
+                          <span className="result-arrow">â†’</span>
                           <span className={`result-detected ${getStatusColor(bpmAccuracy)}`}>
                             {detected?.bpm || 'N/A'}
                           </span>
@@ -261,7 +274,7 @@ export default function AnalyzerCalibration({
                           <span className="result-expected">
                             {expected.key} {expected.mode}
                           </span>
-                          <span className="result-arrow">→</span>
+                          <span className="result-arrow">â†’</span>
                           <span className={`result-detected ${getStatusColor(keyAccuracy)}`}>
                             {detected?.key ? `${detected.key} ${detected.mode}` : 'N/A'}
                           </span>
@@ -287,7 +300,7 @@ export default function AnalyzerCalibration({
         {/* Final Report */}
         {report && (
           <div className="calibration-section calibration-report">
-            <h3>🎯 Calibration Report</h3>
+            <h3>ðŸŽ¯ Calibration Report</h3>
             
             <div className="report-summary">
               <div className="report-stat">
@@ -365,7 +378,7 @@ export default function AnalyzerCalibration({
             {/* Recommendations */}
             {report.recommendations.length > 0 && (
               <div className="report-recommendations">
-                <h4>💡 Recommendations</h4>
+                <h4>ðŸ’¡ Recommendations</h4>
                 <ul>
                   {report.recommendations.map((rec, idx) => (
                     <li key={idx}>{rec}</li>
@@ -376,7 +389,7 @@ export default function AnalyzerCalibration({
             
             {/* Export Button */}
             <button className="calibration-export-btn" onClick={exportReport}>
-              📄 Export Detailed Report
+              ðŸ“„ Export Detailed Report
             </button>
           </div>
         )}
@@ -384,3 +397,4 @@ export default function AnalyzerCalibration({
     </div>
   );
 }
+

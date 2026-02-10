@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: MarkerPanel.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useCallback } from 'react';
 import './MarkerPanel.css';
 
@@ -153,11 +166,11 @@ const MarkerPanel = ({
             onClick={handleExport}
             title="Export Markers & Loops"
           >
-            ↗
+            â†—
           </button>
           
           <label className="action-btn import" title="Import Markers & Loops">
-            ↙
+            â†™
             <input 
               type="file" 
               accept=".json"
@@ -171,7 +184,7 @@ const MarkerPanel = ({
             onClick={onClearAll}
             title="Clear All"
           >
-            ×
+            Ã—
           </button>
         </div>
       </div>
@@ -238,7 +251,7 @@ const MarkerPanel = ({
                       }}
                       title="Jump to marker"
                     >
-                      →
+                      â†’
                     </button>
                     <button 
                       onClick={(e) => {
@@ -247,7 +260,7 @@ const MarkerPanel = ({
                       }}
                       title="Edit marker"
                     >
-                      ✏
+                      âœ
                     </button>
                     <button 
                       onClick={(e) => {
@@ -257,7 +270,7 @@ const MarkerPanel = ({
                       title="Delete marker"
                       className="delete"
                     >
-                      ×
+                      Ã—
                     </button>
                   </div>
                   
@@ -355,7 +368,7 @@ const MarkerPanel = ({
                       }}
                       title="Toggle loop playback"
                     >
-                      🔄
+                      ðŸ”„
                     </button>
                     <button 
                       onClick={(e) => {
@@ -364,7 +377,7 @@ const MarkerPanel = ({
                       }}
                       title="Edit loop"
                     >
-                      ✏
+                      âœ
                     </button>
                     <button 
                       onClick={(e) => {
@@ -374,7 +387,7 @@ const MarkerPanel = ({
                       title="Delete loop"
                       className="delete"
                     >
-                      ×
+                      Ã—
                     </button>
                   </div>
                   

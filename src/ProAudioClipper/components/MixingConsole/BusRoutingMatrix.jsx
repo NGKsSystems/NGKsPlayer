@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: BusRoutingMatrix.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState } from 'react';
 
 const BusRoutingMatrix = ({ 
@@ -82,7 +95,7 @@ const BusRoutingMatrix = ({
                     title={disabled ? 'Cannot route to self' : `Route ${source.name} to ${destination.name}`}
                   >
                     <div className="cell-indicator">
-                      {routed ? '●' : '○'}
+                      {routed ? 'â—' : 'â—‹'}
                     </div>
                   </div>
                 );

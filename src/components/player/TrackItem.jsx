@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: TrackItem.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React from 'react';
 
 /**
@@ -9,7 +22,7 @@ export function TrackItem({ track, actualIndex, currentIndex, onPlay, onContextM
   return (
     <div
       onClick={() => {
-        console.log('🎵 TrackItem clicked:', track?.title, 'onPlay:', typeof onPlay)
+        console.log('ðŸŽµ TrackItem clicked:', track?.title, 'onPlay:', typeof onPlay)
         onPlay(track, actualIndex)
       }}
       onContextMenu={(e) => onContextMenu(e, track)}
@@ -78,7 +91,7 @@ export function TrackItem({ track, actualIndex, currentIndex, onPlay, onContextM
               className="text-xs text-red-200 bg-red-900 px-2 py-1 rounded border border-red-600"
               title="This track has playback errors and may need to be redownloaded"
             >
-              ⚠️ Corrupted
+              âš ï¸ Corrupted
             </div>
           )}
           {track.duration && (
@@ -88,7 +101,7 @@ export function TrackItem({ track, actualIndex, currentIndex, onPlay, onContextM
           )}
           {track.bpm && (
             <div className="text-xs text-blue-200 bg-blue-900 px-2 py-1 rounded border border-blue-600">
-              ♩ {track.bpm}
+              â™© {track.bpm}
             </div>
           )}
           {track.key && (
@@ -98,7 +111,7 @@ export function TrackItem({ track, actualIndex, currentIndex, onPlay, onContextM
           )}
           {track.energy !== null && track.energy !== undefined && (
             <div className="text-xs text-orange-200 bg-orange-900 px-2 py-1 rounded border border-orange-600">
-              ⚡ {Math.round(track.energy)}
+              âš¡ {Math.round(track.energy)}
             </div>
           )}
         </div>
@@ -106,3 +119,4 @@ export function TrackItem({ track, actualIndex, currentIndex, onPlay, onContextM
     </div>
   );
 }
+

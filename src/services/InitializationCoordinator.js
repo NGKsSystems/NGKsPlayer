@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: InitializationCoordinator.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * Initialization Coordinator
  * 
@@ -27,7 +40,7 @@ class InitializationCoordinator {
     const changed = this.readyStates[system] !== ready;
     this.readyStates[system] = ready;
     
-    console.log(`[InitCoordinator] ${system}: ${ready ? '✅ READY' : '❌ NOT READY'}`);
+    console.log(`[InitCoordinator] ${system}: ${ready ? 'âœ… READY' : 'âŒ NOT READY'}`);
     
     if (changed) {
       this.notifyListeners();
@@ -140,3 +153,4 @@ class InitializationCoordinator {
 const initCoordinator = new InitializationCoordinator();
 
 export default initCoordinator;
+

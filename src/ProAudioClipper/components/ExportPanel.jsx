@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: ExportPanel.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useCallback } from 'react';
 import { Download, Settings, CheckCircle, X, FileAudio, Loader, Music, Disc } from 'lucide-react';
 import { useExportEngine } from '../hooks/useExportEngine';

@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: PlaylistSubmenu.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React from 'react';
 
 /**
@@ -25,7 +38,7 @@ export function PlaylistSubmenu({
             onClick={() => setShowNewPlaylistInput(true)}
             className="w-full text-left px-4 py-2 hover:bg-gray-700 text-sm flex items-center gap-2 font-semibold text-green-400"
           >
-            <span>➕</span> New Playlist
+            <span>âž•</span> New Playlist
           </button>
         ) : (
           <div className="px-4 py-2">
@@ -84,3 +97,4 @@ export function PlaylistSubmenu({
     </div>
   );
 }
+

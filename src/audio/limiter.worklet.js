@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: limiter.worklet.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 // src/audio/limiter.worklet.js
 class LookaheadLimiter extends AudioWorkletProcessor {
   static get parameterDescriptors() {
@@ -61,3 +74,4 @@ class LookaheadLimiter extends AudioWorkletProcessor {
   }
 }
 registerProcessor('lookahead-limiter', LookaheadLimiter);
+

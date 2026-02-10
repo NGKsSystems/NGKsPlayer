@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: BasicHTMLTimeline.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React from 'react';
 import { timeToPixels, pixelsToTime } from '../timeline/timelineMath.js';
 import SimpleWaveform from './SimpleWaveform';
@@ -72,7 +85,7 @@ const BasicHTMLTimeline = React.forwardRef(({
         fontWeight: 'bold',
         fontSize: '14px'
       }}>
-        🎵 Pro Audio Timeline | Tracks: {tracks.length} | Tool: {selectedTool} | Time: {(currentTime || 0).toFixed(2)}s
+        ðŸŽµ Pro Audio Timeline | Tracks: {tracks.length} | Tool: {selectedTool} | Time: {(currentTime || 0).toFixed(2)}s
       </div>
 
       {/* Time Ruler */}
@@ -149,7 +162,7 @@ const BasicHTMLTimeline = React.forwardRef(({
             color: '#666',
             fontSize: '16px'
           }}>
-            <div style={{ fontSize: '48px', marginBottom: '16px' }}>🎵</div>
+            <div style={{ fontSize: '48px', marginBottom: '16px' }}>ðŸŽµ</div>
             <div>No tracks yet. Click "Add Audio Track" to get started!</div>
           </div>
         ) : (

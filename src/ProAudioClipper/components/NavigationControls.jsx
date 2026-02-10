@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: NavigationControls.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import './NavigationControls.css';
 
@@ -206,7 +219,7 @@ const NavigationControls = ({
           }}
           title="Stop (Enter)"
         >
-          ⏹
+          â¹
         </button>
         
         <button 
@@ -214,23 +227,23 @@ const NavigationControls = ({
           onClick={isPlaying ? onPause : onPlay}
           title="Play/Pause (Space)"
         >
-          {isPlaying ? '⏸' : '▶'}
+          {isPlaying ? 'â¸' : 'â–¶'}
         </button>
         
         <button 
           className="transport-btn previous-marker"
           onClick={() => onJumpToPrevious?.(currentTime)}
-          title="Previous Marker (Ctrl+←)"
+          title="Previous Marker (Ctrl+â†)"
         >
-          ⏮
+          â®
         </button>
         
         <button 
           className="transport-btn next-marker"
           onClick={() => onJumpToNext?.(currentTime)}
-          title="Next Marker (Ctrl+→)"
+          title="Next Marker (Ctrl+â†’)"
         >
-          ⏭
+          â­
         </button>
       </div>
 
@@ -331,8 +344,8 @@ const NavigationControls = ({
       {/* Keyboard Shortcuts Info */}
       <div className="shortcuts-info">
         <div className="shortcut">Space: Play/Pause</div>
-        <div className="shortcut">←/→: Frame Step</div>
-        <div className="shortcut">Ctrl+←/→: Markers</div>
+        <div className="shortcut">â†/â†’: Frame Step</div>
+        <div className="shortcut">Ctrl+â†/â†’: Markers</div>
         <div className="shortcut">Home/End: Start/End</div>
       </div>
     </div>

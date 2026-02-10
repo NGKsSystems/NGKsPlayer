@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: BpmAnalyzer.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 // BpmAnalyzer.js
 import {
   getMonoData,
@@ -182,3 +195,4 @@ export function detectBPMDrift(channelData, sampleRate, bpm, opts = {}) {
     return { startBpm: bpm, endBpm: bpm, drift: 0 };
   }
 }
+

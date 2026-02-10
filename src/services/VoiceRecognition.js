@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: VoiceRecognition.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * Voice Recognition Service for NGKsPlayer
  * Supports commands like:
@@ -41,13 +54,13 @@ class VoiceRecognition {
     // Event handlers
     this.recognition.onstart = () => {
       this.isListening = true;
-      console.log('🎤 Voice recognition started');
+      console.log('ðŸŽ¤ Voice recognition started');
       if (this.onStartCallback) this.onStartCallback();
     };
 
     this.recognition.onend = () => {
       this.isListening = false;
-      console.log('🎤 Voice recognition ended');
+      console.log('ðŸŽ¤ Voice recognition ended');
       if (this.onEndCallback) this.onEndCallback();
       
       // Auto-restart if in continuous mode
@@ -88,7 +101,7 @@ class VoiceRecognition {
       const transcript = result.transcript.toLowerCase().trim();
       const confidence = result.confidence;
 
-      console.log(`🎤 Heard: "${transcript}" (confidence: ${(confidence * 100).toFixed(1)}%)`);
+      console.log(`ðŸŽ¤ Heard: "${transcript}" (confidence: ${(confidence * 100).toFixed(1)}%)`);
 
       if (confidence > 0.5) {
         this.parseCommand(transcript);
@@ -269,3 +282,4 @@ class VoiceRecognition {
 const voiceRecognition = new VoiceRecognition();
 
 export default voiceRecognition;
+

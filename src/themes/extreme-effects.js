@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: extreme-effects.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * EXTREME VISUAL EFFECTS ENGINE
  * For NGKs Player "Cyber Bloodbath" Theme
@@ -21,7 +34,7 @@ class ExtremeVisualEffects {
   init() {
     this.createCanvas();
     this.setupEventListeners();
-    console.log('🩸 Extreme Visual Effects Engine Initialized');
+    console.log('ðŸ©¸ Extreme Visual Effects Engine Initialized');
   }
 
   createCanvas() {
@@ -56,7 +69,7 @@ class ExtremeVisualEffects {
   setupEventListeners() {
     // Listen for theme changes
     window.addEventListener('themeChange', (e) => {
-      console.log('🎨 Theme change event received:', e.detail);
+      console.log('ðŸŽ¨ Theme change event received:', e.detail);
       
       // Always clean up previous effects first
       this.cleanupAllEffects();
@@ -67,15 +80,15 @@ class ExtremeVisualEffects {
       // Apply RGB split filter for Chromatic Chaos
       // if (this.currentTheme === 'chromaticChaos') {
       //   document.body.style.filter = 'url(#rgb-split-filter)';
-      //   console.log('🎨 Applied RGB split filter for Chromatic Chaos');
+      //   console.log('ðŸŽ¨ Applied RGB split filter for Chromatic Chaos');
       // }
       
       // Check if new theme needs extreme effects
       if (e.detail && (e.detail.particles || e.detail.effects.particles || e.detail.effects.bloodRain)) {
-        console.log('🎨 Activating extreme effects for theme:', this.currentTheme);
+        console.log('ðŸŽ¨ Activating extreme effects for theme:', this.currentTheme);
         this.activate();
       } else {
-        console.log('🎨 Deactivating extreme effects');
+        console.log('ðŸŽ¨ Deactivating extreme effects');
         this.deactivate();
       }
     });
@@ -107,7 +120,7 @@ class ExtremeVisualEffects {
       this.setupAuroraTextEffects();
     }
     
-    console.log('🩸 Extreme Visual Effects Engine Activated for:', this.currentTheme);
+    console.log('ðŸ©¸ Extreme Visual Effects Engine Activated for:', this.currentTheme);
   }
 
   deactivate() {
@@ -119,7 +132,7 @@ class ExtremeVisualEffects {
     // Clean up ALL theme effects
     this.cleanupAllEffects();
     
-    console.log('🎨 Extreme Visual Effects deactivated');
+    console.log('ðŸŽ¨ Extreme Visual Effects deactivated');
   }
 
   cleanupAuroraEffects() {
@@ -182,7 +195,7 @@ class ExtremeVisualEffects {
     document.documentElement.style.removeProperty('--beat-intensity');
     document.documentElement.style.removeProperty('--chaos-shift');
     
-    console.log('🧹 All extreme effects cleaned up');
+    console.log('ðŸ§¹ All extreme effects cleaned up');
   }
 
   startRandomDripping() {
@@ -1381,7 +1394,7 @@ class ExtremeVisualEffects {
   nightmareFaceFlicker() {
     // Subliminal demonic face flash
     const face = document.createElement('div');
-    face.innerHTML = '👹';
+    face.innerHTML = 'ðŸ‘¹';
     face.style.cssText = `
       position: fixed;
       top: 50%;

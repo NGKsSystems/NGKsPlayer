@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: useAutoplay.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import { useEffect } from 'react';
 
 /**
@@ -12,10 +25,10 @@ export function useAutoplay(tracks, playTrack, showToast) {
         try {
           const trackIndex = tracks.findIndex(t => t.filePath === autoplayPath);
           if (trackIndex >= 0) {
-            console.log('🎵 Autoplay: Found track at index', trackIndex, tracks[trackIndex].title);
+            console.log('ðŸŽµ Autoplay: Found track at index', trackIndex, tracks[trackIndex].title);
             playTrack(tracks[trackIndex], trackIndex);
           } else {
-            console.warn('🎵 Autoplay: Track not found in library:', autoplayPath);
+            console.warn('ðŸŽµ Autoplay: Track not found in library:', autoplayPath);
             showToast('Track not found in library', 'error');
           }
         } catch (err) {
@@ -47,3 +60,4 @@ export function useAutoplay(tracks, playTrack, showToast) {
     }
   }, [tracks, playTrack, showToast]);
 }
+

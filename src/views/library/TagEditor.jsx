@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: TagEditor.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import React, { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { Toast } from '../../DJ/Mixer/Common/Toast'
@@ -106,7 +119,7 @@ export default function TagEditor({ onNavigate }){
 
         const songName = filename.replace(/\.mp3$/i, '');
         setBatchProgress({ processed, total });
-        setBatchStatus(`[${processed}/${total}] ✅ ${songName} (${time}s): BPM=${bpm}, Key=${key}, Energy=${energy}, LUFS=${lufs}`);
+        setBatchStatus(`[${processed}/${total}] âœ… ${songName} (${time}s): BPM=${bpm}, Key=${key}, Energy=${energy}, LUFS=${lufs}`);
         return;
       }
 
@@ -131,7 +144,7 @@ export default function TagEditor({ onNavigate }){
       // Parse BPM analysis progress
       const bpmMatch = text.match(/BPM Analysis complete: ([\d.]+) BPM/);
       if (bpmMatch) {
-        setBatchStatus(`✓ BPM: ${bpmMatch[1]} - Analyzing other features...`);
+        setBatchStatus(`âœ“ BPM: ${bpmMatch[1]} - Analyzing other features...`);
         return;
       }
 
@@ -143,13 +156,13 @@ export default function TagEditor({ onNavigate }){
         const key = successMatch[3];
         const energy = successMatch[4];
         const lufs = successMatch[5];
-        setBatchStatus(`✅ Complete (${time}s): BPM=${bpm}, Key=${key}, Energy=${energy}, LUFS=${lufs}`);
+        setBatchStatus(`âœ… Complete (${time}s): BPM=${bpm}, Key=${key}, Energy=${energy}, LUFS=${lufs}`);
         return;
       }
 
       // Detect batch completion
       if (text.includes('Batch analysis complete!')) {
-        setBatchStatus('🎉 All songs analyzed successfully!');
+        setBatchStatus('ðŸŽ‰ All songs analyzed successfully!');
         return;
       }
 
@@ -160,7 +173,7 @@ export default function TagEditor({ onNavigate }){
         const total = parseInt(processedMatch[1]);
         const successful = parseInt(successfulMatch[1]);
         setBatchProgress({ processed: total, total });
-        setBatchStatus(`✅ Analysis complete! ${successful}/${total} songs analyzed successfully`);
+        setBatchStatus(`âœ… Analysis complete! ${successful}/${total} songs analyzed successfully`);
         return;
       }
 
@@ -451,7 +464,7 @@ async function analyze() {
             }
           }
 
-          setStatus(update.type === "DEEP_DONE" ? "Analysis complete!" : "Fast analysis complete — deep in progress...");
+          setStatus(update.type === "DEEP_DONE" ? "Analysis complete!" : "Fast analysis complete â€” deep in progress...");
         }
       } catch (err) {
         console.warn("[TagEditor] onAnalysisUpdate handler error", err);
@@ -477,12 +490,12 @@ async function analyze() {
 
     if (!fastResult) throw new Error("Fast analysis returned no data");
     if (fastResult.status === "deep_analysis_running") {
-      setStatus("⚠️ Deep analysis already running. Please wait for it to complete.");
+      setStatus("âš ï¸ Deep analysis already running. Please wait for it to complete.");
       setToast({ type: "warning", message: "Deep analysis is already running. Please wait for it to complete before starting a new analysis." });
       return;
     }
     if (fastResult.status === "already_running") {
-      setStatus("⚠️ Analysis already in progress for this track.");
+      setStatus("âš ï¸ Analysis already in progress for this track.");
       setToast({ type: "warning", message: "Analysis is already running for this track." });
       return;
     }
@@ -517,7 +530,7 @@ async function analyze() {
         // If BPM/Key are missing, attempt quick fallback by loading audio and running detectors locally
         if ((!fastPayload.bpm || fastPayload.bpm === '') || (!fastPayload.key || fastPayload.key === '')) {
           try {
-            console.log('[TagEditor] FAST_PASS missing BPM/Key — running local fallback detectors');
+            console.log('[TagEditor] FAST_PASS missing BPM/Key â€” running local fallback detectors');
             const { detectBPMWithCandidates } = await import('../../analysis/BpmAnalyzer.js');
             const { detectKeyWithCandidates } = await import('../../analysis/KeyAnalyzer.js');
             // Use analyzer to load a decoded buffer
@@ -546,7 +559,7 @@ async function analyze() {
     }
 
     setToast({ type: "ok", message: `Fast analysis complete! BPM: ${fastResult.bpm || "not detected"}, Key: ${fastResult.key || "not detected"}` });
-    setStatus("Fast complete — deep analysis running in background...");
+    setStatus("Fast complete â€” deep analysis running in background...");
 
     // Queue deep analysis and start deep timer
     try {
@@ -644,7 +657,7 @@ async function analyze() {
       filesToAnalyze = (tracks || []).map(t => t.filePath).filter(Boolean);
       
       if (filesToAnalyze.length === 0) {
-        setBatchStatus('⚠️ No songs found in library');
+        setBatchStatus('âš ï¸ No songs found in library');
         setToast({ type:'warning', message: 'No songs found in your library' });
         setBatchAnalysisRunning(false);
         return;
@@ -671,7 +684,7 @@ async function analyze() {
           const fileName = filePath.split('\\').pop();
           console.log(`[TagEditor Batch] START [${i+1}/${filesToAnalyze.length}] ${fileName} at ${new Date(songStartTime).toLocaleTimeString()}`);
           const currentStartTime = new Date(songStartTime).toLocaleTimeString();
-          setBatchStatus(`[${i+1}/${filesToAnalyze.length}] 🎵 Analyzing: ${fileName} (Started: ${currentStartTime})`);
+          setBatchStatus(`[${i+1}/${filesToAnalyze.length}] ðŸŽµ Analyzing: ${fileName} (Started: ${currentStartTime})`);
           setBatchProgress({ processed: i, total: filesToAnalyze.length, remaining: filesToAnalyze.length - i - 1 });
           
           // Get track data
@@ -730,7 +743,7 @@ async function analyze() {
             console.log(`[TagEditor Batch] DONE [${i+1}/${filesToAnalyze.length}] ${fileName} - Fast: ${fastPassTime}s, Total: ${totalSongTime}s`);
             const startTimeStr = new Date(songStartTime).toLocaleTimeString();
             const endTimeStr = new Date(songEndTime).toLocaleTimeString();
-            setBatchStatus(`[${i+1}/${filesToAnalyze.length}] ✅ ${fileName} | ${startTimeStr} → ${endTimeStr} | ${totalSongTime}s`);
+            setBatchStatus(`[${i+1}/${filesToAnalyze.length}] âœ… ${fileName} | ${startTimeStr} â†’ ${endTimeStr} | ${totalSongTime}s`);
             
             processed++;
             await yieldToUI(); // Yield control back to UI after each song
@@ -764,14 +777,14 @@ async function analyze() {
       console.log('=== END REPORT ===\n');
       
       const modeText = batchAnalyzeMode === 'all' ? ' (re-analyzed all)' : ' (new only)';
-      setBatchStatus(`✅ Complete: ${processed}/${filesToAnalyze.length} analyzed${modeText} | Avg: ${avgTimePerSong}s/song | Total: ${batchTotalTime}s`);
+      setBatchStatus(`âœ… Complete: ${processed}/${filesToAnalyze.length} analyzed${modeText} | Avg: ${avgTimePerSong}s/song | Total: ${batchTotalTime}s`);
       setBatchProgress({ processed, total: filesToAnalyze.length, remaining: 0 });
       setToast({ type:'ok', message: `Batch analysis complete! ${processed} songs analyzed. Total time: ${batchTotalTime}s` });
       setBatchAnalysisRunning(false);
       
     } catch(e) {
       console.error('[TagEditor Batch] Fatal error:', e);
-      setBatchStatus('❌ Error during batch analysis');
+      setBatchStatus('âŒ Error during batch analysis');
       setToast({ type:'danger', message: e.message })
     } finally {
       setBatchAnalysisRunning(false)
@@ -874,7 +887,7 @@ async function analyze() {
             className="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1.5 rounded text-sm"
             onClick={() => onNavigate?.('library')}
           >
-            ← Library
+            â† Library
           </button>
           <button 
             className="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1.5 rounded text-sm"
@@ -933,7 +946,7 @@ async function analyze() {
           }`}
           onClick={() => setActiveTab('single')}
         >
-          📄 Single File Analysis
+          ðŸ“„ Single File Analysis
         </button>
         <button
           className={`flex-1 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
@@ -945,7 +958,7 @@ async function analyze() {
             setActiveTab('batch')
           }}
         >
-          📁 Batch Analysis (100+ Songs)
+          ðŸ“ Batch Analysis (100+ Songs)
         </button>
       </div>
 
@@ -1166,17 +1179,17 @@ async function analyze() {
         // Batch Analysis Tab - Compact
         <div className="bg-gray-800 rounded-lg p-3 space-y-3 max-h-screen overflow-y-auto">
           <div className="text-center">
-            <h2 className="text-lg font-bold text-white mb-1">🚀 Batch Audio Analysis</h2>
+            <h2 className="text-lg font-bold text-white mb-1">ðŸš€ Batch Audio Analysis</h2>
             <p className="text-gray-300 text-xs">Unbiased testing with separate Excel files</p>
           </div>
 
           {/* Song List Selection */}
           <div className="bg-gray-700 rounded p-3 space-y-2">
-            <h3 className="text-sm font-semibold text-white">� Input Method</h3>
+            <h3 className="text-sm font-semibold text-white">ï¿½ Input Method</h3>
             
             {/* Song List Excel */}
             <div>
-              <label className="text-xs text-gray-200 block mb-1">🎵 Song List Excel</label>
+              <label className="text-xs text-gray-200 block mb-1">ðŸŽµ Song List Excel</label>
               <div className="flex gap-2">
                 <input 
                   className="flex-1 px-2 py-1.5 text-xs bg-gray-600 border border-gray-500 rounded text-white placeholder-gray-400" 
@@ -1194,11 +1207,11 @@ async function analyze() {
             </div>
 
             {/* OR text */}
-            <div className="text-center text-gray-400 text-xs">— OR —</div>
+            <div className="text-center text-gray-400 text-xs">â€” OR â€”</div>
             
             {/* Folder Selection */}
             <div>
-              <label className="text-xs text-gray-200 block mb-1">📁 Music Folder</label>
+              <label className="text-xs text-gray-200 block mb-1">ðŸ“ Music Folder</label>
               <div className="flex gap-2">
                 <input 
                   className="flex-1 px-2 py-1.5 text-xs bg-gray-600 border border-gray-500 rounded text-white placeholder-gray-400" 
@@ -1218,7 +1231,7 @@ async function analyze() {
 
           {/* Web Data Selection */}
           <div className="bg-gray-700 rounded p-3">
-            <label className="text-xs text-gray-200 block mb-1">📊 Reference Data Excel</label>
+            <label className="text-xs text-gray-200 block mb-1">ðŸ“Š Reference Data Excel</label>
             <div className="flex gap-2">
               <input 
                 className="flex-1 px-2 py-1.5 text-xs bg-gray-600 border border-gray-500 rounded text-white placeholder-gray-400" 
@@ -1237,7 +1250,7 @@ async function analyze() {
 
           {/* Export Location Selection */}
           <div className="bg-gray-700 rounded p-3">
-            <label className="text-xs text-gray-200 block mb-1">💾 Export Location</label>
+            <label className="text-xs text-gray-200 block mb-1">ðŸ’¾ Export Location</label>
             <div className="flex gap-2">
               <input 
                 className="flex-1 px-2 py-1.5 text-xs bg-gray-600 border border-gray-500 rounded text-white placeholder-gray-400" 
@@ -1256,7 +1269,7 @@ async function analyze() {
 
           {/* Analysis Mode Selector */}
           <div className="bg-gray-700 rounded p-3">
-            <h3 className="text-sm font-semibold text-white mb-2">🔄 Analysis Mode</h3>
+            <h3 className="text-sm font-semibold text-white mb-2">ðŸ”„ Analysis Mode</h3>
             <div className="flex gap-4">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input 
@@ -1267,7 +1280,7 @@ async function analyze() {
                   onChange={(e) => setBatchAnalyzeMode(e.target.value)}
                   className="w-4 h-4"
                 />
-                <span className="text-xs text-gray-200">📝 New Only (unanalyzed tracks)</span>
+                <span className="text-xs text-gray-200">ðŸ“ New Only (unanalyzed tracks)</span>
               </label>
               <label className="flex items-center gap-2 cursor-pointer">
                 <input 
@@ -1278,13 +1291,13 @@ async function analyze() {
                   onChange={(e) => setBatchAnalyzeMode(e.target.value)}
                   className="w-4 h-4"
                 />
-                <span className="text-xs text-gray-200">🔄 Analyze All (re-analyze everything)</span>
+                <span className="text-xs text-gray-200">ðŸ”„ Analyze All (re-analyze everything)</span>
               </label>
             </div>
             
             {/* Batch Size Input */}
             <div className="mt-3 flex items-center gap-2">
-              <label className="text-xs text-gray-200">📊 Batch Size:</label>
+              <label className="text-xs text-gray-200">ðŸ“Š Batch Size:</label>
               <input 
                 type="number" 
                 min="1" 
@@ -1300,28 +1313,28 @@ async function analyze() {
           {/* Analysis Features - Compact Grid */}
           <div className="grid grid-cols-2 gap-2 text-xs">
             <div className="bg-gray-700 rounded p-2">
-              <h4 className="font-semibold text-white mb-1">🎵 Analyzes</h4>
+              <h4 className="font-semibold text-white mb-1">ðŸŽµ Analyzes</h4>
               <ul className="text-gray-300 space-y-0.5">
-                <li>• BPM & Key</li>
-                <li>• Energy & LUFS</li>
-                <li>• Song Structure</li>
+                <li>â€¢ BPM & Key</li>
+                <li>â€¢ Energy & LUFS</li>
+                <li>â€¢ Song Structure</li>
               </ul>
             </div>
             
             <div className="bg-gray-700 rounded p-2">
-              <h4 className="font-semibold text-white mb-1">📊 Exports</h4>
+              <h4 className="font-semibold text-white mb-1">ðŸ“Š Exports</h4>
               <ul className="text-gray-300 space-y-0.5">
-                <li>• Excel comparison</li>
-                <li>• JSON results</li>
-                <li>• Accuracy metrics</li>
+                <li>â€¢ Excel comparison</li>
+                <li>â€¢ JSON results</li>
+                <li>â€¢ Accuracy metrics</li>
               </ul>
             </div>
           </div>
 
           {/* Progress Display - Compact */}
-          {(batchAnalysisRunning || (batchStatus && !batchStatus.startsWith('✅ Complete:'))) && (
+          {(batchAnalysisRunning || (batchStatus && !batchStatus.startsWith('âœ… Complete:'))) && (
             <div className="bg-gray-700 rounded p-2">
-              <h4 className="text-xs font-semibold text-white mb-1">📈 Progress</h4>
+              <h4 className="text-xs font-semibold text-white mb-1">ðŸ“ˆ Progress</h4>
               {batchProgress.total > 0 && (
                 <div className="mb-1">
                   <div className="flex justify-between text-xs text-gray-300">
@@ -1339,7 +1352,7 @@ async function analyze() {
               {batchStatus && <div className="text-xs text-gray-300 mb-1">{batchStatus}</div>}
               {batchProgress.remaining > 0 && (
                 <div className="text-xs text-amber-300 font-semibold">
-                  ⚡ {batchProgress.remaining} songs remaining to analyze
+                  âš¡ {batchProgress.remaining} songs remaining to analyze
                 </div>
               )}
             </div>
@@ -1357,23 +1370,23 @@ async function analyze() {
                     return
                   }
                   
-                  setBatchStatus('📁 Scanning folder for audio files...')
+                  setBatchStatus('ðŸ“ Scanning folder for audio files...')
                   
                   try {
                     const scanResult = await window.api.invoke('library:scan', batchFolder)
                     console.log('Scan result:', scanResult)
                     if (scanResult && scanResult.added >= 0) {
-                      setBatchStatus(`✅ Scan complete: ${scanResult.added} songs added (${scanResult.total} total in library)`)
+                      setBatchStatus(`âœ… Scan complete: ${scanResult.added} songs added (${scanResult.total} total in library)`)
                       setToast({ type:'ok', message: `Found ${scanResult.added} new songs. Total library: ${scanResult.total}` })
                     }
                   } catch (e) {
-                    setBatchStatus(`❌ Scan failed: ${e.message}`)
+                    setBatchStatus(`âŒ Scan failed: ${e.message}`)
                     setToast({ type:'danger', message: `Scan failed: ${e.message}` })
                   }
                 }}
                 disabled={!batchFolder || batchAnalysisRunning}
               >
-                📂 Scan Library
+                ðŸ“‚ Scan Library
               </button>
               
               <button 
@@ -1381,7 +1394,7 @@ async function analyze() {
                 onClick={startBatchAnalysis}
                 disabled={(!batchFolder && !songListFile) || batchAnalysisRunning}
               >
-                {batchAnalysisRunning ? '⏳ Analyzing...' : '🚀 Start Analysis'}
+                {batchAnalysisRunning ? 'â³ Analyzing...' : 'ðŸš€ Start Analysis'}
               </button>
               {batchProgress.remaining > 0 && (
                 <button 
@@ -1389,7 +1402,7 @@ async function analyze() {
                   onClick={continueBatchAnalysis}
                   disabled={batchAnalysisRunning}
                 >
-                  Next Batch →
+                  Next Batch â†’
                 </button>
               )}
             </div>
@@ -1424,7 +1437,7 @@ function RatingStars({ value, onChange }) {
             }`}
             title={`Rate ${star} stars`}
           >
-            ★
+            â˜…
           </button>
         ))}
       </div>
@@ -1533,3 +1546,4 @@ function Field({ label, value, onChange, readOnly = false, multiline = false, co
     </div>
   )
 }
+

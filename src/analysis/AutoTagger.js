@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: AutoTagger.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 // src/analysis/AutoTagger.js - Independent Audio Analysis Module for NGKsPlayer
 // Completely standalone module for deep audio analysis with no fake data
 
@@ -774,3 +787,4 @@ class AutoTagger extends EventEmitter {
 }
 
 module.exports = AutoTagger;
+

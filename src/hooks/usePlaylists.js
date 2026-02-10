@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: usePlaylists.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 import { useState, useCallback } from 'react';
 
 /**
@@ -63,3 +76,4 @@ export function usePlaylists(showToast) {
     createNewPlaylist
   };
 }
+

@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: PianoRollMIDIEditor.test.jsx
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * MIDI System Integration Tests
  * Comprehensive tests for MIDI functionality including Piano Roll editor
@@ -206,7 +219,7 @@ describe('Piano Roll MIDI Editor', () => {
         />
       );
 
-      const quantizeButton = screen.getByText('📐 Quantize');
+      const quantizeButton = screen.getByText('ðŸ“ Quantize');
       await user.click(quantizeButton);
 
       // Should quantize the note timing
@@ -450,7 +463,7 @@ describe('Piano Roll MIDI Editor', () => {
         />
       );
 
-      const closeButton = screen.getByText('❌');
+      const closeButton = screen.getByText('âŒ');
       await user.click(closeButton);
 
       expect(mockOnClose).toHaveBeenCalled();

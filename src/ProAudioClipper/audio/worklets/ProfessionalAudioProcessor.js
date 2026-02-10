@@ -1,3 +1,16 @@
+﻿/**
+ * NGKsSystems
+ * NGKsPlayer
+ *
+ * Module: ProfessionalAudioProcessor.js
+ * Purpose: TODO â€“ describe responsibility
+ *
+ * Design Rules:
+ * - Modular, reusable, no duplicated logic
+ * - Shared core preferred over copy-paste
+ *
+ * Owner: NGKsSystems
+ */
 /**
  * Professional Audio Worklet Processor
  * 
@@ -181,7 +194,7 @@ class ProfessionalAudioProcessor extends AudioWorkletProcessor {
 
   // High-performance stereo panning with constant power law
   applyPanning(inputL, inputR, panValue) {
-    const panRad = (panValue + 1) * Math.PI * 0.25; // Convert -1..1 to 0..π/2
+    const panRad = (panValue + 1) * Math.PI * 0.25; // Convert -1..1 to 0..Ï€/2
     const leftGain = Math.cos(panRad);
     const rightGain = Math.sin(panRad);
     
