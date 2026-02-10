@@ -932,30 +932,6 @@ const ProAudioClipper = ({ onNavigate }) => {
         }}
       >
 
-        {/* Left Panel - Effects (collapsible) */}
-        {showEffectsPanel && effectsPanelTrackId && (
-          <div
-            className="effects-sidebar"
-            style={{
-              width: '350px',
-              minWidth: '350px',
-              display: 'flex',
-              flexDirection: 'column',
-              borderRight: '2px solid #404040',
-              background: '#1e1e1e',
-              overflow: 'hidden',
-              position: 'relative'
-            }}
-          >
-            <TrackEffectsPanel
-              trackId={effectsPanelTrackId}
-              trackName={trackManager.tracks.find(t => t.id === effectsPanelTrackId)?.name || 'Track'}
-              effectsEngine={multiTrackEngine.effectsEngine}
-              onClose={handleCloseEffectsPanel}
-            />
-          </div>
-        )}
-
         {/* Center Panel - Timeline */}
         <div 
           className="center-panel"
@@ -1121,6 +1097,15 @@ const ProAudioClipper = ({ onNavigate }) => {
           currentProject={currentProject}
           onLoadProject={handleLoadProject}
           onClose={() => setShowProjectManager(false)}
+        />
+      )}
+
+      {showEffectsPanel && effectsPanelTrackId && (
+        <TrackEffectsPanel
+          trackId={effectsPanelTrackId}
+          trackName={trackManager.tracks.find(t => t.id === effectsPanelTrackId)?.name || 'Track'}
+          effectsEngine={multiTrackEngine.effectsEngine}
+          onClose={handleCloseEffectsPanel}
         />
       )}
 

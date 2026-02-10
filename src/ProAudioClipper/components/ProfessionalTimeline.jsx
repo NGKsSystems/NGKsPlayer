@@ -136,180 +136,160 @@ const ProfessionalTimeline = React.forwardRef(({
       <div style={{
         display: 'flex',
         alignItems: 'center',
-        padding: '8px 16px',
+        padding: '4px 8px',
         background: 'rgba(0, 0, 0, 0.3)',
         borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-        minHeight: '40px'
+        minHeight: '32px',
+        gap: '6px'
       }}>
-        <h3 style={{
-          fontSize: '14px',
+        <span style={{
+          fontSize: '12px',
           fontWeight: '600',
           color: '#00d4ff',
-          margin: 0
+          whiteSpace: 'nowrap'
         }}>
-          🎵 Professional Multi-Track Timeline
-        </h3>
+          🎵 PMTT
+        </span>
 
-        {/* Add Track Button */}
+        <div style={{ width: '1px', height: '18px', background: 'rgba(255,255,255,0.15)' }} />
+
+        {/* Add Track */}
         <button
           onClick={onAddTrack}
           style={{
             background: '#ff6b35',
             color: 'white',
             border: 'none',
-            borderRadius: '4px',
-            padding: '4px 8px',
-            fontSize: '11px',
+            borderRadius: '3px',
+            padding: '2px 6px',
+            fontSize: '10px',
             cursor: 'pointer',
-            marginLeft: '12px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '4px'
+            whiteSpace: 'nowrap'
           }}
           title="Add Audio Track"
         >
-          + Add Track
+          + Track
         </button>
 
-        {/* Tool Buttons */}
-        <div style={{
-          marginLeft: '16px',
-          display: 'flex',
-          gap: '4px',
-          alignItems: 'center'
-        }}>
-          <button
-            onClick={() => onToolChange && onToolChange('selection')}
-            title="Selection Tool (V)"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px',
-              padding: '4px 10px',
-              background: selectedTool === 'selection' ? '#00d4ff' : 'rgba(255,255,255,0.08)',
-              color: selectedTool === 'selection' ? '#000' : '#ccc',
-              border: selectedTool === 'selection' ? '1px solid #00d4ff' : '1px solid rgba(255,255,255,0.15)',
-              borderRadius: '4px',
-              fontSize: '11px',
-              cursor: 'pointer',
-              fontWeight: selectedTool === 'selection' ? '600' : '400'
-            }}
-          >
-            ☞ Selection
-          </button>
-          <button
-            onClick={() => onToolChange && onToolChange('razor')}
-            title="Razor Tool (C)"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px',
-              padding: '4px 10px',
-              background: selectedTool === 'razor' ? '#00d4ff' : 'rgba(255,255,255,0.08)',
-              color: selectedTool === 'razor' ? '#000' : '#ccc',
-              border: selectedTool === 'razor' ? '1px solid #00d4ff' : '1px solid rgba(255,255,255,0.15)',
-              borderRadius: '4px',
-              fontSize: '11px',
-              cursor: 'pointer',
-              fontWeight: selectedTool === 'razor' ? '600' : '400'
-            }}
-          >
-            ✂ Razor
-          </button>
-        </div>
+        <div style={{ width: '1px', height: '18px', background: 'rgba(255,255,255,0.15)' }} />
 
-        {/* Zoom Controls */}
-        <div style={{
-          marginLeft: '16px',
-          display: 'flex',
-          gap: '4px',
-          alignItems: 'center'
-        }}>
-          <button
-            onClick={() => onZoomChange && onZoomChange(Math.max(0.1, zoomLevel / 1.5))}
-            title="Zoom Out (−)"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '24px',
-              height: '24px',
-              background: 'rgba(255,255,255,0.08)',
-              color: '#ccc',
-              border: '1px solid rgba(255,255,255,0.15)',
-              borderRadius: '4px',
-              fontSize: '14px',
-              cursor: 'pointer'
-            }}
-          >
-            −
-          </button>
-          <span style={{ fontSize: '11px', color: '#aaa', minWidth: '36px', textAlign: 'center' }}>
-            {Math.round(zoomLevel * 100)}%
-          </span>
-          <button
-            onClick={() => onZoomChange && onZoomChange(Math.min(20, zoomLevel * 1.5))}
-            title="Zoom In (+)"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '24px',
-              height: '24px',
-              background: 'rgba(255,255,255,0.08)',
-              color: '#ccc',
-              border: '1px solid rgba(255,255,255,0.15)',
-              borderRadius: '4px',
-              fontSize: '14px',
-              cursor: 'pointer'
-            }}
-          >
-            +
-          </button>
-        </div>
-
-        {/* Precision Controls */}
-        <div style={{
-          marginLeft: '16px',
-          display: 'flex',
-          gap: '8px',
-          alignItems: 'center',
-          fontSize: '11px'
-        }}>
-          <label style={{ display: 'flex', alignItems: 'center', gap: '3px', color: '#aaa', cursor: 'pointer' }}>
-            <input type="checkbox" defaultChecked style={{ accentColor: '#00d4ff', width: '12px', height: '12px' }} />
-            Snap
-          </label>
-          <label style={{ display: 'flex', alignItems: 'center', gap: '3px', color: '#aaa', cursor: 'pointer' }}>
-            <input type="checkbox" style={{ accentColor: '#00d4ff', width: '12px', height: '12px' }} />
-            Grid
-          </label>
-          <select defaultValue="0.1" style={{
-            padding: '2px 4px',
-            background: 'rgba(255,255,255,0.08)',
-            border: '1px solid rgba(255,255,255,0.15)',
+        {/* Tools */}
+        <button
+          onClick={() => onToolChange && onToolChange('selection')}
+          title="Selection Tool (V)"
+          style={{
+            padding: '2px 6px',
+            background: selectedTool === 'selection' ? '#00d4ff' : 'rgba(255,255,255,0.08)',
+            color: selectedTool === 'selection' ? '#000' : '#999',
+            border: 'none',
             borderRadius: '3px',
-            color: '#ccc',
-            fontSize: '10px'
-          }}>
-            <option value="0.01">10ms</option>
-            <option value="0.1">100ms</option>
-            <option value="1">1s</option>
-            <option value="5">5s</option>
-          </select>
-        </div>
-        
+            fontSize: '10px',
+            cursor: 'pointer',
+            fontWeight: selectedTool === 'selection' ? '600' : '400'
+          }}
+        >
+          ☞ Sel
+        </button>
+        <button
+          onClick={() => onToolChange && onToolChange('razor')}
+          title="Razor Tool (C)"
+          style={{
+            padding: '2px 6px',
+            background: selectedTool === 'razor' ? '#00d4ff' : 'rgba(255,255,255,0.08)',
+            color: selectedTool === 'razor' ? '#000' : '#999',
+            border: 'none',
+            borderRadius: '3px',
+            fontSize: '10px',
+            cursor: 'pointer',
+            fontWeight: selectedTool === 'razor' ? '600' : '400'
+          }}
+        >
+          ✂ Cut
+        </button>
+
+        <div style={{ width: '1px', height: '18px', background: 'rgba(255,255,255,0.15)' }} />
+
+        {/* Zoom */}
+        <button
+          onClick={() => onZoomChange && onZoomChange(Math.max(0.1, zoomLevel / 1.5))}
+          title="Zoom Out (−)"
+          style={{
+            width: '20px',
+            height: '20px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: 'rgba(255,255,255,0.08)',
+            color: '#999',
+            border: 'none',
+            borderRadius: '3px',
+            fontSize: '12px',
+            cursor: 'pointer'
+          }}
+        >
+          −
+        </button>
+        <span style={{ fontSize: '10px', color: '#888', minWidth: '28px', textAlign: 'center' }}>
+          {Math.round(zoomLevel * 100)}%
+        </span>
+        <button
+          onClick={() => onZoomChange && onZoomChange(Math.min(20, zoomLevel * 1.5))}
+          title="Zoom In (+)"
+          style={{
+            width: '20px',
+            height: '20px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: 'rgba(255,255,255,0.08)',
+            color: '#999',
+            border: 'none',
+            borderRadius: '3px',
+            fontSize: '12px',
+            cursor: 'pointer'
+          }}
+        >
+          +
+        </button>
+
+        <div style={{ width: '1px', height: '18px', background: 'rgba(255,255,255,0.15)' }} />
+
+        {/* Precision */}
+        <label style={{ display: 'flex', alignItems: 'center', gap: '2px', color: '#888', cursor: 'pointer', fontSize: '10px' }}>
+          <input type="checkbox" defaultChecked style={{ accentColor: '#00d4ff', width: '11px', height: '11px' }} />
+          Snap
+        </label>
+        <label style={{ display: 'flex', alignItems: 'center', gap: '2px', color: '#888', cursor: 'pointer', fontSize: '10px' }}>
+          <input type="checkbox" style={{ accentColor: '#00d4ff', width: '11px', height: '11px' }} />
+          Grid
+        </label>
+        <select defaultValue="0.1" style={{
+          padding: '1px 2px',
+          background: 'rgba(255,255,255,0.08)',
+          border: 'none',
+          borderRadius: '3px',
+          color: '#999',
+          fontSize: '10px'
+        }}>
+          <option value="0.01">10ms</option>
+          <option value="0.1">100ms</option>
+          <option value="1">1s</option>
+          <option value="5">5s</option>
+        </select>
+
+        {/* Stats - right aligned */}
         <div style={{
           marginLeft: 'auto',
           display: 'flex',
-          gap: '16px',
-          fontSize: '12px',
-          color: 'rgba(255, 255, 255, 0.7)'
+          gap: '10px',
+          fontSize: '10px',
+          color: 'rgba(255, 255, 255, 0.5)',
+          whiteSpace: 'nowrap'
         }}>
-          <span>Tracks: {tracks.length}</span>
-          <span>Markers: {markers.length}</span>
-          <span>Loops: {loopRegions.length}</span>
-          <span>Time: {(currentTime || 0).toFixed(2)}s</span>
+          <span>{tracks.length}T</span>
+          <span>{markers.length}M</span>
+          <span>{loopRegions.length}L</span>
+          <span>{(currentTime || 0).toFixed(1)}s</span>
         </div>
       </div>
 
