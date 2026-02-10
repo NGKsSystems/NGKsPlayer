@@ -62,9 +62,6 @@ importers:
       react-router-dom:
         specifier: ^6.30.1
         version: 6.30.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      sqlite3:
-        specifier: ^5.1.7
-        version: 5.1.7
       tailwind-merge:
         specifier: ^2.5.2
         version: 2.6.0
@@ -141,6 +138,9 @@ importers:
       postcss:
         specifier: ^8.4.41
         version: 8.5.6
+      sqlite3:
+        specifier: ^5.1.7
+        version: 5.1.7
       tailwindcss:
         specifier: ^3.4.9
         version: 3.4.19
