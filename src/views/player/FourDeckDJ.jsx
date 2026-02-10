@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: FourDeckDJ.jsx
- * Purpose: TODO â€“ describe responsibility
+ * Purpose: Professional 4-deck DJ container — configures layout for 4-deck mode
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -11,7 +11,7 @@
  *
  * Owner: NGKsSystems
  */
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import AudioManager from '../../audio/AudioManager';
 import FourDeckLayoutManager from '../../DJ/Layout/FourDeckLayoutManager';
 import ProfessionalDeck from '../../DJ/Components/ProfessionalDeck';
@@ -28,12 +28,12 @@ const FourDeckDJ = ({ onNavigate }) => {
   const audioManagerRef = useRef(null);
   const [audioManager, setAudioManager] = useState(null);
 
-  // Deck states
-  const [deckTracks, setDeckTracks] = useState({
-    A: null,
-    B: null,
-    C: null,
-    D: null
+  // Deck states — same contract as DJSimple
+  const [deckState, setDeckState] = useState({
+    A: { track: null, isPlaying: false, position: 0, volume: 0.8 },
+    B: { track: null, isPlaying: false, position: 0, volume: 0.8 },
+    C: { track: null, isPlaying: false, position: 0, volume: 0.8 },
+    D: { track: null, isPlaying: false, position: 0, volume: 0.8 },
   });
 
   // Layout management
@@ -57,7 +57,29 @@ const FourDeckDJ = ({ onNavigate }) => {
     if (!audioManagerRef.current) {
       audioManagerRef.current = new AudioManager();
       setAudioManager(audioManagerRef.current);
-      console.log('âœ… AudioManager initialized for 4 decks');
+      // Wire AudioManager callbacks (same contract as DJSimple)
+      audioManagerRef.current.setOnPositionUpdate((deck, position) => {
+        setDeckState(prev => ({
+          ...prev,
+          [deck]: { ...prev[deck], position }
+        }));
+      });
+
+      audioManagerRef.current.setOnTrackLoaded((deck, track) => {
+        setDeckState(prev => ({
+          ...prev,
+          [deck]: { ...prev[deck], track }
+        }));
+      });
+
+      audioManagerRef.current.setOnTrackEnded((deck) => {
+        setDeckState(prev => ({
+          ...prev,
+          [deck]: { ...prev[deck], isPlaying: false, position: 0 }
+        }));
+      });
+
+      console.log('[FourDeckDJ] AudioManager initialized for 4 decks');
     }
 
     // Load music library
@@ -124,16 +146,48 @@ const FourDeckDJ = ({ onNavigate }) => {
   };
 
   // Load track to specific deck
-  const loadTrackToDeck = (deckId, track) => {
-    if (audioManager && track) {
-      const newDeckTracks = { ...deckTracks };
-      newDeckTracks[deckId] = track;
-      setDeckTracks(newDeckTracks);
-      
-      console.log(`ðŸŽµ Loading track to Deck ${deckId}:`, track.title);
+  const loadTrackToDeck = useCallback(async (deckId, track) => {
+    if (audioManagerRef.current && track) {
+      setDeckState(prev => ({
+        ...prev,
+        [deckId]: { ...prev[deckId], track }
+      }));
+
+      try {
+        await audioManagerRef.current.loadTrack(deckId, track);
+      } catch (err) {
+        console.error(`[FourDeckDJ] loadTrack(${deckId}) failed:`, err);
+      }
+
+      console.log(`[FourDeckDJ] Loading track to Deck ${deckId}:`, track.title);
       showToast(`Track loaded to Deck ${deckId}`, 'success');
     }
-  };
+  }, []);
+
+  // Transport handlers — same contract as DJSimple
+  const handlePlayPause = useCallback((deckId) => {
+    if (!audioManagerRef.current) return;
+    audioManagerRef.current.playPause(deckId);
+    setDeckState(prev => ({
+      ...prev,
+      [deckId]: { ...prev[deckId], isPlaying: !prev[deckId].isPlaying }
+    }));
+  }, []);
+
+  const handleSeek = useCallback((deckId, time) => {
+    if (!audioManagerRef.current) return;
+    audioManagerRef.current.seek(deckId, time);
+  }, []);
+
+  const handleSkip = useCallback((deckId, seconds) => {
+    if (!audioManagerRef.current) return;
+    audioManagerRef.current.skip(deckId, seconds);
+  }, []);
+
+  const handleCue = useCallback((deckId, state) => {
+    if (!audioManagerRef.current) return;
+    audioManagerRef.current.setCue(deckId, state);
+  }, []);
 
   // Handle track selection from browser
   const handleTrackSelect = (track) => {
@@ -199,7 +253,7 @@ const FourDeckDJ = ({ onNavigate }) => {
           <ProfessionalDeck
             deckId="A"
             audioManager={audioManager}
-            track={deckTracks.A}
+            track={deckState.A.track}
             onTrackLoad={(track) => loadTrackToDeck('A', track)}
             layoutConfig={layoutConfig.config}
             compactMode={layoutConfig.layout === 'performance'}
@@ -213,7 +267,7 @@ const FourDeckDJ = ({ onNavigate }) => {
           <ProfessionalDeck
             deckId="B"
             audioManager={audioManager}
-            track={deckTracks.B}
+            track={deckState.B.track}
             onTrackLoad={(track) => loadTrackToDeck('B', track)}
             layoutConfig={layoutConfig.config}
             compactMode={layoutConfig.layout === 'performance'}
@@ -227,7 +281,7 @@ const FourDeckDJ = ({ onNavigate }) => {
           <ProfessionalDeck
             deckId="C"
             audioManager={audioManager}
-            track={deckTracks.C}
+            track={deckState.C.track}
             onTrackLoad={(track) => loadTrackToDeck('C', track)}
             layoutConfig={layoutConfig.config}
             compactMode={layoutConfig.layout === 'performance'}
@@ -241,7 +295,7 @@ const FourDeckDJ = ({ onNavigate }) => {
           <ProfessionalDeck
             deckId="D"
             audioManager={audioManager}
-            track={deckTracks.D}
+            track={deckState.D.track}
             onTrackLoad={(track) => loadTrackToDeck('D', track)}
             layoutConfig={layoutConfig.config}
             compactMode={layoutConfig.layout === 'performance'}
