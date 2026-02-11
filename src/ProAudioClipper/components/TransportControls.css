@@ -1,23 +1,23 @@
 /* TransportControls.css - Professional transport controls styles */
 
 .transport-controls {
-  padding: 0 20px 12px;
+  padding: 12px 0;
   background: linear-gradient(135deg, #2a2a2a 0%, #1e1e1e 100%);
   border-bottom: 1px solid #444;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 8px;
 }
 
 /* ── Master Waveform ── */
 .master-waveform {
   width: 100%;
-  height: 48px;
+  height: 96px;
   cursor: pointer;
-  border-radius: 0;
   overflow: hidden;
   position: relative;
-  border-bottom: 1px solid #333;
+  background: #111;
 }
 
 .master-waveform__canvas {
@@ -27,16 +27,19 @@
 }
 
 .master-waveform:hover {
-  background: rgba(255, 255, 255, 0.02);
+  background: #151515;
 }
 
 /* ── Shared row layout ── */
+/* Transport rows are 75px narrower on each side than the full-width waveform */
 .transport-row {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 16px;
   flex-wrap: wrap;
+  width: 100%;
+  max-width: calc(100% - 150px);
 }
 
 .transport-row--main {

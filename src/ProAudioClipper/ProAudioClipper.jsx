@@ -1110,6 +1110,7 @@ const ProAudioClipper = ({ onNavigate, forceVersion }) => {
               masterVolume={masterVolume}
               onMasterVolumeChange={setMasterVolume}
               tracks={trackManager.tracks}
+              audioContext={multiTrackEngine.audioContext}
             />
           </div>
 
