@@ -95,7 +95,27 @@
   overflow-x: hidden;
 }
 
-/* Right: viewport wrapper (stacking context for playhead overlay) */
+/* Right column: ruler strip + scroll viewport + playhead overlay */
+.ptv2-right {
+  position: relative;   /* stacking context for playhead overlay */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* Ruler strip — fixed row above the scroll area */
+.ptv2-ruler-strip {
+  height: 48px;           /* must match RULER_HEIGHT */
+  flex-shrink: 0;
+  overflow: hidden;       /* clip the wide inner ruler */
+  position: relative;
+  z-index: 10;            /* above tracks, below playhead handle */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Scroll viewport — holds scrollable track area only */
 .ptv2-scroll-viewport {
   position: relative;
   flex: 1;
@@ -114,16 +134,13 @@
   min-height: 100%;
 }
 
-/* ── Ruler ─────────────────────────────────────────────── */
+/* ── Ruler (ticks inside ruler strip, no longer sticky) ───────── */
 .ptv2-ruler {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  height: 48px;
+  height: 48px;           /* must match RULER_HEIGHT */
   background: linear-gradient(to bottom, #2a2a2a, #1e1e1e);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   overflow: hidden;
   user-select: none;
+  position: relative;     /* for absolute tick positioning */
 }
 .ptv2-ruler__tick {
   position: absolute;
@@ -151,18 +168,18 @@
   white-space: nowrap;
 }
 
-/* ── Playhead (mirrors NGKs Zohan ProfessionalVideoTimeline) ── */
+/* ── Playhead (Resolve-style: cap in ruler, line in tracks) ─────── */
 .ptv2-playhead {
   position: absolute;
   top: 0;
   bottom: 0;
   width: 2px;
   pointer-events: none;
-  z-index: 20;
+  z-index: 60;            /* above ruler strip + tracks */
 }
 .ptv2-playhead-line {
   position: absolute;
-  top: 48px;         /* start below the ruler (RULER_HEIGHT) */
+  /* top set inline via RULER_HEIGHT constant */
   bottom: 0;
   width: 2px;
   background: #ff4444;
@@ -170,7 +187,7 @@
 }
 .ptv2-playhead-handle {
   position: absolute;
-  top: 38px;         /* sits on the ruler, just above the line */
+  /* top set inline via (RULER_HEIGHT - HANDLE_SIZE) / 2 */
   left: -6px;
   width: 14px;
   height: 14px;
