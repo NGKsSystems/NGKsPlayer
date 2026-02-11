@@ -331,17 +331,23 @@ export const useMultiTrackAudioEngine = () => {
 
   // Update track parameters
   const updateTrackParameters = useCallback((tracks) => {
-    // Get list of solo tracks
-    const soloTracks = tracks.filter(track => track.solo);
-    const hasSolo = soloTracks.length > 0;
+    // Build a map for O(1) lookups of current track state
+    const trackMap = new Map(tracks.map(t => [t.id, t]));
+
+    // Get list of solo tracks from the CURRENT state (not stale chain data)
+    const hasSolo = tracks.some(track => track.solo);
 
     trackNodesRef.current.forEach((trackChain, nodeId) => {
-      // Find the track for this node
-      const track = trackChain.track;
+      // Look up current track state from the passed array, NOT the stale trackChain.track
+      const trackId = trackChain.track?.id;
+      const track = trackMap.get(trackId);
       if (!track) return;
 
+      // Also update the chain's track reference so it stays current
+      trackChain.track = track;
+
       // Volume control
-      let effectiveVolume = track.volume || 1;
+      let effectiveVolume = track.volume ?? 1;
       
       // Mute logic
       if (track.muted) {
@@ -366,17 +372,30 @@ export const useMultiTrackAudioEngine = () => {
   }, []);
 
   // Play all tracks
-  const playTracks = useCallback((tracks, startTime = 0, playbackRate = 1) => {
+  const playTracks = useCallback(async (tracks, startTime = 0, playbackRate = 1) => {
     console.log('[MultiTrackEngine] playTracks called with:', { 
       tracksCount: tracks.length, 
       startTime, 
       playbackRate,
-      hasAudioContext: !!audioContextRef.current
+      hasAudioContext: !!audioContextRef.current,
+      audioContextState: audioContextRef.current?.state
     });
     
     if (!audioContextRef.current || tracks.length === 0) {
       console.log('[MultiTrackEngine] Cannot play - missing audio context or no tracks');
       return;
+    }
+
+    // CRITICAL: Resume AudioContext if suspended (Chromium autoplay policy)
+    if (audioContextRef.current.state === 'suspended') {
+      console.log('[MultiTrackEngine] AudioContext is suspended, resuming...');
+      try {
+        await audioContextRef.current.resume();
+        console.log('[MultiTrackEngine] AudioContext resumed, state:', audioContextRef.current.state);
+      } catch (err) {
+        console.error('[MultiTrackEngine] Failed to resume AudioContext:', err);
+        return;
+      }
     }
 
     // Stop any existing playback

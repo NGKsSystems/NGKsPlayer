@@ -264,6 +264,15 @@ const ProAudioClipper = ({ onNavigate, forceVersion }) => {
     return () => clearTimeout(timeoutId);
   }, [trackManager.tracks, multiTrackEngine, duration]);
 
+  // ── Auto-sync track parameter changes (mute/solo/volume/pan) to audio engine ──
+  // Whenever trackManager.tracks changes, push the latest state to the engine.
+  // This avoids stale-state issues with React's async setState batching.
+  useEffect(() => {
+    if (trackManager.tracks.length > 0) {
+      multiTrackEngine.updatePlaybackParameters(trackManager.tracks);
+    }
+  }, [trackManager.tracks, multiTrackEngine]);
+
   // Update master volume
   useEffect(() => {
     multiTrackEngine.setMasterVolume(masterVolume);
