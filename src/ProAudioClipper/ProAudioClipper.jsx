@@ -936,8 +936,8 @@ const ProAudioClipper = ({ onNavigate }) => {
         <div
           className="effects-sidebar"
           style={{
-            width: showEffectsPanel ? '320px' : '24px',
-            minWidth: showEffectsPanel ? '320px' : '24px',
+            width: showEffectsPanel ? '320px' : '28px',
+            minWidth: showEffectsPanel ? '320px' : '28px',
             display: 'flex',
             flexDirection: 'column',
             borderRight: '1px solid #404040',
@@ -996,24 +996,37 @@ const ProAudioClipper = ({ onNavigate }) => {
               onClick={() => setShowEffectsPanel(true)}
               title="Open Effects Panel"
               style={{
-                background: 'none',
+                background: 'linear-gradient(180deg, #2a2a2a 0%, #1e1e1e 100%)',
                 border: 'none',
-                color: '#888',
+                borderRight: '2px solid #ff6b35',
+                color: '#ff6b35',
                 cursor: 'pointer',
-                padding: '8px 0',
-                fontSize: '11px',
-                writingMode: 'vertical-lr',
-                textOrientation: 'mixed',
                 width: '100%',
                 height: '100%',
                 display: 'flex',
+                flexDirection: 'column',
                 alignItems: 'center',
-                justifyContent: 'flex-start',
-                paddingTop: '12px',
-                letterSpacing: '2px'
+                justifyContent: 'center',
+                gap: '0',
+                padding: '0'
               }}
             >
-              ▶ FX
+              <span style={{
+                writingMode: 'vertical-lr',
+                textOrientation: 'mixed',
+                fontSize: '13px',
+                fontWeight: '700',
+                letterSpacing: '3px',
+                textTransform: 'uppercase'
+              }}>
+                EFFECTS
+              </span>
+              <span style={{
+                fontSize: '16px',
+                marginTop: '8px'
+              }}>
+                ▶
+              </span>
             </button>
           )}
         </div>
