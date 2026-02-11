@@ -7,7 +7,10 @@
  * Owner: NGKsSystems
  */
 
-/** Fixed width of the track-header column (px) */
+/** Fixed width of the track-header column (px) 
+ * NOTE: This must match .ptv3-left width in ProfessionalTimeline_v3.css
+ * CSS overrides this constant, so update both files when changing width!
+ */
 export const HEADER_WIDTH = 375;
 
 /** Height of each track row (px) */

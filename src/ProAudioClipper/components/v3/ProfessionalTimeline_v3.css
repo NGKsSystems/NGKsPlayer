@@ -162,7 +162,10 @@
   background: rgba(255, 255, 255, 0.1);
 }
 
-/* Left: fixed track headers */
+/* Left: fixed track headers 
+ * NOTE: This width overrides HEADER_WIDTH constant from layoutConstants.js
+ * Keep both values in sync! Current: 350px
+ */
 .ptv3-left {
   width: 350px;
   flex-shrink: 0;
