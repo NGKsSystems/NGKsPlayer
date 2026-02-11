@@ -107,6 +107,8 @@
 .ptv3-right {
   position: relative;     /* stacking context for playhead overlay */
   flex: 1;
+  display: flex;          /* V2 parity — flex column for proper sizing */
+  flex-direction: column;
   overflow: hidden;       /* clip playhead beyond edges */
   min-width: 0;
   min-height: 0;          /* allow flex sizing without collapse */
@@ -117,6 +119,7 @@
   position: absolute;
   inset: 0;
   overflow: auto;
+  flex: 1;               /* participate in flex column (absolute wins, but declares intent) */
 }
 
 /* Content — full timeline width for horizontal scrolling */
@@ -220,6 +223,10 @@
 .ptv3-track-row--active {
   background: rgba(0, 212, 255, 0.12) !important;
 }
+.ptv3-track-row--drop-target {
+  background: rgba(255, 107, 53, 0.1) !important;
+  border-bottom-color: #ff6b35;
+}
 
 /* center line in empty tracks */
 .ptv3-track-row__center-line {
@@ -242,8 +249,17 @@
   overflow: hidden;
   display: flex;
   align-items: center;
+  justify-content: flex-start;
+  padding: 0 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: box-shadow 0.15s, transform 0.15s;
+  cursor: grab;
 }
+.ptv3-clip:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+}
+.ptv3-clip--dragging { opacity: 0.5; }
 .ptv3-clip__duration {
   position: absolute;
   right: 6px;
@@ -267,7 +283,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 16px;
+  padding: 6px 16px;
   background: rgba(0, 0, 0, 0.5);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   font-size: 11px;
