@@ -66,6 +66,33 @@
   min-height: 0; /* allow flex shrink */
 }
 
+/*
+ * Scoped track-header override
+ * MultiTrackTimeline.css (loaded by V1) leaks:
+ *   .track-header { width: 250px; height: 80px; … }
+ * Higher-specificity selector neutralises the leak.
+ */
+.ptv2-headers .track-header {
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  box-sizing: border-box;
+  border-radius: 0;
+  margin-bottom: 0;
+  border-right: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: transparent;
+}
+.ptv2-headers .track-header:hover {
+  background: rgba(255, 255, 255, 0.03);
+  transform: none;
+}
+.ptv2-headers .track-header.active {
+  background: rgba(0, 212, 255, 0.12);
+  border-color: transparent;
+  box-shadow: none;
+}
+
 /* Left: fixed track headers */
 .ptv2-headers {
   width: 300px;

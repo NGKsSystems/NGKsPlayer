@@ -67,6 +67,35 @@
   min-height: 0;
 }
 
+/*
+ * Scoped track-header override
+ * ─────────────────────────────
+ * MultiTrackTimeline.css (loaded by V1) leaks:
+ *   .track-header { width: 250px; height: 80px; … }
+ * TrackHeader.css (width:100%) is NOT in this import tree.
+ * Higher-specificity selector neutralises the leak.
+ */
+.ptv3-left .track-header {
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  box-sizing: border-box;
+  border-radius: 0;
+  margin-bottom: 0;
+  border-right: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: transparent;
+}
+.ptv3-left .track-header:hover {
+  background: rgba(255, 255, 255, 0.03);
+  transform: none;
+}
+.ptv3-left .track-header.active {
+  background: rgba(0, 212, 255, 0.12);
+  border-color: transparent;
+  box-shadow: none;
+}
+
 /* Left: fixed track headers */
 .ptv3-left {
   width: 300px;
