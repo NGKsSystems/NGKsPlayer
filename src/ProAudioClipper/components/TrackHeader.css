@@ -11,6 +11,8 @@
   transition: all 0.2s ease;
   position: relative;
   min-height: 60px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .track-header:hover {
@@ -43,6 +45,9 @@
   flex: 1;
   margin-left: 8px;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 .track-name {
@@ -82,8 +87,10 @@
 .track-main-controls {
   display: flex;
   gap: 6px;
-  margin: 0 8px;
-  flex-shrink: 0;
+  margin-top: 4px;
+  width: 100%;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .track-control-btn {
@@ -392,7 +399,9 @@
   align-items: center;
   gap: 2px;
   margin: 0 4px;
+  flex: 1;
   min-width: 80px;
+  max-width: 140px;
 }
 
 .speed-slider {

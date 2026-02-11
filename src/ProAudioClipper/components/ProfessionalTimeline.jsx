@@ -81,7 +81,7 @@ const ProfessionalTimeline = React.forwardRef(({
   // Constants
   const PIXELS_PER_SECOND = 50 * zoomLevel;
   const TRACK_HEIGHT = 80; // Taller to properly fit content
-  const HEADER_WIDTH = 250; // Wider header width for song titles
+  const HEADER_WIDTH = 300; // Wider header width for song titles
 
   // Interaction state & handlers from hook
   const {
