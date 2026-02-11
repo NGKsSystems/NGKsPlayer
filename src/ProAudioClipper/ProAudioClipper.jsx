@@ -932,39 +932,89 @@ const ProAudioClipper = ({ onNavigate }) => {
         }}
       >
 
-        {/* Left Panel - Effects Sidebar */}
+        {/* Left Panel - Effects Sidebar (collapsible) */}
         <div
           className="effects-sidebar"
           style={{
-            width: '320px',
-            minWidth: '320px',
+            width: showEffectsPanel ? '320px' : '24px',
+            minWidth: showEffectsPanel ? '320px' : '24px',
             display: 'flex',
             flexDirection: 'column',
             borderRight: '1px solid #404040',
             background: '#1e1e1e',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            transition: 'width 0.2s ease, min-width 0.2s ease',
+            position: 'relative'
           }}
         >
-          {trackManager.tracks.length > 0 ? (
-            <TrackEffectsPanel
-              trackId={effectsPanelTrackId || trackManager.activeTrackId || trackManager.tracks[0]?.id}
-              trackName={
-                trackManager.tracks.find(t => t.id === (effectsPanelTrackId || trackManager.activeTrackId || trackManager.tracks[0]?.id))?.name || 
-                'Track 1'
-              }
-              effectsEngine={multiTrackEngine.effectsEngine}
-              onClose={handleCloseEffectsPanel}
-            />
+          {showEffectsPanel ? (
+            <>
+              <button
+                onClick={() => setShowEffectsPanel(false)}
+                title="Collapse Effects Panel"
+                style={{
+                  position: 'absolute',
+                  top: '8px',
+                  left: '8px',
+                  zIndex: 10,
+                  background: 'rgba(255,255,255,0.1)',
+                  border: 'none',
+                  borderRadius: '3px',
+                  color: '#aaa',
+                  cursor: 'pointer',
+                  padding: '2px 5px',
+                  fontSize: '12px',
+                  lineHeight: 1
+                }}
+              >
+                ◀
+              </button>
+              {trackManager.tracks.length > 0 ? (
+                <TrackEffectsPanel
+                  trackId={effectsPanelTrackId || trackManager.activeTrackId || trackManager.tracks[0]?.id}
+                  trackName={
+                    trackManager.tracks.find(t => t.id === (effectsPanelTrackId || trackManager.activeTrackId || trackManager.tracks[0]?.id))?.name || 
+                    'Track 1'
+                  }
+                  effectsEngine={multiTrackEngine.effectsEngine}
+                  onClose={() => setShowEffectsPanel(false)}
+                />
+              ) : (
+                <div style={{
+                  padding: '20px',
+                  textAlign: 'center',
+                  color: '#888',
+                  fontSize: '14px'
+                }}>
+                  <h3 style={{ color: '#00d4ff', marginBottom: '16px' }}>Effects Panel</h3>
+                  <p style={{ color: '#ff6b35', marginTop: '12px' }}>No tracks yet.<br/>Add an audio track to start!</p>
+                </div>
+              )}
+            </>
           ) : (
-            <div style={{
-              padding: '20px',
-              textAlign: 'center',
-              color: '#888',
-              fontSize: '14px'
-            }}>
-              <h3 style={{ color: '#00d4ff', marginBottom: '16px' }}>Effects Panel</h3>
-              <p style={{ color: '#ff6b35', marginTop: '12px' }}>No tracks yet.<br/>Add an audio track to start!</p>
-            </div>
+            <button
+              onClick={() => setShowEffectsPanel(true)}
+              title="Open Effects Panel"
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#888',
+                cursor: 'pointer',
+                padding: '8px 0',
+                fontSize: '11px',
+                writingMode: 'vertical-lr',
+                textOrientation: 'mixed',
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+                paddingTop: '12px',
+                letterSpacing: '2px'
+              }}
+            >
+              ▶ FX
+            </button>
           )}
         </div>
 
