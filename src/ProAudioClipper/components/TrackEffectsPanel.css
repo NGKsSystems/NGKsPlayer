@@ -302,9 +302,10 @@
 
 /* Effect Browser */
 .effect-browser {
-  border-bottom: 1px solid #404040;
-  max-height: 300px;
-  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .browser-header {
@@ -339,6 +340,8 @@
 
 .effect-categories {
   padding: 16px;
+  overflow-y: auto;
+  flex: 1;
 }
 
 .effect-category {

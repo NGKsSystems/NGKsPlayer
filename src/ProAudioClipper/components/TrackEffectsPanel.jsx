@@ -152,8 +152,8 @@ const TrackEffectsPanel = ({
             <h4>Effects Chain</h4>
             <button 
               className="add-effect-btn"
-              onClick={() => setShowEffectBrowser(true)}
-              title="Add Effect"
+              onClick={() => {/* Available Effects always visible below */}}
+              title="Available Effects shown below"
             >
               <Plus size={16} />
               Add Effect
@@ -182,7 +182,7 @@ const TrackEffectsPanel = ({
                 <p>No effects loaded</p>
                 <button 
                   className="add-first-effect"
-                  onClick={() => setShowEffectBrowser(true)}
+                  onClick={() => handleAddEffect(availableEffects[0]?.type)}
                 >
                   Add your first effect
                 </button>
@@ -191,41 +191,33 @@ const TrackEffectsPanel = ({
           </div>
         </div>
 
-        {/* Effect Browser */}
-        {showEffectBrowser && (
-          <div className="effect-browser">
-            <div className="browser-header">
-              <h4>Available Effects</h4>
-              <button 
-                className="close-browser-btn"
-                onClick={() => setShowEffectBrowser(false)}
-              >
-                <X size={16} />
-              </button>
-            </div>
-            
-            <div className="effect-categories">
-              {Object.entries(effectsByCategory).map(([category, categoryEffects]) => (
-                <div key={category} className="effect-category">
-                  <h5>{category}</h5>
-                  <div className="category-effects">
-                    {categoryEffects.map(effect => (
-                      <button
-                        key={effect.type}
-                        className="effect-item"
-                        onClick={() => handleAddEffect(effect.type)}
-                        title={effect.description}
-                      >
-                        <span className="effect-name">{effect.name}</span>
-                        <span className="effect-description">{effect.description}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
+        {/* Always Visible Available Effects */}
+        <div className="effect-browser">
+          <div className="browser-header">
+            <h4>Available Effects</h4>
           </div>
-        )}
+          
+          <div className="effect-categories">
+            {Object.entries(effectsByCategory).map(([category, categoryEffects]) => (
+              <div key={category} className="effect-category">
+                <h5>{category}</h5>
+                <div className="category-effects">
+                  {categoryEffects.map(effect => (
+                    <button
+                      key={effect.type}
+                      className="effect-item"
+                      onClick={() => handleAddEffect(effect.type)}
+                      title={effect.description}
+                    >
+                      <span className="effect-name">{effect.name}</span>
+                      <span className="effect-description">{effect.description}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
 
         {/* Effect Parameters */}
         {selectedEffect && (
