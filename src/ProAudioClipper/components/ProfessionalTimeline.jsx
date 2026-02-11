@@ -641,7 +641,7 @@ const ProfessionalTimeline = React.forwardRef(({
         return (
           <div style={{
             position: 'absolute',
-            left: `${playheadLeft}px`,
+            left: `${playheadLeft - 1}px`,
             top: 0,
             bottom: 0,
             width: '2px',
@@ -650,16 +650,16 @@ const ProfessionalTimeline = React.forwardRef(({
             pointerEvents: 'none',
             boxShadow: '0 0 6px rgba(231, 76, 60, 0.6)'
           }}>
-            {/* Triangle head at ruler top */}
+            {/* DAW-style handle at ruler top — inverted triangle */}
             <div style={{
               position: 'absolute',
               top: 0,
-              left: '-7px',
-              width: 0,
-              height: 0,
-              borderLeft: '8px solid transparent',
-              borderRight: '8px solid transparent',
-              borderTop: '12px solid #e74c3c',
+              left: '-10px',
+              width: '22px',
+              height: '18px',
+              background: '#e74c3c',
+              clipPath: 'polygon(0 0, 100% 0, 50% 100%)',
+              boxShadow: '0 2px 6px rgba(0,0,0,0.5)',
               filter: 'drop-shadow(0 0 4px rgba(231, 76, 60, 0.8))'
             }} />
           </div>
