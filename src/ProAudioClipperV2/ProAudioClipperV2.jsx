@@ -58,74 +58,18 @@ export default function ProAudioClipperV2({ onNavigate }) {
   const handleSkipBack    = useCallback(() => setCurrentTime((t) => Math.max(0, t - 5)), []);
   const handleSkipForward = useCallback(() => setCurrentTime((t) => Math.min(duration, t + 5)), [duration]);
 
-  // Hidden file input ref (fallback for non-Electron environments)
+  // Hidden file input ref — triggers native OS file picker
   const fileInputRef = useRef(null);
 
-  const handleAddTrack = useCallback(async () => {
-    try {
-      let files = [];
-
-      // Try Electron native dialog first
-      if (window.api?.invoke) {
-        const result = await window.api.invoke('dialog:openFiles', {
-          title: 'Select Audio File(s)',
-          filters: [
-            { name: 'Audio Files', extensions: ['mp3', 'm4a', 'flac', 'wav', 'aac', 'ogg', 'opus', 'wma'] },
-            { name: 'All Files', extensions: ['*'] }
-          ],
-          properties: ['openFile', 'multiSelections']
-        });
-        if (result?.canceled || !result?.filePaths?.length) return;
-
-        // Convert Electron file paths to File-like objects for decoding
-        for (const filePath of result.filePaths) {
-          const name = filePath.split(/[\\/]/).pop();
-          // Fetch the file via the app protocol so we can decode it
-          const resp = await fetch(`ngksplayer://${filePath}`);
-          const arrayBuffer = await resp.arrayBuffer();
-          files.push({ name, arrayBuffer, filePath });
-        }
-      } else {
-        // Fallback: trigger hidden file input
-        if (fileInputRef.current) {
-          fileInputRef.current.click();
-          return; // onChange handler will process the files
-        }
-        return;
-      }
-
-      // Decode & create tracks
-      const ctx = getAudioContext();
-      for (const file of files) {
-        const audioBuffer = await ctx.decodeAudioData(file.arrayBuffer.slice(0));
-        const id = `track-${nextTrackId++}`;
-        const trackName = file.name.replace(/\.[^/.]+$/, '');
-        const clip = {
-          id: `clip_${Date.now()}_${id}`,
-          name: trackName,
-          startTime: 0,
-          endTime: audioBuffer.duration,
-          duration: audioBuffer.duration,
-          audioBuffer,
-          filePath: file.filePath || null,
-        };
-        setTracks((prev) => {
-          const next = [...prev, {
-            id, name: trackName, clips: [clip],
-            muted: false, solo: false, volume: 0.8, pan: 0,
-          }];
-          return next;
-        });
-        // Update duration to the longest track
-        setDuration((prev) => Math.max(prev, audioBuffer.duration));
-      }
-    } catch (err) {
-      console.error('[V2] Failed to add track:', err);
-      alert('Failed to load audio file. Try a different format.');
+  // "+ Track" button → open native file dialog via hidden input
+  const handleAddTrack = useCallback(() => {
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''; // allow re-selecting same file
+      fileInputRef.current.click();
     }
   }, []);
 
-  // Fallback file input change handler (non-Electron)
+  // File input onChange — decode audio, create track + clip
   const handleFileInputChange = useCallback(async (e) => {
     const selectedFiles = Array.from(e.target.files);
     if (!selectedFiles.length) return;
