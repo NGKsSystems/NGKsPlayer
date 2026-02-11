@@ -509,7 +509,9 @@ const ProfessionalTimeline = React.forwardRef(({
                       height: TRACK_HEIGHT,
                       background: isDraggingClip && dragPreview?.targetTrackId === track.id 
                         ? 'rgba(255, 107, 53, 0.1)' 
-                        : (trackIndex % 2 === 0 ? '#2c2c2c' : '#333'),
+                        : isActive
+                          ? 'rgba(0, 212, 255, 0.18)'
+                          : (trackIndex % 2 === 0 ? '#2c2c2c' : '#333'),
                       borderBottom: isDraggingClip && dragPreview?.targetTrackId === track.id
                         ? '1px solid #ff6b35'
                         : '1px solid #444',
