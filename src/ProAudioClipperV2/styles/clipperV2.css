@@ -283,6 +283,19 @@
 }
 .v2-timeline-toolbar__btn:hover { opacity: 0.85; }
 
+.v2-timeline-toolbar__btn--add {
+  padding: 3px 10px;
+  background: #ff6b35;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  transition: background 0.15s;
+}
+.v2-timeline-toolbar__btn--add:hover { background: #ff8855; }
+
 .v2-timeline-toolbar__tool-btn {
   padding: 3px 8px;
   background: #333;
@@ -353,7 +366,7 @@
   padding: 0 8px;
   font-size: 11px;
   color: #999;
-  border-right: 1px solid #3a3a3a;
+  border-right: 2px solid #ff6b35;
 }
 .v2-ruler-lane {
   flex: 1;
@@ -362,34 +375,95 @@
   overflow: hidden;
 }
 
-/* Track scrollable area */
-.v2-track-scroll {
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-/* Single track row */
-.v2-track-row {
+/* ── Two-column track area (headers left | lanes right) ── */
+.v2-track-area {
   display: flex;
-  height: 80px;
-  border-bottom: 1px solid #333;
-  position: relative;
+  flex: 1;
+  overflow: hidden;
 }
-.v2-track-row:hover { background: rgba(255,255,255,0.02); }
-.v2-track-row--active { background: rgba(0,212,255,0.18) !important; }
 
-/* Track header (left column) */
-.v2-track-header {
+/* Left column: track headers with orange accent border */
+.v2-track-headers {
   width: 300px;
   min-width: 300px;
-  background: #2a2a2a;
-  border-right: 1px solid #3a3a3a;
+  background: linear-gradient(135deg, #2a2a2a 0%, #1e1e1e 100%);
+  border-right: 2px solid #ff6b35;
+  overflow-y: auto;
+  position: relative;
+}
+
+.v2-track-headers__gradient {
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 40px;
+  background: linear-gradient(90deg, transparent, rgba(255,107,53,0.06));
+  pointer-events: none;
+  z-index: 0;
+}
+
+.v2-track-headers__content {
+  position: relative;
+  z-index: 1;
+}
+
+.v2-header-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #ff6b35;
+  font-size: 13px;
+  padding: 40px 16px;
+  opacity: 0.7;
+  line-height: 1.6;
+}
+
+/* Right column: track lanes */
+.v2-track-lanes {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+.v2-lane-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 200px;
+  color: #666;
+  gap: 12px;
+  font-size: 14px;
+}
+.v2-lane-empty__icon {
+  font-size: 48px;
+  opacity: 0.3;
+}
+
+.v2-track-lane-row {
+  position: relative;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.v2-track-lane-row:hover {
+  filter: brightness(1.08);
+}
+
+/* Individual track header cell (inside left column) */
+.v2-track-header {
+  width: 100%;
+  background: transparent;
+  border-bottom: 1px solid #3a3a3a;
   display: flex;
   align-items: center;
   padding: 0 8px;
   gap: 8px;
+  height: 80px;
+  box-sizing: border-box;
 }
+.v2-track-header:hover { background: rgba(255,255,255,0.03); }
+.v2-track-header--active { background: rgba(0,212,255,0.12); }
 
 .v2-track-header__name {
   font-size: 13px;
@@ -424,11 +498,26 @@
 .v2-track-ctrl-btn--muted { background: #ff4444; color: #fff; border-color: #ff4444; }
 .v2-track-ctrl-btn--solo  { background: #ffaa00; color: #000; border-color: #ffaa00; }
 
-/* Track lane (right column - waveforms/clips) */
+/* Track lane cell (inside right column - waveforms/clips) */
 .v2-track-lane {
-  flex: 1;
+  width: 100%;
+  height: 100%;
   position: relative;
   overflow: hidden;
+}
+
+/* ── Timeline footer (inside timeline area) ──────────── */
+.v2-timeline-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 10px;
+  background: #222;
+  border-top: 1px solid #3a3a3a;
+  font-size: 10px;
+  color: #666;
+  flex-shrink: 0;
+  min-height: 22px;
 }
 
 /* ── Footer status bar ──────────────────────────────── */
@@ -471,16 +560,20 @@
 }
 
 /* ── Scrollbar styling ──────────────────────────────── */
-.v2-track-scroll::-webkit-scrollbar {
+.v2-track-headers::-webkit-scrollbar,
+.v2-track-lanes::-webkit-scrollbar {
   width: 8px;
 }
-.v2-track-scroll::-webkit-scrollbar-track {
+.v2-track-headers::-webkit-scrollbar-track,
+.v2-track-lanes::-webkit-scrollbar-track {
   background: #1a1a1a;
 }
-.v2-track-scroll::-webkit-scrollbar-thumb {
+.v2-track-headers::-webkit-scrollbar-thumb,
+.v2-track-lanes::-webkit-scrollbar-thumb {
   background: #444;
   border-radius: 4px;
 }
-.v2-track-scroll::-webkit-scrollbar-thumb:hover {
+.v2-track-headers::-webkit-scrollbar-thumb:hover,
+.v2-track-lanes::-webkit-scrollbar-thumb:hover {
   background: #555;
 }

@@ -13,7 +13,7 @@ export default function TrackHeaderCell({
 }) {
   return (
     <div
-      className="v2-track-header"
+      className={`v2-track-header${isActive ? ' v2-track-header--active' : ''}`}
       onClick={() => onSelect?.(track.id)}
       style={{ cursor: 'pointer' }}
     >

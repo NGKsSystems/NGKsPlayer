@@ -12,15 +12,7 @@ import TimelineShell from './components/TimelineShell.jsx';
 import { DEFAULT_ZOOM } from './math/layoutConstants.js';
 import './styles/clipperV2.css';
 
-// ── Stub data – replaced by real hooks in later phases ──
-const STUB_TRACKS = [
-  { id: 'stub-1', name: 'Vocal Lead', clips: [], muted: false, solo: false, volume: 0.8, pan: 0 },
-  { id: 'stub-2', name: 'Guitar',     clips: [], muted: false, solo: false, volume: 0.7, pan: -0.3 },
-  { id: 'stub-3', name: 'Drums',      clips: [], muted: false, solo: false, volume: 0.9, pan: 0 },
-  { id: 'stub-4', name: 'Bass',       clips: [], muted: false, solo: false, volume: 0.75, pan: 0.1 },
-];
-
-let nextTrackId = 5;
+let nextTrackId = 1;
 
 export default function ProAudioClipperV2({ onNavigate }) {
   // ── UI state ──────────────────────────────────────────
@@ -30,13 +22,13 @@ export default function ProAudioClipperV2({ onNavigate }) {
   // ── Transport state (stub) ────────────────────────────
   const [isPlaying, setIsPlaying]       = useState(false);
   const [currentTime, setCurrentTime]   = useState(0);
-  const [duration]                      = useState(180);
+  const [duration]                      = useState(0);
   const [playbackRate, setPlaybackRate] = useState(1);
   const [masterVolume, setMasterVolume] = useState(0.8);
 
-  // ── Timeline state (stub) ─────────────────────────────
-  const [tracks, setTracks]             = useState(STUB_TRACKS);
-  const [activeTrackId, setActiveTrackId] = useState('stub-1');
+  // ── Timeline state ────────────────────────────────────
+  const [tracks, setTracks]             = useState([]);
+  const [activeTrackId, setActiveTrackId] = useState(null);
   const [zoom, setZoom]                 = useState(DEFAULT_ZOOM);
   const [viewportStart]                 = useState(0);
   const [selectedTool, setSelectedTool] = useState('selection');
