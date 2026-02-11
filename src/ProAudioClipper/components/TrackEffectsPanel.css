@@ -62,22 +62,25 @@
   color: #FFC107;
 }
 
-.collapse-panel-btn {
-  background: none;
-  border: 1px solid #555;
-  border-radius: 4px;
-  padding: 4px 8px;
+.collapse-bar {
+  display: block;
+  width: 100%;
+  padding: 6px 0;
+  background: #1e1e1e;
+  border: none;
+  border-bottom: 1px solid #ff8c00;
   color: #ff8c00;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-align: center;
   cursor: pointer;
-  font-size: 14px;
-  line-height: 1;
-  transition: background-color 0.2s, border-color 0.2s;
-  flex-shrink: 0;
+  transition: background-color 0.2s;
 }
 
-.collapse-panel-btn:hover {
-  background: rgba(255, 140, 0, 0.15);
-  border-color: #ff8c00;
+.collapse-bar:hover {
+  background: rgba(255, 140, 0, 0.12);
 }
 
 /* Content */

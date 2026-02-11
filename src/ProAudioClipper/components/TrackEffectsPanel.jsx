@@ -127,15 +127,13 @@ const TrackEffectsPanel = ({
 
   return (
     <div className="track-effects-panel">
+      {/* Collapse bar */}
+      <button className="collapse-bar" onClick={onClose} title="Collapse Effects Panel">
+        COLLAPSE
+      </button>
+
       {/* Header */}
       <div className="effects-panel-header">
-        <button 
-          className="collapse-panel-btn"
-          onClick={onClose}
-          title="Collapse Effects Panel"
-        >
-          ◀
-        </button>
         <div className="track-info">
           <h3>{trackName} FX</h3>
           <div className="engine-stats">
