@@ -410,7 +410,7 @@ const ProfessionalTimeline = React.forwardRef(({
               tracks.map((track, trackIndex) => (
                 <div
                   key={`header-${track.id}-${trackIndex}`}
-                  style={{ height: TRACK_HEIGHT }}
+                  style={{ height: TRACK_HEIGHT, width: '100%' }}
                 >
                   <TrackHeader
                     track={track}
