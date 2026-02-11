@@ -19,7 +19,8 @@
  *
  * Owner: NGKsSystems
  */
-import React, { useRef, useMemo, useCallback, useState } from 'react';
+import React, { useRef, useMemo, useCallback, useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import {
   HEADER_WIDTH,
   TRACK_HEIGHT,
@@ -35,7 +36,6 @@ import {
   timelineWidth as calcTimelineWidth,
   generateTicks,
 } from '../../timeline/v3/geometry.js';
-import TrackHeader from '../TrackHeader';
 import SimpleWaveform from '../SimpleWaveform';
 import './ProfessionalTimeline_v3.css';
 
@@ -125,6 +125,8 @@ const ProfessionalTimeline_v3 = React.forwardRef(
       onTrackNameChange,
       onAddTrack,
       onTrackDelete,
+      onTrackDeleteFile,
+      onTrackRemove,
       onTrackMoveUp,
       onTrackMoveDown,
       onOpenEffects,
@@ -157,7 +159,35 @@ const ProfessionalTimeline_v3 = React.forwardRef(
     /* ── refs & state ─────────────────────────────────── */
     const scrollRef = useRef(null);
     const headerTracksRef = useRef(null);
+    const clipboardRef = useRef(null); // holds copied/cut clip data
     const [scrollLeft, setScrollLeft] = useState(0);
+    const [ctxMenu, setCtxMenu] = useState(null); // { trackId, trackName, idx, x, y, clip? }
+    const [renaming, setRenaming] = useState(null); // { trackId, name }
+    const [deleteConfirm, setDeleteConfirm] = useState(null); // { trackId, trackName }
+
+    /* ── close context menu on any outside click / scroll / Escape ── */
+    const ctxMenuRef = useRef(null);
+    useEffect(() => {
+      if (!ctxMenu) return;
+      const dismiss = (e) => {
+        // Don't dismiss if clicking inside the context menu itself
+        if (ctxMenuRef.current && ctxMenuRef.current.contains(e.target)) return;
+        setCtxMenu(null);
+      };
+      const onKey = (e) => { if (e.key === 'Escape') setCtxMenu(null); };
+      // Use timeout so the initial right-click event doesn't immediately dismiss
+      const timer = setTimeout(() => {
+        window.addEventListener('mousedown', dismiss);
+        window.addEventListener('scroll', dismiss, true);
+        window.addEventListener('keydown', onKey);
+      }, 0);
+      return () => {
+        clearTimeout(timer);
+        window.removeEventListener('mousedown', dismiss);
+        window.removeEventListener('scroll', dismiss, true);
+        window.removeEventListener('keydown', onKey);
+      };
+    }, [ctxMenu]);
 
     /* ── scroll handler (syncs left headers with right tracks) ── */
     const handleScroll = useCallback((e) => {
@@ -280,27 +310,33 @@ const ProfessionalTimeline_v3 = React.forwardRef(
                 </div>
               ) : (
                 tracks.map((track, idx) => (
-                  <div key={`hdr-${track.id}`} style={{ height: TRACK_HEIGHT, position: 'relative' }}>
-                    <TrackHeader
-                      track={track}
-                      isActive={track.id === activeTrackId}
-                      onSelect={onTrackSelect}
-                      onMute={onTrackMute}
-                      onSolo={onTrackSolo}
-                      onVolumeChange={onTrackVolumeChange}
-                      onPanChange={onTrackPanChange}
-                      onPlaybackRateChange={onTrackPlaybackRateChange}
-                      onReverseToggle={onTrackReverseToggle}
-                      onNameChange={onTrackNameChange}
-                      onDelete={onTrackDelete}
-                      onOpenEffects={onOpenEffects}
-                      onMoveUp={() => onTrackMoveUp(idx)}
-                      onMoveDown={() => onTrackMoveDown(idx)}
-                      onContextMenu={(e) => onTrackContextMenu?.(e, track.id)}
-                      canMoveUp={idx > 0}
-                      canMoveDown={idx < tracks.length - 1}
-                      style={{ height: '100%' }}
-                    />
+                  <div key={`hdr-${track.id}`} className="ptv3-track-hdr" style={{ height: TRACK_HEIGHT }}
+                    onClick={() => onTrackSelect?.(track.id)}
+                    onContextMenu={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      console.log('[PTv3] RIGHT-CLICK on track header:', track.id, track.name, e.clientX, e.clientY);
+                      setCtxMenu({ trackId: track.id, trackName: track.name, idx, x: e.clientX, y: e.clientY });
+                    }}
+                  >
+                    <span className="ptv3-track-hdr__name" title={track.name}>{track.name}</span>
+                    <div className="ptv3-track-hdr__btns">
+                      <button
+                        className={`ptv3-track-hdr__btn ${track.muted ? 'ptv3-track-hdr__btn--active' : ''}`}
+                        onClick={() => onTrackMute?.(track.id)}
+                        title={track.muted ? 'Unmute' : 'Mute'}
+                      >▶</button>
+                      <button
+                        className={`ptv3-track-hdr__btn ${track.muted ? 'ptv3-track-hdr__btn--active' : ''}`}
+                        onClick={() => onTrackMute?.(track.id)}
+                        title={track.muted ? 'Unmute' : 'Mute'}
+                      >M</button>
+                      <button
+                        className={`ptv3-track-hdr__btn ${track.solo ? 'ptv3-track-hdr__btn--solo' : ''}`}
+                        onClick={() => onTrackSolo?.(track.id)}
+                        title={track.solo ? 'Unsolo' : 'Solo'}
+                      >S</button>
+                    </div>
                   </div>
                 ))
               )}
@@ -365,6 +401,12 @@ const ProfessionalTimeline_v3 = React.forwardRef(
                           key={`row-${track.id}`}
                           className={rowCls}
                           style={{ height: TRACK_HEIGHT }}
+                          onContextMenu={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            console.log('[PTv3] RIGHT-CLICK on track row:', track.id, track.name, e.clientX, e.clientY);
+                            setCtxMenu({ trackId: track.id, trackName: track.name, idx, x: e.clientX, y: e.clientY });
+                          }}
                         >
                           {/* center line */}
                           <div
@@ -387,11 +429,26 @@ const ProfessionalTimeline_v3 = React.forwardRef(
                                   left: timeToPx(clip.startTime, zoomLevel),
                                   width: clipW,
                                   height: TRACK_HEIGHT - 4,
-                                  cursor: selectedTool === 'razor' ? 'crosshair' : 'grab',
+                                  cursor: selectedTool === 'razor' ? 'url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'24\' height=\'24\' viewBox=\'0 0 24 24\'><text y=\'18\' font-size=\'16\'>✂</text></svg>") 12 12, crosshair' : 'grab',
                                 }}
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  onClipSelect?.(clip);
+                                  if (selectedTool === 'razor') {
+                                    // Razor tool: split clip at click position
+                                    const rect = e.currentTarget.getBoundingClientRect();
+                                    const x = e.clientX - rect.left;
+                                    const relativeTime = pxToTime(x, zoomLevel);
+                                    const splitTime = clip.startTime + relativeTime;
+                                    onClipSplit?.(clip.id, splitTime);
+                                  } else {
+                                    // Selection tool: select clip
+                                    onClipSelect?.(clip);
+                                  }
+                                }}
+                                onContextMenu={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  setCtxMenu({ trackId: track.id, trackName: track.name, idx, x: e.clientX, y: e.clientY, clip });
                                 }}
                               >
                                 {clip.audioBuffer && (
@@ -427,6 +484,113 @@ const ProfessionalTimeline_v3 = React.forwardRef(
             </div>
           </div>
         </div>
+
+        {/* ── Context Menu (portal to body to avoid overflow clipping) ── */}
+        {ctxMenu && createPortal(
+          <div
+            ref={ctxMenuRef}
+            className="ptv3-ctx-menu"
+            style={{ top: ctxMenu.y, left: ctxMenu.x }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* ── Edit actions ── */}
+            <button className="ptv3-ctx-menu__item" onClick={() => {
+              if (ctxMenu.clip) { clipboardRef.current = { ...ctxMenu.clip, _cut: false }; }
+              setCtxMenu(null);
+            }} disabled={!ctxMenu.clip}>✂ Copy</button>
+            <button className="ptv3-ctx-menu__item" onClick={() => {
+              if (ctxMenu.clip) {
+                clipboardRef.current = { ...ctxMenu.clip, _cut: true, _srcTrackId: ctxMenu.trackId };
+                onClipDelete?.(ctxMenu.clip.id);
+              }
+              setCtxMenu(null);
+            }} disabled={!ctxMenu.clip}>✂ Cut</button>
+            <button className="ptv3-ctx-menu__item" onClick={() => {
+              if (clipboardRef.current && ctxMenu.trackId) {
+                const cb = clipboardRef.current;
+                const newClip = { ...cb, id: `clip-${Date.now()}`, startTime: currentTime, _cut: undefined, _srcTrackId: undefined };
+                onClipMove?.(newClip, ctxMenu.trackId);
+                if (!cb._cut) clipboardRef.current = { ...cb }; // keep for re-paste if copy
+                else clipboardRef.current = null;
+              }
+              setCtxMenu(null);
+            }} disabled={!clipboardRef.current}>📋 Paste</button>
+
+            <div className="ptv3-ctx-menu__divider" />
+
+            {/* ── Tool switches ── */}
+            <button className={`ptv3-ctx-menu__item ${selectedTool === 'selection' ? 'ptv3-ctx-menu__item--active' : ''}`} onClick={() => { onToolChange?.('selection'); setCtxMenu(null); }}>☞ Select Tool</button>
+            <button className={`ptv3-ctx-menu__item ${selectedTool === 'razor' ? 'ptv3-ctx-menu__item--active' : ''}`} onClick={() => { onToolChange?.('razor'); setCtxMenu(null); }}>✂ Razor Tool</button>
+
+            <div className="ptv3-ctx-menu__divider" />
+
+            {/* ── Track actions ── */}
+            <button className="ptv3-ctx-menu__item" onClick={() => { onTrackMoveUp?.(ctxMenu.idx); setCtxMenu(null); }} disabled={ctxMenu.idx === 0}>⬆ Move Up</button>
+            <button className="ptv3-ctx-menu__item" onClick={() => { onTrackMoveDown?.(ctxMenu.idx); setCtxMenu(null); }} disabled={ctxMenu.idx >= tracks.length - 1}>⬇ Move Down</button>
+            <button className="ptv3-ctx-menu__item" onClick={() => { onOpenEffects?.(ctxMenu.trackId); setCtxMenu(null); }}>🎛 Effects</button>
+            <button className="ptv3-ctx-menu__item" onClick={() => { setRenaming({ trackId: ctxMenu.trackId, name: ctxMenu.trackName }); setCtxMenu(null); }}>✏ Rename</button>
+            <button className="ptv3-ctx-menu__item" onClick={() => { onTrackRemove?.(ctxMenu.trackId); setCtxMenu(null); }}>✖ Remove from Timeline</button>
+            <button className="ptv3-ctx-menu__item ptv3-ctx-menu__item--danger" onClick={() => { setDeleteConfirm({ trackId: ctxMenu.trackId, trackName: ctxMenu.trackName }); setCtxMenu(null); }}>🗑 Delete Permanently</button>
+          </div>,
+          document.body
+        )}
+
+        {/* ── Inline Rename Dialog (portal) ── */}
+        {renaming && createPortal(
+          <div style={{ position: 'fixed', inset: 0, zIndex: 10000, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.5)' }}
+            onClick={() => setRenaming(null)}
+          >
+            <div style={{ background: '#2c2c2c', border: '1px solid rgba(255,255,255,0.15)', borderRadius: 8, padding: 16, minWidth: 260 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div style={{ color: '#ccc', fontSize: 13, marginBottom: 8 }}>Rename Track</div>
+              <input
+                autoFocus
+                style={{ width: '100%', padding: '6px 10px', fontSize: 14, background: '#1a1a1a', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 4, color: '#fff', boxSizing: 'border-box' }}
+                value={renaming.name}
+                onChange={(e) => setRenaming({ ...renaming, name: e.target.value })}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && renaming.name.trim()) {
+                    onTrackNameChange?.(renaming.trackId, renaming.name.trim());
+                    setRenaming(null);
+                  }
+                  if (e.key === 'Escape') setRenaming(null);
+                }}
+              />
+              <div style={{ display: 'flex', gap: 8, marginTop: 10, justifyContent: 'flex-end' }}>
+                <button style={{ padding: '4px 14px', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 4, color: '#ccc', cursor: 'pointer' }}
+                  onClick={() => setRenaming(null)}>Cancel</button>
+                <button style={{ padding: '4px 14px', background: '#ff6b35', border: 'none', borderRadius: 4, color: '#fff', cursor: 'pointer', fontWeight: 600 }}
+                  onClick={() => { if (renaming.name.trim()) { onTrackNameChange?.(renaming.trackId, renaming.name.trim()); } setRenaming(null); }}>Rename</button>
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
+
+        {/* ── Delete Confirmation Dialog (portal) ── */}
+        {deleteConfirm && createPortal(
+          <div style={{ position: 'fixed', inset: 0, zIndex: 10000, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.6)' }}
+            onClick={() => setDeleteConfirm(null)}
+          >
+            <div style={{ background: '#2c2c2c', border: '1px solid rgba(231,76,60,0.4)', borderRadius: 8, padding: 20, minWidth: 300, maxWidth: 400 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div style={{ color: '#e74c3c', fontSize: 15, fontWeight: 600, marginBottom: 10 }}>🗑 Delete Permanently</div>
+              <div style={{ color: '#ccc', fontSize: 13, lineHeight: 1.5, marginBottom: 16 }}>
+                This will <strong style={{ color: '#e74c3c' }}>permanently delete</strong> the file for
+                <strong> "{deleteConfirm.trackName}"</strong> from your computer. This cannot be undone.
+              </div>
+              <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
+                <button style={{ padding: '6px 16px', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 4, color: '#ccc', cursor: 'pointer' }}
+                  onClick={() => setDeleteConfirm(null)}>Cancel</button>
+                <button style={{ padding: '6px 16px', background: '#e74c3c', border: 'none', borderRadius: 4, color: '#fff', cursor: 'pointer', fontWeight: 600 }}
+                  onClick={() => { onTrackDeleteFile?.(deleteConfirm.trackId); setDeleteConfirm(null); }}>Delete Forever</button>
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
 
         {/* ── Footer ────────────────────────────────────── */}
         <div className="ptv3-footer">

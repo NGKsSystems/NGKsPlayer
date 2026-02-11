@@ -2,7 +2,7 @@
 .track-header {
   display: flex;
   align-items: center;
-  padding: 8px 12px;
+  padding: 6px 8px;
   background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
   border: 1px solid #34495e;
   border-radius: 6px;
@@ -13,6 +13,7 @@
   min-height: 60px;
   width: 100%;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .track-header:hover {
@@ -48,17 +49,21 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  overflow: hidden;
 }
 
 .track-name {
   font-weight: 600;
   color: #ecf0f1;
-  font-size: 13px;
+  font-size: 12px;
   margin-bottom: 2px;
   cursor: text;
-  padding: 2px 4px;
+  padding: 1px 4px;
   border-radius: 3px;
   transition: background-color 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .track-name:hover {
@@ -86,26 +91,28 @@
 /* Main Controls */
 .track-main-controls {
   display: flex;
-  gap: 6px;
-  margin-top: 4px;
+  gap: 3px;
+  margin-top: 2px;
   width: 100%;
   justify-content: flex-start;
   align-items: center;
+  flex-wrap: nowrap;
 }
 
 .track-control-btn {
   background: rgba(52, 73, 94, 0.8);
   border: 1px solid #4a5f7a;
   color: #bdc3c7;
-  padding: 6px;
-  border-radius: 4px;
+  padding: 3px;
+  border-radius: 3px;
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 28px;
-  height: 28px;
+  min-width: 24px;
+  height: 24px;
+  flex-shrink: 0;
 }
 
 .track-control-btn:hover {
@@ -236,8 +243,9 @@
 /* Track Actions */
 .track-actions {
   display: flex;
-  gap: 4px;
+  gap: 2px;
   flex-shrink: 0;
+  align-items: center;
 }
 
 .reorder-controls {
@@ -286,20 +294,18 @@
 /* Effects Button Styling - Make it clearly visible */
 .track-action-btn.effects-btn {
   background: linear-gradient(135deg, #4CAF50, #66BB6A);
-  border: 2px solid #4CAF50;
+  border: 1px solid #4CAF50;
   color: #ffffff;
   font-weight: bold;
-  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.4);
-  transform: scale(1.1);
-  margin: 0 2px;
+  box-shadow: 0 1px 4px rgba(76, 175, 80, 0.4);
+  margin: 0 1px;
 }
 
 .track-action-btn.effects-btn:hover {
   background: linear-gradient(135deg, #66BB6A, #81C784);
   border-color: #66BB6A;
   color: #ffffff;
-  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.6);
-  transform: scale(1.15);
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.6);
 }
 
 /* More Actions Menu */
@@ -393,54 +399,12 @@
 }
 
 /* Speed and Reverse Controls */
-.speed-control {
+/* Speed presets inline (no slider) */
+.speed-presets-inline {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   gap: 2px;
-  margin: 0 4px;
-  flex: 1;
-  min-width: 80px;
-  max-width: 140px;
-}
-
-.speed-slider {
-  width: 100%;
-  height: 3px;
-  background: linear-gradient(to right, #34495e 0%, #27ae60 50%, #e74c3c 100%);
-  border-radius: 2px;
-  outline: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  -webkit-appearance: none;
-  appearance: none;
-}
-
-.speed-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #f39c12;
-  cursor: pointer;
-  border: 1px solid #2c3e50;
-  transition: all 0.2s ease;
-}
-
-.speed-slider::-webkit-slider-thumb:hover {
-  background: #e67e22;
-  transform: scale(1.1);
-}
-
-.speed-slider::-moz-range-thumb {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #f39c12;
-  cursor: pointer;
-  border: 1px solid #2c3e50;
-  transition: all 0.2s ease;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .speed-presets {
@@ -453,16 +417,17 @@
   background: #34495e;
   color: #bdc3c7;
   border: none;
-  padding: 1px 3px;
-  font-size: 8px;
+  padding: 2px 4px;
+  font-size: 9px;
   border-radius: 2px;
   cursor: pointer;
   transition: all 0.2s ease;
-  min-width: 18px;
-  height: 14px;
+  min-width: 22px;
+  height: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .speed-preset-btn:hover {

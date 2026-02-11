@@ -1153,8 +1153,48 @@ const ProAudioClipper = ({ onNavigate, forceVersion }) => {
                 onTrackPanChange: trackManager.setTrackPan,
                 onTrackPlaybackRateChange: trackManager.setTrackPlaybackRate,
                 onTrackReverseToggle: trackManager.toggleTrackReverse,
-                onTrackNameChange: trackManager.setTrackName,
+                onTrackNameChange: async (trackId, name) => {
+                  // Update in-app track name
+                  trackManager.updateTrack(trackId, { name });
+                  // Also rename the file on disk if we have a file path
+                  const track = trackManager.tracks.find(t => t.id === trackId);
+                  const filePath = track?.clips?.[0]?.originalFile?.path;
+                  if (filePath && window.api?.renameTrack) {
+                    try {
+                      const result = await window.api.renameTrack(filePath, name);
+                      if (result?.success && result?.newPath) {
+                        console.log('[Rename] File renamed on disk:', filePath, '->', result.newPath);
+                        // Update the clip's originalFile reference
+                        trackManager.updateClip(track.clips[0].id, {
+                          originalFile: { ...track.clips[0].originalFile, path: result.newPath, name: result.newPath.split(/[/\\]/).pop() }
+                        });
+                      } else {
+                        console.warn('[Rename] Disk rename failed:', result?.error || 'unknown');
+                      }
+                    } catch (err) {
+                      console.error('[Rename] Error renaming file on disk:', err);
+                    }
+                  }
+                },
                 onTrackDelete: trackManager.deleteTrack,
+                onTrackRemove: (trackId) => {
+                  // Just remove from timeline, don't touch file on disk
+                  trackManager.deleteTrack(trackId);
+                },
+                onTrackDeleteFile: async (trackId) => {
+                  // Remove from timeline AND delete file from disk
+                  const track = trackManager.tracks.find(t => t.id === trackId);
+                  const filePath = track?.clips?.[0]?.originalFile?.path;
+                  trackManager.deleteTrack(trackId);
+                  if (filePath && window.api?.deleteTrack) {
+                    try {
+                      await window.api.deleteTrack(filePath);
+                      console.log('[Delete] File permanently deleted from disk:', filePath);
+                    } catch (err) {
+                      console.error('[Delete] Error deleting file from disk:', err);
+                    }
+                  }
+                },
                 onTrackMoveUp: trackManager.moveTrackUp,
                 onTrackMoveDown: trackManager.moveTrackDown,
                 onAddTrack: trackController.handleAddTrackWithFile,

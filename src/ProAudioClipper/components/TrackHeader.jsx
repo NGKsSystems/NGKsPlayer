@@ -162,15 +162,25 @@ const TrackHeader = ({
       className={`track-header ${isActive ? 'active' : ''}`}
       style={style}
       onClick={() => onSelect && onSelect(track.id)}
-      onContextMenu={onContextMenu}
+      onContextMenu={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!showControls) {
+          const menuWidth = 150;
+          const menuHeight = 180;
+          const viewportWidth = typeof document !== 'undefined' ? document.documentElement.clientWidth : 1920;
+          const viewportHeight = typeof document !== 'undefined' ? document.documentElement.clientHeight : 1080;
+          let top = e.clientY;
+          let left = e.clientX;
+          if (left + menuWidth > viewportWidth) left = viewportWidth - menuWidth - 10;
+          if (top + menuHeight > viewportHeight) top = viewportHeight - menuHeight - 10;
+          setMenuPosition({ position: 'fixed', top: `${top}px`, left: `${left}px`, right: 'auto' });
+        }
+        setShowControls(!showControls);
+        onContextMenu?.(e);
+      }}
     >
-      {/* Track Color Indicator */}
-      <div 
-        className="track-color-indicator"
-        style={{ backgroundColor: track.color }}
-      />
-
-      {/* Track Info */}
+      {/* Track Name */}
       <div className="track-info">
         {isEditing ? (
           <input
@@ -191,182 +201,109 @@ const TrackHeader = ({
             {track.name}
           </div>
         )}
-        
-        {/* Audio info removed to save space */}
-
-        {/* Main Controls - Now inside track-info for better visibility */}
-        <div className="track-main-controls">
-          {/* Mute Button */}
-          <button
-            className={`track-control-btn mute-btn ${track.muted ? 'active' : ''}`}
-            onClick={(e) => {
-              e.stopPropagation();
-              onMute(track.id);
-            }}
-            title={track.muted ? 'Unmute' : 'Mute'}
-          >
-            {track.muted ? <VolumeX size={12} /> : <Volume2 size={12} />}
-          </button>
-
-          {/* Solo Button */}
-          <button
-            className={`track-control-btn solo-btn ${track.solo ? 'active' : ''}`}
-            onClick={(e) => {
-              e.stopPropagation();
-              onSolo(track.id);
-            }}
-            title={track.solo ? 'Unsolo' : 'Solo'}
-          >
-            <Headphones size={12} />
-          </button>
-
-          {/* Speed Control */}
-          <div className="speed-control" title={`Speed: ${(track.playbackRate || 1).toFixed(1)}x`}>
-            <input
-              type="range"
-              min="0.1"
-              max="4.0"
-              step="0.1"
-              value={track.playbackRate || 1.0}
-              onChange={(e) => {
-                e.stopPropagation();
-                onPlaybackRateChange && onPlaybackRateChange(track.id, parseFloat(e.target.value));
-              }}
-              className="speed-slider"
-              onClick={(e) => e.stopPropagation()}
-            />
-            <div className="speed-presets">
-              {[0.5, 1.0, 1.5, 2.0].map(rate => (
-                <button
-                  key={rate}
-                  className={`speed-preset-btn ${Math.abs((track.playbackRate || 1.0) - rate) < 0.05 ? 'active' : ''}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onPlaybackRateChange && onPlaybackRateChange(track.id, rate);
-                  }}
-                  title={`Set speed to ${rate}x`}
-                >
-                  {rate}x
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Reverse Button */}
-          <button
-            className={`track-control-btn reverse-btn ${track.reversed ? 'active' : ''}`}
-            onClick={(e) => {
-              e.stopPropagation();
-              onReverseToggle && onReverseToggle(track.id);
-            }}
-            title={track.reversed ? 'Disable Reverse Playback (Currently Playing Backwards)' : 'Enable Reverse Playback (Play Backwards)'}
-          >
-            <RotateCcw size={12} />
-          </button>
-        </div>
       </div>
 
-      {/* Extended Controls - REMOVED since we have master controls */}
-      
-      {/* Track Actions */}
-      <div className="track-actions">
-        {/* Reorder Controls */}
-        <div className="reorder-controls">
+      {/* Buttons: Play, Mute, Solo */}
+      <div className="track-main-controls">
+        <button
+          className="track-control-btn"
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+          title="Play"
+        >
+          ▶
+        </button>
+        <button
+          className={`track-control-btn mute-btn ${track.muted ? 'active' : ''}`}
+          onClick={(e) => {
+            e.stopPropagation();
+            onMute(track.id);
+          }}
+          title={track.muted ? 'Unmute' : 'Mute'}
+        >
+          M
+        </button>
+        <button
+          className={`track-control-btn solo-btn ${track.solo ? 'active' : ''}`}
+          onClick={(e) => {
+            e.stopPropagation();
+            onSolo(track.id);
+          }}
+          title={track.solo ? 'Unsolo' : 'Solo'}
+        >
+          S
+        </button>
+      </div>
+
+      {/* Context menu for reorder/rename/delete (right-click) */}
+      {showControls && (
+        <div 
+          className="actions-menu"
+          ref={moreActionsRef}
+          style={menuPosition}
+        >
           <button
-            className="track-action-btn"
+            className="menu-item"
             onClick={(e) => {
               e.stopPropagation();
               onMoveUp();
+              setShowControls(false);
             }}
             disabled={!canMoveUp}
-            title="Move track up"
           >
             <ChevronUp size={12} />
+            Move Up
           </button>
           <button
-            className="track-action-btn"
+            className="menu-item"
             onClick={(e) => {
               e.stopPropagation();
               onMoveDown();
+              setShowControls(false);
             }}
             disabled={!canMoveDown}
-            title="Move track down"
           >
             <ChevronDown size={12} />
+            Move Down
           </button>
-        </div>
-
-        {/* Effects Button - Direct Access */}
-        <button
-          className="track-action-btn effects-btn"
-          onClick={(e) => {
-            e.stopPropagation();
-            if (onOpenEffects) {
-              onOpenEffects(track.id);
-            }
-          }}
-          title="Open Effects Panel"
-        >
-          <Sliders size={12} />
-        </button>
-
-        {/* Delete Button */}
-        <button
-          className="track-action-btn delete-btn"
-          onClick={(e) => {
-            e.stopPropagation();
-            if (confirm(`Delete track "${track.name}"?`)) {
-              onDelete(track.id);
-            }
-          }}
-          title="Delete track"
-        >
-          <Trash2 size={12} />
-        </button>
-
-        {/* More Actions Menu */}
-        <div className="more-actions" ref={moreActionsRef}>
           <button
-            className="track-action-btn"
-            onClick={handleMoreActionsClick}
-            title="More options"
+            className="menu-item"
+            onClick={(e) => {
+              e.stopPropagation();
+              if (onOpenEffects) onOpenEffects(track.id);
+              setShowControls(false);
+            }}
           >
-            <MoreVertical size={12} />
+            <Sliders size={12} />
+            Effects
           </button>
-          
-          {showControls && (
-            <div 
-              className="actions-menu"
-              style={menuPosition}
-            >
-              <button
-                className="menu-item"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleNameEdit();
-                  setShowControls(false);
-                }}
-              >
-                <Edit3 size={12} />
-                Rename
-              </button>
-              <button
-                className="menu-item delete"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (confirm(`Delete track "${track.name}"?`)) {
-                    onDelete(track.id);
-                  }
-                  setShowControls(false);
-                }}
-              >
-                <Trash2 size={12} />
-                Delete
-              </button>
-            </div>
-          )}
+          <button
+            className="menu-item"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleNameEdit();
+              setShowControls(false);
+            }}
+          >
+            <Edit3 size={12} />
+            Rename
+          </button>
+          <button
+            className="menu-item delete"
+            onClick={(e) => {
+              e.stopPropagation();
+              if (confirm(`Delete track "${track.name}"?`)) {
+                onDelete(track.id);
+              }
+              setShowControls(false);
+            }}
+          >
+            <Trash2 size={12} />
+            Delete
+          </button>
         </div>
-      </div>
+      )}
     </div>
   );
 };
