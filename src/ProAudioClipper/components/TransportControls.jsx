@@ -196,64 +196,67 @@ const TransportControls = ({
           <span className={`shortcuts-toggle-arrow ${shortcutsOpen ? 'open' : ''}`}>▶</span>
           <span>Keyboard Shortcuts</span>
         </button>
-        {shortcutsOpen && <div className="shortcuts-columns-container" style={{ 
+        {shortcutsOpen && <div className="shortcuts-rows-container" style={{ 
           display: 'flex', 
-          flexDirection: 'row',
-          gap: '20px', 
-          justifyContent: 'space-between',
-          flexWrap: 'nowrap',
+          flexDirection: 'column',
+          gap: '6px', 
           width: '100%'
         }}>
-          {/* Column 1 - Basic Controls */}
-          <div className="shortcuts-column" style={{ 
-            flex: '1', 
-            minWidth: '250px',
+          {/* Row 1 */}
+          <div className="shortcuts-row" style={{ 
             display: 'flex',
-            flexDirection: 'column',
-            gap: '2px'
+            flexWrap: 'wrap',
+            gap: '16px',
+            justifyContent: 'flex-start'
           }}>
-            <span className="shortcut" style={{ fontSize: '10px', color: '#888', opacity: '0.8' }}>🎵 <strong>Playback:</strong> Space: Play/Pause | S: Stop</span>
-            <span className="shortcut" style={{ fontSize: '10px', color: '#888', opacity: '0.8' }}>⏭️ <strong>Navigation:</strong> Shift+←/→: Skip 10s | ←/→: Fine Seek</span>
-            <span className="shortcut" style={{ fontSize: '10px', color: '#888', opacity: '0.8' }}>✂️ <strong>Editing:</strong> R: Razor Tool | Delete: Remove</span>
-            <span className="shortcut" style={{ fontSize: '10px', color: '#888', opacity: '0.8' }}>📋 <strong>Clipboard:</strong> X: Cut | C: Copy | V: Paste</span>
-            <span className="shortcut" style={{ fontSize: '10px', color: '#888', opacity: '0.8' }}>🔍 <strong>View:</strong> Ctrl+Plus/Minus: Zoom | Ctrl+0: Fit All</span>
-            <span className="shortcut" style={{ fontSize: '10px', color: '#888', opacity: '0.8' }}>🎯 <strong>Precision:</strong> Hold Shift: Snap to Grid</span>
-            <span className="shortcut" style={{ fontSize: '10px', color: '#888', opacity: '0.8' }}>↩️ <strong>History:</strong> Ctrl+Z: Undo | Ctrl+Y: Redo</span>
+            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>🎵 <strong>Playback:</strong> Space: Play/Pause | S: Stop</span>
+            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>⏭️ <strong>Navigation:</strong> Shift+←/→: Skip 10s | ←/→: Fine Seek</span>
+            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>✂️ <strong>Editing:</strong> R: Razor Tool | Delete: Remove</span>
+            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>📋 <strong>Clipboard:</strong> X: Cut | C: Copy | V: Paste</span>
+            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>🔍 <strong>View:</strong> Ctrl+Plus/Minus: Zoom | Ctrl+0: Fit All</span>
           </div>
           
-          {/* Column 2 - Track Controls */}
-          <div className="shortcuts-column" style={{ 
-            flex: '1', 
-            minWidth: '250px',
+          {/* Row 2 */}
+          <div className="shortcuts-row" style={{ 
             display: 'flex',
-            flexDirection: 'column',
-            gap: '2px'
+            flexWrap: 'wrap',
+            gap: '16px',
+            justifyContent: 'flex-start'
           }}>
-            <span className="shortcut" style={{ fontSize: '10px', color: '#888', opacity: '0.8' }}>🎛️ <strong>Mixing:</strong> Track Headers: Solo/Mute/Volume/Pan</span>
-            <span className="shortcut" style={{ fontSize: '10px', color: '#888', opacity: '0.8' }}>🎚️ <strong>Track Speed:</strong> Drag slider 0.1x-4x | Click presets</span>
-            <span className="shortcut" style={{ fontSize: '10px', color: '#888', opacity: '0.8' }}>🔄 <strong>Reverse:</strong> Click reverse button per track</span>
-            <span className="shortcut" style={{ fontSize: '10px', color: '#888', opacity: '0.8' }}>📥 <strong>Import:</strong> Multi-select files | Drag & Drop</span>
-            <span className="shortcut" style={{ fontSize: '10px', color: '#888', opacity: '0.8' }}>🚀 <strong>Selection:</strong> Ctrl+Click: Multi-Select</span>
-            <span className="shortcut" style={{ fontSize: '10px', color: '#888', opacity: '0.8' }}>📍 <strong>Markers:</strong> Alt+Click Timeline: Add Marker</span>
-            <span className="shortcut" style={{ fontSize: '10px', color: '#888', opacity: '0.8' }}>🎨 <strong>Workflow:</strong> Right-click clips for context menu</span>
+            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>🎯 <strong>Precision:</strong> Hold Shift: Snap to Grid</span>
+            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>↩️ <strong>History:</strong> Ctrl+Z: Undo | Ctrl+Y: Redo</span>
+            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>🎛️ <strong>Mixing:</strong> Track Headers: Solo/Mute/Volume/Pan</span>
+            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>🎚️ <strong>Track Speed:</strong> Drag slider 0.1x-4x | Click presets</span>
+            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>🔄 <strong>Reverse:</strong> Click reverse button per track</span>
           </div>
           
-          {/* Column 3 - Advanced Features */}
-          <div className="shortcuts-column" style={{ 
-            flex: '1', 
-            minWidth: '250px',
+          {/* Row 3 */}
+          <div className="shortcuts-row" style={{ 
             display: 'flex',
-            flexDirection: 'column',
-            gap: '2px'
+            flexWrap: 'wrap',
+            gap: '16px',
+            justifyContent: 'flex-start'
           }}>
-            <span className="shortcut" style={{ fontSize: '10px', color: '#888', opacity: '0.8' }}>⚡ <strong>Quick Actions:</strong> Double-Click: Zoom to Fit</span>
-            <span className="shortcut" style={{ fontSize: '10px', color: '#888', opacity: '0.8' }}>🎪 <strong>Loop Regions:</strong> Shift+Drag: Create Loop</span>
-            <span className="shortcut" style={{ fontSize: '10px', color: '#888', opacity: '0.8' }}>🔧 <strong>Tools:</strong> Click tool buttons or use hotkeys</span>
-            <span className="shortcut" style={{ fontSize: '10px', color: '#888', opacity: '0.8' }}>⚙️ <strong>Project:</strong> Ctrl+N: New | Ctrl+S: Save</span>
-            <span className="shortcut" style={{ fontSize: '10px', color: '#888', opacity: '0.8' }}>🎵 <strong>Multi-Track:</strong> Each track independent controls</span>
-            <span className="shortcut" style={{ fontSize: '10px', color: '#888', opacity: '0.8' }}>🎬 <strong>Timeline:</strong> Scroll to navigate | Click to seek</span>
-            <span className="shortcut" style={{ fontSize: '10px', color: '#888', opacity: '0.8' }}>🔄 <strong>Reverse:</strong> Click reverse button per track</span>
-            <span className="shortcut" style={{ fontSize: '10px', color: '#888', opacity: '0.8' }}>🏆 <strong>Pro Tip:</strong> Use speed/reverse for creative effects!</span>
+            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>📥 <strong>Import:</strong> Multi-select files | Drag & Drop</span>
+            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>🚀 <strong>Selection:</strong> Ctrl+Click: Multi-Select</span>
+            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>📍 <strong>Markers:</strong> Alt+Click Timeline: Add Marker</span>
+            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>🎨 <strong>Workflow:</strong> Right-click clips for context menu</span>
+            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>⚡ <strong>Quick Actions:</strong> Double-Click: Zoom to Fit</span>
+          </div>
+          
+          {/* Row 4 */}
+          <div className="shortcuts-row" style={{ 
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: '16px',
+            justifyContent: 'flex-start'
+          }}>
+            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>🎪 <strong>Loop Regions:</strong> Shift+Drag: Create Loop</span>
+            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>🔧 <strong>Tools:</strong> Click tool buttons or use hotkeys</span>
+            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>⚙️ <strong>Project:</strong> Ctrl+N: New | Ctrl+S: Save</span>
+            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>🎵 <strong>Multi-Track:</strong> Each track independent controls</span>
+            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>🎬 <strong>Timeline:</strong> Scroll to navigate | Click to seek</span>
+            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>🏆 <strong>Pro Tip:</strong> Use speed/reverse for creative effects!</span>
           </div>
         </div>}
       </div>
