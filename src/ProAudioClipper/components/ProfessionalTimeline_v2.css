@@ -148,30 +148,30 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 2px;
+  left: 0;
   pointer-events: none;
-  z-index: 120;  /* above waveforms, below menus */
+  z-index: 50;
   will-change: transform;
 }
-.ptv2-playhead__line {
+.ptv2-playhead-cap {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 2px;
-  background: #e74c3c;
-  box-shadow: 0 0 6px rgba(231, 76, 60, 0.6);
-}
-.ptv2-playhead__cap {
-  position: absolute;
-  top: 0;
-  left: -9px;
+  top: 0;            /* align to ruler top inside same wrapper */
+  left: -7px;        /* half cap width to center on line */
   width: 0;
   height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-top: 14px solid #e74c3c;
-  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.5));
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 10px solid #ff3b30;  /* red inverted triangle */
+  filter: drop-shadow(0 0 2px rgba(255, 59, 48, 0.6));
+}
+.ptv2-playhead-line {
+  position: absolute;
+  top: 10px;         /* start just under the cap */
+  bottom: 0;
+  left: -1px;
+  width: 2px;
+  background: #ff3b30;
+  box-shadow: 0 0 6px rgba(255, 59, 48, 0.35);
 }
 
 /* ── Track rows ────────────────────────────────────────── */

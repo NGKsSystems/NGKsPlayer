@@ -94,9 +94,10 @@ const Playhead_v2 = React.memo(({ currentTime, zoomLevel }) => {
     <div
       className="ptv2-playhead"
       style={{ transform: `translateX(${px}px)` }}
+      aria-hidden="true"
     >
-      <div className="ptv2-playhead__cap" />
-      <div className="ptv2-playhead__line" />
+      <div className="ptv2-playhead-cap" />
+      <div className="ptv2-playhead-line" />
     </div>
   );
 });
