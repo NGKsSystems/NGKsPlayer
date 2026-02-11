@@ -15,6 +15,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Play, Pause, Square, SkipBack, SkipForward, Volume2, Download, Save, FolderOpen, Scissors, MousePointer, ZoomIn, ZoomOut, RotateCcw, RotateCw, X, Plus, Trash2 } from 'lucide-react';
 import ProfessionalTimeline from './components/ProfessionalTimeline';
 import ProfessionalTimeline_v2 from './components/ProfessionalTimeline_v2';
+import ProfessionalTimeline_v3 from './components/v3/ProfessionalTimeline_v3';
 import TransportControls from './components/TransportControls';
 import ExportPanel from './components/ExportPanel';
 import ProjectManager from './components/ProjectManager';
@@ -1103,8 +1104,9 @@ const ProAudioClipper = ({ onNavigate }) => {
               flexDirection: 'column'
             }}
           >
-            {/* V2 timeline toggle — flip USE_V2_TIMELINE to switch */}
+            {/* V3 timeline toggle — flip USE_V3_TIMELINE / USE_V2_TIMELINE to switch */}
             {(() => {
+              const USE_V3_TIMELINE = true;
               const USE_V2_TIMELINE = true;
               const timelineProps = {
                 ref: timelineRef,
@@ -1146,9 +1148,11 @@ const ProAudioClipper = ({ onNavigate }) => {
                 nextRedoDescription,
                 className: 'timeline-container',
               };
-              return USE_V2_TIMELINE
-                ? <ProfessionalTimeline_v2 {...timelineProps} />
-                : <ProfessionalTimeline {...timelineProps} />;
+              return USE_V3_TIMELINE
+                ? <ProfessionalTimeline_v3 {...timelineProps} />
+                : USE_V2_TIMELINE
+                  ? <ProfessionalTimeline_v2 {...timelineProps} />
+                  : <ProfessionalTimeline {...timelineProps} />;
             })()}
 
           {/* Selection Info */}

@@ -12,7 +12,8 @@
 
 import { test, expect } from '@playwright/test';
 
-test.describe('ProfessionalTimeline V2 — Playhead', () => {
+// Skipped: V3 is now the active timeline — V2 is not mounted
+test.describe.skip('ProfessionalTimeline V2 — Playhead', () => {
 
   test.beforeEach(async ({ page }) => {
     // ProAudioClipper lives at /#/clipper (hash router)
