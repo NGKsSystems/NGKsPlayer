@@ -1,5 +1,30 @@
 /* MultiTrackTimeline.css - Professional Multi-Track Timeline Styles */
 
+/* Track Row Active Overlay - spans full width of each column cell */
+.track-row-header,
+.track-row-timeline {
+  position: relative;
+  width: 100%;
+}
+
+.track-row-bg {
+  position: absolute;
+  inset: 0;
+  height: 80px; /* TRACK_HEIGHT */
+  pointer-events: none;
+  z-index: 0;
+  background: transparent;
+}
+
+.track-row-bg.active {
+  background: rgba(0, 212, 255, 0.2);
+}
+
+/* Prevent flex/grid shrink clipping on timeline column */
+.track-row-timeline {
+  min-width: 0;
+}
+
 .multi-track-timeline {
   display: flex;
   flex-direction: column;

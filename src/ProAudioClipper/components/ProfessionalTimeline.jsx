@@ -407,11 +407,15 @@ const ProfessionalTimeline = React.forwardRef(({
                 No tracks yet.<br/>Click "Add Audio Track" to start!
               </div>
             ) : (
-              tracks.map((track, trackIndex) => (
+              tracks.map((track, trackIndex) => {
+                const isActive = track.id === activeTrackId;
+                return (
                 <div
                   key={`header-${track.id}-${trackIndex}`}
-                  style={{ height: TRACK_HEIGHT, width: '100%' }}
+                  className="track-row-header"
+                  style={{ height: TRACK_HEIGHT, width: '100%', position: 'relative' }}
                 >
+                  <div className={"track-row-bg" + (isActive ? " active" : "")} aria-hidden="true" />
                   <TrackHeader
                     track={track}
                     isActive={track.id === activeTrackId}
@@ -430,10 +434,10 @@ const ProfessionalTimeline = React.forwardRef(({
                     onContextMenu={(e) => onTrackContextMenu && onTrackContextMenu(e, track.id)}
                     canMoveUp={trackIndex > 0}
                     canMoveDown={trackIndex < tracks.length - 1}
-                    style={{ height: '100%' }}
+                    style={{ height: '100%', position: 'relative', zIndex: 1 }}
                   />
                 </div>
-              ))
+              );})
             )}
           </div>
         </div>
@@ -495,9 +499,12 @@ const ProfessionalTimeline = React.forwardRef(({
                   <div>Timeline is ready for audio clips!</div>
                 </div>
               ) : (
-                tracks.map((track, trackIndex) => (
+                tracks.map((track, trackIndex) => {
+                  const isActive = track.id === activeTrackId;
+                  return (
                   <div 
                     key={`content-${track.id}-${trackIndex}`}
+                    className="track-row-timeline"
                     style={{
                       height: TRACK_HEIGHT,
                       background: isDraggingClip && dragPreview?.targetTrackId === track.id 
@@ -511,6 +518,7 @@ const ProfessionalTimeline = React.forwardRef(({
                     }}
                     onContextMenu={(e) => handleTrackContextMenu(e, track)}
                   >
+                    <div className={"track-row-bg" + (isActive ? " active" : "")} aria-hidden="true" />
                     {/* Track Background Line */}
                     <div style={{
                       position: 'absolute',
@@ -627,7 +635,7 @@ const ProfessionalTimeline = React.forwardRef(({
                       </div>
                     )}
                   </div>
-                ))
+                );})
               )}
             </div>
           </div>
