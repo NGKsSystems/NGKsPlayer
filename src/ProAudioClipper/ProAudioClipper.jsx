@@ -945,10 +945,13 @@ const ProAudioClipper = ({ onNavigate }) => {
             overflow: 'hidden'
           }}
         >
-          {effectsPanelTrackId ? (
+          {trackManager.tracks.length > 0 ? (
             <TrackEffectsPanel
-              trackId={effectsPanelTrackId}
-              trackName={trackManager.tracks.find(t => t.id === effectsPanelTrackId)?.name || 'Track'}
+              trackId={effectsPanelTrackId || trackManager.activeTrackId || trackManager.tracks[0]?.id}
+              trackName={
+                trackManager.tracks.find(t => t.id === (effectsPanelTrackId || trackManager.activeTrackId || trackManager.tracks[0]?.id))?.name || 
+                'Track 1'
+              }
               effectsEngine={multiTrackEngine.effectsEngine}
               onClose={handleCloseEffectsPanel}
             />
@@ -960,10 +963,7 @@ const ProAudioClipper = ({ onNavigate }) => {
               fontSize: '14px'
             }}>
               <h3 style={{ color: '#00d4ff', marginBottom: '16px' }}>Effects Panel</h3>
-              <p>Select a track to view and edit its effects chain.</p>
-              {trackManager.tracks.length === 0 && (
-                <p style={{ color: '#ff6b35', marginTop: '12px' }}>No tracks yet.<br/>Add an audio track to start!</p>
-              )}
+              <p style={{ color: '#ff6b35', marginTop: '12px' }}>No tracks yet.<br/>Add an audio track to start!</p>
             </div>
           )}
         </div>
