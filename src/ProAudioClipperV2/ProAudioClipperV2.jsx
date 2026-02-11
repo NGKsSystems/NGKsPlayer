@@ -10,23 +10,17 @@ import TransportBar from './components/TransportBar.jsx';
 import EffectsRail from './components/EffectsRail.jsx';
 import TimelineShell from './components/TimelineShell.jsx';
 import { DEFAULT_ZOOM } from './math/layoutConstants.js';
+import usePlaybackEngine, { getSharedAudioContext } from './hooks/usePlaybackEngine.js';
 import './styles/clipperV2.css';
 
 let nextTrackId = 1;
-
-// Shared AudioContext for decoding
-let _audioCtx = null;
-function getAudioContext() {
-  if (!_audioCtx) _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  return _audioCtx;
-}
 
 export default function ProAudioClipperV2({ onNavigate }) {
   // ── UI state ──────────────────────────────────────────
   const [effectsExpanded, setEffectsExpanded] = useState(false);
   const [activePanel, setActivePanel]         = useState(null);
 
-  // ── Transport state (stub) ────────────────────────────
+  // ── Transport state ───────────────────────────────────
   const [isPlaying, setIsPlaying]       = useState(false);
   const [currentTime, setCurrentTime]   = useState(0);
   const [duration, setDuration]          = useState(0);
@@ -39,6 +33,19 @@ export default function ProAudioClipperV2({ onNavigate }) {
   const [zoom, setZoom]                 = useState(DEFAULT_ZOOM);
   const [viewportStart]                 = useState(0);
   const [selectedTool, setSelectedTool] = useState('selection');
+
+  // Keep a mutable ref to tracks so engine callbacks always see latest
+  const tracksRef = useRef(tracks);
+  tracksRef.current = tracks;
+
+  // ── Audio engine ──────────────────────────────────────
+  const engine = usePlaybackEngine({
+    onTimeUpdate: setCurrentTime,
+    onPlayEnd: () => {
+      setIsPlaying(false);
+      setCurrentTime(0);
+    },
+  });
 
   // ── Callbacks ─────────────────────────────────────────
   const handleBack = useCallback(() => {
@@ -53,10 +60,43 @@ export default function ProAudioClipperV2({ onNavigate }) {
     }
   }, []);
 
-  const handlePlay  = useCallback(() => setIsPlaying((p) => !p), []);
-  const handleStop  = useCallback(() => { setIsPlaying(false); setCurrentTime(0); }, []);
-  const handleSkipBack    = useCallback(() => setCurrentTime((t) => Math.max(0, t - 5)), []);
-  const handleSkipForward = useCallback(() => setCurrentTime((t) => Math.min(duration, t + 5)), [duration]);
+  const handlePlay  = useCallback(() => {
+    if (isPlaying) {
+      engine.pausePlayback();
+      setIsPlaying(false);
+    } else {
+      engine.playTracks(tracksRef.current, currentTime, playbackRate);
+      setIsPlaying(true);
+    }
+  }, [isPlaying, currentTime, playbackRate, engine]);
+
+  const handleStop  = useCallback(() => {
+    engine.stopPlayback();
+    setIsPlaying(false);
+    setCurrentTime(0);
+  }, [engine]);
+
+  const handleSkipBack = useCallback(() => {
+    const newTime = Math.max(0, currentTime - 5);
+    engine.seekTo(tracksRef.current, newTime);
+    setCurrentTime(newTime);
+  }, [currentTime, engine]);
+
+  const handleSkipForward = useCallback(() => {
+    const newTime = Math.min(duration, currentTime + 5);
+    engine.seekTo(tracksRef.current, newTime);
+    setCurrentTime(newTime);
+  }, [currentTime, duration, engine]);
+
+  const handleSetRate = useCallback((rate) => {
+    setPlaybackRate(rate);
+    engine.setRate(tracksRef.current, rate);
+  }, [engine]);
+
+  const handleSetVolume = useCallback((vol) => {
+    setMasterVolume(vol);
+    engine.setMasterVolume(vol);
+  }, [engine]);
 
   // Hidden file input ref — triggers native OS file picker
   const fileInputRef = useRef(null);
@@ -73,7 +113,7 @@ export default function ProAudioClipperV2({ onNavigate }) {
   const handleFileInputChange = useCallback(async (e) => {
     const selectedFiles = Array.from(e.target.files);
     if (!selectedFiles.length) return;
-    const ctx = getAudioContext();
+    const ctx = getSharedAudioContext();
     for (const file of selectedFiles) {
       try {
         const arrayBuffer = await file.arrayBuffer();
@@ -103,12 +143,20 @@ export default function ProAudioClipperV2({ onNavigate }) {
   const handleSelectTrack = useCallback((id) => setActiveTrackId(id), []);
 
   const handleToggleMute = useCallback((id) => {
-    setTracks((prev) => prev.map((t) => t.id === id ? { ...t, muted: !t.muted } : t));
-  }, []);
+    setTracks((prev) => {
+      const next = prev.map((t) => t.id === id ? { ...t, muted: !t.muted } : t);
+      engine.updateTrackParams(next);
+      return next;
+    });
+  }, [engine]);
 
   const handleToggleSolo = useCallback((id) => {
-    setTracks((prev) => prev.map((t) => t.id === id ? { ...t, solo: !t.solo } : t));
-  }, []);
+    setTracks((prev) => {
+      const next = prev.map((t) => t.id === id ? { ...t, solo: !t.solo } : t);
+      engine.updateTrackParams(next);
+      return next;
+    });
+  }, [engine]);
 
   // Active track name for effects rail
   const activeTrack = tracks.find((t) => t.id === activeTrackId);
@@ -144,8 +192,8 @@ export default function ProAudioClipperV2({ onNavigate }) {
         onStop={handleStop}
         onSkipBack={handleSkipBack}
         onSkipForward={handleSkipForward}
-        onSetRate={setPlaybackRate}
-        onSetVolume={setMasterVolume}
+        onSetRate={handleSetRate}
+        onSetVolume={handleSetVolume}
       />
 
       {/* Row 3 col 1: Effects */}
