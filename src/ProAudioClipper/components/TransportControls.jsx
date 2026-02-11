@@ -11,19 +11,144 @@
  *
  * Owner: NGKsSystems
  */
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Play, Pause, Square, SkipBack, SkipForward, Volume2, Repeat, Shuffle } from 'lucide-react';
 import './TransportControls.css';
 
 /**
+ * Master Waveform Component
+ * Renders a composite waveform from all track clips
+ */
+const MasterWaveform = ({ tracks, currentTime, duration, onSeek, isPlaying }) => {
+  const canvasRef = useRef(null);
+  const containerRef = useRef(null);
+  const animFrameRef = useRef(null);
+
+  // Draw the composite waveform
+  const drawWaveform = useCallback(() => {
+    const canvas = canvasRef.current;
+    const container = containerRef.current;
+    if (!canvas || !container) return;
+
+    const rect = container.getBoundingClientRect();
+    const w = Math.floor(rect.width);
+    const h = 48;
+    if (w <= 0) return;
+
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext('2d');
+
+    // Background
+    ctx.fillStyle = '#1a1a1a';
+    ctx.fillRect(0, 0, w, h);
+
+    if (!tracks || tracks.length === 0 || duration <= 0) {
+      // Empty state — subtle center line
+      ctx.strokeStyle = '#333';
+      ctx.beginPath();
+      ctx.moveTo(0, h / 2);
+      ctx.lineTo(w, h / 2);
+      ctx.stroke();
+      return;
+    }
+
+    // Collect all audio buffers from all clips
+    const buffers = [];
+    tracks.forEach(track => {
+      if (track.clips) {
+        track.clips.forEach(clip => {
+          if (clip.audioBuffer) {
+            buffers.push({
+              buffer: clip.audioBuffer,
+              startTime: clip.startTime || 0,
+              audioOffset: clip.audioOffset || 0,
+              clipDuration: clip.duration || clip.audioBuffer.duration,
+              muted: track.muted
+            });
+          }
+        });
+      }
+    });
+
+    if (buffers.length === 0) {
+      ctx.strokeStyle = '#333';
+      ctx.beginPath();
+      ctx.moveTo(0, h / 2);
+      ctx.lineTo(w, h / 2);
+      ctx.stroke();
+      return;
+    }
+
+    // For each pixel column, compute composite amplitude
+    const mid = h / 2;
+    const secondsPerPixel = duration / w;
+
+    // Draw played region background
+    const playedPx = (currentTime / duration) * w;
+    ctx.fillStyle = 'rgba(0, 212, 255, 0.08)';
+    ctx.fillRect(0, 0, playedPx, h);
+
+    // Draw waveform bars
+    for (let x = 0; x < w; x++) {
+      const t = x * secondsPerPixel;
+      let maxAmp = 0;
+
+      for (const b of buffers) {
+        const clipEnd = b.startTime + b.clipDuration;
+        if (t < b.startTime || t >= clipEnd) continue;
+
+        const timeInClip = t - b.startTime + b.audioOffset;
+        const data = b.buffer.getChannelData(0);
+        const sampleIdx = Math.floor(timeInClip * b.buffer.sampleRate);
+        if (sampleIdx >= 0 && sampleIdx < data.length) {
+          maxAmp = Math.max(maxAmp, Math.abs(data[sampleIdx]));
+        }
+      }
+
+      const barH = maxAmp * mid * 0.9;
+      const color = x < playedPx ? 'rgba(0, 212, 255, 0.7)' : 'rgba(255, 255, 255, 0.35)';
+      ctx.fillStyle = color;
+      ctx.fillRect(x, mid - barH, 1, barH * 2 || 1);
+    }
+
+    // Playhead line
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(Math.floor(playedPx), 0, 2, h);
+  }, [tracks, currentTime, duration]);
+
+  useEffect(() => {
+    drawWaveform();
+  }, [drawWaveform]);
+
+  // Redraw on resize
+  useEffect(() => {
+    const obs = new ResizeObserver(() => drawWaveform());
+    if (containerRef.current) obs.observe(containerRef.current);
+    return () => obs.disconnect();
+  }, [drawWaveform]);
+
+  const handleClick = (e) => {
+    if (!onSeek || duration <= 0) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    onSeek(ratio * duration);
+  };
+
+  return (
+    <div ref={containerRef} className="master-waveform" onClick={handleClick}>
+      <canvas ref={canvasRef} className="master-waveform__canvas" />
+    </div>
+  );
+};
+
+/**
  * Professional Transport Controls Component
  * 
- * Features:
- * - Play/Pause/Stop controls
- * - Playback rate control
- * - Time display with frame accuracy
- * - Loop and shuffle modes
- * - Keyboard shortcut indicators
+ * Layout:
+ *   Row 1: Master waveform overview
+ *   Row 2: Transport buttons + time display (centered)
+ *   Row 3: Speed | Auto-scroll | Loop | Volume (centered)
  */
 const TransportControls = ({
   isPlaying,
@@ -32,6 +157,7 @@ const TransportControls = ({
   playbackRate,
   autoScroll = true,
   masterVolume = 1,
+  tracks = [],
   onPlayPause,
   onStop,
   onSeek,
@@ -67,8 +193,17 @@ const TransportControls = ({
 
   return (
     <div className="transport-controls">
-      <div className="transport-section">
-        {/* Main Transport Controls */}
+      {/* Master Waveform Overview */}
+      <MasterWaveform
+        tracks={tracks}
+        currentTime={currentTime}
+        duration={duration}
+        onSeek={onSeek}
+        isPlaying={isPlaying}
+      />
+
+      {/* Row 1: Main transport + time (centered) */}
+      <div className="transport-row transport-row--main">
         <div className="main-controls">
           <button
             className="transport-btn skip-btn"
@@ -113,7 +248,10 @@ const TransportControls = ({
             {formatTime(duration)}
           </div>
         </div>
+      </div>
 
+      {/* Row 2: Secondary controls (centered) */}
+      <div className="transport-row transport-row--secondary">
         {/* Playback Rate Control */}
         <div className="playback-rate-section">
           <label className="rate-label">Speed:</label>
@@ -132,56 +270,34 @@ const TransportControls = ({
         </div>
 
         {/* Auto-Scroll Toggle */}
-        <div className="auto-scroll-section">
-          <button
-            className={`transport-btn auto-scroll-btn ${autoScroll ? 'active' : ''}`}
-            onClick={onAutoScrollToggle}
-            title={`Auto-Scroll: ${autoScroll ? 'ON' : 'OFF'} - Follows playhead automatically`}
-          >
-            <span className="auto-scroll-icon">📜</span>
-            <span className="auto-scroll-text">{autoScroll ? 'Auto' : 'Manual'}</span>
-          </button>
-        </div>
+        <button
+          className={`transport-btn auto-scroll-btn ${autoScroll ? 'active' : ''}`}
+          onClick={onAutoScrollToggle}
+          title={`Auto-Scroll: ${autoScroll ? 'ON' : 'OFF'}`}
+        >
+          <span className="auto-scroll-icon">📜</span>
+          <span className="auto-scroll-text">{autoScroll ? 'Auto' : 'Manual'}</span>
+        </button>
 
-        {/* Additional Controls */}
-        <div className="additional-controls">
-          <button
-            className="transport-btn loop-btn"
-            title="Loop Selection (L)"
-          >
-            <Repeat size={18} />
-          </button>
+        {/* Loop */}
+        <button
+          className="transport-btn loop-btn"
+          title="Loop Selection (L)"
+        >
+          <Repeat size={18} />
+        </button>
 
-          <div className="volume-section">
-            <Volume2 size={18} />
-            <input
-              type="range"
-              min="0"
-              max="200"
-              value={Math.round(masterVolume * 100)}
-              onChange={(e) => onMasterVolumeChange && onMasterVolumeChange(parseInt(e.target.value) / 100)}
-              className="volume-slider"
-              title={`Master Volume: ${Math.round(masterVolume * 100)}%`}
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Progress Bar */}
-      <div className="progress-section">
-        <div className="progress-bar-container">
-          <div
-            className="progress-bar"
-            style={{ width: `${(currentTime / duration) * 100}%` }}
-          />
+        {/* Volume */}
+        <div className="volume-section">
+          <Volume2 size={18} />
           <input
             type="range"
             min="0"
-            max={duration || 0}
-            value={currentTime}
-            onChange={(e) => onSeek(parseFloat(e.target.value))}
-            className="seek-slider"
-            title="Seek Position"
+            max="200"
+            value={Math.round(masterVolume * 100)}
+            onChange={(e) => onMasterVolumeChange && onMasterVolumeChange(parseInt(e.target.value) / 100)}
+            className="volume-slider"
+            title={`Master Volume: ${Math.round(masterVolume * 100)}%`}
           />
         </div>
       </div>

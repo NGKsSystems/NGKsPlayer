@@ -1109,6 +1109,7 @@ const ProAudioClipper = ({ onNavigate, forceVersion }) => {
               onAutoScrollToggle={handleAutoScrollToggle}
               masterVolume={masterVolume}
               onMasterVolumeChange={setMasterVolume}
+              tracks={trackManager.tracks}
             />
           </div>
 
