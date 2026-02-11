@@ -1111,6 +1111,7 @@ const ProAudioClipper = ({ onNavigate, forceVersion }) => {
               onMasterVolumeChange={setMasterVolume}
               tracks={trackManager.tracks}
               audioContext={multiTrackEngine.audioContext}
+              masterGainNode={multiTrackEngine.masterGainNode}
             />
           </div>
 

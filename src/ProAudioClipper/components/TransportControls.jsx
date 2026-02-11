@@ -17,82 +17,60 @@ import './TransportControls.css';
 
 /**
  * Master Waveform Component — ACTIVE real-time visualiser
- * Uses Web Audio AnalyserNode for live waveform when playing,
- * falls back to static buffer overview when paused.
+ * Connects an AnalyserNode to the engine's masterGainNode so the bars
+ * bounce in real-time with the actual audio output.
+ * Falls back to buffer overview when paused or when masterGainNode is unavailable.
  */
-const MasterWaveform = ({ tracks, currentTime, duration, onSeek, isPlaying, audioContext }) => {
+const MasterWaveform = ({ tracks, currentTime, duration, onSeek, isPlaying, audioContext, masterGainNode }) => {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
   const animFrameRef = useRef(null);
   const analyserRef = useRef(null);
-  const dataArrayRef = useRef(null);
+  const freqDataRef = useRef(null);
+  const timeDataRef = useRef(null);
   const connectedRef = useRef(false);
 
-  // ── Create / connect AnalyserNode once we have a live audioContext ──
+  // ── Create & connect AnalyserNode to masterGainNode ──
   useEffect(() => {
-    if (!audioContext) return;
+    if (!audioContext || !masterGainNode) {
+      connectedRef.current = false;
+      return;
+    }
 
-    // Re-use existing analyser if context hasn't changed
-    if (analyserRef.current && analyserRef.current.context === audioContext) return;
+    // Re-use if already connected to same node
+    if (analyserRef.current && connectedRef.current) return;
 
     try {
-      const analyser = audioContext.createAnalyser();
-      analyser.fftSize = 2048;
-      analyser.smoothingTimeConstant = 0.85;
-      analyserRef.current = analyser;
-      dataArrayRef.current = new Uint8Array(analyser.frequencyBinCount);
+      // Disconnect old analyser if context changed
+      if (analyserRef.current) {
+        try { analyserRef.current.disconnect(); } catch (_) {}
+      }
 
-      // Tap into the master output (destination) by connecting through it
-      // We need to connect the destination's input — the simplest safe
-      // approach is to connect the analyser *from* whatever node feeds
-      // the destination.  The engine wires masterGain → destination so
-      // we can read that node from the context graph.  But since we
-      // only have audioContext, connect analyser to destination as
-      // a passive sniffer via a silent channel merger workaround.
-      //
-      // Simpler: just connect destination → analyser is not allowed.
-      // Instead we will poll the analyser in the animation loop;
-      // the analyser must be connected in the audio graph.
-      // We'll connect it inside the engine (see below flag).
-      connectedRef.current = false;
+      const analyser = audioContext.createAnalyser();
+      analyser.fftSize = 256;           // 128 frequency bins — good for bars
+      analyser.smoothingTimeConstant = 0.7;
+      analyser.minDecibels = -90;
+      analyser.maxDecibels = -10;
+
+      // Tap masterGain → analyser (passive — analyser doesn't route to destination)
+      masterGainNode.connect(analyser);
+
+      analyserRef.current = analyser;
+      freqDataRef.current = new Uint8Array(analyser.frequencyBinCount);
+      timeDataRef.current = new Uint8Array(analyser.frequencyBinCount);
+      connectedRef.current = true;
     } catch (e) {
-      console.warn('[MasterWaveform] Failed to create analyser:', e);
+      console.warn('[MasterWaveform] analyser setup failed:', e);
+      connectedRef.current = false;
     }
 
     return () => {
       try { analyserRef.current?.disconnect(); } catch (_) {}
       connectedRef.current = false;
     };
-  }, [audioContext]);
+  }, [audioContext, masterGainNode]);
 
-  // ── Try to connect analyser to the masterGain in the audioContext ──
-  useEffect(() => {
-    if (!audioContext || !analyserRef.current || connectedRef.current) return;
-    // The engine exposes masterGainNode internally; the simplest safe
-    // way to tap the master bus is to iterate audioContext._nativeAudioContext
-    // — but that's not reliable. Instead connect analyser as an
-    // additional output from the destination input (createMediaStreamDestination trick)
-    // OR just connect it from a gain node we splice in.
-    //
-    // Cleanest: tap the destination via createMediaStreamDestination.
-    // But the EASIEST cross-browser approach is to connect a silent
-    // ScriptProcessorNode. Simplest of all: access engine's node
-    // from the parent via a ref.  Since we already pass audioContext,
-    // let's also accept an optional analyserSource node.
-    //
-    // For now, we'll read the audioContext.destination's channelCount
-    // and create a ChannelSplitter/Merger workaround — or, much simpler,
-    // just draw from the raw buffer data when paused and read live
-    // time-domain data when the analyser IS connected.
-    //
-    // Actually the simplest thing: the engine connects everything to
-    // masterGainNode → destination. We need the parent to pass
-    // masterGainNode so we can do masterGainNode.connect(analyser).
-    // For now fall back to buffer-based rendering (same visual quality)
-    // with the animation-loop approach for the playhead.
-  }, [audioContext]);
-
-  // ── Draw: static buffer background + animated playhead ──
+  // ── Draw frame ──
   const drawFrame = useCallback(() => {
     const canvas = canvasRef.current;
     const container = containerRef.current;
@@ -100,7 +78,7 @@ const MasterWaveform = ({ tracks, currentTime, duration, onSeek, isPlaying, audi
 
     const rect = container.getBoundingClientRect();
     const w = Math.floor(rect.width);
-    const h = 96; // doubled height
+    const h = 96;
     if (w <= 0) return;
 
     if (canvas.width !== w || canvas.height !== h) {
@@ -108,102 +86,143 @@ const MasterWaveform = ({ tracks, currentTime, duration, onSeek, isPlaying, audi
       canvas.height = h;
     }
     const ctx = canvas.getContext('2d');
+    const mid = h / 2;
 
     // Background
     ctx.fillStyle = '#111';
     ctx.fillRect(0, 0, w, h);
 
-    const mid = h / 2;
+    const hasAnalyser = connectedRef.current && analyserRef.current;
+    const hasLiveData = hasAnalyser && isPlaying;
 
-    if (!tracks || tracks.length === 0 || duration <= 0) {
-      ctx.strokeStyle = '#2a2a2a';
+    // ═══════════════════════════════════════════
+    // LIVE MODE — real-time bouncing frequency bars
+    // ═══════════════════════════════════════════
+    if (hasLiveData) {
+      const analyser = analyserRef.current;
+      const freqData = freqDataRef.current;
+      const timeData = timeDataRef.current;
+      analyser.getByteFrequencyData(freqData);
+      analyser.getByteTimeDomainData(timeData);
+
+      const binCount = analyser.frequencyBinCount; // 128
+
+      // --- Frequency bars (mirrored top/bottom) ---
+      const barWidth = Math.max(1, Math.floor(w / binCount));
+      const gap = 1;
+
+      for (let i = 0; i < binCount; i++) {
+        const x = Math.floor((i / binCount) * w);
+        const val = freqData[i] / 255;            // 0..1
+        const barH = val * mid * 0.92;
+
+        // Colour gradient: cyan → magenta for high frequencies
+        const hue = 180 + (i / binCount) * 100;   // 180 (cyan) → 280 (violet)
+        const lightness = 50 + val * 20;
+        const alpha = 0.5 + val * 0.5;
+
+        ctx.fillStyle = `hsla(${hue}, 90%, ${lightness}%, ${alpha})`;
+        // Top half (mirrored upward from center)
+        ctx.fillRect(x, mid - barH, Math.max(barWidth - gap, 1), barH);
+        // Bottom half (mirrored downward from center)
+        ctx.fillRect(x, mid, Math.max(barWidth - gap, 1), barH);
+      }
+
+      // --- Overlaid waveform line (time-domain) ---
       ctx.beginPath();
-      ctx.moveTo(0, mid);
-      ctx.lineTo(w, mid);
+      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = 'rgba(0, 212, 255, 0.6)';
+      const sliceWidth = w / timeData.length;
+      let xPos = 0;
+      for (let i = 0; i < timeData.length; i++) {
+        const v = timeData[i] / 128.0;            // normalise around 1
+        const y = (v * mid);
+        if (i === 0) ctx.moveTo(xPos, y);
+        else ctx.lineTo(xPos, y);
+        xPos += sliceWidth;
+      }
       ctx.stroke();
-      return;
-    }
 
-    // Collect all audio buffers from clips
-    const buffers = [];
-    tracks.forEach(track => {
-      if (track.clips) {
-        track.clips.forEach(clip => {
-          if (clip.audioBuffer) {
-            buffers.push({
-              buffer: clip.audioBuffer,
-              startTime: clip.startTime || 0,
-              audioOffset: clip.audioOffset || 0,
-              clipDuration: clip.duration || clip.audioBuffer.duration,
-              muted: track.muted
-            });
-          }
-        });
+      // --- Glow overlay at center ---
+      const peakVal = Math.max(...freqData) / 255;
+      if (peakVal > 0.3) {
+        const grad = ctx.createRadialGradient(w / 2, mid, 0, w / 2, mid, w * 0.4);
+        grad.addColorStop(0, `rgba(0, 212, 255, ${peakVal * 0.12})`);
+        grad.addColorStop(1, 'rgba(0, 212, 255, 0)');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, w, h);
       }
-    });
+    } else {
+      // ═══════════════════════════════════════════
+      // STATIC MODE — buffer overview (paused / no analyser)
+      // ═══════════════════════════════════════════
+      if (!tracks || tracks.length === 0 || duration <= 0) {
+        ctx.strokeStyle = '#2a2a2a';
+        ctx.beginPath();
+        ctx.moveTo(0, mid);
+        ctx.lineTo(w, mid);
+        ctx.stroke();
+        return;
+      }
 
-    const playedPx = duration > 0 ? (currentTime / duration) * w : 0;
-    const secondsPerPixel = duration / w;
-
-    // ── Draw waveform bars ──
-    for (let x = 0; x < w; x++) {
-      const t = x * secondsPerPixel;
-      let maxAmp = 0;
-
-      for (const b of buffers) {
-        const clipEnd = b.startTime + b.clipDuration;
-        if (t < b.startTime || t >= clipEnd) continue;
-        const timeInClip = t - b.startTime + b.audioOffset;
-        const data = b.buffer.getChannelData(0);
-        // Sample a small window around this time for better visual
-        const centerIdx = Math.floor(timeInClip * b.buffer.sampleRate);
-        const windowSize = Math.max(1, Math.floor(b.buffer.sampleRate * secondsPerPixel));
-        const start = Math.max(0, centerIdx);
-        const end = Math.min(data.length, start + windowSize);
-        for (let i = start; i < end; i++) {
-          maxAmp = Math.max(maxAmp, Math.abs(data[i]));
+      const buffers = [];
+      tracks.forEach(track => {
+        if (track.clips) {
+          track.clips.forEach(clip => {
+            if (clip.audioBuffer) {
+              buffers.push({
+                buffer: clip.audioBuffer,
+                startTime: clip.startTime || 0,
+                audioOffset: clip.audioOffset || 0,
+                clipDuration: clip.duration || clip.audioBuffer.duration,
+              });
+            }
+          });
         }
+      });
+
+      const playedPx = duration > 0 ? (currentTime / duration) * w : 0;
+      const secondsPerPixel = duration / w;
+
+      for (let x = 0; x < w; x++) {
+        const t = x * secondsPerPixel;
+        let maxAmp = 0;
+        for (const b of buffers) {
+          const clipEnd = b.startTime + b.clipDuration;
+          if (t < b.startTime || t >= clipEnd) continue;
+          const timeInClip = t - b.startTime + b.audioOffset;
+          const data = b.buffer.getChannelData(0);
+          const centerIdx = Math.floor(timeInClip * b.buffer.sampleRate);
+          const windowSize = Math.max(1, Math.floor(b.buffer.sampleRate * secondsPerPixel));
+          const start = Math.max(0, centerIdx);
+          const end = Math.min(data.length, start + windowSize);
+          for (let i = start; i < end; i++) {
+            maxAmp = Math.max(maxAmp, Math.abs(data[i]));
+          }
+        }
+        const barH = maxAmp * mid * 0.88;
+        ctx.fillStyle = x < playedPx
+          ? 'rgba(0, 212, 255, 0.7)'
+          : 'rgba(255, 255, 255, 0.2)';
+        ctx.fillRect(x, mid - barH, 1, barH * 2 || 1);
       }
 
-      const barH = maxAmp * mid * 0.88;
-
-      if (x < playedPx) {
-        // Played portion — bright cyan gradient
-        const gradient = ctx.createLinearGradient(x, mid - barH, x, mid + barH);
-        gradient.addColorStop(0, 'rgba(0, 212, 255, 0.9)');
-        gradient.addColorStop(0.5, 'rgba(0, 180, 230, 0.7)');
-        gradient.addColorStop(1, 'rgba(0, 212, 255, 0.9)');
-        ctx.fillStyle = gradient;
-      } else {
-        // Unplayed portion — dim grey
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+      // Playhead
+      if (playedPx > 0) {
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(Math.floor(playedPx), 0, 2, h);
       }
-      ctx.fillRect(x, mid - barH, 1, barH * 2 || 1);
     }
 
-    // ── Active glow at playhead when playing ──
-    if (isPlaying && playedPx > 0) {
-      const glowW = 40;
-      const grad = ctx.createLinearGradient(playedPx - glowW, 0, playedPx, 0);
-      grad.addColorStop(0, 'rgba(0, 212, 255, 0)');
-      grad.addColorStop(1, 'rgba(0, 212, 255, 0.25)');
-      ctx.fillStyle = grad;
-      ctx.fillRect(playedPx - glowW, 0, glowW, h);
-    }
-
-    // ── Playhead line ──
-    ctx.fillStyle = '#fff';
-    ctx.fillRect(Math.floor(playedPx), 0, 2, h);
-
-    // ── Center line ──
-    ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+    // Center line (both modes)
+    ctx.strokeStyle = 'rgba(255,255,255,0.04)';
     ctx.beginPath();
     ctx.moveTo(0, mid);
     ctx.lineTo(w, mid);
     ctx.stroke();
   }, [tracks, currentTime, duration, isPlaying]);
 
-  // ── Animation loop when playing ──
+  // ── Animation loop — always runs during playback ──
   useEffect(() => {
     if (!isPlaying) {
       drawFrame();
@@ -267,6 +286,7 @@ const TransportControls = ({
   masterVolume = 1,
   tracks = [],
   audioContext = null,
+  masterGainNode = null,
   onPlayPause,
   onStop,
   onSeek,
@@ -310,6 +330,7 @@ const TransportControls = ({
         onSeek={onSeek}
         isPlaying={isPlaying}
         audioContext={audioContext}
+        masterGainNode={masterGainNode}
       />
 
       {/* Row 1: Main transport + time (centered) */}

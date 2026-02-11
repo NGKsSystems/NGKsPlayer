@@ -958,6 +958,10 @@ export const useMultiTrackAudioEngine = () => {
     
     get workletNode() {
       return workletNodeRef.current;
+    },
+
+    get masterGainNode() {
+      return masterGainNodeRef.current;
     }
   };
 };
