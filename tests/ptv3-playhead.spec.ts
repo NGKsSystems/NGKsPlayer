@@ -16,8 +16,8 @@ import { test, expect } from '@playwright/test';
 test.describe('ProfessionalTimeline V3 — Playhead-First', () => {
 
   test.beforeEach(async ({ page }) => {
-    // ProAudioClipper lives at /#/clipper (hash router)
-    await page.goto('/#/clipper');
+    // V3 has its own route at /#/clipper-v3
+    await page.goto('/#/clipper-v3');
     await page.waitForLoadState('domcontentloaded');
   });
 

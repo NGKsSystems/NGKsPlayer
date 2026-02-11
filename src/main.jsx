@@ -143,6 +143,7 @@ function NavigationWrapper({ children }) {
       'analyzerSettings': '/analyzer-settings',
       'layer-remover': '/layer-remover',
       'clipper': '/clipper',
+      'clipper-v3': '/clipper-v3',
       'clipper-v2': '/clipper-v2',
       'streaming': '/streaming',
       'hardware': '/hardware'
@@ -219,6 +220,11 @@ const router = createHashRouter([
     path: "/clipper", 
     element: <NavigationWrapper><ProAudioClipper /></NavigationWrapper>,
     errorElement: <ErrorBoundary><div className="p-8 text-white">Route Error: Pro Clipper</div></ErrorBoundary>
+  },
+  {
+    path: "/clipper-v3",
+    element: <NavigationWrapper><ProAudioClipper forceVersion="v3" /></NavigationWrapper>,
+    errorElement: <ErrorBoundary><div className="p-8 text-white">Route Error: Pro Clipper V3</div></ErrorBoundary>
   },
   { 
     path: "/clipper-v2", 

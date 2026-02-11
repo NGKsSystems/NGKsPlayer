@@ -1828,6 +1828,13 @@ export default function Library() {
             <span>🎬</span>
             <span>Clipper V2</span>
           </button>
+          <button
+            onClick={() => navigate('/clipper-v3')}
+            className="px-4 py-2 bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 rounded-xl text-white flex items-center space-x-2 border border-orange-400"
+          >
+            <span>🎬</span>
+            <span>Clipper V3</span>
+          </button>
         </div>
       </div>
 

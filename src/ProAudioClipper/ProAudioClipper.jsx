@@ -84,7 +84,7 @@ const generateSRT = (transcription) => {
  * - Project management with undo/redo
  * - Professional DAW-style interface
  */
-const ProAudioClipper = ({ onNavigate }) => {
+const ProAudioClipper = ({ onNavigate, forceVersion }) => {
   // Refs
   const timelineRef = useRef(null);
   const fileInputRef = useRef(null);
@@ -118,7 +118,7 @@ const ProAudioClipper = ({ onNavigate }) => {
   const [showCloudInterface, setShowCloudInterface] = useState(false);
   const [showHelpInterface, setShowHelpInterface] = useState(false);
   const [showFXController, setShowFXController] = useState(false);
-  const [timelineVersion, setTimelineVersion] = useState('v3'); // 'v1' | 'v2' | 'v3'
+  const [timelineVersion, setTimelineVersion] = useState(forceVersion || 'v3'); // 'v1' | 'v2' | 'v3'
   const [showStemExtractor, setShowStemExtractor] = useState(false);
   const [showWhisperTranscriber, setShowWhisperTranscriber] = useState(false);
   const [showKaraokeDisplay, setShowKaraokeDisplay] = useState(false);

@@ -17,11 +17,13 @@ test.describe('ProfessionalTimeline V2 — Playhead', () => {
   test.beforeEach(async ({ page }) => {
     // ProAudioClipper lives at /#/clipper (hash router)
     await page.goto('/#/clipper');
-    await page.waitForLoadState('domcontentloaded');
+    await page.waitForLoadState('networkidle');
     // Switch to V2 via the timeline version selector
     const selector = page.locator('[data-testid="timeline-version-select"]');
-    await expect(selector).toBeAttached({ timeout: 10_000 });
+    await expect(selector).toBeAttached({ timeout: 15_000 });
     await selector.selectOption('v2');
+    // Wait for V2 to actually mount after the switch
+    await expect(page.locator('[data-testid="ptv2-mounted-flag"]')).toBeAttached({ timeout: 10_000 });
   });
 
   test('V2 timeline is mounted', async ({ page }) => {
