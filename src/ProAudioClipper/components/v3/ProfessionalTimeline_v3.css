@@ -159,44 +159,44 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 0;               /* zero-width container; children draw the visual */
   pointer-events: none;
   z-index: 50;            /* above ruler + tracks */
 }
 
-/* Cap — centered vertically in the ruler strip area */
+/* CAP MUST LIVE IN RULER SPACE */
 .ptv3-playhead-cap {
   position: absolute;
-  top: 0;
+  top: 0;                 /* anchored to TOP of ruler */
+  left: -6px;             /* center over line */
   height: 48px;           /* must match RULER_HEIGHT */
-  width: 14px;
-  left: -7px;             /* center on the playhead line */
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start; /* don't center vertically — hug top */
 }
-/* Inverted red triangle marker inside the cap */
-.ptv3-playhead-cap::after {
+/* Down-pointing triangle at top of ruler */
+.ptv3-playhead-cap::before {
   content: '';
   display: block;
+  margin-top: 2px;        /* tiny inset from top edge */
   width: 0;
   height: 0;
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
-  border-top: 10px solid #ff4444;
-  margin-top: auto;       /* push triangle to bottom of ruler strip */
-  margin-bottom: 2px;
+  border-top: 10px solid #ff3b30;
+}
+/* Remove old ::after pseudo */
+.ptv3-playhead-cap::after {
+  content: none;
 }
 
-/* Line — from ruler bottom to end of tracks */
+/* LINE MUST START AT RULER BOTTOM */
 .ptv3-playhead-line {
   position: absolute;
   top: 48px;              /* must match RULER_HEIGHT */
   bottom: 0;
+  left: -1px;             /* center the 2px line */
   width: 2px;
-  left: -1px;             /* center the 2px line on the 0-width container */
-  background: #ff4444;
-  box-shadow: 0 0 6px rgba(255, 68, 68, 0.4);
+  background: #ff3b30;
+  box-shadow: 0 0 6px rgba(255, 59, 48, 0.4);
 }
 
 /* ── Tracks ────────────────────────────────────────────── */
