@@ -157,7 +157,7 @@ const TimelineRuler = ({
           );
         })}
         
-        {/* Playhead */}
+        {/* Playhead — red line with DAW-style inverted triangle anchored at ruler top */}
         <div
           className="playhead"
           style={{
@@ -166,22 +166,24 @@ const TimelineRuler = ({
             top: 0,
             width: '2px',
             height: '100%',
-            backgroundColor: '#00D4FF',
+            backgroundColor: '#e74c3c',
             pointerEvents: 'none',
             zIndex: 100,
-            boxShadow: '0 0 8px rgba(0, 212, 255, 0.8)'
+            boxShadow: '0 0 6px rgba(231, 76, 60, 0.6)'
           }}
         >
+          {/* Inverted triangle handle at very top of ruler */}
           <div
             style={{
               position: 'absolute',
               top: 0,
-              left: '-6px',
-              width: '14px',
-              height: '14px',
-              backgroundColor: '#00D4FF',
-              borderRadius: '2px',
-              boxShadow: '0 0 8px rgba(0, 212, 255, 0.8)'
+              left: '-9px',
+              width: 0,
+              height: 0,
+              borderLeft: '10px solid transparent',
+              borderRight: '10px solid transparent',
+              borderTop: '16px solid #e74c3c',
+              filter: 'drop-shadow(0 2px 3px rgba(0,0,0,0.5))'
             }}
           />
         </div>

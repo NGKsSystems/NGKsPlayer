@@ -305,15 +305,6 @@ const ProfessionalTimeline = React.forwardRef(({
         </div>
       </div>
 
-      {/* Ruler + Tracks Wrapper (for unified playhead overlay) */}
-      <div style={{
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        position: 'relative',
-        overflow: 'hidden'
-      }}>
-
       {/* Timeline Ruler */}
       <div style={{
         display: 'flex',
@@ -378,8 +369,7 @@ const ProfessionalTimeline = React.forwardRef(({
       <div style={{
         flex: 1,
         display: 'flex',
-        overflow: 'hidden',
-        minHeight: 0
+        overflow: 'hidden'
       }}>
         {/* Track Headers */}
         <div style={{
@@ -470,7 +460,18 @@ const ProfessionalTimeline = React.forwardRef(({
             minHeight: '100%',
             position: 'relative'
           }}>
-
+            {/* Playhead */}
+            <div style={{
+              position: 'absolute',
+              left: `${timeToPixels(currentTime || 0, 50, zoomLevel)}px`,
+              top: 0,
+              width: '2px',
+              height: '100%',
+              background: '#e74c3c',
+              zIndex: 100,
+              pointerEvents: 'none',
+              boxShadow: '0 0 6px rgba(231, 76, 60, 0.6)'
+            }} />
 
             {/* Tracks */}
             <div style={{ position: 'relative' }}>
@@ -632,41 +633,6 @@ const ProfessionalTimeline = React.forwardRef(({
           </div>
         </div>
       </div>
-
-      {/* Unified Playhead — anchored to ruler top, spans through tracks */}
-      {(() => {
-        const playheadLeft = HEADER_WIDTH + ((currentTime || 0) - (viewportStart || 0)) * PIXELS_PER_SECOND;
-        const isVisible = playheadLeft >= HEADER_WIDTH && playheadLeft <= HEADER_WIDTH + 5000;
-        if (!isVisible) return null;
-        return (
-          <div style={{
-            position: 'absolute',
-            left: `${playheadLeft - 1}px`,
-            top: 0,
-            bottom: 0,
-            width: '2px',
-            background: '#e74c3c',
-            zIndex: 200,
-            pointerEvents: 'none',
-            boxShadow: '0 0 6px rgba(231, 76, 60, 0.6)'
-          }}>
-            {/* DAW-style handle at ruler top — inverted triangle */}
-            <div style={{
-              position: 'absolute',
-              top: 0,
-              left: '-10px',
-              width: '22px',
-              height: '18px',
-              background: '#e74c3c',
-              clipPath: 'polygon(0 0, 100% 0, 50% 100%)',
-              boxShadow: '0 2px 6px rgba(0,0,0,0.5)',
-              filter: 'drop-shadow(0 0 4px rgba(231, 76, 60, 0.8))'
-            }} />
-          </div>
-        );
-      })()}
-
-      </div>{/* end Ruler + Tracks Wrapper */}
 
       {/* Footer Status */}
       <div style={{

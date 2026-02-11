@@ -240,11 +240,6 @@
   border-top: 12px solid #e74c3c;
 }
 
-/* Hide TimelineRuler internal playhead when unified overlay is active */
-.professional-timeline .timeline-ruler .playhead {
-  display: none;
-}
-
 /* Selection Rectangle */
 .selection-rectangle {
   position: absolute;
