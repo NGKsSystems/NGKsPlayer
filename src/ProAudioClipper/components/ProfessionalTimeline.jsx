@@ -144,7 +144,7 @@ const ProfessionalTimeline = React.forwardRef(({
       }}>
         {/* Left group: label + Add Track */}
         <span style={{
-          fontSize: '13px',
+          fontSize: '16px',
           fontWeight: '600',
           color: '#00d4ff',
           whiteSpace: 'nowrap'
