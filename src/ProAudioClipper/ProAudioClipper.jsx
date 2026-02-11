@@ -14,6 +14,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Play, Pause, Square, SkipBack, SkipForward, Volume2, Download, Save, FolderOpen, Scissors, MousePointer, ZoomIn, ZoomOut, RotateCcw, RotateCw, X, Plus, Trash2 } from 'lucide-react';
 import ProfessionalTimeline from './components/ProfessionalTimeline';
+import ProfessionalTimeline_v2 from './components/ProfessionalTimeline_v2';
 import TransportControls from './components/TransportControls';
 import ExportPanel from './components/ExportPanel';
 import ProjectManager from './components/ProjectManager';
@@ -1102,46 +1103,53 @@ const ProAudioClipper = ({ onNavigate }) => {
               flexDirection: 'column'
             }}
           >
-            <ProfessionalTimeline
-            ref={timelineRef}
-            tracks={trackManager.tracks}
-            currentTime={currentTime}
-            duration={duration}
-            isPlaying={isPlaying}
-            zoomLevel={zoomLevel}
-            viewportStart={viewportStart}
-            selectedTool={selectedTool}
-            onToolChange={setSelectedTool}
-            onZoomChange={handleZoom}
-            activeTrackId={trackManager.activeTrackId}
-            onTimelineClick={seek}
-            onClipSelect={handleTimelineSelection}
-            onClipMove={handleClipMove}
-            onClipSplit={handleClipSplit}
-            onClipDelete={trackManager.removeClip}
-            onTrackSelect={trackManager.setActiveTrack}
-            onTrackMute={trackManager.toggleMute}
-            onTrackSolo={trackManager.toggleSolo}
-            onTrackVolumeChange={trackManager.setTrackVolume}
-            onTrackPanChange={trackManager.setTrackPan}
-            onTrackPlaybackRateChange={trackManager.setTrackPlaybackRate}
-            onTrackReverseToggle={trackManager.toggleTrackReverse}
-            onTrackNameChange={trackManager.setTrackName}
-            onTrackDelete={trackManager.deleteTrack}
-            onTrackMoveUp={trackManager.moveTrackUp}
-            onTrackMoveDown={trackManager.moveTrackDown}
-            onAddTrack={trackController.handleAddTrackWithFile}
-            onOpenEffects={handleOpenEffectsPanel}
-            onViewportChange={handleViewportChange}
-            onTrackContextMenu={handleTrackContextMenu}
-            onUndo={undo}
-            onRedo={redo}
-            canUndo={canUndo}
-            canRedo={canRedo}
-            nextUndoDescription={nextUndoDescription}
-            nextRedoDescription={nextRedoDescription}
-            className="timeline-container"
-          />
+            {/* V2 timeline toggle — flip USE_V2_TIMELINE to switch */}
+            {(() => {
+              const USE_V2_TIMELINE = true;
+              const timelineProps = {
+                ref: timelineRef,
+                tracks: trackManager.tracks,
+                currentTime,
+                duration,
+                isPlaying,
+                zoomLevel,
+                viewportStart,
+                selectedTool,
+                onToolChange: setSelectedTool,
+                onZoomChange: handleZoom,
+                activeTrackId: trackManager.activeTrackId,
+                onTimelineClick: seek,
+                onClipSelect: handleTimelineSelection,
+                onClipMove: handleClipMove,
+                onClipSplit: handleClipSplit,
+                onClipDelete: trackManager.removeClip,
+                onTrackSelect: trackManager.setActiveTrack,
+                onTrackMute: trackManager.toggleMute,
+                onTrackSolo: trackManager.toggleSolo,
+                onTrackVolumeChange: trackManager.setTrackVolume,
+                onTrackPanChange: trackManager.setTrackPan,
+                onTrackPlaybackRateChange: trackManager.setTrackPlaybackRate,
+                onTrackReverseToggle: trackManager.toggleTrackReverse,
+                onTrackNameChange: trackManager.setTrackName,
+                onTrackDelete: trackManager.deleteTrack,
+                onTrackMoveUp: trackManager.moveTrackUp,
+                onTrackMoveDown: trackManager.moveTrackDown,
+                onAddTrack: trackController.handleAddTrackWithFile,
+                onOpenEffects: handleOpenEffectsPanel,
+                onViewportChange: handleViewportChange,
+                onTrackContextMenu: handleTrackContextMenu,
+                onUndo: undo,
+                onRedo: redo,
+                canUndo,
+                canRedo,
+                nextUndoDescription,
+                nextRedoDescription,
+                className: 'timeline-container',
+              };
+              return USE_V2_TIMELINE
+                ? <ProfessionalTimeline_v2 {...timelineProps} />
+                : <ProfessionalTimeline {...timelineProps} />;
+            })()}
 
           {/* Selection Info */}
           {selection && (
