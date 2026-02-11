@@ -442,18 +442,33 @@ const ProAudioClipper = ({ onNavigate, forceVersion }) => {
     setEffectsPanelTrackId(null);
   }, []);
 
-  // Track preview management
-  const handleTrackPreview = useCallback((trackId) => {
-    setPreviewTrackId(trackId);
-    // TODO: Implement actual preview playback routing
-    if (trackId) {
-      console.log('[ProAudioClipper] Starting track preview for:', trackId);
-      // Route audio to preview only this track
-    } else {
+  // Track preview management — solo-plays a single track through the engine
+  const handleTrackPreview = useCallback(async (trackId) => {
+    // Toggling off: stop preview playback
+    if (!trackId || previewTrackId === trackId) {
       console.log('[ProAudioClipper] Stopping track preview');
-      // Restore normal playback routing
+      multiTrackEngine.stopTracks();
+      setPreviewTrackId(null);
+      setIsPlaying(false);
+      return;
     }
-  }, []);
+
+    // Find the target track
+    const track = trackManager.tracks.find(t => t.id === trackId);
+    if (!track) {
+      console.warn('[ProAudioClipper] Preview: track not found:', trackId);
+      return;
+    }
+
+    console.log('[ProAudioClipper] Starting track preview for:', trackId, track.name);
+    setPreviewTrackId(trackId);
+
+    // Play only this single track from the current timeline position
+    // Override muted state for the preview copy so we always hear it
+    const previewTrack = { ...track, muted: false, solo: true };
+    await multiTrackEngine.playTracks([previewTrack], currentTime, playbackRate);
+    setIsPlaying(true);
+  }, [previewTrackId, trackManager.tracks, multiTrackEngine, currentTime, playbackRate]);
 
   // Selection handling for multi-track timeline
   const handleTimelineSelection = useCallback((selection) => {
