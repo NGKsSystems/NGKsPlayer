@@ -71,10 +71,12 @@
 .ptv3-left {
   width: 300px;
   flex-shrink: 0;
+  align-self: stretch;     /* fill full height of body row */
   background: linear-gradient(135deg, #2a2a2a 0%, #1e1e1e 100%);
   border-right: 2px solid #ff6b35;
   display: flex;
   flex-direction: column;
+  min-height: 0;           /* allow flex children to shrink/scroll */
   overflow: hidden;
 }
 .ptv3-left__ruler-spacer {
@@ -92,8 +94,13 @@
 }
 .ptv3-left__tracks {
   flex: 1;
+  min-height: 0;           /* critical: let flex item shrink */
   overflow-y: auto;
   overflow-x: hidden;
+  scrollbar-width: none;   /* hide scrollbar — synced from right pane */
+}
+.ptv3-left__tracks::-webkit-scrollbar {
+  display: none;
 }
 
 /* ── Right: timeline viewport ─────────────────────────── */
@@ -102,6 +109,7 @@
   flex: 1;
   overflow: hidden;       /* clip playhead beyond edges */
   min-width: 0;
+  min-height: 0;          /* allow flex sizing without collapse */
 }
 
 /* Scroll container — sits behind the playhead overlay */

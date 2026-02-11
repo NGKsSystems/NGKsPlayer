@@ -8,7 +8,7 @@
   "scripts": {
     "vite": "cross-env DEBUG= vite --host --logLevel error",
     "electron": "cross-env VITE_DEV_SERVER_URL=http://localhost:5173 NODE_ENV=development ./node_modules/.bin/electron .",
-    "dev": "concurrently \"pnpm run vite\" \"wait-on http://localhost:5173 && pnpm run electron\"",
+    "dev": "node scripts/dev.mjs",
     "dev:clean": "pnpm run cleanup && pnpm run dev",
     "cleanup": "taskkill /f /im electron.exe 2>nul || echo No Electron processes to kill && taskkill /f /im node.exe 2>nul || echo No Node processes to kill",
     "kill-processes": "taskkill /f /im electron.exe && taskkill /f /im node.exe",

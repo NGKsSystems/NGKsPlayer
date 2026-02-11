@@ -156,11 +156,16 @@ const ProfessionalTimeline_v3 = React.forwardRef(
   ) => {
     /* ── refs & state ─────────────────────────────────── */
     const scrollRef = useRef(null);
+    const headerTracksRef = useRef(null);
     const [scrollLeft, setScrollLeft] = useState(0);
 
-    /* ── scroll handler ───────────────────────────────── */
+    /* ── scroll handler (syncs left headers with right tracks) ── */
     const handleScroll = useCallback((e) => {
       setScrollLeft(e.target.scrollLeft);
+      // Sync vertical scroll: right → left header column
+      if (headerTracksRef.current) {
+        headerTracksRef.current.scrollTop = e.target.scrollTop;
+      }
       if (onViewportChange && scrollRef.current) {
         const sl = scrollRef.current.scrollLeft;
         const startTime = pxToTime(sl, zoomLevel);
@@ -268,7 +273,7 @@ const ProfessionalTimeline_v3 = React.forwardRef(
           {/* LEFT COLUMN — track headers */}
           <div className="ptv3-left" data-testid="ptv3-left">
             <div className="ptv3-left__ruler-spacer">TIMELINE</div>
-            <div className="ptv3-left__tracks">
+            <div className="ptv3-left__tracks" ref={headerTracksRef}>
               {tracks.length === 0 ? (
                 <div style={{ height: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ff6b35', fontSize: 14, textAlign: 'center', padding: 20, fontWeight: 600 }}>
                   No tracks yet.<br />Click "+ Track" to start!
