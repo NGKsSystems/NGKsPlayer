@@ -179,7 +179,13 @@
   box-shadow: 0 2px 4px rgba(33, 150, 243, 0.3);
 }
 
-/* Additional Controls */\n/* (moved inline in transport-row--secondary) */\n\n.loop-btn {\n  width: 36px;\n  height: 36px;\n  border-radius: 6px;\n}
+/* Additional Controls (inline in transport-row--secondary) */
+
+.loop-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+}
 
 .volume-section {
   display: flex;
