@@ -87,17 +87,20 @@ const Ruler_v2 = React.memo(({ duration, zoomLevel, onTimeChange }) => {
 });
 Ruler_v2.displayName = 'Ruler_v2';
 
-/** Single playhead overlay — ONE element, ONE coordinate space */
+/** Single playhead overlay — ONE element, ONE coordinate space
+ *  Mirrors NGKs Zohan ProfessionalVideoTimeline pattern:
+ *  position:absolute + left:px, sibling of ruler & tracks inside scroll content.
+ */
 const Playhead_v2 = React.memo(({ currentTime, zoomLevel }) => {
   const px = timeToPixels(currentTime || 0, BASE_PPS, zoomLevel);
   return (
     <div
       className="ptv2-playhead"
-      style={{ transform: `translateX(${px}px)` }}
+      style={{ left: px }}
       aria-hidden="true"
     >
-      <div className="ptv2-playhead-cap" />
       <div className="ptv2-playhead-line" />
+      <div className="ptv2-playhead-handle" />
     </div>
   );
 });

@@ -143,35 +143,33 @@
   white-space: nowrap;
 }
 
-/* ── Playhead ──────────────────────────────────────────── */
+/* ── Playhead (mirrors NGKs Zohan ProfessionalVideoTimeline) ── */
 .ptv2-playhead {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 0;
+  width: 2px;
   pointer-events: none;
-  z-index: 50;
-  will-change: transform;
-}
-.ptv2-playhead-cap {
-  position: absolute;
-  top: 0;            /* align to ruler top inside same wrapper */
-  left: -7px;        /* half cap width to center on line */
-  width: 0;
-  height: 0;
-  border-left: 7px solid transparent;
-  border-right: 7px solid transparent;
-  border-top: 10px solid #ff3b30;  /* red inverted triangle */
-  filter: drop-shadow(0 0 2px rgba(255, 59, 48, 0.6));
+  z-index: 20;
 }
 .ptv2-playhead-line {
   position: absolute;
-  top: 10px;         /* start just under the cap */
+  top: 48px;         /* start below the ruler (RULER_HEIGHT) */
   bottom: 0;
-  left: -1px;
   width: 2px;
-  background: #ff3b30;
-  box-shadow: 0 0 6px rgba(255, 59, 48, 0.35);
+  background: #ff4444;
+  box-shadow: 0 0 8px rgba(255, 68, 68, 0.5);
+}
+.ptv2-playhead-handle {
+  position: absolute;
+  top: 38px;         /* sits on the ruler, just above the line */
+  left: -6px;
+  width: 14px;
+  height: 14px;
+  background: #ff4444;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(255, 68, 68, 0.5);
 }
 
 /* ── Track rows ────────────────────────────────────────── */
