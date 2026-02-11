@@ -4,13 +4,14 @@
    All state is local stub data for PHASE 2 (shell layout).
    Controllers will be wired in PHASE 3+.
    ═══════════════════════════════════════════════════════ */
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useMemo } from 'react';
 import TopToolbar from './components/TopToolbar.jsx';
 import TransportBar from './components/TransportBar.jsx';
 import EffectsRail from './components/EffectsRail.jsx';
 import TimelineShell from './components/TimelineShell.jsx';
 import { DEFAULT_ZOOM } from './math/layoutConstants.js';
 import usePlaybackEngine, { getSharedAudioContext } from './hooks/usePlaybackEngine.js';
+import AudioEffectsEngine from '../ProAudioClipper/audio/AudioEffectsEngine.js';
 import './styles/clipperV2.css';
 
 let nextTrackId = 1;
@@ -184,6 +185,16 @@ export default function ProAudioClipperV2({ onNavigate }) {
   // Active track name for effects rail
   const activeTrack = tracks.find((t) => t.id === activeTrackId);
 
+  // Lazily create the AudioEffectsEngine (shared across component lifetime)
+  const effectsEngine = useMemo(() => {
+    try {
+      const ctx = getSharedAudioContext();
+      return new AudioEffectsEngine(ctx);
+    } catch {
+      return null;
+    }
+  }, []);
+
   // ── Render ────────────────────────────────────────────
   return (
     <div className="clipper-v2">
@@ -223,7 +234,10 @@ export default function ProAudioClipperV2({ onNavigate }) {
       <EffectsRail
         expanded={effectsExpanded}
         onToggle={() => setEffectsExpanded((e) => !e)}
+        activeTrackId={activeTrackId}
         activeTrackName={activeTrack?.name}
+        effectsEngine={effectsEngine}
+        tracks={tracks}
       />
 
       {/* Row 3 col 2: Timeline */}

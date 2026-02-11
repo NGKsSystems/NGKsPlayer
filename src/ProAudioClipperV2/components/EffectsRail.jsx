@@ -1,11 +1,20 @@
 /* ───────────────────────────────────────────────────────
    EffectsRail – V2 collapsible left sidebar
-   Shows vertical "EFFECTS" label when collapsed,
-   placeholder panel when expanded.
+   Collapsed: vertical "EFFECTS" label.
+   Expanded: renders V1 TrackEffectsPanel (real DSP UI).
    ─────────────────────────────────────────────────────── */
 import React from 'react';
+import TrackEffectsPanel from '../../ProAudioClipper/components/TrackEffectsPanel';
+import '../../ProAudioClipper/components/TrackEffectsPanel.css';
 
-export default function EffectsRail({ expanded, onToggle, activeTrackName }) {
+export default function EffectsRail({
+  expanded,
+  onToggle,
+  activeTrackId,
+  activeTrackName,
+  effectsEngine,
+  tracks = [],
+}) {
   if (!expanded) {
     return (
       <aside
@@ -18,26 +27,37 @@ export default function EffectsRail({ expanded, onToggle, activeTrackName }) {
     );
   }
 
+  const targetTrackId = activeTrackId || tracks[0]?.id;
+  const targetTrackName =
+    activeTrackName ||
+    tracks.find((t) => t.id === targetTrackId)?.name ||
+    'Track 1';
+
   return (
     <aside className="v2-effects-rail v2-effects-rail--expanded">
-      <div className="v2-effects-rail__panel">
-        <div className="v2-effects-rail__panel-header">
-          <span className="v2-effects-rail__panel-title">
-            {activeTrackName ? `FX: ${activeTrackName}` : 'Track Effects'}
-          </span>
-          <button className="v2-effects-rail__close-btn" onClick={onToggle} title="Collapse">
-            ✕
-          </button>
+      {targetTrackId && effectsEngine ? (
+        <TrackEffectsPanel
+          trackId={targetTrackId}
+          trackName={targetTrackName}
+          effectsEngine={effectsEngine}
+          onClose={onToggle}
+        />
+      ) : (
+        <div className="v2-effects-rail__panel">
+          <div className="v2-effects-rail__panel-header">
+            <span className="v2-effects-rail__panel-title">Track Effects</span>
+            <button className="v2-effects-rail__close-btn" onClick={onToggle} title="Collapse">
+              ✕
+            </button>
+          </div>
+          <div style={{ color: '#666', padding: 16, textAlign: 'center' }}>
+            <p>No tracks loaded yet.</p>
+            <p style={{ fontSize: 11, marginTop: 8 }}>
+              Add a track to start using effects.
+            </p>
+          </div>
         </div>
-
-        {/* Placeholder – PHASE 5 will wire real effects via adapter */}
-        <div style={{ color: '#666', padding: 16, textAlign: 'center' }}>
-          <p>Effects chain placeholder</p>
-          <p style={{ fontSize: 11, marginTop: 8 }}>
-            Select a track and add effects here.
-          </p>
-        </div>
-      </div>
+      )}
     </aside>
   );
 }
