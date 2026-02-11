@@ -510,6 +510,65 @@
   overflow: hidden;
 }
 
+/* ── Clip block ──────────────────────────────────────── */
+.v2-clip {
+  background: linear-gradient(180deg, rgba(0,212,255,0.18) 0%, rgba(0,140,180,0.22) 100%);
+  border: 1px solid rgba(0,212,255,0.45);
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: grab;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.v2-clip:hover {
+  border-color: rgba(0,212,255,0.8);
+  box-shadow: 0 0 8px rgba(0,212,255,0.25);
+}
+.v2-clip__name {
+  position: absolute;
+  top: 3px;
+  left: 6px;
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.85);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+  z-index: 2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: calc(100% - 50px);
+  pointer-events: none;
+}
+.v2-clip__duration {
+  position: absolute;
+  right: 5px;
+  bottom: 3px;
+  font-size: 9px;
+  color: rgba(255,255,255,0.7);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ── Playhead ────────────────────────────────────────── */
+.v2-playhead {
+  position: absolute;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  background: #e74c3c;
+  z-index: 50;
+  pointer-events: none;
+}
+.v2-playhead::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -5px;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 8px solid #e74c3c;
+}
+
 /* ── Timeline footer (inside timeline area) ──────────── */
 .v2-timeline-footer {
   display: flex;

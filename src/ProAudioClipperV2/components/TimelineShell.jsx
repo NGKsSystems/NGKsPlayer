@@ -8,7 +8,7 @@ import TimelineRuler from './TimelineRuler.jsx';
 import TrackHeaderCell from './TrackHeaderCell.jsx';
 import TrackLaneCell from './TrackLaneCell.jsx';
 import { HEADER_WIDTH, TRACK_HEIGHT, COLORS } from '../math/layoutConstants.js';
-import { zoomIn, zoomOut } from '../math/timelineMath.js';
+import { zoomIn, zoomOut, timeToPx } from '../math/timelineMath.js';
 import { DEFAULT_ZOOM } from '../math/layoutConstants.js';
 
 export default function TimelineShell({
@@ -151,6 +151,13 @@ export default function TimelineShell({
               </div>
             ) : (
               <div style={{ position: 'relative' }}>
+                {/* Playhead */}
+                {currentTime > 0 && (
+                  <div
+                    className="v2-playhead"
+                    style={{ left: `${timeToPx(currentTime, zoom)}px` }}
+                  />
+                )}
                 {tracks.map((track, i) => {
                   const isActive = track.id === activeTrackId;
                   return (
