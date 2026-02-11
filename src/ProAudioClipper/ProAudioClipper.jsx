@@ -949,26 +949,6 @@ const ProAudioClipper = ({ onNavigate }) => {
         >
           {showEffectsPanel ? (
             <>
-              <button
-                onClick={() => setShowEffectsPanel(false)}
-                title="Collapse Effects Panel"
-                style={{
-                  position: 'absolute',
-                  top: '8px',
-                  left: '8px',
-                  zIndex: 10,
-                  background: 'rgba(255,255,255,0.1)',
-                  border: 'none',
-                  borderRadius: '3px',
-                  color: '#aaa',
-                  cursor: 'pointer',
-                  padding: '2px 5px',
-                  fontSize: '12px',
-                  lineHeight: 1
-                }}
-              >
-                ◀
-              </button>
               {trackManager.tracks.length > 0 ? (
                 <TrackEffectsPanel
                   trackId={effectsPanelTrackId || trackManager.activeTrackId || trackManager.tracks[0]?.id}

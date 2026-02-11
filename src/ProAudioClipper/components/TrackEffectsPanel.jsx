@@ -129,20 +129,20 @@ const TrackEffectsPanel = ({
     <div className="track-effects-panel">
       {/* Header */}
       <div className="effects-panel-header">
+        <button 
+          className="collapse-panel-btn"
+          onClick={onClose}
+          title="Collapse Effects Panel"
+        >
+          ◀
+        </button>
         <div className="track-info">
-          <h3>{trackName} - Effects</h3>
+          <h3>{trackName} FX</h3>
           <div className="engine-stats">
             <span className="cpu-usage">CPU: {engineStats.cpuUsage.toFixed(1)}%</span>
-            <span className="latency">Latency: {engineStats.latency.toFixed(1)}ms</span>
+            <span className="latency">{engineStats.latency.toFixed(1)}ms</span>
           </div>
         </div>
-        <button 
-          className="close-panel-btn"
-          onClick={onClose}
-          title="Close Effects Panel"
-        >
-          <X size={20} />
-        </button>
       </div>
 
       <div className="effects-panel-content">

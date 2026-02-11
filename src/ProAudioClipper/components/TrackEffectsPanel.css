@@ -32,12 +32,12 @@
 /* Header */
 .effects-panel-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 16px;
+  gap: 10px;
+  padding: 10px 12px;
   background: #2a2a2a;
   border-bottom: 1px solid #404040;
-  min-height: 60px;
+  min-height: 44px;
 }
 
 .track-info h3 {
@@ -62,18 +62,22 @@
   color: #FFC107;
 }
 
-.close-panel-btn {
-  background: #404040;
-  border: none;
+.collapse-panel-btn {
+  background: none;
+  border: 1px solid #555;
   border-radius: 4px;
-  padding: 8px;
-  color: #ffffff;
+  padding: 4px 8px;
+  color: #ff8c00;
   cursor: pointer;
-  transition: background-color 0.2s;
+  font-size: 14px;
+  line-height: 1;
+  transition: background-color 0.2s, border-color 0.2s;
+  flex-shrink: 0;
 }
 
-.close-panel-btn:hover {
-  background: #505050;
+.collapse-panel-btn:hover {
+  background: rgba(255, 140, 0, 0.15);
+  border-color: #ff8c00;
 }
 
 /* Content */
@@ -523,30 +527,22 @@
   transform: scale(1.05);
 }
 
-/* Scrollbar Styling */
+/* Scrollbar Styling - hidden but scrollable */
+.effects-slots,
+.effect-browser,
+.effect-parameters,
+.effect-categories,
+.effects-panel-content {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
 .effects-slots::-webkit-scrollbar,
 .effect-browser::-webkit-scrollbar,
-.effect-parameters::-webkit-scrollbar {
-  width: 6px;
-}
-
-.effects-slots::-webkit-scrollbar-track,
-.effect-browser::-webkit-scrollbar-track,
-.effect-parameters::-webkit-scrollbar-track {
-  background: #2a2a2a;
-}
-
-.effects-slots::-webkit-scrollbar-thumb,
-.effect-browser::-webkit-scrollbar-thumb,
-.effect-parameters::-webkit-scrollbar-thumb {
-  background: #555;
-  border-radius: 3px;
-}
-
-.effects-slots::-webkit-scrollbar-thumb:hover,
-.effect-browser::-webkit-scrollbar-thumb:hover,
-.effect-parameters::-webkit-scrollbar-thumb:hover {
-  background: #777;
+.effect-parameters::-webkit-scrollbar,
+.effect-categories::-webkit-scrollbar,
+.effects-panel-content::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
 }
 
 /* Responsive Design */
