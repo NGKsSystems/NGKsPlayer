@@ -51,8 +51,6 @@ const ProfessionalTimeline = React.forwardRef(({
   onTrackMoveUp,
   onTrackMoveDown,
   onOpenEffects,
-  showEffectsPanel,
-  onToggleEffects,
   onViewportChange, // Add viewport change handler
   onTrackContextMenu, // Add context menu handler
   onToolChange,

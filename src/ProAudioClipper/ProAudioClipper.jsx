@@ -933,27 +933,40 @@ const ProAudioClipper = ({ onNavigate }) => {
       >
 
         {/* Left Panel - Effects Sidebar */}
-        {showEffectsPanel && effectsPanelTrackId && (
-          <div
-            className="effects-sidebar"
-            style={{
-              width: '320px',
-              minWidth: '320px',
-              display: 'flex',
-              flexDirection: 'column',
-              borderRight: '1px solid #404040',
-              background: '#1e1e1e',
-              overflow: 'hidden'
-            }}
-          >
+        <div
+          className="effects-sidebar"
+          style={{
+            width: '320px',
+            minWidth: '320px',
+            display: 'flex',
+            flexDirection: 'column',
+            borderRight: '1px solid #404040',
+            background: '#1e1e1e',
+            overflow: 'hidden'
+          }}
+        >
+          {effectsPanelTrackId ? (
             <TrackEffectsPanel
               trackId={effectsPanelTrackId}
               trackName={trackManager.tracks.find(t => t.id === effectsPanelTrackId)?.name || 'Track'}
               effectsEngine={multiTrackEngine.effectsEngine}
               onClose={handleCloseEffectsPanel}
             />
-          </div>
-        )}
+          ) : (
+            <div style={{
+              padding: '20px',
+              textAlign: 'center',
+              color: '#888',
+              fontSize: '14px'
+            }}>
+              <h3 style={{ color: '#00d4ff', marginBottom: '16px' }}>Effects Panel</h3>
+              <p>Select a track to view and edit its effects chain.</p>
+              {trackManager.tracks.length === 0 && (
+                <p style={{ color: '#ff6b35', marginTop: '12px' }}>No tracks yet.<br/>Add an audio track to start!</p>
+              )}
+            </div>
+          )}
+        </div>
 
         {/* Center Panel - Timeline */}
         <div 
@@ -1076,18 +1089,6 @@ const ProAudioClipper = ({ onNavigate }) => {
             onTrackMoveDown={trackManager.moveTrackDown}
             onAddTrack={trackController.handleAddTrackWithFile}
             onOpenEffects={handleOpenEffectsPanel}
-            showEffectsPanel={showEffectsPanel}
-            onToggleEffects={() => { 
-              if (showEffectsPanel) { 
-                handleCloseEffectsPanel(); 
-              } else { 
-                // Open effects for active track, or first track if none active
-                const targetTrackId = trackManager.activeTrackId || trackManager.tracks[0]?.id;
-                if (targetTrackId) {
-                  handleOpenEffectsPanel(targetTrackId);
-                }
-              } 
-            }}
             onViewportChange={handleViewportChange}
             onTrackContextMenu={handleTrackContextMenu}
             onUndo={undo}
