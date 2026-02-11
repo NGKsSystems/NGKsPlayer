@@ -70,9 +70,8 @@
 /* Track header rows — finalized layout: | Color Strip | ▶ | Track Name | S | M | Gain | */
 .ptv3-track-hdr {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 0 12px;
+  align-items: stretch;
+  padding: 0;
   min-height: 0;
   height: 100%;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -90,16 +89,38 @@
 /* Color Strip - 6px wide, full height */
 .ptv3-track-hdr__color {
   width: 6px;
-  height: 100%;
   flex-shrink: 0;
   background: #666;
-  margin-left: -12px; /* compensate for padding */
+}
+
+/* Two-row content area (fills remaining space) */
+.ptv3-track-hdr__content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4px 10px;
+  gap: 3px;
+}
+
+/* Row 1: Track name */
+.ptv3-track-hdr__row-name {
+  display: flex;
+  align-items: center;
+}
+
+/* Row 2: Controls */
+.ptv3-track-hdr__row-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 /* Preview Button */
 .ptv3-track-hdr__preview {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   border-radius: 3px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   background: rgba(255, 255, 255, 0.1);
@@ -108,7 +129,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 11px;
+  font-size: 10px;
   flex-shrink: 0;
   transition: background 0.1s;
 }
@@ -130,11 +151,13 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 13px;
-  color: #ccc;
+  font-size: 12px;
+  font-weight: 500;
+  color: #ddd;
   cursor: text;
-  padding: 2px 4px;
+  padding: 1px 2px;
   border-radius: 2px;
+  line-height: 1.3;
 }
 
 .ptv3-track-hdr__name:hover {
@@ -146,14 +169,14 @@
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: #ccc;
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   border-radius: 3px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   padding: 0;
   flex-shrink: 0;
@@ -178,8 +201,9 @@
 
 /* Gain Control */
 .ptv3-track-hdr__gain {
-  width: 70px;
-  flex-shrink: 0;
+  flex: 1;
+  min-width: 40px;
+  max-width: 80px;
   opacity: 0.7;
   transition: opacity 0.2s;
 }
@@ -190,9 +214,9 @@
 
 .ptv3-track-hdr__gain-slider {
   width: 100%;
-  height: 18px;
+  height: 16px;
   background: rgba(255, 255, 255, 0.1);
-  border-radius: 9px;
+  border-radius: 8px;
   outline: none;
   border: none;
   cursor: pointer;
@@ -201,8 +225,8 @@
 
 .ptv3-track-hdr__gain-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   background: #00d4ff;
   border-radius: 50%;
   cursor: pointer;
@@ -210,8 +234,8 @@
 }
 
 .ptv3-track-hdr__gain-slider::-moz-range-thumb {
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   background: #00d4ff;
   border-radius: 50%;
   cursor: pointer;

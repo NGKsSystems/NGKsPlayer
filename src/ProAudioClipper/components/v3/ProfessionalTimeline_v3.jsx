@@ -328,70 +328,78 @@ const ProfessionalTimeline_v3 = React.forwardRef(
                     >
                       {/* Color Strip */}
                       <div className="ptv3-track-hdr__color" style={{ backgroundColor: track.color || '#666' }} />
-                      
-                      {/* Preview Button */}
-                      <button
-                        className={`ptv3-track-hdr__preview ${isPreview ? 'ptv3-track-hdr__preview--active' : ''}`}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onTrackPreview?.(isPreview ? null : track.id);
-                        }}
-                        title={isPreview ? 'Stop Preview' : 'Preview Track'}
-                      >
-                        {isPreview ? '■' : '▶'}
-                      </button>
-                      
-                      {/* Track Name */}
-                      <span 
-                        className="ptv3-track-hdr__name" 
-                        title={track.name}
-                        onDoubleClick={(e) => {
-                          e.stopPropagation();
-                          setRenaming({ trackId: track.id, name: track.name });
-                        }}
-                      >
-                        {track.name}
-                      </span>
-                      
-                      {/* Solo */}
-                      <button
-                        className={`ptv3-track-hdr__btn ptv3-track-hdr__btn--solo ${track.solo ? 'ptv3-track-hdr__btn--active' : ''}`}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onTrackSolo?.(track.id);
-                        }}
-                        title={track.solo ? 'Unsolo' : 'Solo'}
-                      >
-                        S
-                      </button>
-                      
-                      {/* Mute */}
-                      <button
-                        className={`ptv3-track-hdr__btn ptv3-track-hdr__btn--mute ${track.muted ? 'ptv3-track-hdr__btn--active' : ''}`}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onTrackMute?.(track.id);
-                        }}
-                        title={track.muted ? 'Unmute' : 'Mute'}
-                      >
-                        M
-                      </button>
-                      
-                      {/* Gain Control */}
-                      <div className="ptv3-track-hdr__gain">
-                        <input
-                          type="range"
-                          min="0"
-                          max="2"
-                          step="0.01"
-                          value={track.volume || 1.0}
-                          onChange={(e) => {
-                            e.stopPropagation();
-                            onTrackVolumeChange?.(track.id, parseFloat(e.target.value));
-                          }}
-                          className="ptv3-track-hdr__gain-slider"
-                          title={`Gain: ${Math.round((track.volume || 1.0) * 100)}%`}
-                        />
+
+                      {/* Two-row content area */}
+                      <div className="ptv3-track-hdr__content">
+                        {/* Row 1: Track Name */}
+                        <div className="ptv3-track-hdr__row-name">
+                          <span 
+                            className="ptv3-track-hdr__name" 
+                            title={track.name}
+                            onDoubleClick={(e) => {
+                              e.stopPropagation();
+                              setRenaming({ trackId: track.id, name: track.name });
+                            }}
+                          >
+                            {track.name}
+                          </span>
+                        </div>
+
+                        {/* Row 2: Controls */}
+                        <div className="ptv3-track-hdr__row-controls">
+                          {/* Preview Button */}
+                          <button
+                            className={`ptv3-track-hdr__preview ${isPreview ? 'ptv3-track-hdr__preview--active' : ''}`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onTrackPreview?.(isPreview ? null : track.id);
+                            }}
+                            title={isPreview ? 'Stop Preview' : 'Preview Track'}
+                          >
+                            {isPreview ? '■' : '▶'}
+                          </button>
+
+                          {/* Solo */}
+                          <button
+                            className={`ptv3-track-hdr__btn ptv3-track-hdr__btn--solo ${track.solo ? 'ptv3-track-hdr__btn--active' : ''}`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onTrackSolo?.(track.id);
+                            }}
+                            title={track.solo ? 'Unsolo' : 'Solo'}
+                          >
+                            S
+                          </button>
+
+                          {/* Mute */}
+                          <button
+                            className={`ptv3-track-hdr__btn ptv3-track-hdr__btn--mute ${track.muted ? 'ptv3-track-hdr__btn--active' : ''}`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onTrackMute?.(track.id);
+                            }}
+                            title={track.muted ? 'Unmute' : 'Mute'}
+                          >
+                            M
+                          </button>
+
+                          {/* Gain Control */}
+                          <div className="ptv3-track-hdr__gain">
+                            <input
+                              type="range"
+                              min="0"
+                              max="2"
+                              step="0.01"
+                              value={track.volume || 1.0}
+                              onChange={(e) => {
+                                e.stopPropagation();
+                                onTrackVolumeChange?.(track.id, parseFloat(e.target.value));
+                              }}
+                              className="ptv3-track-hdr__gain-slider"
+                              title={`Gain: ${Math.round((track.volume || 1.0) * 100)}%`}
+                            />
+                          </div>
+                        </div>
                       </div>
                     </div>
                   );
