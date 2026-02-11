@@ -105,9 +105,14 @@ export const useMultiTrackAudioEngine = () => {
   // Initialize audio context, master chain, effects engine, and mixing infrastructure
   useEffect(() => {
     const initializeAudio = async () => {
+      console.log('[MultiTrackEngine] Initializing audio context...');
       const AudioContext = typeof window !== 'undefined' ? (window.AudioContext || window.webkitAudioContext) : null;
-      if (!AudioContext) return;
+      if (!AudioContext) {
+        console.error('[MultiTrackEngine] AudioContext not available');
+        return;
+      }
       audioContextRef.current = new AudioContext();
+      console.log('[MultiTrackEngine] AudioContext created, state:', audioContextRef.current.state);
       
       // Create master chain
       masterGainNodeRef.current = audioContextRef.current.createGain();
@@ -116,6 +121,7 @@ export const useMultiTrackAudioEngine = () => {
       // Connect master chain
       masterPanNodeRef.current.connect(masterGainNodeRef.current);
       masterGainNodeRef.current.connect(audioContextRef.current.destination);
+      console.log('[MultiTrackEngine] Master chain connected');
       
       // Initialize professional AudioWorklet processor
       await initializeWorklet();
@@ -361,32 +367,69 @@ export const useMultiTrackAudioEngine = () => {
 
   // Play all tracks
   const playTracks = useCallback((tracks, startTime = 0, playbackRate = 1) => {
-    if (!audioContextRef.current || tracks.length === 0) return;
+    console.log('[MultiTrackEngine] playTracks called with:', { 
+      tracksCount: tracks.length, 
+      startTime, 
+      playbackRate,
+      hasAudioContext: !!audioContextRef.current
+    });
+    
+    if (!audioContextRef.current || tracks.length === 0) {
+      console.log('[MultiTrackEngine] Cannot play - missing audio context or no tracks');
+      return;
+    }
 
     // Stop any existing playback
     stopTracks();
 
     try {
+      console.log('[MultiTrackEngine] Processing tracks for playback...');
+      let sourcesCreated = 0;
+      
       // Create source nodes for all tracks with clips
       tracks.forEach(track => {
+        console.log(`[MultiTrackEngine] Processing track ${track.id} (${track.name}):`, {
+          hasClips: !!track.clips,
+          clipsCount: track.clips?.length || 0,
+          clips: track.clips?.map(c => ({ id: c.id, hasAudioBuffer: !!c.audioBuffer, duration: c.duration })) || []
+        });
+        
         // Only handle tracks with clips - ignore legacy direct audioBuffer
         if (track.clips && track.clips.length > 0) {
           track.clips.forEach(clip => {
+            console.log(`[MultiTrackEngine] Processing clip ${clip.id}:`, {
+              hasAudioBuffer: !!clip.audioBuffer,
+              startTime: clip.startTime,
+              endTime: clip.endTime,
+              duration: clip.duration
+            });
+            
             if (clip.audioBuffer) {
+              console.log('[MultiTrackEngine] Creating track chain for clip:', clip.id);
               const trackChain = createTrackChain(`${track.id}_${clip.id}`, clip.audioBuffer);
               if (trackChain) {
+                sourcesCreated++;
                 // Store reference to track for parameter updates
                 trackChain.track = track;
                 trackChain.clip = clip;
                 
                 // Add to trackNodes Map for playback
                 trackNodesRef.current.set(`${track.id}_${clip.id}`, trackChain);
+                console.log('[MultiTrackEngine] Track chain created and stored for:', `${track.id}_${clip.id}`);
+              } else {
+                console.warn('[MultiTrackEngine] Failed to create track chain for:', `${track.id}_${clip.id}`);
               }
+            } else {
+              console.warn('[MultiTrackEngine] Clip has no audioBuffer:', clip.id);
             }
           });
+        } else {
+          console.log(`[MultiTrackEngine] Track ${track.id} has no clips or empty clips array`);
         }
         // Note: Removed legacy audioBuffer fallback to prevent double playback
       });
+
+      console.log(`[MultiTrackEngine] Created ${sourcesCreated} audio sources`);
 
       // Apply current track parameters
       updateTrackParameters(tracks);

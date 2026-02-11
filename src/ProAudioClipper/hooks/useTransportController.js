@@ -24,12 +24,20 @@ export function useTransportController({
 }) {
   // Playback controls for multi-track
   const togglePlayback = useCallback(() => {
-    if (trackManager.tracks.length === 0) return;
+    console.log('[Transport] togglePlayback called, tracks.length:', trackManager.tracks.length);
+    if (trackManager.tracks.length === 0) {
+      console.log('[Transport] No tracks loaded, returning');
+      return;
+    }
+    
+    console.log('[Transport] Current state - isPlaying:', isPlaying, 'currentTime:', currentTime);
     
     if (isPlaying) {
+      console.log('[Transport] Pausing tracks...');
       multiTrackEngine.pauseTracks();
       setIsPlaying(false);
     } else {
+      console.log('[Transport] Starting playback for tracks:', trackManager.tracks.map(t => ({ id: t.id, name: t.name, clips: t.clips?.length || 0 })));
       multiTrackEngine.playTracks(trackManager.tracks, currentTime, playbackRate);
       setIsPlaying(true);
     }
