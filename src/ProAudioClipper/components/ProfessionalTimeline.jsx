@@ -153,24 +153,24 @@ const ProfessionalTimeline = React.forwardRef(({
           🎵 PMTT
         </span>
 
+        {/* Debug: Always show FX button */}
+        {console.log('Rendering FX button, props:', { showEffectsPanel, onToggleEffects: typeof onToggleEffects })}
+        
         {/* FX Toggle */}
         <button
-          onClick={onToggleEffects}
-          disabled={!tracks || tracks.length === 0}
-          title={
-            !tracks || tracks.length === 0 ? 'No tracks available' :
-            showEffectsPanel ? 'Hide Effects Panel' : 'Show Effects Panel'
-          }
+          onClick={onToggleEffects || (() => console.log('FX toggle clicked but no handler'))}
+          disabled={false}
+          title="Effects Panel Toggle"
           style={{
             padding: '2px 6px',
             background: showEffectsPanel ? '#ff6b35' : 'rgba(255,255,255,0.08)',
-            color: showEffectsPanel ? '#fff' : (!tracks || tracks.length === 0 ? '#555' : '#999'),
+            color: showEffectsPanel ? '#fff' : '#999',
             border: 'none',
             borderRadius: '3px',
             fontSize: '10px',
-            cursor: (!tracks || tracks.length === 0) ? 'not-allowed' : 'pointer',
+            cursor: 'pointer',
             fontWeight: showEffectsPanel ? '600' : '400',
-            opacity: (!tracks || tracks.length === 0) ? 0.4 : 1
+            minWidth: '20px'
           }}
         >
           FX
