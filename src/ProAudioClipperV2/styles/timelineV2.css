@@ -1,0 +1,114 @@
+/* ═══════════════════════════════════════════════════════
+   ProAudioClipperV2 · Timeline-specific overrides
+   (Ruler ticks, clips, waveform canvas, playhead, etc.)
+   Most layout is in clipperV2.css – this file handles
+   finer-grained timeline rendering details.
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Ruler ticks ────────────────────────────────────── */
+.v2-ruler-tick {
+  position: absolute;
+  top: 0;
+  width: 1px;
+  background: #444;
+  pointer-events: none;
+}
+.v2-ruler-tick--major {
+  height: 100%;
+  background: #555;
+}
+.v2-ruler-tick--minor {
+  height: 50%;
+  bottom: 0;
+  top: auto;
+}
+.v2-ruler-tick__label {
+  position: absolute;
+  top: 2px;
+  left: 3px;
+  font-size: 9px;
+  color: #888;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* ── Playhead ───────────────────────────────────────── */
+.v2-playhead {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: #ff4444;
+  z-index: 20;
+  pointer-events: none;
+}
+.v2-playhead__head {
+  position: absolute;
+  top: -4px;
+  left: -5px;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid #ff4444;
+}
+
+/* ── Clip block ─────────────────────────────────────── */
+.v2-clip {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  background: rgba(0, 212, 255, 0.25);
+  border: 1px solid rgba(0, 212, 255, 0.6);
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: grab;
+  transition: box-shadow 0.1s;
+}
+.v2-clip:hover {
+  box-shadow: 0 0 6px rgba(0, 212, 255, 0.3);
+}
+.v2-clip--selected {
+  border-color: #00d4ff;
+  box-shadow: 0 0 8px rgba(0, 212, 255, 0.5);
+}
+.v2-clip--dragging {
+  opacity: 0.75;
+  cursor: grabbing;
+}
+
+.v2-clip__label {
+  position: absolute;
+  top: 2px;
+  left: 4px;
+  font-size: 10px;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  pointer-events: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: calc(100% - 8px);
+}
+
+/* ── Waveform canvas ────────────────────────────────── */
+.v2-waveform-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* ── Selection overlay ──────────────────────────────── */
+.v2-selection {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 212, 255, 0.12);
+  border-left: 1px solid rgba(0, 212, 255, 0.4);
+  border-right: 1px solid rgba(0, 212, 255, 0.4);
+  pointer-events: none;
+  z-index: 15;
+}

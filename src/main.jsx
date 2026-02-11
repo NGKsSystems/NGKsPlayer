@@ -103,6 +103,7 @@ import SettingsHome from "./views/settings/SettingsHome.jsx";
 import ThemeSettings from "./views/settings/ThemeSettings.jsx";
 import LayerRemover from "./views/player/LayerRemover.jsx";
 import ProAudioClipper from "./ProAudioClipper/ProAudioClipper.jsx";
+import ProAudioClipperV2 from "./ProAudioClipperV2/ProAudioClipperV2.jsx";
 import Broadcast from "./views/broadcast/Broadcast.jsx";
 import StreamingInterface from "./streaming/StreamingInterface.jsx";
 import HardwareIntegration from "./hardware/HardwareIntegration.jsx";
@@ -142,6 +143,7 @@ function NavigationWrapper({ children }) {
       'analyzerSettings': '/analyzer-settings',
       'layer-remover': '/layer-remover',
       'clipper': '/clipper',
+      'clipper-v2': '/clipper-v2',
       'streaming': '/streaming',
       'hardware': '/hardware'
     };
@@ -217,6 +219,11 @@ const router = createHashRouter([
     path: "/clipper", 
     element: <NavigationWrapper><ProAudioClipper /></NavigationWrapper>,
     errorElement: <ErrorBoundary><div className="p-8 text-white">Route Error: Pro Clipper</div></ErrorBoundary>
+  },
+  { 
+    path: "/clipper-v2", 
+    element: <NavigationWrapper><ProAudioClipperV2 /></NavigationWrapper>,
+    errorElement: <ErrorBoundary><div className="p-8 text-white">Route Error: Pro Clipper V2</div></ErrorBoundary>
   },
   { 
     path: "/broadcast", 

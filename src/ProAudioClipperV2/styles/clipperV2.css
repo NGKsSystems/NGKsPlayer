@@ -1,0 +1,486 @@
+/* ═══════════════════════════════════════════════════════
+   ProAudioClipperV2 · Shell Layout (CSS Grid)
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Root shell ─────────────────────────────────────── */
+.clipper-v2 {
+  display: grid;
+  grid-template-rows: 52px 56px 1fr 28px;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+    "toolbar   toolbar"
+    "transport transport"
+    "effects   timeline"
+    "footer    footer";
+  height: 100vh;
+  overflow: hidden;
+  background: #1a1a1a;
+  color: #e0e0e0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 13px;
+  user-select: none;
+}
+
+/* ── Top toolbar ────────────────────────────────────── */
+.v2-toolbar {
+  grid-area: toolbar;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  background: #2a2a2a;
+  border-bottom: 1px solid #3a3a3a;
+  flex-shrink: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.v2-toolbar__back {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  background: none;
+  border: 1px solid #555;
+  border-radius: 4px;
+  color: #e0e0e0;
+  cursor: pointer;
+  font-size: 13px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.v2-toolbar__back:hover { background: #3a3a3a; }
+
+.v2-toolbar__title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #00d4ff;
+  white-space: nowrap;
+  margin: 0 8px;
+  flex-shrink: 0;
+}
+
+.v2-toolbar__sep {
+  width: 1px;
+  height: 28px;
+  background: #444;
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+
+.v2-toolbar__btn {
+  padding: 5px 10px;
+  background: #333;
+  border: 1px solid #555;
+  border-radius: 4px;
+  color: #ccc;
+  cursor: pointer;
+  font-size: 12px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+.v2-toolbar__btn:hover { background: #444; color: #fff; }
+.v2-toolbar__btn--active {
+  background: #00d4ff;
+  color: #000;
+  border-color: #00d4ff;
+}
+
+/* ── Transport row ──────────────────────────────────── */
+.v2-transport {
+  grid-area: transport;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 16px;
+  background: #252525;
+  border-bottom: 1px solid #3a3a3a;
+  flex-shrink: 0;
+}
+
+.v2-transport__group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.v2-transport__btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #333;
+  border: 1px solid #555;
+  border-radius: 4px;
+  color: #ccc;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.15s;
+}
+.v2-transport__btn:hover { background: #444; color: #fff; }
+.v2-transport__btn--playing {
+  background: #00d4ff;
+  color: #000;
+  border-color: #00d4ff;
+}
+
+.v2-transport__time {
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 14px;
+  color: #00d4ff;
+  background: #1a1a1a;
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid #3a3a3a;
+  white-space: nowrap;
+  min-width: 190px;
+  text-align: center;
+}
+
+.v2-transport__speed-group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: 8px;
+}
+
+.v2-transport__speed-btn {
+  padding: 3px 8px;
+  background: #333;
+  border: 1px solid #555;
+  border-radius: 3px;
+  color: #999;
+  cursor: pointer;
+  font-size: 11px;
+  transition: background 0.15s;
+}
+.v2-transport__speed-btn:hover { background: #444; }
+.v2-transport__speed-btn--active {
+  background: #00d4ff;
+  color: #000;
+  border-color: #00d4ff;
+  font-weight: 600;
+}
+
+.v2-transport__spacer { flex: 1; }
+
+.v2-transport__volume {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.v2-transport__volume-slider {
+  width: 80px;
+  accent-color: #00d4ff;
+}
+
+/* ── Effects rail (left sidebar) ────────────────────── */
+.v2-effects-rail {
+  grid-area: effects;
+  background: #222;
+  border-right: 1px solid #3a3a3a;
+  overflow: hidden;
+  transition: width 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.v2-effects-rail--collapsed {
+  width: 28px;
+  cursor: pointer;
+}
+.v2-effects-rail--expanded {
+  width: 320px;
+}
+
+.v2-effects-rail__label {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  padding: 12px 6px;
+  color: #00d4ff;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.v2-effects-rail__panel {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+}
+
+.v2-effects-rail__panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 4px;
+  border-bottom: 1px solid #3a3a3a;
+  margin-bottom: 8px;
+}
+.v2-effects-rail__panel-title {
+  color: #00d4ff;
+  font-weight: 700;
+  font-size: 13px;
+}
+.v2-effects-rail__close-btn {
+  background: none;
+  border: none;
+  color: #999;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 2px 6px;
+}
+.v2-effects-rail__close-btn:hover { color: #fff; }
+
+/* ── Timeline area ──────────────────────────────────── */
+.v2-timeline-area {
+  grid-area: timeline;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #1a1a1a;
+}
+
+/* Timeline toolbar row (above ruler) */
+.v2-timeline-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  background: #252525;
+  border-bottom: 1px solid #3a3a3a;
+  flex-shrink: 0;
+  min-height: 34px;
+}
+
+.v2-timeline-toolbar__label {
+  font-weight: 700;
+  font-size: 13px;
+  color: #00d4ff;
+  white-space: nowrap;
+}
+
+.v2-timeline-toolbar__btn {
+  padding: 3px 10px;
+  background: #00d4ff;
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: opacity 0.15s;
+}
+.v2-timeline-toolbar__btn:hover { opacity: 0.85; }
+
+.v2-timeline-toolbar__tool-btn {
+  padding: 3px 8px;
+  background: #333;
+  border: 1px solid #555;
+  border-radius: 3px;
+  color: #ccc;
+  cursor: pointer;
+  font-size: 11px;
+  transition: background 0.15s;
+}
+.v2-timeline-toolbar__tool-btn:hover { background: #444; }
+.v2-timeline-toolbar__tool-btn--active {
+  background: #00d4ff;
+  color: #000;
+  border-color: #00d4ff;
+}
+
+.v2-timeline-toolbar__spacer { flex: 1; }
+
+.v2-zoom-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.v2-zoom-group__btn {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #333;
+  border: 1px solid #555;
+  border-radius: 3px;
+  color: #ccc;
+  cursor: pointer;
+  font-size: 14px;
+}
+.v2-zoom-group__btn:hover { background: #444; }
+.v2-zoom-group__label {
+  font-size: 11px;
+  color: #999;
+  min-width: 40px;
+  text-align: center;
+}
+
+/* Ruler + Tracks split */
+.v2-timeline-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+/* The ruler row */
+.v2-ruler-row {
+  display: flex;
+  flex-shrink: 0;
+  height: 28px;
+  border-bottom: 1px solid #3a3a3a;
+}
+.v2-ruler-header {
+  width: 300px;
+  min-width: 300px;
+  background: #2a2a2a;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  font-size: 11px;
+  color: #999;
+  border-right: 1px solid #3a3a3a;
+}
+.v2-ruler-lane {
+  flex: 1;
+  background: #1e1e1e;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Track scrollable area */
+.v2-track-scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Single track row */
+.v2-track-row {
+  display: flex;
+  height: 80px;
+  border-bottom: 1px solid #333;
+  position: relative;
+}
+.v2-track-row:hover { background: rgba(255,255,255,0.02); }
+.v2-track-row--active { background: rgba(0,212,255,0.18) !important; }
+
+/* Track header (left column) */
+.v2-track-header {
+  width: 300px;
+  min-width: 300px;
+  background: #2a2a2a;
+  border-right: 1px solid #3a3a3a;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  gap: 8px;
+}
+
+.v2-track-header__name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #e0e0e0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.v2-track-header__controls {
+  display: flex;
+  gap: 4px;
+}
+
+.v2-track-ctrl-btn {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #333;
+  border: 1px solid #555;
+  border-radius: 3px;
+  color: #ccc;
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 700;
+}
+.v2-track-ctrl-btn:hover { background: #444; }
+.v2-track-ctrl-btn--muted { background: #ff4444; color: #fff; border-color: #ff4444; }
+.v2-track-ctrl-btn--solo  { background: #ffaa00; color: #000; border-color: #ffaa00; }
+
+/* Track lane (right column - waveforms/clips) */
+.v2-track-lane {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Footer status bar ──────────────────────────────── */
+.v2-footer {
+  grid-area: footer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  background: #222;
+  border-top: 1px solid #3a3a3a;
+  font-size: 11px;
+  color: #777;
+}
+
+.v2-footer__left,
+.v2-footer__right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ── Empty state ────────────────────────────────────── */
+.v2-empty-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  gap: 12px;
+  padding: 40px;
+}
+.v2-empty-state__icon {
+  font-size: 48px;
+  opacity: 0.3;
+}
+.v2-empty-state__text {
+  font-size: 14px;
+}
+
+/* ── Scrollbar styling ──────────────────────────────── */
+.v2-track-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+.v2-track-scroll::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+.v2-track-scroll::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 4px;
+}
+.v2-track-scroll::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
