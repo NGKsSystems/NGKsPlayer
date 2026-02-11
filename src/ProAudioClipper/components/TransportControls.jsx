@@ -196,68 +196,42 @@ const TransportControls = ({
           <span className={`shortcuts-toggle-arrow ${shortcutsOpen ? 'open' : ''}`}>▶</span>
           <span>Keyboard Shortcuts</span>
         </button>
-        {shortcutsOpen && <div className="shortcuts-rows-container" style={{ 
-          display: 'flex', 
-          flexDirection: 'column',
-          gap: '6px', 
-          width: '100%'
+        {shortcutsOpen && <div className="shortcuts-grid" style={{ 
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: '4px 24px', 
+          width: '100%',
+          fontSize: '12px',
+          color: '#aaa'
         }}>
           {/* Row 1 */}
-          <div className="shortcuts-row" style={{ 
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: '16px',
-            justifyContent: 'flex-start'
-          }}>
-            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>🎵 <strong>Playback:</strong> Space: Play/Pause | S: Stop</span>
-            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>⏭️ <strong>Navigation:</strong> Shift+←/→: Skip 10s | ←/→: Fine Seek</span>
-            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>✂️ <strong>Editing:</strong> R: Razor Tool | Delete: Remove</span>
-            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>📋 <strong>Clipboard:</strong> X: Cut | C: Copy | V: Paste</span>
-            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>🔍 <strong>View:</strong> Ctrl+Plus/Minus: Zoom | Ctrl+0: Fit All</span>
-          </div>
-          
+          <span>🎵 <strong>Playback:</strong> Space: Play/Pause | S: Stop</span>
+          <span>🎛️ <strong>Mixing:</strong> Track Headers: Solo/Mute/Volume/Pan</span>
+          <span>⚡ <strong>Quick Actions:</strong> Double-Click: Zoom to Fit</span>
           {/* Row 2 */}
-          <div className="shortcuts-row" style={{ 
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: '16px',
-            justifyContent: 'flex-start'
-          }}>
-            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>🎯 <strong>Precision:</strong> Hold Shift: Snap to Grid</span>
-            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>↩️ <strong>History:</strong> Ctrl+Z: Undo | Ctrl+Y: Redo</span>
-            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>🎛️ <strong>Mixing:</strong> Track Headers: Solo/Mute/Volume/Pan</span>
-            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>🎚️ <strong>Track Speed:</strong> Drag slider 0.1x-4x | Click presets</span>
-            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>🔄 <strong>Reverse:</strong> Click reverse button per track</span>
-          </div>
-          
+          <span>⏭️ <strong>Navigation:</strong> Shift+←/→: Skip 10s | ←/→: Fine Seek</span>
+          <span>🎚️ <strong>Track Speed:</strong> Drag slider 0.1x-4x | Click presets</span>
+          <span>🎪 <strong>Loop Regions:</strong> Shift+Drag: Create Loop</span>
           {/* Row 3 */}
-          <div className="shortcuts-row" style={{ 
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: '16px',
-            justifyContent: 'flex-start'
-          }}>
-            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>📥 <strong>Import:</strong> Multi-select files | Drag & Drop</span>
-            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>🚀 <strong>Selection:</strong> Ctrl+Click: Multi-Select</span>
-            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>📍 <strong>Markers:</strong> Alt+Click Timeline: Add Marker</span>
-            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>🎨 <strong>Workflow:</strong> Right-click clips for context menu</span>
-            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>⚡ <strong>Quick Actions:</strong> Double-Click: Zoom to Fit</span>
-          </div>
-          
+          <span>✂️ <strong>Editing:</strong> R: Razor Tool | Delete: Remove</span>
+          <span>🔄 <strong>Reverse:</strong> Click reverse button per track</span>
+          <span>🔧 <strong>Tools:</strong> Click tool buttons or use hotkeys</span>
           {/* Row 4 */}
-          <div className="shortcuts-row" style={{ 
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: '16px',
-            justifyContent: 'flex-start'
-          }}>
-            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>🎪 <strong>Loop Regions:</strong> Shift+Drag: Create Loop</span>
-            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>🔧 <strong>Tools:</strong> Click tool buttons or use hotkeys</span>
-            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>⚙️ <strong>Project:</strong> Ctrl+N: New | Ctrl+S: Save</span>
-            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>🎵 <strong>Multi-Track:</strong> Each track independent controls</span>
-            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>🎬 <strong>Timeline:</strong> Scroll to navigate | Click to seek</span>
-            <span className="shortcut" style={{ fontSize: '12px', color: '#aaa' }}>🏆 <strong>Pro Tip:</strong> Use speed/reverse for creative effects!</span>
-          </div>
+          <span>📋 <strong>Clipboard:</strong> X: Cut | C: Copy | V: Paste</span>
+          <span>📥 <strong>Import:</strong> Multi-select files | Drag & Drop</span>
+          <span>⚙️ <strong>Project:</strong> Ctrl+N: New | Ctrl+S: Save</span>
+          {/* Row 5 */}
+          <span>🔍 <strong>View:</strong> Ctrl+Plus/Minus: Zoom | Ctrl+0: Fit All</span>
+          <span>🚀 <strong>Selection:</strong> Ctrl+Click: Multi-Select</span>
+          <span>🎵 <strong>Multi-Track:</strong> Each track independent controls</span>
+          {/* Row 6 */}
+          <span>🎯 <strong>Precision:</strong> Hold Shift: Snap to Grid</span>
+          <span>📍 <strong>Markers:</strong> Alt+Click Timeline: Add Marker</span>
+          <span>🎬 <strong>Timeline:</strong> Scroll to navigate | Click to seek</span>
+          {/* Row 7 */}
+          <span>↩️ <strong>History:</strong> Ctrl+Z: Undo | Ctrl+Y: Redo</span>
+          <span>🎨 <strong>Workflow:</strong> Right-click clips for context menu</span>
+          <span>🏆 <strong>Pro Tip:</strong> Use speed/reverse for creative effects!</span>
         </div>}
       </div>
     </div>
