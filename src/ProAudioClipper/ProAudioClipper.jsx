@@ -1077,7 +1077,17 @@ const ProAudioClipper = ({ onNavigate }) => {
             onAddTrack={trackController.handleAddTrackWithFile}
             onOpenEffects={handleOpenEffectsPanel}
             showEffectsPanel={showEffectsPanel}
-            onToggleEffects={() => { if (showEffectsPanel) { handleCloseEffectsPanel(); } else if (trackManager.activeTrackId) { handleOpenEffectsPanel(trackManager.activeTrackId); } }}
+            onToggleEffects={() => { 
+              if (showEffectsPanel) { 
+                handleCloseEffectsPanel(); 
+              } else { 
+                // Open effects for active track, or first track if none active
+                const targetTrackId = trackManager.activeTrackId || trackManager.tracks[0]?.id;
+                if (targetTrackId) {
+                  handleOpenEffectsPanel(targetTrackId);
+                }
+              } 
+            }}
             onViewportChange={handleViewportChange}
             onTrackContextMenu={handleTrackContextMenu}
             onUndo={undo}

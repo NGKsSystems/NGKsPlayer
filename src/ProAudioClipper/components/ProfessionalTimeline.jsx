@@ -156,16 +156,21 @@ const ProfessionalTimeline = React.forwardRef(({
         {/* FX Toggle */}
         <button
           onClick={onToggleEffects}
-          title={showEffectsPanel ? 'Hide Effects Panel' : 'Show Effects Panel'}
+          disabled={!tracks || tracks.length === 0}
+          title={
+            !tracks || tracks.length === 0 ? 'No tracks available' :
+            showEffectsPanel ? 'Hide Effects Panel' : 'Show Effects Panel'
+          }
           style={{
             padding: '2px 6px',
             background: showEffectsPanel ? '#ff6b35' : 'rgba(255,255,255,0.08)',
-            color: showEffectsPanel ? '#fff' : '#999',
+            color: showEffectsPanel ? '#fff' : (!tracks || tracks.length === 0 ? '#555' : '#999'),
             border: 'none',
             borderRadius: '3px',
             fontSize: '10px',
-            cursor: 'pointer',
-            fontWeight: showEffectsPanel ? '600' : '400'
+            cursor: (!tracks || tracks.length === 0) ? 'not-allowed' : 'pointer',
+            fontWeight: showEffectsPanel ? '600' : '400',
+            opacity: (!tracks || tracks.length === 0) ? 0.4 : 1
           }}
         >
           FX
