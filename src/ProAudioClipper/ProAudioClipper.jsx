@@ -17,7 +17,7 @@ import ProfessionalTimeline from './components/ProfessionalTimeline';
 import TransportControls from './components/TransportControls';
 import ExportPanel from './components/ExportPanel';
 import ProjectManager from './components/ProjectManager';
-// TrackEffectsPanel is now rendered inside ProfessionalTimeline
+import TrackEffectsPanel from './components/TrackEffectsPanel';
 import AudioAnalysisDashboard from './components/analysis/AudioAnalysisDashboard';
 import StemExtractor from './Components/StemExtractor';
 import WhisperTranscriber from './Components/WhisperTranscriber';
@@ -41,7 +41,7 @@ import { useUndoRedoController } from './hooks/useUndoRedoController';
 import { useTransportController } from './hooks/useTransportController';
 import { useTrackController } from './hooks/useTrackController';
 // import './ProAudioClipper.css';
-// TrackEffectsPanel.css is now imported inside ProfessionalTimeline
+import './components/TrackEffectsPanel.css';
 
 /**
  * Generate SRT subtitle file from Whisper transcription
@@ -105,6 +105,8 @@ const ProAudioClipper = ({ onNavigate }) => {
   const [showExportPanel, setShowExportPanel] = useState(false);
   const [showProjectManager, setShowProjectManager] = useState(false);
   const [currentProject, setCurrentProject] = useState(null);
+  const [showEffectsPanel, setShowEffectsPanel] = useState(false);
+  const [effectsPanelTrackId, setEffectsPanelTrackId] = useState(null);
   const [showAnalysisDashboard, setShowAnalysisDashboard] = useState(false);
   const [showAutomationDashboard, setShowAutomationDashboard] = useState(false);
   const [showRoutingDashboard, setShowRoutingDashboard] = useState(false);
@@ -418,9 +420,15 @@ const ProAudioClipper = ({ onNavigate }) => {
     fileInputRef
   });
 
-  // Effects panel management (passthrough — panel now lives in ProfessionalTimeline)
+  // Effects panel management
   const handleOpenEffectsPanel = useCallback((trackId) => {
-    // ProfessionalTimeline manages its own effects sidebar internally
+    setEffectsPanelTrackId(trackId);
+    setShowEffectsPanel(true);
+  }, []);
+
+  const handleCloseEffectsPanel = useCallback(() => {
+    setShowEffectsPanel(false);
+    setEffectsPanelTrackId(null);
   }, []);
 
   // Selection handling for multi-track timeline
@@ -924,6 +932,85 @@ const ProAudioClipper = ({ onNavigate }) => {
         }}
       >
 
+        {/* Left Panel - Effects Sidebar (collapsible) */}
+        <div
+          className="effects-sidebar"
+          style={{
+            width: showEffectsPanel ? '320px' : '28px',
+            minWidth: showEffectsPanel ? '320px' : '28px',
+            display: 'flex',
+            flexDirection: 'column',
+            borderRight: '1px solid #404040',
+            background: '#1e1e1e',
+            overflow: 'hidden',
+            transition: 'width 0.2s ease, min-width 0.2s ease',
+            position: 'relative'
+          }}
+        >
+          {showEffectsPanel ? (
+            <>
+              {trackManager.tracks.length > 0 ? (
+                <TrackEffectsPanel
+                  trackId={effectsPanelTrackId || trackManager.activeTrackId || trackManager.tracks[0]?.id}
+                  trackName={
+                    trackManager.tracks.find(t => t.id === (effectsPanelTrackId || trackManager.activeTrackId || trackManager.tracks[0]?.id))?.name || 
+                    'Track 1'
+                  }
+                  effectsEngine={multiTrackEngine.effectsEngine}
+                  onClose={() => setShowEffectsPanel(false)}
+                />
+              ) : (
+                <div style={{
+                  padding: '20px',
+                  textAlign: 'center',
+                  color: '#888',
+                  fontSize: '14px'
+                }}>
+                  <h3 style={{ color: '#00d4ff', marginBottom: '16px' }}>Effects Panel</h3>
+                  <p style={{ color: '#ff6b35', marginTop: '12px' }}>No tracks yet.<br/>Add an audio track to start!</p>
+                </div>
+              )}
+            </>
+          ) : (
+            <button
+              onClick={() => setShowEffectsPanel(true)}
+              title="Open Effects Panel"
+              style={{
+                background: 'linear-gradient(180deg, #2a2a2a 0%, #1e1e1e 100%)',
+                border: 'none',
+                borderRight: '2px solid #ff6b35',
+                color: '#ff6b35',
+                cursor: 'pointer',
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0',
+                padding: '0'
+              }}
+            >
+              <span style={{
+                writingMode: 'vertical-lr',
+                textOrientation: 'mixed',
+                fontSize: '13px',
+                fontWeight: '700',
+                letterSpacing: '3px',
+                textTransform: 'uppercase'
+              }}>
+                EFFECTS
+              </span>
+              <span style={{
+                fontSize: '16px',
+                marginTop: '8px'
+              }}>
+                ▶
+              </span>
+            </button>
+          )}
+        </div>
+
         {/* Center Panel - Timeline */}
         <div 
           className="center-panel"
@@ -1045,7 +1132,6 @@ const ProAudioClipper = ({ onNavigate }) => {
             onTrackMoveDown={trackManager.moveTrackDown}
             onAddTrack={trackController.handleAddTrackWithFile}
             onOpenEffects={handleOpenEffectsPanel}
-            effectsEngine={multiTrackEngine.effectsEngine}
             onViewportChange={handleViewportChange}
             onTrackContextMenu={handleTrackContextMenu}
             onUndo={undo}
