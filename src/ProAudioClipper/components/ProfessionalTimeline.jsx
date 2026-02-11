@@ -159,8 +159,8 @@ const ProfessionalTimeline = React.forwardRef(({
             color: 'white',
             border: 'none',
             borderRadius: '4px',
-            padding: '5px 12px',
-            fontSize: '12px',
+            padding: '6px 14px',
+            fontSize: '14px',
             fontWeight: '600',
             cursor: 'pointer',
             whiteSpace: 'nowrap'
@@ -185,12 +185,12 @@ const ProfessionalTimeline = React.forwardRef(({
               onClick={() => onToolChange && onToolChange('selection')}
               title="Selection Tool (V)"
               style={{
-                padding: '5px 12px',
+                padding: '6px 14px',
                 background: selectedTool === 'selection' ? '#00d4ff' : 'rgba(255,255,255,0.1)',
                 color: selectedTool === 'selection' ? '#000' : '#ccc',
                 border: selectedTool === 'selection' ? 'none' : '1px solid rgba(255,255,255,0.15)',
                 borderRadius: '4px',
-                fontSize: '12px',
+                fontSize: '14px',
                 cursor: 'pointer',
                 fontWeight: selectedTool === 'selection' ? '700' : '500'
               }}
@@ -201,12 +201,12 @@ const ProfessionalTimeline = React.forwardRef(({
               onClick={() => onToolChange && onToolChange('razor')}
               title="Razor Tool (C)"
               style={{
-                padding: '5px 12px',
+                padding: '6px 14px',
                 background: selectedTool === 'razor' ? '#00d4ff' : 'rgba(255,255,255,0.1)',
                 color: selectedTool === 'razor' ? '#000' : '#ccc',
                 border: selectedTool === 'razor' ? 'none' : '1px solid rgba(255,255,255,0.15)',
                 borderRadius: '4px',
-                fontSize: '12px',
+                fontSize: '14px',
                 cursor: 'pointer',
                 fontWeight: selectedTool === 'razor' ? '700' : '500'
               }}
@@ -223,8 +223,8 @@ const ProfessionalTimeline = React.forwardRef(({
               onClick={() => onZoomChange && onZoomChange(Math.max(0.1, zoomLevel / 1.5))}
               title="Zoom Out (−)"
               style={{
-                width: '26px',
-                height: '26px',
+                width: '28px',
+                height: '28px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -232,21 +232,21 @@ const ProfessionalTimeline = React.forwardRef(({
                 color: '#ccc',
                 border: '1px solid rgba(255,255,255,0.15)',
                 borderRadius: '4px',
-                fontSize: '14px',
+                fontSize: '16px',
                 cursor: 'pointer'
               }}
             >
               −
             </button>
-            <span style={{ fontSize: '12px', color: '#aaa', minWidth: '36px', textAlign: 'center', fontWeight: '500' }}>
+            <span style={{ fontSize: '14px', color: '#aaa', minWidth: '40px', textAlign: 'center', fontWeight: '500' }}>
               {Math.round(zoomLevel * 100)}%
             </span>
             <button
               onClick={() => onZoomChange && onZoomChange(Math.min(20, zoomLevel * 1.5))}
               title="Zoom In (+)"
               style={{
-                width: '26px',
-                height: '26px',
+                width: '28px',
+                height: '28px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -254,7 +254,7 @@ const ProfessionalTimeline = React.forwardRef(({
                 color: '#ccc',
                 border: '1px solid rgba(255,255,255,0.15)',
                 borderRadius: '4px',
-                fontSize: '14px',
+                fontSize: '16px',
                 cursor: 'pointer'
               }}
             >
@@ -266,21 +266,21 @@ const ProfessionalTimeline = React.forwardRef(({
 
           {/* Precision */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#aaa', cursor: 'pointer', fontSize: '12px' }}>
-              <input type="checkbox" defaultChecked style={{ accentColor: '#00d4ff', width: '14px', height: '14px' }} />
+            <label style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#aaa', cursor: 'pointer', fontSize: '14px' }}>
+              <input type="checkbox" defaultChecked style={{ accentColor: '#00d4ff', width: '16px', height: '16px' }} />
               Snap
             </label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#aaa', cursor: 'pointer', fontSize: '12px' }}>
-              <input type="checkbox" style={{ accentColor: '#00d4ff', width: '14px', height: '14px' }} />
+            <label style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#aaa', cursor: 'pointer', fontSize: '14px' }}>
+              <input type="checkbox" style={{ accentColor: '#00d4ff', width: '16px', height: '16px' }} />
               Grid
             </label>
             <select defaultValue="0.1" style={{
-              padding: '4px 6px',
+              padding: '5px 8px',
               background: 'rgba(255,255,255,0.1)',
               border: '1px solid rgba(255,255,255,0.15)',
               borderRadius: '4px',
               color: '#ccc',
-              fontSize: '12px'
+              fontSize: '14px'
             }}>
               <option value="0.01">10ms</option>
               <option value="0.1">100ms</option>
