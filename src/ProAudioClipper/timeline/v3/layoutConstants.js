@@ -8,7 +8,7 @@
  */
 
 /** Fixed width of the track-header column (px) */
-export const HEADER_WIDTH = 300;
+export const HEADER_WIDTH = 375;
 
 /** Height of each track row (px) */
 export const TRACK_HEIGHT = 80;
