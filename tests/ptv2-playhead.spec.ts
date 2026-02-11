@@ -12,13 +12,16 @@
 
 import { test, expect } from '@playwright/test';
 
-// Skipped: V3 is now the active timeline — V2 is not mounted
-test.describe.skip('ProfessionalTimeline V2 — Playhead', () => {
+test.describe('ProfessionalTimeline V2 — Playhead', () => {
 
   test.beforeEach(async ({ page }) => {
     // ProAudioClipper lives at /#/clipper (hash router)
     await page.goto('/#/clipper');
     await page.waitForLoadState('domcontentloaded');
+    // Switch to V2 via the timeline version selector
+    const selector = page.locator('[data-testid="timeline-version-select"]');
+    await expect(selector).toBeAttached({ timeout: 10_000 });
+    await selector.selectOption('v2');
   });
 
   test('V2 timeline is mounted', async ({ page }) => {

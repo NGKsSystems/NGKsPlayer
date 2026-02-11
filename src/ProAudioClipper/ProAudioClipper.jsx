@@ -118,6 +118,7 @@ const ProAudioClipper = ({ onNavigate }) => {
   const [showCloudInterface, setShowCloudInterface] = useState(false);
   const [showHelpInterface, setShowHelpInterface] = useState(false);
   const [showFXController, setShowFXController] = useState(false);
+  const [timelineVersion, setTimelineVersion] = useState('v3'); // 'v1' | 'v2' | 'v3'
   const [showStemExtractor, setShowStemExtractor] = useState(false);
   const [showWhisperTranscriber, setShowWhisperTranscriber] = useState(false);
   const [showKaraokeDisplay, setShowKaraokeDisplay] = useState(false);
@@ -1104,10 +1105,30 @@ const ProAudioClipper = ({ onNavigate }) => {
               flexDirection: 'column'
             }}
           >
-            {/* V3 timeline toggle — flip USE_V3_TIMELINE / USE_V2_TIMELINE to switch */}
+            {/* Timeline version selector */}
+            <div style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'flex-end',
+              padding: '2px 8px', background: 'rgba(0,0,0,0.25)',
+              borderBottom: '1px solid rgba(255,255,255,0.06)', gap: '6px'
+            }}>
+              <span style={{ fontSize: '11px', color: '#888' }}>Timeline</span>
+              <select
+                data-testid="timeline-version-select"
+                value={timelineVersion}
+                onChange={e => setTimelineVersion(e.target.value)}
+                style={{
+                  padding: '2px 6px', fontSize: '11px', fontWeight: 600,
+                  background: 'rgba(255,255,255,0.08)', color: '#00d4ff',
+                  border: '1px solid rgba(0,212,255,0.3)', borderRadius: '3px',
+                  cursor: 'pointer'
+                }}
+              >
+                <option value="v3">V3 (Playhead-First)</option>
+                <option value="v2">V2</option>
+                <option value="v1">V1 (Classic)</option>
+              </select>
+            </div>
             {(() => {
-              const USE_V3_TIMELINE = true;
-              const USE_V2_TIMELINE = true;
               const timelineProps = {
                 ref: timelineRef,
                 tracks: trackManager.tracks,
@@ -1148,9 +1169,9 @@ const ProAudioClipper = ({ onNavigate }) => {
                 nextRedoDescription,
                 className: 'timeline-container',
               };
-              return USE_V3_TIMELINE
+              return timelineVersion === 'v3'
                 ? <ProfessionalTimeline_v3 {...timelineProps} />
-                : USE_V2_TIMELINE
+                : timelineVersion === 'v2'
                   ? <ProfessionalTimeline_v2 {...timelineProps} />
                   : <ProfessionalTimeline {...timelineProps} />;
             })()}
