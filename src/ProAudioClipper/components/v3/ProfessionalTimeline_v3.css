@@ -164,7 +164,7 @@
 
 /* Left: fixed track headers */
 .ptv3-left {
-  width: 220px;
+  width: 350px;
   flex-shrink: 0;
   align-self: stretch;
   background: #2a2a2a;
