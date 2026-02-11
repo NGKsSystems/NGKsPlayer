@@ -1,13 +1,15 @@
 /* ───────────────────────────────────────────────────────
    TrackHeaderCell – V2 left column for a single track
-   Shows name + mute/solo/volume mini-controls.
+   Shows name + play/mute/solo mini-controls.
    ─────────────────────────────────────────────────────── */
 import React from 'react';
 
 export default function TrackHeaderCell({
   track,
   isActive,
+  isTrackPlaying,
   onSelect,
+  onPlayTrack,
   onToggleMute,
   onToggleSolo,
 }) {
@@ -19,6 +21,13 @@ export default function TrackHeaderCell({
     >
       <span className="v2-track-header__name">{track.name || `Track ${track.id}`}</span>
       <div className="v2-track-header__controls">
+        <button
+          className={`v2-track-ctrl-btn v2-track-ctrl-btn--play${isTrackPlaying ? ' v2-track-ctrl-btn--playing' : ''}`}
+          onClick={(e) => { e.stopPropagation(); onPlayTrack?.(track.id); }}
+          title={isTrackPlaying ? 'Stop this track' : 'Play this track'}
+        >
+          {isTrackPlaying ? '⏹' : '▶'}
+        </button>
         <button
           className={`v2-track-ctrl-btn${track.muted ? ' v2-track-ctrl-btn--muted' : ''}`}
           onClick={(e) => { e.stopPropagation(); onToggleMute?.(track.id); }}

@@ -23,6 +23,8 @@ export default function TimelineShell({
   onToolChange,
   onAddTrack,
   onSelectTrack,
+  onPlayTrack,
+  soloPlayingTrackId,
   onToggleMute,
   onToggleSolo,
   onTimelineClick,
@@ -129,7 +131,9 @@ export default function TimelineShell({
                     key={track.id}
                     track={track}
                     isActive={track.id === activeTrackId}
+                    isTrackPlaying={soloPlayingTrackId === track.id}
                     onSelect={onSelectTrack}
+                    onPlayTrack={onPlayTrack}
                     onToggleMute={onToggleMute}
                     onToggleSolo={onToggleSolo}
                   />

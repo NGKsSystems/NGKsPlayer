@@ -29,8 +29,7 @@ export default function ProAudioClipperV2({ onNavigate }) {
 
   // ── Timeline state ────────────────────────────────────
   const [tracks, setTracks]             = useState([]);
-  const [activeTrackId, setActiveTrackId] = useState(null);
-  const [zoom, setZoom]                 = useState(DEFAULT_ZOOM);
+  const [activeTrackId, setActiveTrackId] = useState(null);  const [soloPlayingTrackId, setSoloPlayingTrackId] = useState(null);  const [zoom, setZoom]                 = useState(DEFAULT_ZOOM);
   const [viewportStart]                 = useState(0);
   const [selectedTool, setSelectedTool] = useState('selection');
 
@@ -44,6 +43,7 @@ export default function ProAudioClipperV2({ onNavigate }) {
     onPlayEnd: () => {
       setIsPlaying(false);
       setCurrentTime(0);
+      setSoloPlayingTrackId(null);
     },
   });
 
@@ -65,6 +65,8 @@ export default function ProAudioClipperV2({ onNavigate }) {
       engine.pausePlayback();
       setIsPlaying(false);
     } else {
+      // Clear solo-play mode when using main transport
+      setSoloPlayingTrackId(null);
       engine.playTracks(tracksRef.current, currentTime, playbackRate);
       setIsPlaying(true);
     }
@@ -74,6 +76,7 @@ export default function ProAudioClipperV2({ onNavigate }) {
     engine.stopPlayback();
     setIsPlaying(false);
     setCurrentTime(0);
+    setSoloPlayingTrackId(null);
   }, [engine]);
 
   const handleSkipBack = useCallback(() => {
@@ -139,6 +142,26 @@ export default function ProAudioClipperV2({ onNavigate }) {
     }
     e.target.value = ''; // reset so same file can be re-selected
   }, []);
+
+  // Play/stop a single track in isolation
+  const handlePlayTrack = useCallback((trackId) => {
+    if (soloPlayingTrackId === trackId) {
+      // Already playing this track solo → stop it
+      engine.stopPlayback();
+      setIsPlaying(false);
+      setCurrentTime(0);
+      setSoloPlayingTrackId(null);
+    } else {
+      // Stop any current playback, then play just this track
+      engine.stopPlayback();
+      const track = tracksRef.current.find((t) => t.id === trackId);
+      if (track) {
+        engine.playTracks([track], 0, playbackRate);
+        setIsPlaying(true);
+        setSoloPlayingTrackId(trackId);
+      }
+    }
+  }, [soloPlayingTrackId, engine, playbackRate]);
 
   const handleSelectTrack = useCallback((id) => setActiveTrackId(id), []);
 
@@ -216,6 +239,8 @@ export default function ProAudioClipperV2({ onNavigate }) {
         onToolChange={setSelectedTool}
         onAddTrack={handleAddTrack}
         onSelectTrack={handleSelectTrack}
+        onPlayTrack={handlePlayTrack}
+        soloPlayingTrackId={soloPlayingTrackId}
         onToggleMute={handleToggleMute}
         onToggleSolo={handleToggleSolo}
       />
