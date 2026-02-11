@@ -11,12 +11,14 @@
  *
  * Owner: NGKsSystems
  */
-import React, { useRef } from 'react';
+import React, { useRef, useState, useCallback } from 'react';
 import { timeToPixels, snapTime, calculateTimelineWidth } from '../timeline/timelineMath.js';
 import TrackHeader from './TrackHeader';
 import SimpleWaveform from './SimpleWaveform';
 import TimelineRuler from './TimelineRuler';
+import TrackEffectsPanel from './TrackEffectsPanel';
 import './MultiTrackTimeline.css';
+import './TrackEffectsPanel.css';
 import { useProfessionalTimelineController } from '../hooks/useProfessionalTimelineController';
 
 /**
@@ -51,6 +53,7 @@ const ProfessionalTimeline = React.forwardRef(({
   onTrackMoveUp,
   onTrackMoveDown,
   onOpenEffects,
+  effectsEngine,
   onViewportChange, // Add viewport change handler
   onTrackContextMenu, // Add context menu handler
   onToolChange,
@@ -77,6 +80,21 @@ const ProfessionalTimeline = React.forwardRef(({
   ...props
 }, ref) => {
   const timelineRef = useRef(null);
+
+  // Effects panel state
+  const [showEffectsPanel, setShowEffectsPanel] = useState(false);
+  const [effectsPanelTrackId, setEffectsPanelTrackId] = useState(null);
+
+  const handleOpenEffects = useCallback((trackId) => {
+    setEffectsPanelTrackId(trackId);
+    setShowEffectsPanel(true);
+    if (onOpenEffects) onOpenEffects(trackId);
+  }, [onOpenEffects]);
+
+  const handleCloseEffects = useCallback(() => {
+    setShowEffectsPanel(false);
+    setEffectsPanelTrackId(null);
+  }, []);
   
   // Constants
   const PIXELS_PER_SECOND = 50 * zoomLevel;
@@ -371,6 +389,85 @@ const ProfessionalTimeline = React.forwardRef(({
         display: 'flex',
         overflow: 'hidden'
       }}>
+        {/* Effects Sidebar (collapsible) */}
+        <div
+          className="effects-sidebar"
+          style={{
+            width: showEffectsPanel ? '320px' : '28px',
+            minWidth: showEffectsPanel ? '320px' : '28px',
+            display: 'flex',
+            flexDirection: 'column',
+            borderRight: '1px solid #404040',
+            background: '#1e1e1e',
+            overflow: 'hidden',
+            transition: 'width 0.2s ease, min-width 0.2s ease',
+            position: 'relative'
+          }}
+        >
+          {showEffectsPanel ? (
+            <>
+              {tracks.length > 0 && effectsEngine ? (
+                <TrackEffectsPanel
+                  trackId={effectsPanelTrackId || activeTrackId || tracks[0]?.id}
+                  trackName={
+                    tracks.find(t => t.id === (effectsPanelTrackId || activeTrackId || tracks[0]?.id))?.name ||
+                    'Track 1'
+                  }
+                  effectsEngine={effectsEngine}
+                  onClose={handleCloseEffects}
+                />
+              ) : (
+                <div style={{
+                  padding: '20px',
+                  textAlign: 'center',
+                  color: '#888',
+                  fontSize: '14px'
+                }}>
+                  <h3 style={{ color: '#00d4ff', marginBottom: '16px' }}>Effects Panel</h3>
+                  <p style={{ color: '#ff6b35', marginTop: '12px' }}>No tracks yet.<br/>Add an audio track to start!</p>
+                </div>
+              )}
+            </>
+          ) : (
+            <button
+              onClick={() => setShowEffectsPanel(true)}
+              title="Open Effects Panel"
+              style={{
+                background: 'linear-gradient(180deg, #2a2a2a 0%, #1e1e1e 100%)',
+                border: 'none',
+                borderRight: '2px solid #ff6b35',
+                color: '#ff6b35',
+                cursor: 'pointer',
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0',
+                padding: '0'
+              }}
+            >
+              <span style={{
+                writingMode: 'vertical-lr',
+                textOrientation: 'mixed',
+                fontSize: '13px',
+                fontWeight: '700',
+                letterSpacing: '3px',
+                textTransform: 'uppercase'
+              }}>
+                EFFECTS
+              </span>
+              <span style={{
+                fontSize: '16px',
+                marginTop: '8px'
+              }}>
+                ▶
+              </span>
+            </button>
+          )}
+        </div>
+
         {/* Track Headers */}
         <div style={{
           width: HEADER_WIDTH,
@@ -428,7 +525,7 @@ const ProfessionalTimeline = React.forwardRef(({
                     onReverseToggle={onTrackReverseToggle}
                     onNameChange={onTrackNameChange}
                     onDelete={onTrackDelete}
-                    onOpenEffects={onOpenEffects}
+                    onOpenEffects={handleOpenEffects}
                     onMoveUp={() => onTrackMoveUp(trackIndex)}
                     onMoveDown={() => onTrackMoveDown(trackIndex)}
                     onContextMenu={(e) => onTrackContextMenu && onTrackContextMenu(e, track.id)}
