@@ -12,7 +12,7 @@
  *
  * Owner: NGKsSystems
  */
-import React, { useRef, useMemo, useCallback } from 'react';
+import React, { useRef, useMemo, useCallback, useState } from 'react';
 import {
   timeToPixels,
   calculateTimelineWidth,
@@ -87,16 +87,21 @@ const Ruler_v2 = React.memo(({ duration, zoomLevel, onTimeChange }) => {
 });
 Ruler_v2.displayName = 'Ruler_v2';
 
-/** Single playhead overlay — ONE element, ONE coordinate space
- *  Mirrors NGKs Zohan ProfessionalVideoTimeline pattern:
- *  position:absolute + left:px, sibling of ruler & tracks inside scroll content.
+/** Single playhead overlay — viewport overlay approach.
+ *  Rendered as SIBLING of .ptv2-scroll (not inside scroll content).
+ *  Computes viewportX = timeToPixels(currentTime) - scrollLeft
+ *  so the playhead stays anchored to the ruler in the viewport.
  */
-const Playhead_v2 = React.memo(({ currentTime, zoomLevel }) => {
-  const px = timeToPixels(currentTime || 0, BASE_PPS, zoomLevel);
+const Playhead_v2 = React.memo(({ currentTime, zoomLevel, scrollLeft }) => {
+  const absolutePx = timeToPixels(currentTime || 0, BASE_PPS, zoomLevel);
+  const viewportX = absolutePx - (scrollLeft || 0);
+  // Hide when off-screen to avoid visual artifacts
+  const visible = viewportX >= -20;
   return (
     <div
       className="ptv2-playhead"
-      style={{ left: px }}
+      data-testid="ptv2-playhead"
+      style={{ left: viewportX, visibility: visible ? 'visible' : 'hidden' }}
       aria-hidden="true"
     >
       <div className="ptv2-playhead-line" />
@@ -165,6 +170,7 @@ const ProfessionalTimeline_v2 = React.forwardRef(
     ref,
   ) => {
     const scrollRef = useRef(null);
+    const [scrollLeft, setScrollLeft] = useState(0);
     const PIXELS_PER_SECOND = pps(zoomLevel);
 
     /* controller hook */
@@ -221,8 +227,14 @@ const ProfessionalTimeline_v2 = React.forwardRef(
     );
 
     /* ─── render ──────────────────────────────────────── */
+    /* Wrap controller's handleScroll to also track scrollLeft for viewport overlay */
+    const handleScrollWithTracking = useCallback((e) => {
+      handleScroll(e);
+      setScrollLeft(e.target.scrollLeft);
+    }, [handleScroll]);
+
     return (
-      <div ref={ref} className="ptv2-root">
+      <div ref={ref} className="ptv2-root" data-testid="ptv2-mounted-flag">
         {/* ── Toolbar ───────────────────────────────────── */}
         <div className="ptv2-toolbar">
           <span className="ptv2-toolbar__title">
@@ -359,30 +371,22 @@ const ProfessionalTimeline_v2 = React.forwardRef(
             </div>
           </div>
 
-          {/* RIGHT COLUMN — scrollable ruler + tracks + playhead */}
-          <div
-            ref={scrollRef}
-            className="ptv2-scroll"
-            onScroll={handleScroll}
-            onClick={handleTimelineClick}
-            style={{ cursor: selectedTool === 'razor' ? 'crosshair' : 'default' }}
-          >
-            {/*
-              Everything in .ptv2-canvas shares ONE coordinate space.
-              timelineWidth = duration * BASE_PPS * zoom.
-              Ruler ticks, track waveforms, AND the playhead all live
-              inside this single div so they never drift.
-            */}
-            <div className="ptv2-canvas" style={{ width: timelineWidth }}>
-              {/* 1) Ruler */}
-              <Ruler_v2
-                duration={duration}
-                zoomLevel={zoomLevel}
-                onTimeChange={onTimelineClick}
-              />
-
-              {/* 2) Playhead — one element, ruler-anchored cap + full-height line */}
-              <Playhead_v2 currentTime={currentTime} zoomLevel={zoomLevel} />
+          {/* RIGHT COLUMN — viewport wrapper + scrollable canvas + playhead overlay */}
+          <div className="ptv2-scroll-viewport">
+            <div
+              ref={scrollRef}
+              className="ptv2-scroll"
+              onScroll={handleScrollWithTracking}
+              onClick={handleTimelineClick}
+              style={{ cursor: selectedTool === 'razor' ? 'crosshair' : 'default' }}
+            >
+              <div className="ptv2-canvas" style={{ width: timelineWidth }}>
+                {/* 1) Ruler — sticky inside scroll */}
+                <Ruler_v2
+                  duration={duration}
+                  zoomLevel={zoomLevel}
+                  onTimeChange={onTimelineClick}
+                />
 
               {/* 3) Tracks */}
               {tracks.length === 0 ? (
@@ -469,7 +473,11 @@ const ProfessionalTimeline_v2 = React.forwardRef(
                   );
                 })
               )}
+              </div>
             </div>
+
+            {/* 2) Playhead overlay — SIBLING of scroll, positioned in viewport space */}
+            <Playhead_v2 currentTime={currentTime} zoomLevel={zoomLevel} scrollLeft={scrollLeft} />
           </div>
         </div>
 

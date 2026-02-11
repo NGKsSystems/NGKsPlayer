@@ -95,11 +95,19 @@
   overflow-x: hidden;
 }
 
-/* Right: scrollable timeline canvas */
-.ptv2-scroll {
-  flex: 1;
-  overflow: auto;
+/* Right: viewport wrapper (stacking context for playhead overlay) */
+.ptv2-scroll-viewport {
   position: relative;
+  flex: 1;
+  overflow: hidden;
+  min-width: 0;
+}
+
+/* Scrollable timeline canvas inside viewport wrapper */
+.ptv2-scroll {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
 }
 .ptv2-canvas {
   position: relative;
