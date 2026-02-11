@@ -149,7 +149,7 @@ const ProfessionalTimeline = React.forwardRef(({
           color: '#00d4ff',
           whiteSpace: 'nowrap'
         }}>
-          🎵 PMTT
+          🎵 Professional Multi-Track Timeline
         </span>
 
         <button
