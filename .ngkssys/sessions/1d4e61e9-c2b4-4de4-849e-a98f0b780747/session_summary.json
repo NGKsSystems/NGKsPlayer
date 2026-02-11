@@ -1,0 +1,30 @@
+{
+  "filesChanged": true,
+  "filesAdded": 10,
+  "filesModified": 14,
+  "filesDeleted": 1,
+  "changedPaths": [
+    ".vscode/vsdevcmd_x64.cmd",
+    "NGKsSystem_Log/ngks-vscode-autologger/NGKs DL Manager V2.0/a33e1be1-25e4-4226-915d-aa2c81973558",
+    "NGKsSystem_Log/ngks-vscode-autologger/NGKs DL Manager V2.0/a33e1be1-25e4-4226-915d-aa2c81973558/2026-02-11_135515037_a33e1be1-25e4-4226-915d-aa2c81973558.jsonl",
+    "NGKsSystem_Log/ngks-vscode-autologger/NGKs DL Manager V2.0/session.lock",
+    "NGKsSystem_Log/ngks-vscode-autologger/NGKs Zohan",
+    "NGKsSystem_Log/ngks-vscode-autologger/NGKs Zohan/9cadc2db-6476-45c6-831a-75f5958b1f1e",
+    "NGKsSystem_Log/ngks-vscode-autologger/NGKs Zohan/9cadc2db-6476-45c6-831a-75f5958b1f1e/2026-02-11_135514765_9cadc2db-6476-45c6-831a-75f5958b1f1e.jsonl",
+    "NGKsSystem_Log/ngks-vscode-autologger/NGKs Zohan/session.lock",
+    "NGKsSystem_Log/ngks-vscode-autologger/NGKsPlayer",
+    "NGKsSystem_Log/ngks-vscode-autologger/NGKsPlayer/1d4e61e9-c2b4-4de4-849e-a98f0b780747",
+    "NGKsSystem_Log/ngks-vscode-autologger/NGKsPlayer/1d4e61e9-c2b4-4de4-849e-a98f0b780747/2026-02-11_135514802_1d4e61e9-c2b4-4de4-849e-a98f0b780747.jsonl",
+    "NGKsSystem_Log/ngks-vscode-autologger/NGKsPlayer/session.lock",
+    "NGKsSystem_Log/ngks-vscode-autologger/ngks-vscode-autologger",
+    "NGKsSystem_Log/ngks-vscode-autologger/ngks-vscode-autologger/b2c09c87-537b-4077-aadb-a83cc827c87f",
+    "NGKsSystem_Log/ngks-vscode-autologger/ngks-vscode-autologger/b2c09c87-537b-4077-aadb-a83cc827c87f/2026-02-11_135600621_b2c09c87-537b-4077-aadb-a83cc827c87f.jsonl",
+    "NGKsSystem_Log/ngks-vscode-autologger/ngks-vscode-autologger/b2c09c87-537b-4077-aadb-a83cc827c87f/crash.jsonl",
+    "NGKsSystem_Log/ngks-vscode-autologger/ngks-vscode-autologger/f95da3eb-29b0-4993-81d0-0731722c0f6d",
+    "NGKsSystem_Log/ngks-vscode-autologger/ngks-vscode-autologger/f95da3eb-29b0-4993-81d0-0731722c0f6d/2026-02-11_135514863_f95da3eb-29b0-4993-81d0-0731722c0f6d.jsonl",
+    "NGKsSystem_Log/ngks-vscode-autologger/ngks-vscode-autologger/session.lock",
+    "src/ProAudioClipper/ProAudioClipper.jsx",
+    "src/ProAudioClipper/components/TrackHeader.css",
+    "src/ProAudioClipper/components/TrackHeader.jsx"
+  ]
+}

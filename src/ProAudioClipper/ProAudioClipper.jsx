@@ -13,8 +13,6 @@
  */
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Play, Pause, Square, SkipBack, SkipForward, Volume2, Download, Save, FolderOpen, Scissors, MousePointer, ZoomIn, ZoomOut, RotateCcw, RotateCw, X, Plus, Trash2 } from 'lucide-react';
-import ProfessionalTimeline from './components/ProfessionalTimeline';
-import ProfessionalTimeline_v2 from './components/ProfessionalTimeline_v2';
 import ProfessionalTimeline_v3 from './components/v3/ProfessionalTimeline_v3';
 import TransportControls from './components/TransportControls';
 import ExportPanel from './components/ExportPanel';
@@ -118,7 +116,7 @@ const ProAudioClipper = ({ onNavigate, forceVersion }) => {
   const [showCloudInterface, setShowCloudInterface] = useState(false);
   const [showHelpInterface, setShowHelpInterface] = useState(false);
   const [showFXController, setShowFXController] = useState(false);
-  const [timelineVersion, setTimelineVersion] = useState(forceVersion || 'v3'); // 'v1' | 'v2' | 'v3'
+  // Timeline is now V3-only (forceVersion parameter kept for compatibility)
   const [showStemExtractor, setShowStemExtractor] = useState(false);
   const [showWhisperTranscriber, setShowWhisperTranscriber] = useState(false);
   const [showKaraokeDisplay, setShowKaraokeDisplay] = useState(false);
@@ -1112,21 +1110,13 @@ const ProAudioClipper = ({ onNavigate, forceVersion }) => {
               borderBottom: '1px solid rgba(255,255,255,0.06)', gap: '6px'
             }}>
               <span style={{ fontSize: '11px', color: '#888' }}>Timeline</span>
-              <select
-                data-testid="timeline-version-select"
-                value={timelineVersion}
-                onChange={e => setTimelineVersion(e.target.value)}
-                style={{
-                  padding: '2px 6px', fontSize: '11px', fontWeight: 600,
-                  background: 'rgba(255,255,255,0.08)', color: '#00d4ff',
-                  border: '1px solid rgba(0,212,255,0.3)', borderRadius: '3px',
-                  cursor: 'pointer'
-                }}
-              >
-                <option value="v3">V3 (Playhead-First)</option>
-                <option value="v2">V2</option>
-                <option value="v1">V1 (Classic)</option>
-              </select>
+              <span style={{
+                padding: '2px 6px', fontSize: '11px', fontWeight: 600,
+                background: 'rgba(255,255,255,0.08)', color: '#00d4ff',
+                border: '1px solid rgba(0,212,255,0.3)', borderRadius: '3px'
+              }}>
+                V3 (Playhead-First)
+              </span>
             </div>
             {(() => {
               const timelineProps = {
@@ -1209,11 +1199,8 @@ const ProAudioClipper = ({ onNavigate, forceVersion }) => {
                 nextRedoDescription,
                 className: 'timeline-container',
               };
-              return timelineVersion === 'v3'
-                ? <ProfessionalTimeline_v3 {...timelineProps} />
-                : timelineVersion === 'v2'
-                  ? <ProfessionalTimeline_v2 {...timelineProps} />
-                  : <ProfessionalTimeline {...timelineProps} />;
+              // V3-only timeline
+              return <ProfessionalTimeline_v3 {...timelineProps} />;
             })()}
 
           {/* Selection Info */}
