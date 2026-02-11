@@ -117,6 +117,7 @@ const ProAudioClipper = ({ onNavigate, forceVersion }) => {
   const [showHelpInterface, setShowHelpInterface] = useState(false);
   const [showFXController, setShowFXController] = useState(false);
   // Timeline is now V3-only (forceVersion parameter kept for compatibility)
+  const [previewTrackId, setPreviewTrackId] = useState(null); // Track preview mode
   const [showStemExtractor, setShowStemExtractor] = useState(false);
   const [showWhisperTranscriber, setShowWhisperTranscriber] = useState(false);
   const [showKaraokeDisplay, setShowKaraokeDisplay] = useState(false);
@@ -430,6 +431,19 @@ const ProAudioClipper = ({ onNavigate, forceVersion }) => {
   const handleCloseEffectsPanel = useCallback(() => {
     setShowEffectsPanel(false);
     setEffectsPanelTrackId(null);
+  }, []);
+
+  // Track preview management
+  const handleTrackPreview = useCallback((trackId) => {
+    setPreviewTrackId(trackId);
+    // TODO: Implement actual preview playback routing
+    if (trackId) {
+      console.log('[ProAudioClipper] Starting track preview for:', trackId);
+      // Route audio to preview only this track
+    } else {
+      console.log('[ProAudioClipper] Stopping track preview');
+      // Restore normal playback routing
+    }
   }, []);
 
   // Selection handling for multi-track timeline
@@ -1187,6 +1201,8 @@ const ProAudioClipper = ({ onNavigate, forceVersion }) => {
                 },
                 onTrackMoveUp: trackManager.moveTrackUp,
                 onTrackMoveDown: trackManager.moveTrackDown,
+                onTrackPreview: handleTrackPreview,
+                previewTrackId: previewTrackId,
                 onAddTrack: trackController.handleAddTrackWithFile,
                 onOpenEffects: handleOpenEffectsPanel,
                 onViewportChange: handleViewportChange,
