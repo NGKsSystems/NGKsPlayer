@@ -186,16 +186,12 @@ const useWaveform = (
       }
 
       const rect = canvas.getBoundingClientRect();
-      const dpr = window.devicePixelRatio || 1;
       const w = Math.floor(rect.width);
       const h = Math.floor(rect.height);
 
-      // Match canvas backing-store to CSS size (avoid blurry / undersized bars)
-      if (canvas.width !== w * dpr || canvas.height !== h * dpr) {
-        canvas.width = w * dpr;
-        canvas.height = h * dpr;
-        const scaleCtx = canvas.getContext('2d');
-        scaleCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      if (canvas.width !== w || canvas.height !== h) {
+        canvas.width = w;
+        canvas.height = h;
       }
 
       const ctx = canvas.getContext('2d');
@@ -237,14 +233,12 @@ const useWaveform = (
     const canvas = waveformCanvasRef.current;
     if (!canvas) return;
     const rect = canvas.getBoundingClientRect();
-    const dpr = window.devicePixelRatio || 1;
     const w = Math.floor(rect.width);
     const h = Math.floor(rect.height);
     if (w > 0 && h > 0) {
-      canvas.width = w * dpr;
-      canvas.height = h * dpr;
+      canvas.width = w;
+      canvas.height = h;
       const ctx = canvas.getContext('2d');
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.fillStyle = 'rgba(0, 0, 0, 0.9)';
       ctx.fillRect(0, 0, w, h);
       ctx.strokeStyle = 'rgba(255,255,255,0.08)';
