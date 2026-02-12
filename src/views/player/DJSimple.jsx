@@ -781,44 +781,6 @@ const saveLayout = async (layout, currentDeckMode) => {
     }
   }, [handleSaveLayout, handleLoadLayout, handleResetLayout]);
 
-  // Listen for deck track loading from libraries
-  useEffect(() => {
-    const handleDeckLoad = ({ filePath, deck, track }) => {
-
-      
-      // Update deck state with the loaded track
-      setDeckState(prev => {
-        const newState = {
-          ...prev,
-          [deck]: {
-            ...prev[deck],
-            track: {
-              ...track,
-              filePath
-            }
-          }
-        };
-
-        return newState;
-      });
-      
-      // Track loaded successfully - audio will be handled by individual deck controls
-
-    };
-
-    if (window.electronAPI) {
-
-      window.electronAPI.receive('deck:loadTrack', handleDeckLoad);
-      
-      return () => {
-        console.log('[DJSimple] 🧹 Cleaning up deck load listener');
-        window.electronAPI.removeAllListeners('deck:loadTrack');
-      };
-    } else {
-      console.error('[DJSimple] ❌ window.electronAPI not available!');
-    }
-  }, []);
-
     // Auto-restore sub-widget layouts after component mount
   const [layoutRestored, setLayoutRestored] = useState(false);
   
@@ -994,11 +956,11 @@ const saveLayout = async (layout, currentDeckMode) => {
     setGuardModal(null);
   }, []);
 
-  // Listen for track loads from library components
+  // Listen for track loads from library components — route through guard pipeline
   useEffect(() => {
     const handleLibraryTrackLoad = (event, data) => {
       const { deck, track } = data;
-      handleTrackLoad(deck, track);
+      attemptLoadTrackToDeck({ track, targetDeck: deck, source: 'ipc-library:trackLoaded' });
     };
 
     // Listen for electron events if available
@@ -1011,7 +973,26 @@ const saveLayout = async (layout, currentDeckMode) => {
         }
       };
     }
-  }, [handleTrackLoad]);
+  }, [attemptLoadTrackToDeck]);
+
+  // Listen for deck track loading from IPC — route through guard pipeline
+  useEffect(() => {
+    const handleDeckLoad = ({ filePath, deck, track }) => {
+      const trackWithPath = { ...track, filePath };
+      attemptLoadTrackToDeck({ track: trackWithPath, targetDeck: deck, source: 'ipc-deck:loadTrack' });
+    };
+
+    if (window.electronAPI) {
+      window.electronAPI.receive('deck:loadTrack', handleDeckLoad);
+      
+      return () => {
+        console.log('[DJSimple] 🧹 Cleaning up deck load listener');
+        window.electronAPI.removeAllListeners('deck:loadTrack');
+      };
+    } else {
+      console.error('[DJSimple] ❌ window.electronAPI not available!');
+    }
+  }, [attemptLoadTrackToDeck]);
 
   // Keyboard shortcuts
   useEffect(() => {
