@@ -12,6 +12,7 @@
  * Owner: NGKsSystems
  */
 import React, { useState, useCallback, useEffect, useMemo, useRef } from "react";
+import TrackRow from '../components/TrackRow.jsx';
 import './styles.css';
 
 const LibraryA = ({ id, deck = 'A', onTrackLoad = () => {}, onTrackPreview = () => {}, onStyleChange = () => {}, tracks = [], isLoading = false, style = {}, ...props }) => {
@@ -30,7 +31,6 @@ const LibraryA = ({ id, deck = 'A', onTrackLoad = () => {}, onTrackPreview = () 
       const saved = localStorage.getItem('library-A-state');
       if (saved) {
         const parsed = JSON.parse(saved);
-        // Ensure searchQuery is always a string and not "all"
         return {
           ...parsed,
           searchQuery: typeof parsed.searchQuery === 'string' && parsed.searchQuery !== 'all' ? parsed.searchQuery : ''
@@ -46,6 +46,23 @@ const LibraryA = ({ id, deck = 'A', onTrackLoad = () => {}, onTrackPreview = () 
       viewMode: 'list'
     };
   });
+
+  // Density mode: 'compact' | 'detailed'
+  const [densityMode, setDensityMode] = useState(() => {
+    try { return localStorage.getItem(`library-${deck}-density`) || 'detailed'; } catch { return 'detailed'; }
+  });
+  // Key display: 'musical' | 'camelot'
+  const [keyDisplayMode, setKeyDisplayMode] = useState(() => {
+    try { return localStorage.getItem(`library-${deck}-keymode`) || 'musical'; } catch { return 'musical'; }
+  });
+
+  // Persist density & key prefs
+  useEffect(() => {
+    try { localStorage.setItem(`library-${deck}-density`, densityMode); } catch {}
+  }, [densityMode, deck]);
+  useEffect(() => {
+    try { localStorage.setItem(`library-${deck}-keymode`, keyDisplayMode); } catch {}
+  }, [keyDisplayMode, deck]);
 
   const [localTracks, setLocalTracks] = useState([]);
   const [tracksLoading, setTracksLoading] = useState(false);
@@ -225,15 +242,40 @@ const LibraryA = ({ id, deck = 'A', onTrackLoad = () => {}, onTrackPreview = () 
 
   const handleTrackDoubleClick = useCallback((track) => {
     onTrackLoad(track);
-    // Also try to load to deck A
     if (window.electronAPI && window.electronAPI.send) {
       window.electronAPI.send('deck:loadTrack', {
         filePath: track.filePath,
-        deck: 'A',
+        deck: deck,
         track: track
       });
     }
+  }, [onTrackLoad, deck]);
+
+  // Load track to a specific deck (hover quick action)
+  const handleLoadDeck = useCallback((track, targetDeck) => {
+    onTrackLoad(track);
+    if (window.electronAPI && window.electronAPI.send) {
+      window.electronAPI.send('deck:loadTrack', {
+        filePath: track.filePath,
+        deck: targetDeck,
+        track: track
+      });
+    }
+    // Also try AudioManager
+    if (window.audioManagerRef?.current) {
+      window.audioManagerRef.current.loadTrack(targetDeck, track.filePath);
+    }
   }, [onTrackLoad]);
+
+  // Preview 3-second cue
+  const handlePreview = useCallback((track) => {
+    onTrackPreview(track);
+  }, [onTrackPreview]);
+
+  // Add to crate (placeholder — dispatches event)
+  const handleCrate = useCallback((track) => {
+    window.dispatchEvent(new CustomEvent('library:addToCrate', { detail: { track } }));
+  }, []);
 
   const handleSortChange = useCallback((sortBy) => {
     setLibraryState(prev => ({
@@ -275,6 +317,28 @@ const LibraryA = ({ id, deck = 'A', onTrackLoad = () => {}, onTrackPreview = () 
         </div>
 
         {/* Track List Header */}
+        <div className="track-list-controls">
+          {/* Density toggle */}
+          <div className="density-toggle">
+            <button
+              className={`density-btn ${densityMode === 'compact' ? 'active' : ''}`}
+              onClick={() => setDensityMode('compact')}
+            >Compact</button>
+            <button
+              className={`density-btn ${densityMode === 'detailed' ? 'active' : ''}`}
+              onClick={() => setDensityMode('detailed')}
+            >Detailed</button>
+          </div>
+          {/* Key format toggle */}
+          <button
+            className="key-mode-btn"
+            onClick={() => setKeyDisplayMode(m => m === 'musical' ? 'camelot' : 'musical')}
+            title={`Key: ${keyDisplayMode === 'musical' ? 'Musical' : 'Camelot'}`}
+          >
+            {keyDisplayMode === 'musical' ? '♪' : '⊙'}
+          </button>
+        </div>
+
         <div className="track-list-header">
           <button 
             className={`sort-btn ${libraryState.sortBy === 'title' ? 'active' : ''}`}
@@ -312,28 +376,26 @@ const LibraryA = ({ id, deck = 'A', onTrackLoad = () => {}, onTrackPreview = () 
             </div>
           ) : (
             filteredTracks.map((track, index) => (
-              <div
+              <TrackRow
                 key={track.id || index}
-                className={`track-row ${libraryState.selectedTrack?.id === track.id ? 'selected' : ''}`}
-                onClick={() => handleTrackSelect(track)}
-                onDoubleClick={() => handleTrackDoubleClick(track)}
+                track={track}
+                index={index}
+                isSelected={libraryState.selectedTrack?.id === track.id}
+                isCompact={densityMode === 'compact'}
+                keyDisplayMode={keyDisplayMode}
+                onSelect={handleTrackSelect}
+                onDoubleClick={handleTrackDoubleClick}
                 onContextMenu={(e) => {
                   e.preventDefault();
                   if (track?.id && window.api?.invoke) {
                     window.api.invoke('tag-editor:open', track.id);
                   }
                 }}
-                title="Double-click to load | Right-click to edit metadata"
-              >
-                <div className="track-filename">
-                  {track.title || 'Unknown Title'}
-                </div>
-                <div className="track-metadata">
-                  <span>BPM: {track.bpm ? Math.round(track.bpm) : '--'}</span>
-                  <span>Key: {track.key ? `${track.key}${track.mode?.charAt(0) || ''}` : '--'}</span>
-                  <span>{formatDuration(track.duration)}</span>
-                </div>
-              </div>
+                onLoadDeck={handleLoadDeck}
+                onPreview={handlePreview}
+                onCrate={handleCrate}
+                formatDuration={formatDuration}
+              />
             ))
           )}
         </div>

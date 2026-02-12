@@ -1295,11 +1295,15 @@ register('library:getTracks', (_evt, filter = {}) => {
            duration,
            ${COL_FILEPATH ? COL_FILEPATH : 'NULL AS filePath'} AS filePath,
            bpm,
+           bpmConfidence,
            key,
            camelotKey,
+           energy,
            loudness,
            gainRecommendation,
-           analyzed
+           analyzed,
+           lastPlayed,
+           thumbnailPath
       FROM ${TABLE}
       ${where}
       ORDER BY ${orderBy}

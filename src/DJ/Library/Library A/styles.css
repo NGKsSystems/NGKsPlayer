@@ -185,18 +185,26 @@
   flex-direction: column !important;
   justify-content: center;
   gap: 2px;
-  padding: 6px 14px;
+  padding: 6px 10px;
   font-size: 11px;
   cursor: pointer;
   background: #000000;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 16px;
+  border-radius: 6px;
   margin-bottom: 1px;
-  transition: all 0.2s ease;
+  transition: background 0.15s ease, border-color 0.15s ease;
   min-height: 44px;
   max-height: none !important;
   height: auto !important;
   overflow: visible;
+  position: relative;
+}
+
+.library-a-widget .track-row.compact {
+  min-height: 26px;
+  padding: 3px 10px;
+  gap: 1px;
+  border-radius: 4px;
 }
 
 .library-a-widget .track-row:hover {
@@ -210,10 +218,20 @@
   box-shadow: 0 0 8px rgba(255, 107, 53, 0.3);
 }
 
+/* ── Row top: title + status + energy ────────────────────── */
+.library-a-widget .track-row-top {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  min-height: 0;
+}
+
 .library-a-widget .track-filename {
   display: block !important;
-  width: 100%;
-  min-height: 1.3em;
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 1.2em;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -222,22 +240,89 @@
   color: #ffffff;
   letter-spacing: 0.3px;
   line-height: 1.3;
+}
+
+.library-a-widget .track-row.compact .track-filename {
+  font-size: 11px;
+}
+
+/* ── Status icons (subtle until hover) ───────────────────── */
+.library-a-widget .track-status-icons {
+  display: flex;
+  gap: 3px;
   flex-shrink: 0;
-  position: relative;
-  z-index: 1;
+  opacity: 0.3;
+  transition: opacity 0.15s;
+}
+.library-a-widget .track-row:hover .track-status-icons {
+  opacity: 0.8;
+}
+.library-a-widget .status-icon {
+  font-size: 11px;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ── Energy meter ────────────────────────────────────────── */
+.library-a-widget .energy-meter {
+  display: flex;
+  align-items: flex-end;
+  gap: 1px;
+  flex-shrink: 0;
+  height: 14px;
+}
+.library-a-widget .energy-bar {
+  width: 3px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 1px;
+  transition: background 0.15s;
+}
+.library-a-widget .energy-bar:nth-child(1) { height: 4px; }
+.library-a-widget .energy-bar:nth-child(2) { height: 6px; }
+.library-a-widget .energy-bar:nth-child(3) { height: 8px; }
+.library-a-widget .energy-bar:nth-child(4) { height: 10px; }
+.library-a-widget .energy-bar:nth-child(5) { height: 12px; }
+.library-a-widget .energy-bar.active:nth-child(1) { background: #22c55e; }
+.library-a-widget .energy-bar.active:nth-child(2) { background: #84cc16; }
+.library-a-widget .energy-bar.active:nth-child(3) { background: #eab308; }
+.library-a-widget .energy-bar.active:nth-child(4) { background: #f97316; }
+.library-a-widget .energy-bar.active:nth-child(5) { background: #ef4444; }
+
+.library-a-widget .track-row.compact .energy-meter {
+  height: 10px;
+}
+.library-a-widget .track-row.compact .energy-bar:nth-child(1) { height: 3px; }
+.library-a-widget .track-row.compact .energy-bar:nth-child(2) { height: 4px; }
+.library-a-widget .track-row.compact .energy-bar:nth-child(3) { height: 6px; }
+.library-a-widget .track-row.compact .energy-bar:nth-child(4) { height: 7px; }
+.library-a-widget .track-row.compact .energy-bar:nth-child(5) { height: 9px; }
+
+/* ── Row bottom: metadata + waveform ─────────────────────── */
+.library-a-widget .track-row-bottom {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.library-a-widget .track-row.compact .track-row-bottom {
+  gap: 4px;
 }
 
 .library-a-widget .track-metadata {
   display: flex !important;
   flex-direction: row !important;
-  gap: 8px;
+  gap: 6px;
   align-items: center;
-  justify-content: center;
   font-size: 10px;
   font-weight: 700;
   color: #ffffff;
-  width: 100%;
   flex-shrink: 0;
+}
+
+.library-a-widget .track-row.compact .track-metadata {
+  font-size: 9px;
+  gap: 4px;
 }
 
 .library-a-widget .track-metadata span {
@@ -246,24 +331,147 @@
   border-radius: 4px;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
 }
 
-.library-a-widget .track-metadata span:nth-child(1) {
+.library-a-widget .track-row.compact .track-metadata span {
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+
+.library-a-widget .track-metadata .badge-bpm {
   background: rgba(59, 130, 246, 0.15);
   border-color: rgba(59, 130, 246, 0.4);
   color: #93c5fd;
 }
 
-.library-a-widget .track-metadata span:nth-child(2) {
+.library-a-widget .track-metadata .badge-key {
   background: rgba(34, 197, 94, 0.15);
   border-color: rgba(34, 197, 94, 0.4);
   color: #86efac;
 }
 
-.library-a-widget .track-metadata span:nth-child(3) {
+.library-a-widget .track-metadata .badge-time {
   background: rgba(255, 107, 53, 0.15);
   border-color: rgba(255, 107, 53, 0.4);
   color: #ffa07a;
+}
+
+/* ── BPM confidence dot ──────────────────────────────────── */
+.library-a-widget .bpm-confidence-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.library-a-widget .bpm-lock {
+  font-size: 8px;
+  margin-left: 2px;
+}
+
+/* ── Mini waveform strip ─────────────────────────────────── */
+.library-a-widget .mini-waveform {
+  flex: 1 1 0;
+  min-width: 30px;
+  max-width: 120px;
+  height: 16px;
+  border-radius: 3px;
+  object-fit: cover;
+  image-rendering: pixelated;
+}
+.library-a-widget .mini-waveform.placeholder {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+.library-a-widget .track-row.compact .mini-waveform {
+  height: 10px;
+  max-width: 80px;
+}
+
+/* ── Hover quick actions ─────────────────────────────────── */
+.library-a-widget .track-quick-actions {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 4px;
+  z-index: 5;
+  background: rgba(0, 0, 0, 0.85);
+  padding: 3px 6px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+.library-a-widget .track-quick-actions button {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.12s;
+  white-space: nowrap;
+  font-weight: 600;
+}
+.library-a-widget .track-quick-actions button:hover {
+  background: rgba(255, 107, 53, 0.3);
+  border-color: rgba(255, 107, 53, 0.5);
+  color: #ffffff;
+}
+
+/* ── Density / Key controls ──────────────────────────────── */
+.library-a-widget .track-list-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  gap: 6px;
+}
+.library-a-widget .density-toggle {
+  display: flex;
+  gap: 2px;
+}
+.library-a-widget .density-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.5);
+  padding: 2px 8px;
+  font-size: 9px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all 0.15s;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.library-a-widget .density-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+}
+.library-a-widget .density-btn.active {
+  background: rgba(255, 107, 53, 0.15);
+  border-color: rgba(255, 107, 53, 0.4);
+  color: #ff6b35;
+}
+.library-a-widget .key-mode-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.5);
+  padding: 2px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all 0.15s;
+  line-height: 1;
+}
+.library-a-widget .key-mode-btn:hover {
+  background: rgba(34, 197, 94, 0.15);
+  border-color: rgba(34, 197, 94, 0.3);
+  color: #86efac;
 }
 
 .loading-message,
