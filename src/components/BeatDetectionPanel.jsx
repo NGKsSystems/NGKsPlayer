@@ -144,11 +144,11 @@ export default function BeatDetectionPanel({
         <div className="mb-4 p-3 bg-gray-900 rounded border border-purple-500">
           <div className="text-sm font-mono space-y-1">
             <div className="flex justify-between">
-              <span className="text-gray-400">Current Bass:</span>
+              <span className="text-gray-400">Kick Energy (40-150Hz):</span>
               <span className="text-purple-300 font-bold">{debugValues.bass}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-400">Average Bass:</span>
+              <span className="text-gray-400">Average Kick:</span>
               <span className="text-purple-300">{debugValues.avgBass}</span>
             </div>
             <div className="grid grid-cols-3 gap-2 mt-2 pt-2 border-t border-gray-700">

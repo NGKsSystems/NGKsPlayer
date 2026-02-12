@@ -48,6 +48,9 @@ export function useWaveform(audioRef, isPlaying, beatPulseEnabledRef, beatDetect
     lastBeat: 0,
     threshold: 165,
     bassHistory: [],
+    kickHistory: [],        // isolated 40-150Hz kick energy history
+    kickEnvelope: 0,        // smoothed kick energy (envelope follower)
+    beatIntervals: [],      // last N beat intervals for smoothing
     midHistory: [],
     highHistory: [],
     lastPeak: 0,
@@ -151,45 +154,71 @@ export function useWaveform(audioRef, isPlaying, beatPulseEnabledRef, beatDetect
         analyzer.getByteTimeDomainData(dataArray);
         analyzer.getByteFrequencyData(frequencyData);
 
-        // Beat detection with multi-frequency analysis
+        // ══════════════════════════════════════════════
+        //  BEAT DETECTION — kick-band isolated (40-150 Hz)
+        // ══════════════════════════════════════════════
+        // With sampleRate ≈ 44100 and fftSize = 2048:
+        //   bin resolution = 44100 / 2048 ≈ 21.53 Hz
+        //   40 Hz  → bin 2
+        //   150 Hz → bin 7
+        //   200 Hz → bin 9   (upper safety margin)
+        //   2 kHz  → bin 93  (old bassEnd — way too wide, catches hats/snare)
+        //
+        // We isolate kick energy (40-150 Hz) for beat detection,
+        // but still compute full bass/mid/high for the spectrum display.
+
+        const sampleRate = audioContextRef.current?.sampleRate || 44100;
+        const binHz = sampleRate / (analyzerRef.current?.fftSize || 2048);
+
+        // ── Kick-isolated band (40-150 Hz) ──
+        const kickLowBin = Math.max(1, Math.round(40 / binHz));
+        const kickHighBin = Math.min(bufferLength - 1, Math.round(150 / binHz));
+        let kickSum = 0;
+        const kickBinCount = kickHighBin - kickLowBin + 1;
+        for (let i = kickLowBin; i <= kickHighBin; i++) {
+          kickSum += frequencyData[i];
+        }
+        const kickEnergy = kickSum / kickBinCount;
+
+        // ── Full-range bands for spectrum display only ──
         const bassEnd = Math.floor(bufferLength * 0.1);
         const midStart = bassEnd;
         const midEnd = Math.floor(bufferLength * 0.4);
         const highStart = midEnd;
 
         let bassSum = 0, midSum = 0, highSum = 0;
-
-        for (let i = 0; i < bassEnd; i++) {
-          bassSum += frequencyData[i];
-        }
-        for (let i = midStart; i < midEnd; i++) {
-          midSum += frequencyData[i];
-        }
-        for (let i = highStart; i < bufferLength; i++) {
-          highSum += frequencyData[i];
-        }
+        for (let i = 0; i < bassEnd; i++) bassSum += frequencyData[i];
+        for (let i = midStart; i < midEnd; i++) midSum += frequencyData[i];
+        for (let i = highStart; i < bufferLength; i++) highSum += frequencyData[i];
 
         const bassAverage = bassSum / bassEnd;
         const midAverage = midSum / (midEnd - midStart);
         const highAverage = highSum / (bufferLength - highStart);
 
-        if (!beatDetectionRef.current.bassHistory) {
-          beatDetectionRef.current.bassHistory = [];
-          beatDetectionRef.current.midHistory = [];
-          beatDetectionRef.current.highHistory = [];
+        // ── Envelope follower — smooths kick energy to reject noise ──
+        // Attack fast (0.3), release slow (0.05) — tracks transients, ignores tails
+        const bd = beatDetectionRef.current;
+        const attackCoeff = 0.3;
+        const releaseCoeff = 0.05;
+        if (kickEnergy > bd.kickEnvelope) {
+          bd.kickEnvelope = bd.kickEnvelope + attackCoeff * (kickEnergy - bd.kickEnvelope);
+        } else {
+          bd.kickEnvelope = bd.kickEnvelope + releaseCoeff * (kickEnergy - bd.kickEnvelope);
         }
 
-        beatDetectionRef.current.bassHistory.push(bassAverage);
-        beatDetectionRef.current.midHistory.push(midAverage);
-        beatDetectionRef.current.highHistory.push(highAverage);
+        // ── Kick history + adaptive average ──
+        if (!bd.kickHistory) bd.kickHistory = [];
+        bd.kickHistory.push(bd.kickEnvelope);
+        const historyLen = beatDetectionConfig?.beatHistoryLength || 30;
+        if (bd.kickHistory.length > historyLen) bd.kickHistory.shift();
 
-        if (beatDetectionRef.current.bassHistory.length > (beatDetectionConfig?.beatHistoryLength || 30)) {
-          beatDetectionRef.current.bassHistory.shift();
-          beatDetectionRef.current.midHistory.shift();
-          beatDetectionRef.current.highHistory.shift();
-        }
+        // Also maintain full-bass history for spectrum/auto-tune
+        if (!bd.bassHistory) bd.bassHistory = [];
+        bd.bassHistory.push(bassAverage);
+        if (bd.bassHistory.length > historyLen) bd.bassHistory.shift();
 
-        const avgBass = beatDetectionRef.current.bassHistory.reduce((a, b) => a + b, 0) / beatDetectionRef.current.bassHistory.length;
+        const avgKick = bd.kickHistory.reduce((a, b) => a + b, 0) / bd.kickHistory.length;
+        const avgBass = bd.bassHistory.reduce((a, b) => a + b, 0) / bd.bassHistory.length;
 
         // ── AUTO-TUNE CALIBRATION ──
         // Samples bass energy for ~3 seconds, then computes optimal parameters
@@ -208,8 +237,8 @@ export function useWaveform(audioRef, isPlaying, beatPulseEnabledRef, beatDetect
               if (setAutoTuneStatus) setAutoTuneStatus('calibrating');
             }
 
-            // Collect bass samples
-            cal.samples.push(bassAverage);
+            // Collect kick energy samples (isolated 40-150Hz, not full bass)
+            cal.samples.push(bd.kickEnvelope);
 
             const elapsed = Date.now() - cal.startTime;
             if (elapsed >= cal.calibrationDuration && cal.samples.length > 30) {
@@ -307,37 +336,58 @@ export function useWaveform(audioRef, isPlaying, beatPulseEnabledRef, beatDetect
         const minimum = beatDetectionConfig?.beatMinRef?.current ?? 80;
         const gate = beatDetectionConfig?.beatGateRef?.current ?? 200;
 
-        const bassSpike = bassAverage > avgBass * threshold;
-        const aboveMin = bassAverage > minimum;
+        // ── Beat detection uses KICK energy (40-150Hz), not full bass ──
+        const kickSpike = bd.kickEnvelope > avgKick * threshold;
+        const aboveMin = bd.kickEnvelope > minimum;
 
         const now = Date.now();
-        const timeSinceLastBeat = now - beatDetectionRef.current.lastBeat;
+        const timeSinceLastBeat = now - bd.lastBeat;
 
         // Update debug display every 10 frames
-        beatDetectionRef.current.debugCounter++;
-        if (beatDetectionRef.current.debugCounter % 10 === 0) {
+        bd.debugCounter++;
+        if (bd.debugCounter % 10 === 0) {
           setDebugValues({
-            bass: Math.round(bassAverage),
-            avgBass: Math.round(avgBass),
-            spike: bassSpike,
+            bass: Math.round(bd.kickEnvelope),    // show kick energy, not full bass
+            avgBass: Math.round(avgKick),          // show kick average
+            spike: kickSpike,
             min: aboveMin,
             gate: timeSinceLastBeat > gate
           });
         }
 
         // Skip custom beat detection if Essentia is enabled
-        if (!useEssentiaBeats && beatPulseEnabledRef?.current && bassSpike && aboveMin && timeSinceLastBeat > gate) {
-          beatDetectionRef.current.lastBeat = now;
-          beatDetectionRef.current.beatStrength = Math.min((bassAverage / avgBass), 2);
+        if (!useEssentiaBeats && beatPulseEnabledRef?.current && kickSpike && aboveMin && timeSinceLastBeat > gate) {
+          // ── Interval smoothing — reject outlier intervals ──
+          if (!bd.beatIntervals) bd.beatIntervals = [];
+          if (bd.lastBeat > 0) {
+            bd.beatIntervals.push(timeSinceLastBeat);
+            if (bd.beatIntervals.length > 8) bd.beatIntervals.shift();
+          }
 
-          setBeatPulse(true);
-          setTimeout(() => setBeatPulse(false), 150);
+          // Median-filter: only fire if this interval is within 50% of median
+          // This rejects double-triggers and half-time hits
+          let intervalOk = true;
+          if (bd.beatIntervals.length >= 4) {
+            const sorted = [...bd.beatIntervals].sort((a, b) => a - b);
+            const median = sorted[Math.floor(sorted.length / 2)];
+            const ratio = timeSinceLastBeat / median;
+            // Accept if within 0.5x–2.0x of median (allows some swing)
+            intervalOk = ratio > 0.5 && ratio < 2.0;
+          }
 
-          // Detect SUPER PEAK beats
-          if (bassAverage > avgBass * 1.6 && timeSinceLastBeat > 1500) {
-            beatDetectionRef.current.lastPeak = now;
-            setPeakRotation(true);
-            setTimeout(() => setPeakRotation(false), 1500);
+          if (intervalOk) {
+            bd.lastBeat = now;
+            bd.beatStrength = Math.min((bd.kickEnvelope / avgKick), 2);
+
+            setBeatPulse(true);
+            setTimeout(() => setBeatPulse(false), 150);
+
+            // Detect SUPER PEAK beats
+            if (bd.kickEnvelope > avgKick * 1.6 && timeSinceLastBeat > 1500) {
+              bd.lastPeak = now;
+              setPeakRotation(true);
+              setTimeout(() => setPeakRotation(false), 1500);
+            }
           }
         }
 
