@@ -17,6 +17,9 @@ import FourDeckLayoutManager from '../../DJ/Layout/FourDeckLayoutManager';
 import ProfessionalDeck from '../../DJ/Components/ProfessionalDeck';
 import Mixer from '../../DJ/Mixer/index';
 import { Toast } from '../../DJ/Mixer/Common/Toast';
+import { evaluateLoadGuard, GUARD_DECISION } from '../../DJ/guards/deckSafetyGuards';
+import GuardModal from '../../DJ/guards/GuardModal';
+import '../../DJ/guards/GuardModal.css';
 import '../styles/FourDeckDJ.css';
 
 /**
@@ -43,6 +46,9 @@ const FourDeckDJ = ({ onNavigate }) => {
     activeDeckSet: 'AB',
     config: null
   });
+
+  // Guard modal state
+  const [guardModal, setGuardModal] = useState(null);
 
   // UI state
   const [tracks, setTracks] = useState([]);
@@ -145,7 +151,7 @@ const FourDeckDJ = ({ onNavigate }) => {
     setMixerLayout(newMixerLayout);
   };
 
-  // Load track to specific deck
+  // Internal track loader (called AFTER guards pass)
   const loadTrackToDeck = useCallback(async (deckId, track) => {
     if (audioManagerRef.current && track) {
       setDeckState(prev => ({
@@ -162,6 +168,39 @@ const FourDeckDJ = ({ onNavigate }) => {
       console.log(`[FourDeckDJ] Loading track to Deck ${deckId}:`, track.title);
       showToast(`Track loaded to Deck ${deckId}`, 'success');
     }
+  }, []);
+
+  // ── Performance Safety Mode — guarded load pipeline ──
+  const attemptLoadTrackToDeck = useCallback(({ track, targetDeck, source = 'unknown' }) => {
+    const result = evaluateLoadGuard({
+      track,
+      targetDeck,
+      source,
+      audioManager: audioManagerRef.current,
+      deckState,
+    });
+
+    if (result.decision === GUARD_DECISION.BLOCK_LIVE) {
+      setGuardModal({ mode: 'block', title: result.title, message: result.message, pendingAction: null });
+      return;
+    }
+
+    if (result.decision === GUARD_DECISION.CONFIRM_REPLACE) {
+      setGuardModal({ mode: 'confirm', title: result.title, message: result.message, pendingAction: () => loadTrackToDeck(targetDeck, track) });
+      return;
+    }
+
+    // ALLOW
+    loadTrackToDeck(targetDeck, track);
+  }, [deckState, loadTrackToDeck]);
+
+  const handleGuardConfirm = useCallback(() => {
+    guardModal?.pendingAction?.();
+    setGuardModal(null);
+  }, [guardModal]);
+
+  const handleGuardCancel = useCallback(() => {
+    setGuardModal(null);
   }, []);
 
   // Transport handlers — same contract as DJSimple
@@ -254,7 +293,7 @@ const FourDeckDJ = ({ onNavigate }) => {
             deckId="A"
             audioManager={audioManager}
             track={deckState.A.track}
-            onTrackLoad={(track) => loadTrackToDeck('A', track)}
+            onTrackLoad={(track) => attemptLoadTrackToDeck({ track, targetDeck: 'A', source: '4deck-A' })}
             layoutConfig={layoutConfig.config}
             compactMode={layoutConfig.layout === 'performance'}
             onClick={() => handleDeckAssignment('A')}
@@ -268,7 +307,7 @@ const FourDeckDJ = ({ onNavigate }) => {
             deckId="B"
             audioManager={audioManager}
             track={deckState.B.track}
-            onTrackLoad={(track) => loadTrackToDeck('B', track)}
+            onTrackLoad={(track) => attemptLoadTrackToDeck({ track, targetDeck: 'B', source: '4deck-B' })}
             layoutConfig={layoutConfig.config}
             compactMode={layoutConfig.layout === 'performance'}
             onClick={() => handleDeckAssignment('B')}
@@ -282,7 +321,7 @@ const FourDeckDJ = ({ onNavigate }) => {
             deckId="C"
             audioManager={audioManager}
             track={deckState.C.track}
-            onTrackLoad={(track) => loadTrackToDeck('C', track)}
+            onTrackLoad={(track) => attemptLoadTrackToDeck({ track, targetDeck: 'C', source: '4deck-C' })}
             layoutConfig={layoutConfig.config}
             compactMode={layoutConfig.layout === 'performance'}
             onClick={() => handleDeckAssignment('C')}
@@ -296,7 +335,7 @@ const FourDeckDJ = ({ onNavigate }) => {
             deckId="D"
             audioManager={audioManager}
             track={deckState.D.track}
-            onTrackLoad={(track) => loadTrackToDeck('D', track)}
+            onTrackLoad={(track) => attemptLoadTrackToDeck({ track, targetDeck: 'D', source: '4deck-D' })}
             layoutConfig={layoutConfig.config}
             compactMode={layoutConfig.layout === 'performance'}
             onClick={() => handleDeckAssignment('D')}
@@ -352,6 +391,17 @@ const FourDeckDJ = ({ onNavigate }) => {
           message={toast.message}
           type={toast.type}
           onClose={() => setToast(null)}
+        />
+      )}
+
+      {/* Guard Modal */}
+      {guardModal && (
+        <GuardModal
+          mode={guardModal.mode}
+          title={guardModal.title}
+          message={guardModal.message}
+          onConfirm={handleGuardConfirm}
+          onCancel={handleGuardCancel}
         />
       )}
     </div>
