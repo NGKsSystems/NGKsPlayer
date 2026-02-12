@@ -17,12 +17,16 @@ import { formatKeyDisplay } from '../utils/keyConverter.js';
 // ─── BPM Confidence Dot ──────────────────────────────────────────────────
 const BpmDot = memo(({ confidence, locked }) => {
   const conf = Number(confidence) || 0;
-  let color = '#ef4444'; // red < 60
-  if (conf >= 85) color = '#22c55e'; // green
-  else if (conf >= 60) color = '#eab308'; // yellow
+  const hasData = confidence != null && confidence !== '';
+  let color = '#555'; // grey when no data
+  if (hasData) {
+    if (conf >= 85) color = '#22c55e'; // green
+    else if (conf >= 60) color = '#eab308'; // yellow
+    else color = '#ef4444'; // red < 60
+  }
 
   return (
-    <span className="bpm-confidence-dot" style={{ background: color }}>
+    <span className="bpm-confidence-dot" style={{ background: color }} title={hasData ? `${conf}% confidence` : 'Not analyzed'}>
       {locked && <span className="bpm-lock">🔒</span>}
     </span>
   );
@@ -31,9 +35,10 @@ BpmDot.displayName = 'BpmDot';
 
 // ─── Energy Meter (5 bars) ───────────────────────────────────────────────
 const EnergyMeter = memo(({ level }) => {
-  const n = Math.max(0, Math.min(5, Math.round(Number(level) || 0)));
+  const hasData = level != null && level !== '';
+  const n = hasData ? Math.max(0, Math.min(5, Math.round(Number(level)))) : 0;
   return (
-    <span className="energy-meter" title={`Energy: ${n}/5`}>
+    <span className="energy-meter" title={hasData ? `Energy: ${n}/5` : 'Not analyzed'}>
       {[1, 2, 3, 4, 5].map(i => (
         <span key={i} className={`energy-bar ${i <= n ? 'active' : ''}`} />
       ))}
@@ -76,7 +81,13 @@ const MiniWaveform = memo(({ src }) => {
   if (src) {
     return <img className="mini-waveform" src={src} alt="" draggable={false} />;
   }
-  return <span className="mini-waveform placeholder" />;
+  return (
+    <span className="mini-waveform placeholder" title="No waveform preview">
+      <span className="mini-waveform-bars">
+        {'▁▂▃▄▅▆▇▆▅▄▃▂▁▂▃▅'}
+      </span>
+    </span>
+  );
 });
 MiniWaveform.displayName = 'MiniWaveform';
 
@@ -120,7 +131,6 @@ const TrackRow = memo(({
   const bpmText = track.bpm ? Math.round(track.bpm) : '--';
   const keyText = formatKeyDisplay(track, keyDisplayMode);
   const timeText = formatDuration(track.duration);
-  const hasBpmConf = track.bpmConfidence != null && track.bpmConfidence !== '';
 
   return (
     <div
@@ -139,7 +149,7 @@ const TrackRow = memo(({
           {track.title || 'Unknown Title'}
         </span>
         <StatusIcons track={track} />
-        {track.energy != null && <EnergyMeter level={track.energy} />}
+        <EnergyMeter level={track.energy} />
       </div>
 
       {/* Row 2: Metadata badges + waveform */}
@@ -147,7 +157,7 @@ const TrackRow = memo(({
         <div className="track-metadata">
           <span className="badge-bpm">
             BPM: {bpmText}
-            {hasBpmConf && <BpmDot confidence={track.bpmConfidence} locked={track.bpmLocked} />}
+            <BpmDot confidence={track.bpmConfidence} locked={track.bpmLocked} />
           </span>
           <span className="badge-key">Key: {keyText}</span>
           <span className="badge-time">{timeText}</span>
