@@ -144,16 +144,16 @@ export default function BeatDetectionPanel({
         <div className="mb-4 p-3 bg-gray-900 rounded border border-purple-500">
           <div className="text-sm font-mono space-y-1">
             <div className="flex justify-between">
-              <span className="text-gray-400">Kick Energy (40-150Hz):</span>
+              <span className="text-gray-400">Onset (flux):</span>
               <span className="text-purple-300 font-bold">{debugValues.bass}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-400">Average Kick:</span>
+              <span className="text-gray-400">Threshold (μ+kσ):</span>
               <span className="text-purple-300">{debugValues.avgBass}</span>
             </div>
             <div className="grid grid-cols-3 gap-2 mt-2 pt-2 border-t border-gray-700">
               <div className={`text-center p-1 rounded ${debugValues.spike ? 'bg-green-600' : 'bg-red-900'}`}>
-                <div className="text-xs">Spike</div>
+                <div className="text-xs">Above</div>
                 <div className="font-bold">{debugValues.spike ? '✓' : '✗'}</div>
               </div>
               <div className={`text-center p-1 rounded ${debugValues.min ? 'bg-green-600' : 'bg-red-900'}`}>
@@ -163,6 +163,17 @@ export default function BeatDetectionPanel({
               <div className={`text-center p-1 rounded ${debugValues.gate ? 'bg-green-600' : 'bg-red-900'}`}>
                 <div className="text-xs">Gate</div>
                 <div className="font-bold">{debugValues.gate ? '✓' : '✗'}</div>
+              </div>
+            </div>
+            {/* Rolling 20s diagnostic stats */}
+            <div className="mt-2 pt-2 border-t border-gray-700 text-xs">
+              <div className="flex justify-between">
+                <span className="text-gray-500">Onset min/max/avg (20s):</span>
+                <span className="text-cyan-400">{debugValues.onsetMin ?? '—'} / {debugValues.onsetMax ?? '—'} / {debugValues.onsetAvg ?? '—'}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">Peaks found / kept:</span>
+                <span className="text-cyan-400">{debugValues.peaksFound ?? 0} / {debugValues.peaksKept ?? 0}</span>
               </div>
             </div>
           </div>
@@ -411,17 +422,17 @@ export default function BeatDetectionPanel({
           {/* Spike Threshold */}
           <div className="mb-3">
             <label className="flex justify-between text-gray-300 mb-1 text-sm">
-              <span>Spike Threshold</span>
+              <span>Sensitivity (k)</span>
               <span className="font-mono text-green-400">{beatSpikeThreshold.toFixed(2)}x</span>
             </label>
             <div className="flex items-center gap-2">
               <button
-                onClick={() => setBeatSpikeThreshold(Math.max(1.0, beatSpikeThreshold - 0.1))}
+                onClick={() => setBeatSpikeThreshold(Math.max(0.5, beatSpikeThreshold - 0.1))}
                 className="bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded text-sm"
               >▼</button>
               <input
                 type="range"
-                min="1.0"
+                min="0.5"
                 max="3.0"
                 step="0.1"
                 value={beatSpikeThreshold}
@@ -433,35 +444,35 @@ export default function BeatDetectionPanel({
                 className="bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded text-sm"
               >▲</button>
             </div>
-            <p className="text-gray-500 text-xs mt-1">Higher = only strong drum hits</p>
+            <p className="text-gray-500 text-xs mt-1">k in μ+kσ — lower = more beats</p>
           </div>
           
           {/* Bass Minimum */}
           <div className="mb-3">
             <label className="flex justify-between text-gray-300 mb-1 text-sm">
-              <span>Bass Minimum</span>
-              <span className="font-mono text-green-400">{beatMinimum}</span>
+              <span>Onset Floor</span>
+              <span className="font-mono text-green-400">{typeof beatMinimum === 'number' ? beatMinimum.toFixed(1) : beatMinimum}</span>
             </label>
             <div className="flex items-center gap-2">
               <button
-                onClick={() => setBeatMinimum(Math.max(20, beatMinimum - 5))}
+                onClick={() => setBeatMinimum(Math.max(0, +(beatMinimum - 0.2).toFixed(1)))}
                 className="bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded text-sm"
               >▼</button>
               <input
                 type="range"
-                min="20"
-                max="200"
-                step="5"
+                min="0"
+                max="5.0"
+                step="0.1"
                 value={beatMinimum}
-                onChange={(e) => setBeatMinimum(parseInt(e.target.value))}
+                onChange={(e) => setBeatMinimum(parseFloat(e.target.value))}
                 className="flex-1"
               />
               <button
-                onClick={() => setBeatMinimum(Math.min(200, beatMinimum + 5))}
+                onClick={() => setBeatMinimum(Math.min(5.0, +(beatMinimum + 0.2).toFixed(1)))}
                 className="bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded text-sm"
               >▲</button>
             </div>
-            <p className="text-gray-500 text-xs mt-1">Higher = ignores quiet sections</p>
+            <p className="text-gray-500 text-xs mt-1">Minimum flux to trigger (filters noise)</p>
           </div>
           
           {/* Time Gate */}
@@ -472,12 +483,12 @@ export default function BeatDetectionPanel({
             </label>
             <div className="flex items-center gap-2">
               <button
-                onClick={() => setBeatGate(Math.max(100, beatGate - 10))}
+                onClick={() => setBeatGate(Math.max(80, beatGate - 10))}
                 className="bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded text-sm"
               >▼</button>
               <input
                 type="range"
-                min="100"
+                min="80"
                 max="500"
                 step="10"
                 value={beatGate}
@@ -500,33 +511,33 @@ export default function BeatDetectionPanel({
             </label>
             <div className="flex items-center gap-2">
               <button
-                onClick={() => setBeatHistoryLength(Math.max(10, beatHistoryLength - 1))}
+                onClick={() => setBeatHistoryLength(Math.max(30, beatHistoryLength - 5))}
                 className="bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded text-sm"
               >▼</button>
               <input
                 type="range"
-                min="10"
-                max="100"
-                step="1"
+                min="30"
+                max="150"
+                step="5"
                 value={beatHistoryLength}
                 onChange={(e) => setBeatHistoryLength(parseInt(e.target.value))}
                 className="flex-1"
               />
               <button
-                onClick={() => setBeatHistoryLength(Math.min(100, beatHistoryLength + 1))}
+                onClick={() => setBeatHistoryLength(Math.min(150, beatHistoryLength + 5))}
                 className="bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded text-sm"
               >▲</button>
             </div>
-            <p className="text-gray-500 text-xs mt-1">Lower = faster adaptation</p>
+            <p className="text-gray-500 text-xs mt-1">Frames for μ/σ window (~1.5s at 90)</p>
           </div>
           
           {/* Reset Button */}
           <button
             onClick={() => {
-              setBeatSpikeThreshold(1.4);
-              setBeatMinimum(100);
-              setBeatGate(250);
-              setBeatHistoryLength(60);
+              setBeatSpikeThreshold(1.5);
+              setBeatMinimum(0.5);
+              setBeatGate(120);
+              setBeatHistoryLength(90);
             }}
             className="w-full mt-2 px-3 py-2 bg-red-600 hover:bg-red-700 rounded text-white text-base font-semibold"
           >

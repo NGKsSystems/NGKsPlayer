@@ -46,17 +46,20 @@ export function useWaveform(audioRef, isPlaying, beatPulseEnabledRef, beatDetect
   });
   const beatDetectionRef = useRef({
     lastBeat: 0,
-    threshold: 165,
     bassHistory: [],
-    kickHistory: [],        // isolated 40-150Hz kick energy history
-    kickEnvelope: 0,        // smoothed kick energy (envelope follower)
-    beatIntervals: [],      // last N beat intervals for smoothing
     midHistory: [],
     highHistory: [],
     lastPeak: 0,
-    adaptiveThreshold: 165,
     beatStrength: 0,
-    debugCounter: 0
+    debugCounter: 0,
+    // Spectral flux onset detection
+    prevFrequencyData: null,   // previous frame for flux calculation
+    onsetHistory: [],           // rolling window for μ+kσ
+    lastOnsetValue: 0,          // for local maxima detection
+    wasRising: false,           // was onset rising last frame?
+    wasAboveThreshold: false,   // was onset above threshold last frame?
+    // Debug statistics (rolling 20s window)
+    debugStats: null
   });
 
   // ── Connect analyser to the <audio> element's existing Web Audio chain ──
@@ -81,7 +84,7 @@ export function useWaveform(audioRef, isPlaying, beatPulseEnabledRef, beatDetect
             audioContextRef.current = existingCtx;
             analyzerRef.current = existingCtx.createAnalyser();
             analyzerRef.current.fftSize = 2048;
-            analyzerRef.current.smoothingTimeConstant = 0.6;
+            analyzerRef.current.smoothingTimeConstant = 0.3;
 
             // Passive tap: gainNode → analyser (analyser not routed to destination)
             existingGain.connect(analyzerRef.current);
@@ -96,7 +99,7 @@ export function useWaveform(audioRef, isPlaying, beatPulseEnabledRef, beatDetect
                 audioContextRef.current = ctx2;
                 analyzerRef.current = ctx2.createAnalyser();
                 analyzerRef.current.fftSize = 2048;
-                analyzerRef.current.smoothingTimeConstant = 0.6;
+                analyzerRef.current.smoothingTimeConstant = 0.3;
                 gain2.connect(analyzerRef.current);
                 essentiaSourceNodeRef.current = audio.__ngksMainSourceNode;
                 drawWaveform();
@@ -155,32 +158,24 @@ export function useWaveform(audioRef, isPlaying, beatPulseEnabledRef, beatDetect
         analyzer.getByteFrequencyData(frequencyData);
 
         // ══════════════════════════════════════════════
-        //  BEAT DETECTION — kick-band isolated (40-150 Hz)
+        //  BEAT DETECTION — Two-band spectral flux
         // ══════════════════════════════════════════════
-        // With sampleRate ≈ 44100 and fftSize = 2048:
-        //   bin resolution = 44100 / 2048 ≈ 21.53 Hz
-        //   40 Hz  → bin 2
-        //   150 Hz → bin 7
-        //   200 Hz → bin 9   (upper safety margin)
-        //   2 kHz  → bin 93  (old bassEnd — way too wide, catches hats/snare)
+        // Spectral flux measures frame-to-frame CHANGE in magnitude.
+        // This detects transients (drum hits) even in compressed mixes
+        // where raw energy doesn't spike enough.
         //
-        // We isolate kick energy (40-150 Hz) for beat detection,
-        // but still compute full bass/mid/high for the spectrum display.
+        // Two bands:
+        //   Body:   50–180 Hz  (kick drum fundamental)
+        //   Attack: 2–6 kHz   (beater click / stick attack)
+        //   Combined onset = 0.7*body + 0.3*attack
+        //
+        // Adaptive threshold: μ + k*σ (rolling ~1.5s window)
+        // Peak picking: local maxima (rising→falling while above threshold)
 
         const sampleRate = audioContextRef.current?.sampleRate || 44100;
         const binHz = sampleRate / (analyzerRef.current?.fftSize || 2048);
 
-        // ── Kick-isolated band (40-150 Hz) ──
-        const kickLowBin = Math.max(1, Math.round(40 / binHz));
-        const kickHighBin = Math.min(bufferLength - 1, Math.round(150 / binHz));
-        let kickSum = 0;
-        const kickBinCount = kickHighBin - kickLowBin + 1;
-        for (let i = kickLowBin; i <= kickHighBin; i++) {
-          kickSum += frequencyData[i];
-        }
-        const kickEnergy = kickSum / kickBinCount;
-
-        // ── Full-range bands for spectrum display only ──
+        // ── Full-range bands for spectrum display ──
         const bassEnd = Math.floor(bufferLength * 0.1);
         const midStart = bassEnd;
         const midEnd = Math.floor(bufferLength * 0.4);
@@ -195,33 +190,92 @@ export function useWaveform(audioRef, isPlaying, beatPulseEnabledRef, beatDetect
         const midAverage = midSum / (midEnd - midStart);
         const highAverage = highSum / (bufferLength - highStart);
 
-        // ── Envelope follower — smooths kick energy to reject noise ──
-        // Attack fast (0.3), release slow (0.05) — tracks transients, ignores tails
+        // ── Spectral flux onset detection ──
         const bd = beatDetectionRef.current;
-        const attackCoeff = 0.3;
-        const releaseCoeff = 0.05;
-        if (kickEnergy > bd.kickEnvelope) {
-          bd.kickEnvelope = bd.kickEnvelope + attackCoeff * (kickEnergy - bd.kickEnvelope);
-        } else {
-          bd.kickEnvelope = bd.kickEnvelope + releaseCoeff * (kickEnergy - bd.kickEnvelope);
+
+        // Initialize previous frame buffer on first run
+        if (!bd.prevFrequencyData) {
+          bd.prevFrequencyData = new Uint8Array(bufferLength);
+          bd.prevFrequencyData.set(frequencyData);
         }
 
-        // ── Kick history + adaptive average ──
-        if (!bd.kickHistory) bd.kickHistory = [];
-        bd.kickHistory.push(bd.kickEnvelope);
-        const historyLen = beatDetectionConfig?.beatHistoryLength || 30;
-        if (bd.kickHistory.length > historyLen) bd.kickHistory.shift();
+        // Two-band spectral flux
+        //   Body band: 50–180 Hz (kick fundamental)
+        const bodyLow = Math.max(1, Math.round(50 / binHz));
+        const bodyHigh = Math.min(bufferLength - 1, Math.round(180 / binHz));
+        //   Attack band: 2–6 kHz (beater click)
+        const attackLow = Math.round(2000 / binHz);
+        const attackHigh = Math.min(bufferLength - 1, Math.round(6000 / binHz));
 
-        // Also maintain full-bass history for spectrum/auto-tune
-        if (!bd.bassHistory) bd.bassHistory = [];
-        bd.bassHistory.push(bassAverage);
-        if (bd.bassHistory.length > historyLen) bd.bassHistory.shift();
+        let bodyFlux = 0;
+        for (let i = bodyLow; i <= bodyHigh; i++) {
+          const diff = frequencyData[i] - bd.prevFrequencyData[i];
+          if (diff > 0) bodyFlux += diff;
+        }
 
-        const avgKick = bd.kickHistory.reduce((a, b) => a + b, 0) / bd.kickHistory.length;
-        const avgBass = bd.bassHistory.reduce((a, b) => a + b, 0) / bd.bassHistory.length;
+        let attackFlux = 0;
+        for (let i = attackLow; i <= attackHigh; i++) {
+          const diff = frequencyData[i] - bd.prevFrequencyData[i];
+          if (diff > 0) attackFlux += diff;
+        }
+
+        // Store current frame for next iteration
+        bd.prevFrequencyData.set(frequencyData);
+
+        // Combine body + attack, log-compress for dynamic range
+        const rawOnset = 0.7 * bodyFlux + 0.3 * attackFlux;
+        const onset = Math.log1p(rawOnset);
+
+        // ── Rolling μ+kσ adaptive threshold ──
+        // ~90 frames ≈ 1.5s at 60fps
+        const historyLen = beatDetectionConfig?.beatHistoryLength || 90;
+        if (!bd.onsetHistory) bd.onsetHistory = [];
+        bd.onsetHistory.push(onset);
+        if (bd.onsetHistory.length > historyLen) bd.onsetHistory.shift();
+
+        let onsetMean = 0;
+        for (let i = 0; i < bd.onsetHistory.length; i++) onsetMean += bd.onsetHistory[i];
+        onsetMean /= bd.onsetHistory.length;
+
+        let onsetVariance = 0;
+        for (let i = 0; i < bd.onsetHistory.length; i++) {
+          onsetVariance += (bd.onsetHistory[i] - onsetMean) ** 2;
+        }
+        onsetVariance /= bd.onsetHistory.length;
+        const onsetStd = Math.sqrt(onsetVariance);
+
+        // k = user's threshold slider (0.5–3.0, default 1.5)
+        const k = beatDetectionConfig?.beatThresholdRef?.current ?? 1.5;
+        const minimum = beatDetectionConfig?.beatMinRef?.current ?? 0.5;
+        const gate = beatDetectionConfig?.beatGateRef?.current ?? 120;
+
+        const adaptiveThreshold = onsetMean + k * onsetStd;
+
+        // ── Debug statistics (rolling 20s window) ──
+        const now = Date.now();
+        if (!bd.debugStats) {
+          bd.debugStats = {
+            onsetMin: Infinity, onsetMax: 0, onsetSum: 0, onsetCount: 0,
+            peaksFound: 0, peaksKept: 0, windowStart: now
+          };
+        }
+        const stats = bd.debugStats;
+        if (now - stats.windowStart > 20000) {
+          stats.onsetMin = Infinity;
+          stats.onsetMax = 0;
+          stats.onsetSum = 0;
+          stats.onsetCount = 0;
+          stats.peaksFound = 0;
+          stats.peaksKept = 0;
+          stats.windowStart = now;
+        }
+        stats.onsetMin = Math.min(stats.onsetMin, onset);
+        stats.onsetMax = Math.max(stats.onsetMax, onset);
+        stats.onsetSum += onset;
+        stats.onsetCount++;
 
         // ── AUTO-TUNE CALIBRATION ──
-        // Samples bass energy for ~3 seconds, then computes optimal parameters
+        // Samples onset values for ~3 seconds, then computes optimal k, gate, etc.
         const autoTuneRef = beatDetectionConfig?.autoTuneEnabledRef;
         const setAutoTuneStatus = beatDetectionConfig?.setAutoTuneStatus;
         const isAutoTuning = autoTuneRef?.current;
@@ -230,71 +284,59 @@ export function useWaveform(audioRef, isPlaying, beatPulseEnabledRef, beatDetect
           const cal = autoTuneCalibrationRef.current;
           if (!cal.calibrated) {
             if (cal.startTime === 0) {
-              // Begin calibration
               cal.startTime = Date.now();
               cal.samples = [];
               cal.calibrated = false;
               if (setAutoTuneStatus) setAutoTuneStatus('calibrating');
             }
 
-            // Collect kick energy samples (isolated 40-150Hz, not full bass)
-            cal.samples.push(bd.kickEnvelope);
+            // Sample onset values (spectral flux, not raw energy)
+            cal.samples.push(onset);
 
             const elapsed = Date.now() - cal.startTime;
             if (elapsed >= cal.calibrationDuration && cal.samples.length > 30) {
-              // ── Compute optimal parameters from collected data ──
               const sorted = [...cal.samples].sort((a, b) => a - b);
               const len = sorted.length;
               const mean = sorted.reduce((a, b) => a + b, 0) / len;
               const variance = sorted.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / len;
               const stddev = Math.sqrt(variance);
 
-              // Percentiles for robust estimation
               const p25 = sorted[Math.floor(len * 0.25)];
               const p75 = sorted[Math.floor(len * 0.75)];
               const p90 = sorted[Math.floor(len * 0.90)];
 
-              // ── Auto-set threshold ──
-              // Threshold = ratio where a spike stands out from average
-              // For dynamic music: ~1.2-1.4x, for compressed: ~1.1-1.2x
-              const dynamicRange = (p90 - p25) / Math.max(mean, 1);
-              let optimalThreshold;
-              if (dynamicRange > 0.6) {
-                // Dynamic music (rock, metal) — spikes are pronounced
-                optimalThreshold = 1.25;
-              } else if (dynamicRange > 0.3) {
-                // Moderate dynamics (pop, hip-hop)
-                optimalThreshold = 1.15;
+              // Dynamic range in spectral-flux onset units
+              const dynamicRange = (p90 - p25) / Math.max(mean, 0.1);
+
+              // ── Optimal k (threshold multiplier for μ+kσ) ──
+              let optimalK;
+              if (dynamicRange > 1.0) {
+                optimalK = 1.8;   // Very dynamic — higher k avoids noise
+              } else if (dynamicRange > 0.5) {
+                optimalK = 1.4;   // Moderate dynamics
               } else {
-                // Heavily compressed (EDM, modern pop)
-                optimalThreshold = 1.08;
+                optimalK = 1.1;   // Compressed — low k to catch beats
               }
-              optimalThreshold = Math.max(1.05, Math.min(2.0, optimalThreshold));
+              optimalK = Math.max(0.8, Math.min(2.5, optimalK));
 
-              // ── Auto-set minimum ──
-              // Minimum = noise floor filter — use 25th percentile
-              const optimalMinimum = Math.max(20, Math.round(p25 * 0.8));
+              // ── Optimal minimum (onset floor) ──
+              const optimalMinimum = Math.max(0.1, parseFloat((p25 * 0.5).toFixed(1)));
 
-              // ── Auto-set gate (ms between beats) ──
-              // Use BPM if available: gate = half a beat interval
+              // ── Optimal gate from BPM ──
               const bpm = beatDetectionConfig?.detectedBPM;
               let optimalGate;
               if (bpm && bpm > 0) {
                 const msPerBeat = 60000 / bpm;
-                optimalGate = Math.round(msPerBeat * 0.45); // slightly less than half-beat
+                optimalGate = Math.round(msPerBeat * 0.35);
               } else {
-                // No BPM — estimate from dynamic range
-                optimalGate = dynamicRange > 0.5 ? 200 : 150;
+                optimalGate = 120;
               }
-              optimalGate = Math.max(80, Math.min(500, optimalGate));
+              optimalGate = Math.max(80, Math.min(400, optimalGate));
 
-              // ── Auto-set history length ──
-              // Shorter history = faster adaptation, longer = smoother
-              const optimalHistory = dynamicRange > 0.5 ? 40 : 25;
+              const optimalHistory = dynamicRange > 0.8 ? 120 : 90;
 
-              // Apply computed values via the setter functions
               if (beatDetectionConfig?.setBeatSpikeThreshold) {
-                beatDetectionConfig.setBeatSpikeThreshold(parseFloat(optimalThreshold.toFixed(2)));
+                beatDetectionConfig.setBeatSpikeThreshold(parseFloat(optimalK.toFixed(2)));
               }
               if (beatDetectionConfig?.setBeatMinimum) {
                 beatDetectionConfig.setBeatMinimum(optimalMinimum);
@@ -311,19 +353,18 @@ export function useWaveform(audioRef, isPlaying, beatPulseEnabledRef, beatDetect
 
               console.log('[AutoTune] Calibration complete:', {
                 samples: len,
-                mean: mean.toFixed(1),
-                stddev: stddev.toFixed(1),
+                mean: mean.toFixed(2),
+                stddev: stddev.toFixed(2),
                 dynamicRange: dynamicRange.toFixed(3),
-                p25: p25.toFixed(1),
-                p75: p75.toFixed(1),
-                p90: p90.toFixed(1),
+                p25: p25.toFixed(2),
+                p75: p75.toFixed(2),
+                p90: p90.toFixed(2),
                 bpm: bpm || 'N/A',
-                result: { threshold: optimalThreshold, minimum: optimalMinimum, gate: optimalGate, history: optimalHistory }
+                result: { k: optimalK, minimum: optimalMinimum, gate: optimalGate, history: optimalHistory }
               });
             }
           }
         } else {
-          // Auto-tune disabled — reset calibration state so it can re-run
           const cal = autoTuneCalibrationRef.current;
           if (cal.calibrated || cal.startTime > 0) {
             cal.samples = [];
@@ -332,58 +373,54 @@ export function useWaveform(audioRef, isPlaying, beatPulseEnabledRef, beatDetect
           }
         }
 
-        const threshold = beatDetectionConfig?.beatThresholdRef?.current ?? 1.5;
-        const minimum = beatDetectionConfig?.beatMinRef?.current ?? 80;
-        const gate = beatDetectionConfig?.beatGateRef?.current ?? 200;
+        // ── Local maxima peak picking ──
+        // Instead of triggering on first threshold crossing, detect when
+        // onset rises above threshold then starts falling — that's the peak.
+        const isAboveThreshold = onset > adaptiveThreshold && onset > minimum;
+        const currentlyRising = onset >= (bd.lastOnsetValue || 0);
 
-        // ── Beat detection uses KICK energy (40-150Hz), not full bass ──
-        const kickSpike = bd.kickEnvelope > avgKick * threshold;
-        const aboveMin = bd.kickEnvelope > minimum;
+        // Local maximum = was rising + above threshold, now falling
+        const isLocalMax = bd.wasRising && !currentlyRising && bd.wasAboveThreshold;
 
-        const now = Date.now();
+        bd.wasRising = currentlyRising;
+        bd.wasAboveThreshold = isAboveThreshold;
+        bd.lastOnsetValue = onset;
+
         const timeSinceLastBeat = now - bd.lastBeat;
 
         // Update debug display every 10 frames
         bd.debugCounter++;
         if (bd.debugCounter % 10 === 0) {
+          const onsetAvg = stats.onsetCount > 0 ? stats.onsetSum / stats.onsetCount : 0;
           setDebugValues({
-            bass: Math.round(bd.kickEnvelope),    // show kick energy, not full bass
-            avgBass: Math.round(avgKick),          // show kick average
-            spike: kickSpike,
-            min: aboveMin,
-            gate: timeSinceLastBeat > gate
+            bass: onset.toFixed(1),                // onset value (spectral flux)
+            avgBass: adaptiveThreshold.toFixed(1),  // adaptive threshold (μ+kσ)
+            spike: isAboveThreshold,
+            min: onset > minimum,
+            gate: timeSinceLastBeat > gate,
+            // Extended 20s diagnostic stats
+            onsetMin: stats.onsetMin === Infinity ? '0.0' : stats.onsetMin.toFixed(1),
+            onsetMax: stats.onsetMax.toFixed(1),
+            onsetAvg: onsetAvg.toFixed(1),
+            peaksFound: stats.peaksFound,
+            peaksKept: stats.peaksKept,
           });
         }
 
-        // Skip custom beat detection if Essentia is enabled
-        if (!useEssentiaBeats && beatPulseEnabledRef?.current && kickSpike && aboveMin && timeSinceLastBeat > gate) {
-          // ── Interval smoothing — reject outlier intervals ──
-          if (!bd.beatIntervals) bd.beatIntervals = [];
-          if (bd.lastBeat > 0) {
-            bd.beatIntervals.push(timeSinceLastBeat);
-            if (bd.beatIntervals.length > 8) bd.beatIntervals.shift();
-          }
+        // ── Fire beat on local maximum (skip if Essentia is active) ──
+        if (!useEssentiaBeats && beatPulseEnabledRef?.current && isLocalMax) {
+          stats.peaksFound++;
 
-          // Median-filter: only fire if this interval is within 50% of median
-          // This rejects double-triggers and half-time hits
-          let intervalOk = true;
-          if (bd.beatIntervals.length >= 4) {
-            const sorted = [...bd.beatIntervals].sort((a, b) => a - b);
-            const median = sorted[Math.floor(sorted.length / 2)];
-            const ratio = timeSinceLastBeat / median;
-            // Accept if within 0.5x–2.0x of median (allows some swing)
-            intervalOk = ratio > 0.5 && ratio < 2.0;
-          }
-
-          if (intervalOk) {
+          if (timeSinceLastBeat > gate) {
+            stats.peaksKept++;
             bd.lastBeat = now;
-            bd.beatStrength = Math.min((bd.kickEnvelope / avgKick), 2);
+            bd.beatStrength = Math.min(onset / Math.max(adaptiveThreshold, 0.1), 2);
 
             setBeatPulse(true);
             setTimeout(() => setBeatPulse(false), 150);
 
-            // Detect SUPER PEAK beats
-            if (bd.kickEnvelope > avgKick * 1.6 && timeSinceLastBeat > 1500) {
+            // Detect SUPER PEAK beats (very strong onset after a long gap)
+            if (onset > adaptiveThreshold * 1.8 && timeSinceLastBeat > 1500) {
               bd.lastPeak = now;
               setPeakRotation(true);
               setTimeout(() => setPeakRotation(false), 1500);
