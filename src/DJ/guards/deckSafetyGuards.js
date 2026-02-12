@@ -81,6 +81,11 @@ export function isDeckPublicFacing(audioManager, deck) {
   // Must be playing
   if (!audioManager.isPlaying(deck)) return false;
 
+  // If deck is cued (panned to headphone/right ear), it is NOT public-facing.
+  // Cued decks are for DJ preview only — the crowd doesn't hear them.
+  const deckData = audioManager.decks?.[deck];
+  if (deckData?.cued) return false;
+
   // Must be routed to master (crossfader + volume not cut)
   if (!isRoutedToMaster(audioManager, deck)) return false;
 
