@@ -257,11 +257,13 @@ const useWaveform = (
 
   function drawBars(ctx, freqData, w, h, mid) {
     const binCount = freqData.length;
-    const barWidth = Math.max(2, Math.floor(w / binCount) - 1);
+    const barTotalWidth = w / binCount;          // fractional — fills full width
     const gap = 1;
 
     for (let i = 0; i < binCount; i++) {
-      const x = Math.floor((i / binCount) * w);
+      const x = Math.floor(i * barTotalWidth);
+      const nextX = Math.floor((i + 1) * barTotalWidth);
+      const bw = nextX - x - gap;
       const val = freqData[i] / 255;
       const barH = val * h * 0.95;
 
@@ -273,7 +275,7 @@ const useWaveform = (
       barGrad.addColorStop(1, 'rgb(255, 30, 0)');
 
       ctx.fillStyle = barGrad;
-      ctx.fillRect(x, h - barH, Math.max(barWidth - gap, 1), barH);
+      ctx.fillRect(x, h - barH, Math.max(bw, 1), barH);
     }
   }
 

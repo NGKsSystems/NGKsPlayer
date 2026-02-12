@@ -104,11 +104,13 @@ const MasterWaveform = ({ tracks, currentTime, duration, onSeek, isPlaying, audi
       analyser.getByteFrequencyData(freqData);
 
       const binCount = analyser.frequencyBinCount;
-      const barWidth = Math.max(2, Math.floor(w / binCount) - 1);
+      const barTotalWidth = w / binCount;          // fractional — fills full width
       const gap = 1;
 
       for (let i = 0; i < binCount; i++) {
-        const x = Math.floor((i / binCount) * w);
+        const x = Math.floor(i * barTotalWidth);
+        const nextX = Math.floor((i + 1) * barTotalWidth);
+        const bw = nextX - x - gap;
         const val = freqData[i] / 255;            // 0..1
         const barH = val * h * 0.95;
 
@@ -121,7 +123,7 @@ const MasterWaveform = ({ tracks, currentTime, duration, onSeek, isPlaying, audi
 
         ctx.fillStyle = barGrad;
         // Bars grow upward from bottom
-        ctx.fillRect(x, h - barH, Math.max(barWidth - gap, 1), barH);
+        ctx.fillRect(x, h - barH, Math.max(bw, 1), barH);
       }
     } else {
       // ═══════════════════════════════════════════
