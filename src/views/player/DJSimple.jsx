@@ -251,6 +251,11 @@ const saveLayout = async (layout, currentDeckMode) => {
     }
   });
 
+  // ── Ref mirror of deckState — always holds the latest value ──
+  // Used inside useCallback closures to avoid stale deckState reads.
+  const deckStateRef = useRef(deckState);
+  deckStateRef.current = deckState;
+
   // ── Test hook: expose deck state for Playwright guard tests ──
   useEffect(() => {
     if (import.meta.env?.MODE === 'test' || import.meta.env?.DEV) {
@@ -914,14 +919,22 @@ const saveLayout = async (layout, currentDeckMode) => {
 
   // ── Performance Safety Mode — guarded load pipeline ──
   // Single function used by ALL load entrypoints (library primary, cross-load, drag, keyboard)
+  // Reads from deckStateRef (ref) instead of deckState (closure) to guarantee
+  // we always see the most recent deck state, eliminating stale-closure risks.
   const attemptLoadTrackToDeck = useCallback(({ track, targetDeck, source = 'unknown' }) => {
+    const currentDeckState = deckStateRef.current;
+
+    console.log(`[GUARD] attemptLoadTrackToDeck → Deck ${targetDeck} | source: ${source} | track on deck: ${currentDeckState?.[targetDeck]?.track?.title ?? 'NONE'}`);
+
     const result = evaluateLoadGuard({
       track,
       targetDeck,
       source,
       audioManager: audioManagerRef.current,
-      deckState,
+      deckState: currentDeckState,
     });
+
+    console.log(`[GUARD] decision: ${result.decision}`);
 
     if (result.decision === GUARD_DECISION.BLOCK_LIVE) {
       setGuardModal({
@@ -945,7 +958,7 @@ const saveLayout = async (layout, currentDeckMode) => {
 
     // ALLOW — proceed immediately
     handleTrackLoad(targetDeck, track);
-  }, [deckState, handleTrackLoad]);
+  }, [handleTrackLoad]);
 
   const handleGuardConfirm = useCallback(() => {
     guardModal?.pendingAction?.();

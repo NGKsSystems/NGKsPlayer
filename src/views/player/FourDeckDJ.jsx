@@ -39,6 +39,10 @@ const FourDeckDJ = ({ onNavigate }) => {
     D: { track: null, isPlaying: false, position: 0, volume: 0.8 },
   });
 
+  // ── Ref mirror of deckState — always holds the latest value ──
+  const deckStateRef = useRef(deckState);
+  deckStateRef.current = deckState;
+
   // Layout management
   const [layoutConfig, setLayoutConfig] = useState({
     layout: '2-deck',
@@ -171,14 +175,21 @@ const FourDeckDJ = ({ onNavigate }) => {
   }, []);
 
   // ── Performance Safety Mode — guarded load pipeline ──
+  // Reads from deckStateRef (ref) to guarantee the most recent deck state.
   const attemptLoadTrackToDeck = useCallback(({ track, targetDeck, source = 'unknown' }) => {
+    const currentDeckState = deckStateRef.current;
+
+    console.log(`[GUARD] attemptLoadTrackToDeck → Deck ${targetDeck} | source: ${source} | track on deck: ${currentDeckState?.[targetDeck]?.track?.title ?? 'NONE'}`);
+
     const result = evaluateLoadGuard({
       track,
       targetDeck,
       source,
       audioManager: audioManagerRef.current,
-      deckState,
+      deckState: currentDeckState,
     });
+
+    console.log(`[GUARD] decision: ${result.decision}`);
 
     if (result.decision === GUARD_DECISION.BLOCK_LIVE) {
       setGuardModal({ mode: 'block', title: result.title, message: result.message, pendingAction: null });
@@ -192,7 +203,7 @@ const FourDeckDJ = ({ onNavigate }) => {
 
     // ALLOW
     loadTrackToDeck(targetDeck, track);
-  }, [deckState, loadTrackToDeck]);
+  }, [loadTrackToDeck]);
 
   const handleGuardConfirm = useCallback(() => {
     guardModal?.pendingAction?.();
