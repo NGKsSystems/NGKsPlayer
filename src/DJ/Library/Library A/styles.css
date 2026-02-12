@@ -184,7 +184,7 @@
   display: flex !important;
   flex-direction: column !important;
   justify-content: center;
-  gap: 2px;
+  gap: 3px;
   padding: 6px 10px;
   font-size: 11px;
   cursor: pointer;
@@ -193,7 +193,7 @@
   border-radius: 6px;
   margin-bottom: 1px;
   transition: background 0.15s ease, border-color 0.15s ease;
-  min-height: 44px;
+  min-height: 60px;
   max-height: none !important;
   height: auto !important;
   overflow: visible;
@@ -201,9 +201,9 @@
 }
 
 .library-a-widget .track-row.compact {
-  min-height: 26px;
+  min-height: 36px;
   padding: 3px 10px;
-  gap: 1px;
+  gap: 2px;
   border-radius: 4px;
 }
 
@@ -218,13 +218,24 @@
   box-shadow: 0 0 8px rgba(255, 107, 53, 0.3);
 }
 
-/* ── Row top: title + status + energy ────────────────────── */
+/* ── Row 1: title + status ───────────────────────────────── */
 .library-a-widget .track-row-top {
   display: flex;
   align-items: center;
   gap: 6px;
   width: 100%;
   min-height: 0;
+}
+
+/* ── Row 2: metadata badges + energy ─────────────────────── */
+.library-a-widget .track-row-mid {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+.library-a-widget .track-row.compact .track-row-mid {
+  gap: 4px;
 }
 
 .library-a-widget .track-filename {
@@ -297,16 +308,14 @@
 .library-a-widget .track-row.compact .energy-bar:nth-child(4) { height: 7px; }
 .library-a-widget .track-row.compact .energy-bar:nth-child(5) { height: 9px; }
 
-/* ── Row bottom: metadata + waveform ─────────────────────── */
+/* ── Row 3: mini waveform strip ──────────────────────────── */
 .library-a-widget .track-row-bottom {
   display: flex;
   align-items: center;
-  gap: 6px;
   width: 100%;
 }
-
 .library-a-widget .track-row.compact .track-row-bottom {
-  gap: 4px;
+  display: none;
 }
 
 .library-a-widget .track-metadata {
@@ -374,10 +383,11 @@
 
 /* ── Mini waveform strip ─────────────────────────────────── */
 .library-a-widget .mini-waveform {
-  flex: 1 1 0;
-  min-width: 30px;
-  max-width: 120px;
-  height: 16px;
+  flex: 1 1 100%;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  height: 14px;
   border-radius: 3px;
   object-fit: cover;
   image-rendering: pixelated;

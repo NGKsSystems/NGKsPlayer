@@ -143,17 +143,16 @@ const TrackRow = memo(({
       onMouseLeave={handleMouseLeave}
       title="Double-click to load | Right-click to edit metadata"
     >
-      {/* Row 1: Title + status icons + energy */}
+      {/* Row 1: Title + status icons */}
       <div className="track-row-top">
         <span className="track-filename">
           {track.title || 'Unknown Title'}
         </span>
         <StatusIcons track={track} />
-        <EnergyMeter level={track.energy} />
       </div>
 
-      {/* Row 2: Metadata badges + waveform */}
-      <div className="track-row-bottom">
+      {/* Row 2: Metadata badges + BPM dot + energy */}
+      <div className="track-row-mid">
         <div className="track-metadata">
           <span className="badge-bpm">
             BPM: {bpmText}
@@ -162,6 +161,11 @@ const TrackRow = memo(({
           <span className="badge-key">Key: {keyText}</span>
           <span className="badge-time">{timeText}</span>
         </div>
+        <EnergyMeter level={track.energy} />
+      </div>
+
+      {/* Row 3: Mini waveform strip */}
+      <div className="track-row-bottom">
         <MiniWaveform src={track.waveformPreview || track.thumbnailPath} />
       </div>
 
