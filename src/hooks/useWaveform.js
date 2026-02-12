@@ -55,40 +55,60 @@ const useWaveform = (
     };
   }, []);
 
-  // ── Connect analyser to the <audio> element ──
+  // ── Connect analyser to the <audio> element's existing Web Audio chain ──
+  // NowPlaying already calls createMediaElementSource and stores nodes on the
+  // element as __ngksMainSourceNode / __ngksMainGainNode / __ngksMainAudioContext.
+  // We MUST NOT call createMediaElementSource again (throws InvalidStateError).
+  // Instead, tap the existing gain node with a passive analyser branch.
   useEffect(() => {
     const audio = audioRef?.current;
     if (!audio) return;
 
-    // Only create source once per <audio> element
-    if (sourceNodeRef.current) return;
+    // Already connected
+    if (analyzerRef.current) return;
 
-    try {
-      if (!audioContextRef.current) {
-        const AC = window.AudioContext || window.webkitAudioContext;
-        audioContextRef.current = new AC();
+    const tryConnect = () => {
+      // Use the AudioContext NowPlaying already created
+      const ctx = audio.__ngksMainAudioContext || audioContextRef.current;
+      const gainNode = audio.__ngksMainGainNode;
+      const sourceNode = audio.__ngksMainSourceNode;
+
+      if (!ctx || !gainNode) {
+        // Chain not ready yet — retry shortly
+        return false;
       }
-      const ctx = audioContextRef.current;
 
-      const source = ctx.createMediaElementSource(audio);
-      const analyser = ctx.createAnalyser();
-      analyser.fftSize = 256;
-      analyser.smoothingTimeConstant = 0.7;
-      analyser.minDecibels = -90;
-      analyser.maxDecibels = -10;
+      try {
+        audioContextRef.current = ctx;
 
-      source.connect(analyser);
-      analyser.connect(ctx.destination);
+        const analyser = ctx.createAnalyser();
+        analyser.fftSize = 256;
+        analyser.smoothingTimeConstant = 0.7;
+        analyser.minDecibels = -90;
+        analyser.maxDecibels = -10;
 
-      sourceNodeRef.current = source;
-      analyzerRef.current = analyser;
-    } catch (err) {
-      console.error('[useWaveform] Setup failed:', err);
-    }
+        // Passive tap: gainNode → analyser (analyser not routed to destination)
+        gainNode.connect(analyser);
 
-    return () => {
-      // Don't disconnect — MediaElementSource can only be created once
+        analyzerRef.current = analyser;
+        sourceNodeRef.current = sourceNode;
+        return true;
+      } catch (err) {
+        console.error('[useWaveform] analyser connection failed:', err);
+        return false;
+      }
     };
+
+    // The audio chain may be set up after this effect runs, so retry a few times
+    if (!tryConnect()) {
+      const retryInterval = setInterval(() => {
+        if (tryConnect() || !isMounted.current) {
+          clearInterval(retryInterval);
+        }
+      }, 200);
+
+      return () => clearInterval(retryInterval);
+    }
   }, [audioRef]);
 
   // ── Simple beat detection from frequency data ──
