@@ -11,8 +11,9 @@
  *
  * Owner: NGKsSystems
  */
-import React, { memo, useState, useCallback, useRef } from 'react';
+import React, { memo, useState, useCallback, useRef, useEffect } from 'react';
 import { formatKeyDisplay } from '../utils/keyConverter.js';
+import { generateWaveformThumbnail, hasWaveformThumbnail } from '../utils/generateWaveformThumbnail.js';
 
 // ─── BPM Confidence Dot ──────────────────────────────────────────────────
 const BpmDot = memo(({ confidence, locked }) => {
@@ -93,13 +94,29 @@ function generateWaveform(seed, len = 28) {
   return bars.join('');
 }
 
-const MiniWaveform = memo(({ src, trackId }) => {
-  if (src) {
-    return <img className="mini-waveform" src={src} alt="" draggable={false} />;
+const MiniWaveform = memo(({ src, trackId, track }) => {
+  const [generatedSrc, setGeneratedSrc] = useState(null);
+  const attemptedRef = useRef(false);
+
+  // Auto-generate waveform thumbnail if none exists
+  useEffect(() => {
+    if (src || generatedSrc || attemptedRef.current) return;
+    if (!track || hasWaveformThumbnail(track)) return;
+    attemptedRef.current = true;
+
+    generateWaveformThumbnail(track).then((savedPath) => {
+      if (savedPath) setGeneratedSrc(savedPath);
+    });
+  }, [src, generatedSrc, track]);
+
+  const imgSrc = src || generatedSrc;
+  if (imgSrc) {
+    return <img className="mini-waveform" src={imgSrc} alt="" draggable={false} />;
   }
+  // Fallback: show text placeholder while generating (or if generation fails)
   const pattern = generateWaveform(seedHash(String(trackId || 'x')));
   return (
-    <span className="mini-waveform placeholder" title="No waveform preview">
+    <span className="mini-waveform placeholder" title="Generating waveform...">
       <span className="mini-waveform-bars">{pattern}</span>
     </span>
   );
@@ -181,7 +198,7 @@ const TrackRow = memo(({
 
       {/* Row 3: Mini waveform strip */}
       <div className="track-row-bottom">
-        <MiniWaveform src={track.waveformPreview || track.thumbnailPath} trackId={track.id || track.title} />
+        <MiniWaveform src={track.waveformPreview || track.thumbnailPath} trackId={track.id || track.title} track={track} />
       </div>
 
       {/* Hover actions (absolute, no layout shift) */}
