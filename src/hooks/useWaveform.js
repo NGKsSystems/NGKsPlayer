@@ -38,6 +38,12 @@ export function useWaveform(audioRef, isPlaying, beatPulseEnabledRef, beatDetect
   const animationFrameRef = useRef(null);
   const essentiaSourceNodeRef = useRef(null);
   const peakDotsRef = useRef([]);
+  const autoTuneCalibrationRef = useRef({
+    samples: [],
+    startTime: 0,
+    calibrated: false,
+    calibrationDuration: 3000, // 3 seconds of sampling
+  });
   const beatDetectionRef = useRef({
     lastBeat: 0,
     threshold: 165,
@@ -184,6 +190,118 @@ export function useWaveform(audioRef, isPlaying, beatPulseEnabledRef, beatDetect
         }
 
         const avgBass = beatDetectionRef.current.bassHistory.reduce((a, b) => a + b, 0) / beatDetectionRef.current.bassHistory.length;
+
+        // ── AUTO-TUNE CALIBRATION ──
+        // Samples bass energy for ~3 seconds, then computes optimal parameters
+        const autoTuneRef = beatDetectionConfig?.autoTuneEnabledRef;
+        const setAutoTuneStatus = beatDetectionConfig?.setAutoTuneStatus;
+        const isAutoTuning = autoTuneRef?.current;
+
+        if (isAutoTuning) {
+          const cal = autoTuneCalibrationRef.current;
+          if (!cal.calibrated) {
+            if (cal.startTime === 0) {
+              // Begin calibration
+              cal.startTime = Date.now();
+              cal.samples = [];
+              cal.calibrated = false;
+              if (setAutoTuneStatus) setAutoTuneStatus('calibrating');
+            }
+
+            // Collect bass samples
+            cal.samples.push(bassAverage);
+
+            const elapsed = Date.now() - cal.startTime;
+            if (elapsed >= cal.calibrationDuration && cal.samples.length > 30) {
+              // ── Compute optimal parameters from collected data ──
+              const sorted = [...cal.samples].sort((a, b) => a - b);
+              const len = sorted.length;
+              const mean = sorted.reduce((a, b) => a + b, 0) / len;
+              const variance = sorted.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / len;
+              const stddev = Math.sqrt(variance);
+
+              // Percentiles for robust estimation
+              const p25 = sorted[Math.floor(len * 0.25)];
+              const p75 = sorted[Math.floor(len * 0.75)];
+              const p90 = sorted[Math.floor(len * 0.90)];
+
+              // ── Auto-set threshold ──
+              // Threshold = ratio where a spike stands out from average
+              // For dynamic music: ~1.2-1.4x, for compressed: ~1.1-1.2x
+              const dynamicRange = (p90 - p25) / Math.max(mean, 1);
+              let optimalThreshold;
+              if (dynamicRange > 0.6) {
+                // Dynamic music (rock, metal) — spikes are pronounced
+                optimalThreshold = 1.25;
+              } else if (dynamicRange > 0.3) {
+                // Moderate dynamics (pop, hip-hop)
+                optimalThreshold = 1.15;
+              } else {
+                // Heavily compressed (EDM, modern pop)
+                optimalThreshold = 1.08;
+              }
+              optimalThreshold = Math.max(1.05, Math.min(2.0, optimalThreshold));
+
+              // ── Auto-set minimum ──
+              // Minimum = noise floor filter — use 25th percentile
+              const optimalMinimum = Math.max(20, Math.round(p25 * 0.8));
+
+              // ── Auto-set gate (ms between beats) ──
+              // Use BPM if available: gate = half a beat interval
+              const bpm = beatDetectionConfig?.detectedBPM;
+              let optimalGate;
+              if (bpm && bpm > 0) {
+                const msPerBeat = 60000 / bpm;
+                optimalGate = Math.round(msPerBeat * 0.45); // slightly less than half-beat
+              } else {
+                // No BPM — estimate from dynamic range
+                optimalGate = dynamicRange > 0.5 ? 200 : 150;
+              }
+              optimalGate = Math.max(80, Math.min(500, optimalGate));
+
+              // ── Auto-set history length ──
+              // Shorter history = faster adaptation, longer = smoother
+              const optimalHistory = dynamicRange > 0.5 ? 40 : 25;
+
+              // Apply computed values via the setter functions
+              if (beatDetectionConfig?.setBeatSpikeThreshold) {
+                beatDetectionConfig.setBeatSpikeThreshold(parseFloat(optimalThreshold.toFixed(2)));
+              }
+              if (beatDetectionConfig?.setBeatMinimum) {
+                beatDetectionConfig.setBeatMinimum(optimalMinimum);
+              }
+              if (beatDetectionConfig?.setBeatGate) {
+                beatDetectionConfig.setBeatGate(optimalGate);
+              }
+              if (beatDetectionConfig?.setBeatHistoryLength) {
+                beatDetectionConfig.setBeatHistoryLength(optimalHistory);
+              }
+
+              cal.calibrated = true;
+              if (setAutoTuneStatus) setAutoTuneStatus('tuned');
+
+              console.log('[AutoTune] Calibration complete:', {
+                samples: len,
+                mean: mean.toFixed(1),
+                stddev: stddev.toFixed(1),
+                dynamicRange: dynamicRange.toFixed(3),
+                p25: p25.toFixed(1),
+                p75: p75.toFixed(1),
+                p90: p90.toFixed(1),
+                bpm: bpm || 'N/A',
+                result: { threshold: optimalThreshold, minimum: optimalMinimum, gate: optimalGate, history: optimalHistory }
+              });
+            }
+          }
+        } else {
+          // Auto-tune disabled — reset calibration state so it can re-run
+          const cal = autoTuneCalibrationRef.current;
+          if (cal.calibrated || cal.startTime > 0) {
+            cal.samples = [];
+            cal.startTime = 0;
+            cal.calibrated = false;
+          }
+        }
 
         const threshold = beatDetectionConfig?.beatThresholdRef?.current ?? 1.5;
         const minimum = beatDetectionConfig?.beatMinRef?.current ?? 80;

@@ -45,6 +45,12 @@ export default function BeatDetectionPanel({
   postProcessMode,
   setPostProcessMode,
   
+  // Auto-tune
+  autoTuneEnabled,
+  setAutoTuneEnabled,
+  autoTuneStatus,
+  detectedBPM,
+  
   // Basic controls
   beatSpikeThreshold,
   setBeatSpikeThreshold,
@@ -348,6 +354,55 @@ export default function BeatDetectionPanel({
             )}
           </div>
         )}
+        
+        {/* Auto-Tune */}
+        <div className="mb-4 p-3 bg-gray-900 rounded border border-yellow-500">
+          <div className="flex items-center justify-between mb-2">
+            <div>
+              <h4 className="text-base font-bold text-yellow-400">🎯 Auto-Tune</h4>
+              <p className="text-xs text-gray-400 mt-1">
+                {autoTuneStatus === 'idle' && 'Samples audio for 3s then auto-sets all parameters'}
+                {autoTuneStatus === 'calibrating' && '⏳ Listening to audio...'}
+                {autoTuneStatus === 'tuned' && '✅ Parameters optimized!'}
+              </p>
+              {detectedBPM > 0 && (
+                <p className="text-xs text-cyan-400 mt-1">BPM: {detectedBPM} → Gate will sync to tempo</p>
+              )}
+            </div>
+            <button
+              onClick={() => {
+                if (autoTuneEnabled) {
+                  // Turning off — just disable
+                  setAutoTuneEnabled(false);
+                } else {
+                  // Turning on — start fresh calibration
+                  setAutoTuneEnabled(true);
+                }
+              }}
+              className={`px-4 py-2 rounded font-bold transition-all text-sm ${
+                autoTuneStatus === 'calibrating'
+                  ? 'bg-yellow-600 text-white animate-pulse'
+                  : autoTuneEnabled && autoTuneStatus === 'tuned'
+                    ? 'bg-green-600 text-white'
+                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+              }`}
+            >
+              {autoTuneStatus === 'calibrating' ? 'Calibrating...' : autoTuneEnabled && autoTuneStatus === 'tuned' ? 'Tuned ✓' : 'Auto-Tune'}
+            </button>
+          </div>
+          {autoTuneEnabled && autoTuneStatus === 'tuned' && (
+            <button
+              onClick={() => {
+                // Re-calibrate: reset and re-enable
+                setAutoTuneEnabled(false);
+                setTimeout(() => setAutoTuneEnabled(true), 100);
+              }}
+              className="w-full mt-2 px-3 py-1 bg-yellow-700 hover:bg-yellow-600 rounded text-white text-xs"
+            >
+              Re-calibrate
+            </button>
+          )}
+        </div>
         
         {/* Basic Controls */}
         <div className="mb-4 p-3 bg-gray-900 rounded border border-gray-600">

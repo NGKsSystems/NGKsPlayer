@@ -143,7 +143,12 @@ export default function NowPlaying({ onNavigate }) {
     beatPulseEnabledRef,
     beatThresholdRef,
     beatMinRef,
-    beatGateRef
+    beatGateRef,
+    autoTuneEnabled,
+    setAutoTuneEnabled,
+    autoTuneStatus,
+    setAutoTuneStatus,
+    autoTuneEnabledRef
   } = beatPulseHook
   
   // Playlists
@@ -602,7 +607,15 @@ export default function NowPlaying({ onNavigate }) {
       historyLength: beatHistoryLength,
       beatThresholdRef,
       beatMinRef,
-      beatGateRef
+      beatGateRef,
+      // Auto-tune
+      autoTuneEnabledRef,
+      setAutoTuneStatus,
+      detectedBPM,
+      setBeatSpikeThreshold,
+      setBeatMinimum,
+      setBeatGate,
+      setBeatHistoryLength
     },
     setBeatPulse,
     setPeakRotation,
@@ -685,6 +698,17 @@ export default function NowPlaying({ onNavigate }) {
   
   // Autoplay hook
   useAutoplay(tracks, playTrack, showToast)
+  
+  // Re-calibrate auto-tune when track changes
+  useEffect(() => {
+    if (autoTuneEnabled && currentTrack) {
+      setAutoTuneStatus('idle')
+      // Briefly toggle off/on to reset calibration in useWaveform
+      setAutoTuneEnabled(false)
+      const timer = setTimeout(() => setAutoTuneEnabled(true), 200)
+      return () => clearTimeout(timer)
+    }
+  }, [currentTrack?.filePath]) // eslint-disable-line
   
   // ========== ADDITIONAL PLAYBACK CONTROLS ==========
   const handleSeek = (e) => {
@@ -1164,6 +1188,10 @@ export default function NowPlaying({ onNavigate }) {
           postProcessMode={postProcessMode}
           setPostProcessMode={setPostProcessMode}
           essentiaReady={essentiaReady}
+          autoTuneEnabled={autoTuneEnabled}
+          setAutoTuneEnabled={setAutoTuneEnabled}
+          autoTuneStatus={autoTuneStatus}
+          detectedBPM={detectedBPM}
         />
       </div>
       

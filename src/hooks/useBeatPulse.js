@@ -26,11 +26,14 @@ export function useBeatPulse() {
   const [beatGate, setBeatGate] = useState(250);
   const [beatHistoryLength, setBeatHistoryLength] = useState(60);
   const [debugValues, setDebugValues] = useState({ bass: 0, avgBass: 0, spike: false, min: false, gate: false });
+  const [autoTuneEnabled, setAutoTuneEnabled] = useState(false);
+  const [autoTuneStatus, setAutoTuneStatus] = useState('idle'); // 'idle' | 'calibrating' | 'tuned'
   
   const beatPulseEnabledRef = useRef(true);
   const beatThresholdRef = useRef(1.4);
   const beatMinRef = useRef(100);
   const beatGateRef = useRef(250);
+  const autoTuneEnabledRef = useRef(false);
   
   // Sync beatPulseEnabled state to ref
   useEffect(() => {
@@ -43,6 +46,11 @@ export function useBeatPulse() {
     beatMinRef.current = beatMinimum;
     beatGateRef.current = beatGate;
   }, [beatSpikeThreshold, beatMinimum, beatGate]);
+
+  // Sync autoTuneEnabled to ref
+  useEffect(() => {
+    autoTuneEnabledRef.current = autoTuneEnabled;
+  }, [autoTuneEnabled]);
 
   return {
     beatPulse,
@@ -66,7 +74,12 @@ export function useBeatPulse() {
     beatPulseEnabledRef,
     beatThresholdRef,
     beatMinRef,
-    beatGateRef
+    beatGateRef,
+    autoTuneEnabled,
+    setAutoTuneEnabled,
+    autoTuneStatus,
+    setAutoTuneStatus,
+    autoTuneEnabledRef
   };
 }
 
