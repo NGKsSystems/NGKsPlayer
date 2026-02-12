@@ -101,56 +101,27 @@ const MasterWaveform = ({ tracks, currentTime, duration, onSeek, isPlaying, audi
     if (hasLiveData) {
       const analyser = analyserRef.current;
       const freqData = freqDataRef.current;
-      const timeData = timeDataRef.current;
       analyser.getByteFrequencyData(freqData);
-      analyser.getByteTimeDomainData(timeData);
 
-      const binCount = analyser.frequencyBinCount; // 128
-
-      // --- Frequency bars (mirrored top/bottom) ---
-      const barWidth = Math.max(1, Math.floor(w / binCount));
+      const binCount = analyser.frequencyBinCount;
+      const barWidth = Math.max(2, Math.floor(w / binCount) - 1);
       const gap = 1;
 
       for (let i = 0; i < binCount; i++) {
         const x = Math.floor((i / binCount) * w);
         const val = freqData[i] / 255;            // 0..1
-        const barH = val * mid * 0.92;
+        const barH = val * h * 0.95;
 
-        // Colour gradient: cyan → magenta for high frequencies
-        const hue = 180 + (i / binCount) * 100;   // 180 (cyan) → 280 (violet)
-        const lightness = 50 + val * 20;
-        const alpha = 0.5 + val * 0.5;
+        // Amplitude-based colour: green → yellow → orange → red
+        const barGrad = ctx.createLinearGradient(x, h, x, h - barH);
+        barGrad.addColorStop(0, 'rgb(0, 200, 0)');       // green (bottom)
+        barGrad.addColorStop(0.5, 'rgb(200, 200, 0)');    // yellow (mid)
+        barGrad.addColorStop(0.8, 'rgb(255, 140, 0)');    // orange
+        barGrad.addColorStop(1, 'rgb(255, 30, 0)');       // red (top)
 
-        ctx.fillStyle = `hsla(${hue}, 90%, ${lightness}%, ${alpha})`;
-        // Top half (mirrored upward from center)
-        ctx.fillRect(x, mid - barH, Math.max(barWidth - gap, 1), barH);
-        // Bottom half (mirrored downward from center)
-        ctx.fillRect(x, mid, Math.max(barWidth - gap, 1), barH);
-      }
-
-      // --- Overlaid waveform line (time-domain) ---
-      ctx.beginPath();
-      ctx.lineWidth = 1.5;
-      ctx.strokeStyle = 'rgba(0, 212, 255, 0.6)';
-      const sliceWidth = w / timeData.length;
-      let xPos = 0;
-      for (let i = 0; i < timeData.length; i++) {
-        const v = timeData[i] / 128.0;            // normalise around 1
-        const y = (v * mid);
-        if (i === 0) ctx.moveTo(xPos, y);
-        else ctx.lineTo(xPos, y);
-        xPos += sliceWidth;
-      }
-      ctx.stroke();
-
-      // --- Glow overlay at center ---
-      const peakVal = Math.max(...freqData) / 255;
-      if (peakVal > 0.3) {
-        const grad = ctx.createRadialGradient(w / 2, mid, 0, w / 2, mid, w * 0.4);
-        grad.addColorStop(0, `rgba(0, 212, 255, ${peakVal * 0.12})`);
-        grad.addColorStop(1, 'rgba(0, 212, 255, 0)');
-        ctx.fillStyle = grad;
-        ctx.fillRect(0, 0, w, h);
+        ctx.fillStyle = barGrad;
+        // Bars grow upward from bottom
+        ctx.fillRect(x, h - barH, Math.max(barWidth - gap, 1), barH);
       }
     } else {
       // ═══════════════════════════════════════════

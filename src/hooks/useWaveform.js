@@ -248,21 +248,23 @@ const useWaveform = (
 
   function drawBars(ctx, freqData, w, h, mid) {
     const binCount = freqData.length;
-    const barWidth = Math.max(1, Math.floor(w / binCount));
+    const barWidth = Math.max(2, Math.floor(w / binCount) - 1);
     const gap = 1;
 
     for (let i = 0; i < binCount; i++) {
       const x = Math.floor((i / binCount) * w);
       const val = freqData[i] / 255;
-      const barH = val * mid * 0.92;
+      const barH = val * h * 0.95;
 
-      const hue = 180 + (i / binCount) * 100;
-      const lightness = 50 + val * 20;
-      const alpha = 0.5 + val * 0.5;
+      // Amplitude-based colour: green → yellow → orange → red
+      const barGrad = ctx.createLinearGradient(x, h, x, h - barH);
+      barGrad.addColorStop(0, 'rgb(0, 200, 0)');
+      barGrad.addColorStop(0.5, 'rgb(200, 200, 0)');
+      barGrad.addColorStop(0.8, 'rgb(255, 140, 0)');
+      barGrad.addColorStop(1, 'rgb(255, 30, 0)');
 
-      ctx.fillStyle = `hsla(${hue}, 90%, ${lightness}%, ${alpha})`;
-      ctx.fillRect(x, mid - barH, Math.max(barWidth - gap, 1), barH);
-      ctx.fillRect(x, mid, Math.max(barWidth - gap, 1), barH);
+      ctx.fillStyle = barGrad;
+      ctx.fillRect(x, h - barH, Math.max(barWidth - gap, 1), barH);
     }
   }
 
