@@ -14,7 +14,7 @@
 import React, { useState, useCallback, useEffect, useMemo, useRef } from "react";
 import './styles.css';
 
-const LibraryB = ({ id, deck = 'B', onTrackLoad = () => {}, onTrackPreview = () => {}, onStyleChange = () => {}, tracks = [], isLoading = false, style = {}, ...props }) => {
+const LibraryB = ({ id, deck = 'B', onTrackLoad = () => {}, onCrossLoad, onTrackPreview = () => {}, onStyleChange = () => {}, tracks = [], isLoading = false, style = {}, ...props }) => {
   const widgetRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
   const [isResizing, setIsResizing] = useState(false);
@@ -224,15 +224,8 @@ const LibraryB = ({ id, deck = 'B', onTrackLoad = () => {}, onTrackPreview = () 
   }, []);
 
   const handleTrackDoubleClick = useCallback((track) => {
+    // Primary load — goes through guarded onTrackLoad from DJSimple
     onTrackLoad(track);
-    // Also try to load to deck B
-    if (window.electronAPI && window.electronAPI.send) {
-      window.electronAPI.send('deck:loadTrack', {
-        filePath: track.filePath,
-        deck: 'B',
-        track: track
-      });
-    }
   }, [onTrackLoad]);
 
   const handleSortChange = useCallback((sortBy) => {

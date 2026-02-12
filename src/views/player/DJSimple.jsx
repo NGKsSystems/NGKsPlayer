@@ -35,6 +35,9 @@ import LightingControl from '../../DJ/Lighting/LightingControl';
 import { SettingsProvider } from '../../components/SettingsProvider';
 import { useLayoutManager } from '../../hooks/useLayoutManager';
 import AudioManager from '../../audio/AudioManager';
+import { evaluateLoadGuard, GUARD_DECISION } from '../../DJ/guards/deckSafetyGuards.js';
+import GuardModal from '../../DJ/guards/GuardModal.jsx';
+import '../../DJ/guards/GuardModal.css';
 import { PlayerStressTest } from '../../utils/playerStressTest';
 import '../styles/DJSimple.css';
 
@@ -216,7 +219,10 @@ const saveLayout = async (layout, currentDeckMode) => {
   const [showCalibration, setShowCalibration] = useState(false);
   // Request count for badge
   const [requestCount, setRequestCount] = useState(0);
-  
+
+  // ── Performance Safety Mode — guard modal state ──
+  const [guardModal, setGuardModal] = useState(null); // { mode, title, message, pendingAction }
+
   // Deck state management - track what's loaded in each deck (NOW SUPPORTS 4 DECKS!)
   const [deckState, setDeckState] = useState({
     A: {
@@ -244,6 +250,18 @@ const saveLayout = async (layout, currentDeckMode) => {
       volume: 0.8
     }
   });
+
+  // ── Test hook: expose deck state for Playwright guard tests ──
+  useEffect(() => {
+    if (import.meta.env?.MODE === 'test' || import.meta.env?.DEV) {
+      window.__DJ_SIMPLE_TEST__ = {
+        get deckState() { return deckState; },
+        setDeckState,
+        get audioManager() { return audioManagerRef.current; },
+      };
+    }
+    return () => { delete window.__DJ_SIMPLE_TEST__; };
+  }, [deckState]);
 
   // 4-Deck Layout Mode State
   const [deckMode, setDeckMode] = useState('2deck'); // '2deck' or '4deck'
@@ -902,7 +920,7 @@ const saveLayout = async (layout, currentDeckMode) => {
     console.log(`Deck ${deck} cue ${cueState ? 'ON (Right ear)' : 'OFF (Left ear)'}`);
   }, []);
 
-  // Track loading handler
+  // Track loading handler (internal — called AFTER guards pass)
   const handleTrackLoad = useCallback(async (deck, track) => {
     if (!audioManagerRef.current) {
       console.warn(`AudioManager not initialized`);
@@ -930,6 +948,50 @@ const saveLayout = async (layout, currentDeckMode) => {
     } else {
       console.error(`Failed to load track to Deck ${deck}`);
     }
+  }, []);
+
+  // ── Performance Safety Mode — guarded load pipeline ──
+  // Single function used by ALL load entrypoints (library primary, cross-load, drag, keyboard)
+  const attemptLoadTrackToDeck = useCallback(({ track, targetDeck, source = 'unknown' }) => {
+    const result = evaluateLoadGuard({
+      track,
+      targetDeck,
+      source,
+      audioManager: audioManagerRef.current,
+      deckState,
+    });
+
+    if (result.decision === GUARD_DECISION.BLOCK_LIVE) {
+      setGuardModal({
+        mode: 'block',
+        title: result.title,
+        message: result.message,
+        pendingAction: null,
+      });
+      return;
+    }
+
+    if (result.decision === GUARD_DECISION.CONFIRM_REPLACE) {
+      setGuardModal({
+        mode: 'confirm',
+        title: result.title,
+        message: result.message,
+        pendingAction: () => handleTrackLoad(targetDeck, track),
+      });
+      return;
+    }
+
+    // ALLOW — proceed immediately
+    handleTrackLoad(targetDeck, track);
+  }, [deckState, handleTrackLoad]);
+
+  const handleGuardConfirm = useCallback(() => {
+    guardModal?.pendingAction?.();
+    setGuardModal(null);
+  }, [guardModal]);
+
+  const handleGuardCancel = useCallback(() => {
+    setGuardModal(null);
   }, []);
 
   // Listen for track loads from library components
@@ -1659,8 +1721,12 @@ const saveLayout = async (layout, currentDeckMode) => {
             height: widgets.libraryA.height
           }}
           onTrackLoad={(track) => {
-            // Load track to Deck A
-            handleTrackLoad('A', track);
+            // Guarded: Load track to Deck A
+            attemptLoadTrackToDeck({ track, targetDeck: 'A', source: 'libraryA-primary' });
+          }}
+          onCrossLoad={(track, targetDeck) => {
+            // Guarded: Cross-load from Library A to any deck
+            attemptLoadTrackToDeck({ track, targetDeck, source: `libraryA-crossload-${targetDeck}` });
           }}
           tracks={tracks}
           isLoading={tracksLoading}
@@ -1677,8 +1743,8 @@ const saveLayout = async (layout, currentDeckMode) => {
             height: widgets.libraryA.height
           }}
           onTrackLoad={(track) => {
-            // Load track to Deck C
-            handleTrackLoad('C', track);
+            // Guarded: Load track to Deck C
+            attemptLoadTrackToDeck({ track, targetDeck: 'C', source: 'libraryC-primary' });
           }}
           tracks={tracks}
           isLoading={tracksLoading}
@@ -1728,8 +1794,12 @@ const saveLayout = async (layout, currentDeckMode) => {
             height: widgets.libraryB.height
           }}
           onTrackLoad={(track) => {
-            // Load track to Deck B
-            handleTrackLoad('B', track);
+            // Guarded: Load track to Deck B
+            attemptLoadTrackToDeck({ track, targetDeck: 'B', source: 'libraryB-primary' });
+          }}
+          onCrossLoad={(track, targetDeck) => {
+            // Guarded: Cross-load from Library B to any deck
+            attemptLoadTrackToDeck({ track, targetDeck, source: `libraryB-crossload-${targetDeck}` });
           }}
           tracks={tracks}
           isLoading={tracksLoading}
@@ -1746,8 +1816,8 @@ const saveLayout = async (layout, currentDeckMode) => {
             height: widgets.libraryB.height
           }}
           onTrackLoad={(track) => {
-            // Load track to Deck D
-            handleTrackLoad('D', track);
+            // Guarded: Load track to Deck D
+            attemptLoadTrackToDeck({ track, targetDeck: 'D', source: 'libraryD-primary' });
           }}
           tracks={tracks}
           isLoading={tracksLoading}
@@ -1842,6 +1912,17 @@ const saveLayout = async (layout, currentDeckMode) => {
       {showCalibration && (
         <CalibrationPanel 
           onClose={() => setShowCalibration(false)}
+        />
+      )}
+
+      {/* Performance Safety Mode — Guard Modal */}
+      {guardModal && (
+        <GuardModal
+          mode={guardModal.mode}
+          title={guardModal.title}
+          message={guardModal.message}
+          onConfirm={handleGuardConfirm}
+          onCancel={handleGuardCancel}
         />
       )}
     </div>

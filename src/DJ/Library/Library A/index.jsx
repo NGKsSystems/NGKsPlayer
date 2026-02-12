@@ -15,7 +15,7 @@ import React, { useState, useCallback, useEffect, useMemo, useRef } from "react"
 import TrackRow from '../components/TrackRow.jsx';
 import './styles.css';
 
-const LibraryA = ({ id, deck = 'A', onTrackLoad = () => {}, onTrackPreview = () => {}, onStyleChange = () => {}, tracks = [], isLoading = false, style = {}, ...props }) => {
+const LibraryA = ({ id, deck = 'A', onTrackLoad = () => {}, onCrossLoad, onTrackPreview = () => {}, onStyleChange = () => {}, tracks = [], isLoading = false, style = {}, ...props }) => {
   const widgetRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
   const [isResizing, setIsResizing] = useState(false);
@@ -241,31 +241,23 @@ const LibraryA = ({ id, deck = 'A', onTrackLoad = () => {}, onTrackPreview = () 
   }, []);
 
   const handleTrackDoubleClick = useCallback((track) => {
+    // Primary load — goes through guarded onTrackLoad from DJSimple
     onTrackLoad(track);
-    if (window.electronAPI && window.electronAPI.send) {
-      window.electronAPI.send('deck:loadTrack', {
-        filePath: track.filePath,
-        deck: deck,
-        track: track
-      });
-    }
   }, [onTrackLoad, deck]);
 
-  // Load track to a specific deck (hover quick action)
+  // Load track to a specific deck (hover quick action — guarded cross-load)
   const handleLoadDeck = useCallback((track, targetDeck) => {
-    onTrackLoad(track);
-    if (window.electronAPI && window.electronAPI.send) {
-      window.electronAPI.send('deck:loadTrack', {
-        filePath: track.filePath,
-        deck: targetDeck,
-        track: track
-      });
+    if (targetDeck === deck) {
+      // Same deck — use primary load (already guarded)
+      onTrackLoad(track);
+    } else if (onCrossLoad) {
+      // Cross-load — use guarded pipeline from DJSimple
+      onCrossLoad(track, targetDeck);
+    } else {
+      // Fallback if no guard pipeline available
+      onTrackLoad(track);
     }
-    // Also try AudioManager
-    if (window.audioManagerRef?.current) {
-      window.audioManagerRef.current.loadTrack(targetDeck, track.filePath);
-    }
-  }, [onTrackLoad]);
+  }, [onTrackLoad, onCrossLoad, deck]);
 
   // Preview 3-second cue
   const handlePreview = useCallback((track) => {

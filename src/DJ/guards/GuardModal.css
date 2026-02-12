@@ -1,0 +1,122 @@
+/* ─── Guard Modal — Performance Safety Mode ─────────────────────────── */
+
+.guard-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  backdrop-filter: blur(3px);
+  animation: guard-fade-in 0.15s ease-out;
+}
+
+@keyframes guard-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.guard-modal {
+  background: #1a1a1a;
+  border-radius: 12px;
+  padding: 24px 28px;
+  min-width: 320px;
+  max-width: 420px;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  animation: guard-slide-up 0.2s ease-out;
+}
+
+@keyframes guard-slide-up {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.guard-modal--block {
+  border: 2px solid #ef4444;
+}
+
+.guard-modal--confirm {
+  border: 2px solid #eab308;
+}
+
+.guard-modal__icon {
+  font-size: 36px;
+  margin-bottom: 8px;
+  line-height: 1;
+}
+
+.guard-modal__title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 8px;
+  letter-spacing: 0.3px;
+}
+
+.guard-modal--block .guard-modal__title {
+  color: #fca5a5;
+}
+
+.guard-modal--confirm .guard-modal__title {
+  color: #fde68a;
+}
+
+.guard-modal__message {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.guard-modal__actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.guard-modal__btn {
+  padding: 8px 20px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.15s;
+}
+
+.guard-modal__btn--dismiss {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+}
+
+.guard-modal__btn--dismiss:hover {
+  background: rgba(239, 68, 68, 0.3);
+}
+
+.guard-modal__btn--cancel {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.guard-modal__btn--cancel:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+.guard-modal__btn--replace {
+  background: rgba(234, 179, 8, 0.15);
+  border-color: rgba(234, 179, 8, 0.4);
+  color: #fde68a;
+}
+
+.guard-modal__btn--replace:hover {
+  background: rgba(234, 179, 8, 0.3);
+  color: #ffffff;
+}
