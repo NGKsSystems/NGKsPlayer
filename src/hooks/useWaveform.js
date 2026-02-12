@@ -186,14 +186,19 @@ const useWaveform = (
       }
 
       const rect = canvas.getBoundingClientRect();
-      if (canvas.width !== Math.floor(rect.width) || canvas.height !== Math.floor(rect.height)) {
-        canvas.width = Math.floor(rect.width);
-        canvas.height = Math.floor(rect.height);
+      const dpr = window.devicePixelRatio || 1;
+      const w = Math.floor(rect.width);
+      const h = Math.floor(rect.height);
+
+      // Match canvas backing-store to CSS size (avoid blurry / undersized bars)
+      if (canvas.width !== w * dpr || canvas.height !== h * dpr) {
+        canvas.width = w * dpr;
+        canvas.height = h * dpr;
+        const scaleCtx = canvas.getContext('2d');
+        scaleCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
       }
 
       const ctx = canvas.getContext('2d');
-      const w = canvas.width;
-      const h = canvas.height;
       const mid = h / 2;
 
       analyser.getByteFrequencyData(freqData);
@@ -231,19 +236,23 @@ const useWaveform = (
   function drawIdle() {
     const canvas = waveformCanvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
     const rect = canvas.getBoundingClientRect();
-    if (rect.width > 0 && rect.height > 0) {
-      canvas.width = Math.floor(rect.width);
-      canvas.height = Math.floor(rect.height);
+    const dpr = window.devicePixelRatio || 1;
+    const w = Math.floor(rect.width);
+    const h = Math.floor(rect.height);
+    if (w > 0 && h > 0) {
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      const ctx = canvas.getContext('2d');
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.9)';
+      ctx.fillRect(0, 0, w, h);
+      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+      ctx.beginPath();
+      ctx.moveTo(0, h / 2);
+      ctx.lineTo(w, h / 2);
+      ctx.stroke();
     }
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.9)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.strokeStyle = 'rgba(255,255,255,0.08)';
-    ctx.beginPath();
-    ctx.moveTo(0, canvas.height / 2);
-    ctx.lineTo(canvas.width, canvas.height / 2);
-    ctx.stroke();
   }
 
   function drawBars(ctx, freqData, w, h, mid) {
