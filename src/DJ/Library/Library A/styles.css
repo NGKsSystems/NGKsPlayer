@@ -167,6 +167,10 @@
 }
 
 .library-a-widget .track-list {
+  display: flex !important;
+  flex-direction: column !important;
+  flex-wrap: nowrap !important;
+  grid-template-columns: none !important;
   flex: 1 1 auto !important;
   overflow-y: auto;
   border-radius: 4px;
@@ -209,14 +213,16 @@
 .track-filename {
   display: block;
   width: 100%;
+  min-height: 1.3em;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   font-weight: 700;
-  font-size: clamp(11px, 2.8cqw, 16px);
+  font-size: 13px;
   color: #ffffff;
   letter-spacing: 0.3px;
   line-height: 1.3;
+  flex-shrink: 0;
 }
 
 .track-metadata {

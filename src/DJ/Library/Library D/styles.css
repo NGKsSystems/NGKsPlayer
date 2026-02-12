@@ -164,6 +164,10 @@
 }
 
 .library-d-widget .track-list {
+  display: flex !important;
+  flex-direction: column !important;
+  flex-wrap: nowrap !important;
+  grid-template-columns: none !important;
   flex: 1 1 auto !important;
   overflow-y: auto;
   border-radius: 4px;
