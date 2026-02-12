@@ -1,6 +1,7 @@
 /* ─── Guard Modal — Performance Safety Mode ─────────────────────────── */
 
-.guard-modal-overlay {
+/* ── BLOCK overlay: fullscreen darkened + blurred ── */
+.guard-modal-overlay--block {
   position: fixed;
   top: 0;
   left: 0;
@@ -12,6 +13,21 @@
   justify-content: center;
   z-index: 10000;
   backdrop-filter: blur(3px);
+  animation: guard-fade-in 0.15s ease-out;
+}
+
+/* ── CONFIRM overlay: centered popup, no fullscreen darken ── */
+.guard-modal-overlay--confirm {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
   animation: guard-fade-in 0.15s ease-out;
 }
 

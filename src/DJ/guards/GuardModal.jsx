@@ -39,7 +39,7 @@ const GuardModal = ({ mode, title, message, onConfirm, onCancel }) => {
   const isBlock = mode === 'block';
 
   return (
-    <div className="guard-modal-overlay" onClick={onCancel}>
+    <div className={isBlock ? 'guard-modal-overlay--block' : 'guard-modal-overlay--confirm'} onClick={onCancel}>
       <div
         className={`guard-modal ${isBlock ? 'guard-modal--block' : 'guard-modal--confirm'}`}
         onClick={(e) => e.stopPropagation()}

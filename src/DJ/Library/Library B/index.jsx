@@ -12,6 +12,7 @@
  * Owner: NGKsSystems
  */
 import React, { useState, useCallback, useEffect, useMemo, useRef } from "react";
+import TrackRow from '../components/TrackRow.jsx';
 import './styles.css';
 
 const LibraryB = ({ id, deck = 'B', onTrackLoad = () => {}, onCrossLoad, onTrackPreview = () => {}, onStyleChange = () => {}, tracks = [], isLoading = false, style = {}, ...props }) => {
@@ -46,6 +47,23 @@ const LibraryB = ({ id, deck = 'B', onTrackLoad = () => {}, onCrossLoad, onTrack
       viewMode: 'list'
     };
   });
+
+  // Density mode: 'compact' | 'detailed'
+  const [densityMode, setDensityMode] = useState(() => {
+    try { return localStorage.getItem(`library-${deck}-density`) || 'detailed'; } catch { return 'detailed'; }
+  });
+  // Key display: 'musical' | 'camelot'
+  const [keyDisplayMode, setKeyDisplayMode] = useState(() => {
+    try { return localStorage.getItem(`library-${deck}-keymode`) || 'musical'; } catch { return 'musical'; }
+  });
+
+  // Persist density & key prefs
+  useEffect(() => {
+    try { localStorage.setItem(`library-${deck}-density`, densityMode); } catch {}
+  }, [densityMode, deck]);
+  useEffect(() => {
+    try { localStorage.setItem(`library-${deck}-keymode`, keyDisplayMode); } catch {}
+  }, [keyDisplayMode, deck]);
 
   const [localTracks, setLocalTracks] = useState([]);
   const [tracksLoading, setTracksLoading] = useState(false);
@@ -228,6 +246,30 @@ const LibraryB = ({ id, deck = 'B', onTrackLoad = () => {}, onCrossLoad, onTrack
     onTrackLoad(track);
   }, [onTrackLoad]);
 
+  // Load track to a specific deck (hover quick action — guarded cross-load)
+  const handleLoadDeck = useCallback((track, targetDeck) => {
+    if (targetDeck === deck) {
+      // Same deck — use primary load (already guarded)
+      onTrackLoad(track);
+    } else if (onCrossLoad) {
+      // Cross-load — use guarded pipeline from DJSimple
+      onCrossLoad(track, targetDeck);
+    } else {
+      // Fallback if no guard pipeline available
+      onTrackLoad(track);
+    }
+  }, [onTrackLoad, onCrossLoad, deck]);
+
+  // Preview 3-second cue
+  const handlePreview = useCallback((track) => {
+    onTrackPreview(track);
+  }, [onTrackPreview]);
+
+  // Add to crate (placeholder — dispatches event)
+  const handleCrate = useCallback((track) => {
+    window.dispatchEvent(new CustomEvent('library:addToCrate', { detail: { track } }));
+  }, []);
+
   const handleSortChange = useCallback((sortBy) => {
     setLibraryState(prev => ({
       ...prev,
@@ -268,27 +310,49 @@ const LibraryB = ({ id, deck = 'B', onTrackLoad = () => {}, onCrossLoad, onTrack
         </div>
 
         {/* Track List Header */}
+        <div className="track-list-controls">
+          {/* Density toggle */}
+          <div className="density-toggle">
+            <button
+              className={`density-btn ${densityMode === 'compact' ? 'active' : ''}`}
+              onClick={() => setDensityMode('compact')}
+            >Compact</button>
+            <button
+              className={`density-btn ${densityMode === 'detailed' ? 'active' : ''}`}
+              onClick={() => setDensityMode('detailed')}
+            >Detailed</button>
+          </div>
+          {/* Key format toggle */}
+          <button
+            className="key-mode-btn"
+            onClick={() => setKeyDisplayMode(m => m === 'musical' ? 'camelot' : 'musical')}
+            title={`Key: ${keyDisplayMode === 'musical' ? 'Musical' : 'Camelot'}`}
+          >
+            {keyDisplayMode === 'musical' ? '♪' : '⊙'}
+          </button>
+        </div>
+
         <div className="track-list-header">
           <button 
-            className={`sort-btn track-column ${libraryState.sortBy === 'title' ? 'active' : ''}`}
+            className={`sort-btn ${libraryState.sortBy === 'title' ? 'active' : ''}`}
             onClick={() => handleSortChange('title')}
           >
             TRACK {libraryState.sortBy === 'title' && (libraryState.sortOrder === 'asc' ? '↑' : '↓')}
           </button>
           <button 
-            className={`sort-btn bpm-column ${libraryState.sortBy === 'bpm' ? 'active' : ''}`}
+            className={`sort-btn ${libraryState.sortBy === 'bpm' ? 'active' : ''}`}
             onClick={() => handleSortChange('bpm')}
           >
             BPM {libraryState.sortBy === 'bpm' && (libraryState.sortOrder === 'asc' ? '↑' : '↓')}
           </button>
           <button 
-            className={`sort-btn key-column ${libraryState.sortBy === 'key' ? 'active' : ''}`}
+            className={`sort-btn ${libraryState.sortBy === 'key' ? 'active' : ''}`}
             onClick={() => handleSortChange('key')}
           >
             KEY {libraryState.sortBy === 'key' && (libraryState.sortOrder === 'asc' ? '↑' : '↓')}
           </button>
           <button 
-            className={`sort-btn time-column ${libraryState.sortBy === 'duration' ? 'active' : ''}`}
+            className={`sort-btn ${libraryState.sortBy === 'duration' ? 'active' : ''}`}
             onClick={() => handleSortChange('duration')}
           >
             TIME {libraryState.sortBy === 'duration' && (libraryState.sortOrder === 'asc' ? '↑' : '↓')}
@@ -305,28 +369,26 @@ const LibraryB = ({ id, deck = 'B', onTrackLoad = () => {}, onCrossLoad, onTrack
             </div>
           ) : (
             filteredTracks.map((track, index) => (
-              <div
+              <TrackRow
                 key={track.id || index}
-                className={`track-row ${libraryState.selectedTrack?.id === track.id ? 'selected' : ''}`}
-                onClick={() => handleTrackSelect(track)}
-                onDoubleClick={() => handleTrackDoubleClick(track)}
+                track={track}
+                index={index}
+                isSelected={libraryState.selectedTrack?.id === track.id}
+                isCompact={densityMode === 'compact'}
+                keyDisplayMode={keyDisplayMode}
+                onSelect={handleTrackSelect}
+                onDoubleClick={handleTrackDoubleClick}
                 onContextMenu={(e) => {
                   e.preventDefault();
                   if (track?.id && window.api?.invoke) {
                     window.api.invoke('tag-editor:open', track.id);
                   }
                 }}
-                title="Double-click to load | Right-click to edit metadata"
-              >
-                <div className="track-filename">
-                  {track.title || 'Unknown Title'}
-                </div>
-                <div className="track-metadata">
-                  <span>BPM: {track.bpm ? Math.round(track.bpm) : '--'}</span>
-                  <span>Key: {track.key ? `${track.key}${track.mode?.charAt(0) || ''}` : '--'}</span>
-                  <span>{formatDuration(track.duration)}</span>
-                </div>
-              </div>
+                onLoadDeck={handleLoadDeck}
+                onPreview={handlePreview}
+                onCrate={handleCrate}
+                formatDuration={formatDuration}
+              />
             ))
           )}
         </div>
