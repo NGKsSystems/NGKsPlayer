@@ -225,7 +225,6 @@ const EQB = ({ id, deck = 'B', audioContext, gainNode, pannerNode, onStyleChange
       }
     }
   }, [eqValues, eqFilters, audioContext, bypassEQ, deck]);
-  }, [eqValues, eqFilters, audioContext, bypassEQ]);
   
   const handlePresetChange = useCallback((presetName) => {
     setSelectedPreset(presetName);
