@@ -190,8 +190,9 @@
   margin-bottom: 1px;
   transition: all 0.2s ease;
   min-height: auto;
-  max-height: 45px;
+  max-height: none;
   height: auto;
+  overflow: visible;
 }
 
 .track-row:hover {
