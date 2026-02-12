@@ -77,15 +77,30 @@ const StatusIcons = memo(({ track }) => {
 StatusIcons.displayName = 'StatusIcons';
 
 // ─── Mini Waveform ───────────────────────────────────────────────────────
-const MiniWaveform = memo(({ src }) => {
+const WAVE_CHARS = ['▁','▂','▃','▄','▅','▆','▇','█'];
+function seedHash(str) {
+  let h = 0;
+  for (let i = 0; i < str.length; i++) h = ((h << 5) - h + str.charCodeAt(i)) | 0;
+  return Math.abs(h);
+}
+function generateWaveform(seed, len = 28) {
+  let s = seed;
+  const bars = [];
+  for (let i = 0; i < len; i++) {
+    s = (s * 16807 + 12345) & 0x7fffffff;
+    bars.push(WAVE_CHARS[s % WAVE_CHARS.length]);
+  }
+  return bars.join('');
+}
+
+const MiniWaveform = memo(({ src, trackId }) => {
   if (src) {
     return <img className="mini-waveform" src={src} alt="" draggable={false} />;
   }
+  const pattern = generateWaveform(seedHash(String(trackId || 'x')));
   return (
     <span className="mini-waveform placeholder" title="No waveform preview">
-      <span className="mini-waveform-bars">
-        {'▁▂▃▄▅▆▇▆▅▄▃▂▁▂▃▅'}
-      </span>
+      <span className="mini-waveform-bars">{pattern}</span>
     </span>
   );
 });
@@ -166,7 +181,7 @@ const TrackRow = memo(({
 
       {/* Row 3: Mini waveform strip */}
       <div className="track-row-bottom">
-        <MiniWaveform src={track.waveformPreview || track.thumbnailPath} />
+        <MiniWaveform src={track.waveformPreview || track.thumbnailPath} trackId={track.id || track.title} />
       </div>
 
       {/* Hover actions (absolute, no layout shift) */}

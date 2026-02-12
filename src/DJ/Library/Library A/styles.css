@@ -401,11 +401,15 @@
   overflow: hidden;
 }
 .library-a-widget .mini-waveform-bars {
-  font-size: 8px;
-  letter-spacing: -1px;
-  color: rgba(255, 255, 255, 0.15);
+  font-size: 9px;
+  letter-spacing: 0px;
+  color: rgba(255, 107, 53, 0.45);
   line-height: 1;
   user-select: none;
+  white-space: nowrap;
+  overflow: hidden;
+  display: block;
+  width: 100%;
 }
 .library-a-widget .track-row.compact .mini-waveform {
   height: 10px;
