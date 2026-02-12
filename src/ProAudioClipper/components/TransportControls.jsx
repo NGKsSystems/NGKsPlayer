@@ -29,6 +29,7 @@ const MasterWaveform = ({ tracks, currentTime, duration, onSeek, isPlaying, audi
   const freqDataRef = useRef(null);
   const timeDataRef = useRef(null);
   const connectedRef = useRef(false);
+  const peakHoldsRef = useRef([]);   // peak dot positions per bar
 
   // ── Create & connect AnalyserNode to masterGainNode ──
   useEffect(() => {
@@ -106,8 +107,17 @@ const MasterWaveform = ({ tracks, currentTime, duration, onSeek, isPlaying, audi
       const binCount = analyser.frequencyBinCount;
       const numBars = Math.min(128, Math.floor(w / 4));
       const gap = 1;
+      const peaks = peakHoldsRef.current;
+      const now = performance.now();
 
-      // Logarithmic frequency mapping
+      // Ensure peaks array is sized with {height, timestamp} objects
+      if (peaks.length !== numBars) {
+        peakHoldsRef.current = Array.from({ length: numBars }, () => ({ height: 0, timestamp: 0 }));
+      }
+
+      const holdTime = 2000;
+      const fallSpeed = 0.5;
+
       for (let bar = 0; bar < numBars; bar++) {
         const x = Math.floor((bar / numBars) * w);
         const nextX = Math.floor(((bar + 1) / numBars) * w);
@@ -124,16 +134,35 @@ const MasterWaveform = ({ tracks, currentTime, duration, onSeek, isPlaying, audi
         const val = (sum / count) / 255;
         const barH = val * h * 0.95;
 
-        if (barH < 1) continue;
+        // Update peak hold (time-based)
+        const peak = peakHoldsRef.current[bar];
+        if (barH >= peak.height) {
+          peak.height = barH;
+          peak.timestamp = now;
+        } else {
+          const elapsed = now - peak.timestamp;
+          if (elapsed > holdTime) {
+            peak.height = Math.max(barH, peak.height - fallSpeed);
+          }
+        }
 
-        const barGrad = ctx.createLinearGradient(x, h, x, h - barH);
-        barGrad.addColorStop(0, 'rgb(0, 200, 0)');
-        barGrad.addColorStop(0.5, 'rgb(200, 200, 0)');
-        barGrad.addColorStop(0.8, 'rgb(255, 140, 0)');
-        barGrad.addColorStop(1, 'rgb(255, 30, 0)');
+        // Draw bar
+        if (barH > 1) {
+          const barGrad = ctx.createLinearGradient(x, h, x, h - barH);
+          barGrad.addColorStop(0, 'rgb(0, 200, 0)');
+          barGrad.addColorStop(0.5, 'rgb(200, 200, 0)');
+          barGrad.addColorStop(0.8, 'rgb(255, 140, 0)');
+          barGrad.addColorStop(1, 'rgb(255, 30, 0)');
+          ctx.fillStyle = barGrad;
+          ctx.fillRect(x, h - barH, Math.max(bw, 1), barH);
+        }
 
-        ctx.fillStyle = barGrad;
-        ctx.fillRect(x, h - barH, Math.max(bw, 1), barH);
+        // Draw peak dot (white)
+        if (peak.height > 2) {
+          const peakY = h - peak.height;
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(x, peakY - 2, Math.max(bw, 1), 2);
+        }
       }
     } else {
       // ═══════════════════════════════════════════

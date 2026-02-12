@@ -42,6 +42,7 @@ const useWaveform = (
   const isMounted = useRef(true);
   const beatHistoryRef = useRef([]);
   const lastBeatTimeRef = useRef(0);
+  const peakHoldsRef = useRef([]);   // peak dot positions per bar
 
   const [waveformType, setWaveformType] = useState('bars');
 
@@ -250,22 +251,30 @@ const useWaveform = (
   }
 
   function drawBars(ctx, freqData, w, h, mid) {
-    const binCount = freqData.length;             // 512 with fftSize 1024
+    const binCount = freqData.length;
     const numBars = Math.min(128, Math.floor(w / 4));
     const gap = 1;
+    const peaks = peakHoldsRef.current;
+    const now = performance.now();
 
-    // Logarithmic frequency mapping: more bars for low freqs, fewer for highs
-    // Maps each bar to a range of bins using a log scale
+    // Ensure peaks array is sized with {height, timestamp} objects
+    if (peaks.length !== numBars) {
+      peakHoldsRef.current = Array.from({ length: numBars }, () => ({ height: 0, timestamp: 0 }));
+      peaks.length = 0;
+      peaks.push(...peakHoldsRef.current);
+    }
+
+    const holdTime = 2000;   // hold at peak for 2 seconds before falling
+    const fallSpeed = 0.5;   // pixels per frame after hold expires
+
     for (let bar = 0; bar < numBars; bar++) {
       const x = Math.floor((bar / numBars) * w);
       const nextX = Math.floor(((bar + 1) / numBars) * w);
       const bw = nextX - x - gap;
 
-      // Log scale: map bar index to frequency bin range
       const lowBin = Math.floor(Math.pow(bar / numBars, 2) * binCount);
       const highBin = Math.floor(Math.pow((bar + 1) / numBars, 2) * binCount);
 
-      // Average the bins in this range
       let sum = 0;
       const count = Math.max(1, highBin - lowBin);
       for (let b = lowBin; b < highBin && b < binCount; b++) {
@@ -274,17 +283,35 @@ const useWaveform = (
       const val = (sum / count) / 255;
       const barH = val * h * 0.95;
 
-      if (barH < 1) continue;
+      // --- Update peak hold (time-based) ---
+      const peak = peaks[bar];
+      if (barH >= peak.height) {
+        peak.height = barH;
+        peak.timestamp = now;
+      } else {
+        const elapsed = now - peak.timestamp;
+        if (elapsed > holdTime) {
+          peak.height = Math.max(barH, peak.height - fallSpeed);
+        }
+      }
 
-      // Amplitude-based colour: green → yellow → orange → red
-      const barGrad = ctx.createLinearGradient(x, h, x, h - barH);
-      barGrad.addColorStop(0, 'rgb(0, 200, 0)');
-      barGrad.addColorStop(0.5, 'rgb(200, 200, 0)');
-      barGrad.addColorStop(0.8, 'rgb(255, 140, 0)');
-      barGrad.addColorStop(1, 'rgb(255, 30, 0)');
+      // --- Draw bar ---
+      if (barH > 1) {
+        const barGrad = ctx.createLinearGradient(x, h, x, h - barH);
+        barGrad.addColorStop(0, 'rgb(0, 200, 0)');
+        barGrad.addColorStop(0.5, 'rgb(200, 200, 0)');
+        barGrad.addColorStop(0.8, 'rgb(255, 140, 0)');
+        barGrad.addColorStop(1, 'rgb(255, 30, 0)');
+        ctx.fillStyle = barGrad;
+        ctx.fillRect(x, h - barH, Math.max(bw, 1), barH);
+      }
 
-      ctx.fillStyle = barGrad;
-      ctx.fillRect(x, h - barH, Math.max(bw, 1), barH);
+      // --- Draw peak dot ---
+      if (peak.height > 2) {
+        const peakY = h - peak.height;
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(x, peakY - 3, Math.max(bw, 1), 3);
+      }
     }
   }
 
