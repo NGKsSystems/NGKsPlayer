@@ -82,9 +82,9 @@ const useWaveform = (
         audioContextRef.current = ctx;
 
         const analyser = ctx.createAnalyser();
-        analyser.fftSize = 256;
-        analyser.smoothingTimeConstant = 0.7;
-        analyser.minDecibels = -90;
+        analyser.fftSize = 1024;
+        analyser.smoothingTimeConstant = 0.65;
+        analyser.minDecibels = -100;
         analyser.maxDecibels = -10;
 
         // Passive tap: gainNode → analyser (analyser not routed to destination)
@@ -250,16 +250,31 @@ const useWaveform = (
   }
 
   function drawBars(ctx, freqData, w, h, mid) {
-    const binCount = freqData.length;
-    const barTotalWidth = w / binCount;          // fractional — fills full width
+    const binCount = freqData.length;             // 512 with fftSize 1024
+    const numBars = Math.min(128, Math.floor(w / 4));
     const gap = 1;
 
-    for (let i = 0; i < binCount; i++) {
-      const x = Math.floor(i * barTotalWidth);
-      const nextX = Math.floor((i + 1) * barTotalWidth);
+    // Logarithmic frequency mapping: more bars for low freqs, fewer for highs
+    // Maps each bar to a range of bins using a log scale
+    for (let bar = 0; bar < numBars; bar++) {
+      const x = Math.floor((bar / numBars) * w);
+      const nextX = Math.floor(((bar + 1) / numBars) * w);
       const bw = nextX - x - gap;
-      const val = freqData[i] / 255;
+
+      // Log scale: map bar index to frequency bin range
+      const lowBin = Math.floor(Math.pow(bar / numBars, 2) * binCount);
+      const highBin = Math.floor(Math.pow((bar + 1) / numBars, 2) * binCount);
+
+      // Average the bins in this range
+      let sum = 0;
+      const count = Math.max(1, highBin - lowBin);
+      for (let b = lowBin; b < highBin && b < binCount; b++) {
+        sum += freqData[b];
+      }
+      const val = (sum / count) / 255;
       const barH = val * h * 0.95;
+
+      if (barH < 1) continue;
 
       // Amplitude-based colour: green → yellow → orange → red
       const barGrad = ctx.createLinearGradient(x, h, x, h - barH);

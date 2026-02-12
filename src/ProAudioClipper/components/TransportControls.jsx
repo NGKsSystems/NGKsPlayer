@@ -47,9 +47,9 @@ const MasterWaveform = ({ tracks, currentTime, duration, onSeek, isPlaying, audi
       }
 
       const analyser = audioContext.createAnalyser();
-      analyser.fftSize = 256;           // 128 frequency bins — good for bars
-      analyser.smoothingTimeConstant = 0.7;
-      analyser.minDecibels = -90;
+      analyser.fftSize = 1024;
+      analyser.smoothingTimeConstant = 0.65;
+      analyser.minDecibels = -100;
       analyser.maxDecibels = -10;
 
       // Tap masterGain → analyser (passive — analyser doesn't route to destination)
@@ -104,25 +104,35 @@ const MasterWaveform = ({ tracks, currentTime, duration, onSeek, isPlaying, audi
       analyser.getByteFrequencyData(freqData);
 
       const binCount = analyser.frequencyBinCount;
-      const barTotalWidth = w / binCount;          // fractional — fills full width
+      const numBars = Math.min(128, Math.floor(w / 4));
       const gap = 1;
 
-      for (let i = 0; i < binCount; i++) {
-        const x = Math.floor(i * barTotalWidth);
-        const nextX = Math.floor((i + 1) * barTotalWidth);
+      // Logarithmic frequency mapping
+      for (let bar = 0; bar < numBars; bar++) {
+        const x = Math.floor((bar / numBars) * w);
+        const nextX = Math.floor(((bar + 1) / numBars) * w);
         const bw = nextX - x - gap;
-        const val = freqData[i] / 255;            // 0..1
+
+        const lowBin = Math.floor(Math.pow(bar / numBars, 2) * binCount);
+        const highBin = Math.floor(Math.pow((bar + 1) / numBars, 2) * binCount);
+
+        let sum = 0;
+        const count = Math.max(1, highBin - lowBin);
+        for (let b = lowBin; b < highBin && b < binCount; b++) {
+          sum += freqData[b];
+        }
+        const val = (sum / count) / 255;
         const barH = val * h * 0.95;
 
-        // Amplitude-based colour: green → yellow → orange → red
+        if (barH < 1) continue;
+
         const barGrad = ctx.createLinearGradient(x, h, x, h - barH);
-        barGrad.addColorStop(0, 'rgb(0, 200, 0)');       // green (bottom)
-        barGrad.addColorStop(0.5, 'rgb(200, 200, 0)');    // yellow (mid)
-        barGrad.addColorStop(0.8, 'rgb(255, 140, 0)');    // orange
-        barGrad.addColorStop(1, 'rgb(255, 30, 0)');       // red (top)
+        barGrad.addColorStop(0, 'rgb(0, 200, 0)');
+        barGrad.addColorStop(0.5, 'rgb(200, 200, 0)');
+        barGrad.addColorStop(0.8, 'rgb(255, 140, 0)');
+        barGrad.addColorStop(1, 'rgb(255, 30, 0)');
 
         ctx.fillStyle = barGrad;
-        // Bars grow upward from bottom
         ctx.fillRect(x, h - barH, Math.max(bw, 1), barH);
       }
     } else {
