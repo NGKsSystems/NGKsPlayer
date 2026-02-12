@@ -150,42 +150,44 @@ const EQA = ({ id, deck = 'A', audioContext, gainNode, pannerNode, onStyleChange
     }
   }, [currentStyle, isDragging, isResizing, id, onStyleChange]);
   
-  // Initialize EQ filters when audio context is available
+  // Initialize EQ filters — use AudioManager's built-in EQ chain (no standalone creation)
   useEffect(() => {
-    if (audioContext && gainNode && pannerNode && eqFilters.length === 0) {
-      
-      const filters = frequencyValues.map((freq, index) => {
-        const filter = audioContext.createBiquadFilter();
-        
-        // Configure filter types based on frequency
-        if (index === 0) {
-          filter.type = 'lowshelf';
-        } else if (index === frequencyValues.length - 1) {
-          filter.type = 'highshelf';
-        } else {
-          filter.type = 'peaking';
-        }
-        
-        // Clamp frequency to valid Web Audio API range (10Hz - 24000Hz)
-        const clampedFreq = Math.max(10, Math.min(24000, freq));
-        filter.frequency.setValueAtTime(clampedFreq, audioContext.currentTime);
-        filter.Q.setValueAtTime(1, audioContext.currentTime);
-        filter.gain.setValueAtTime(0, audioContext.currentTime);
-        
-        return filter;
-      });
-      
-      // Store filters for later manipulation
-      setEqFilters(filters);
-      
-      // Insert EQ chain into AudioManager if available (with delay to ensure track is loaded)
-      setTimeout(() => {
-        if (window.audioManagerRef?.current) {
-          window.audioManagerRef.current.insertEQChain('A', filters);
-        }
-      }, 500);
+    if (!audioContext) return;
+    
+    // Get filters from AudioManager's built-in chain
+    const am = window.audioManagerRef?.current;
+    if (am) {
+      const filters = am.getEQFilters(deck);
+      if (filters && filters.length > 0 && eqFilters.length === 0) {
+        setEqFilters(filters);
+        console.log(`[EQ${deck}] Connected to AudioManager's built-in ${filters.length}-band EQ chain`);
+      }
     }
-  }, [audioContext, gainNode, pannerNode, eqFilters.length]);
+
+    // Also listen for audioChainReady event (fires when a new track loads)
+    const handleChainReady = (e) => {
+      if (e.detail.deck === deck) {
+        const updatedFilters = window.audioManagerRef?.current?.getEQFilters(deck);
+        if (updatedFilters && updatedFilters.length > 0) {
+          setEqFilters(updatedFilters);
+          // Re-apply current EQ values to the new filters
+          updatedFilters.forEach((filter, index) => {
+            if (filter && filter.gain && index < eqValues.length) {
+              try {
+                const gainValue = bypassEQ ? 0 : eqValues[index];
+                filter.gain.setValueAtTime(gainValue, audioContext.currentTime);
+              } catch (err) {
+                // Filter may be from a different context after track reload
+              }
+            }
+          });
+          console.log(`[EQ${deck}] Re-connected after track load, re-applied EQ values`);
+        }
+      }
+    };
+    window.addEventListener('audioChainReady', handleChainReady);
+    return () => window.removeEventListener('audioChainReady', handleChainReady);
+  }, [audioContext, deck]);  // Intentionally omit eqFilters/eqValues to avoid loops
   
   // Update EQ when values or bypass state changes
   useEffect(() => {
@@ -209,16 +211,20 @@ const EQA = ({ id, deck = 'A', audioContext, gainNode, pannerNode, onStyleChange
     setEqValues(newValues);
     setSelectedPreset('Custom'); // Switch to custom when manually adjusted
     
-    // Update the actual filter gain in real-time
-    if (eqFilters[bandIndex] && audioContext) {
+    // Update the actual filter gain in real-time via AudioManager
+    const am = window.audioManagerRef?.current;
+    if (am) {
+      am.setEQBand(deck, bandIndex, bypassEQ ? 0 : newValues[bandIndex]);
+    } else if (eqFilters[bandIndex] && audioContext) {
+      // Fallback: direct filter manipulation
       try {
         const gainValue = bypassEQ ? 0 : newValues[bandIndex];
         eqFilters[bandIndex].gain.setValueAtTime(gainValue, audioContext.currentTime);
       } catch (error) {
-        console.error(`[EQA] Failed to update band ${bandIndex}:`, error);
+        console.error(`[EQ${deck}] Failed to update band ${bandIndex}:`, error);
       }
     }
-  }, [eqValues, eqFilters, audioContext, bypassEQ]);
+  }, [eqValues, eqFilters, audioContext, bypassEQ, deck]);
   
   const handlePresetChange = useCallback((presetName) => {
     setSelectedPreset(presetName);

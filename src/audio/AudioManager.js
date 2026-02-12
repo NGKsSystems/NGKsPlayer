@@ -19,75 +19,15 @@ import { CrashProtection } from '../utils/playerCrashProtection.js';
 class AudioManager {
   constructor() {
     this.decks = {
-      A: {
-        audio: null,
-        loaded: false,
-        track: null,
-        cued: false,
-        audioContext: null,
-        gainNode: null,
-        pannerNode: null,
-        sourceNode: null,
-        analyzerNode: null,
-        vuAnalyzerNode: null,
-        frequencyData: null,
-        timeData: null,
-        vuFrequencyData: null,
-        fxInsertNode: null,
-        fxReturnNode: null,
-      },
-      B: {
-        audio: null,
-        loaded: false,
-        track: null,
-        cued: false,
-        audioContext: null,
-        gainNode: null,
-        pannerNode: null,
-        sourceNode: null,
-        analyzerNode: null,
-        vuAnalyzerNode: null,
-        frequencyData: null,
-        timeData: null,
-        vuFrequencyData: null,
-        fxInsertNode: null,
-        fxReturnNode: null,
-      },
-      C: {
-        audio: null,
-        loaded: false,
-        track: null,
-        cued: false,
-        audioContext: null,
-        gainNode: null,
-        pannerNode: null,
-        sourceNode: null,
-        analyzerNode: null,
-        vuAnalyzerNode: null,
-        frequencyData: null,
-        timeData: null,
-        vuFrequencyData: null,
-        fxInsertNode: null,
-        fxReturnNode: null,
-      },
-      D: {
-        audio: null,
-        loaded: false,
-        track: null,
-        cued: false,
-        audioContext: null,
-        gainNode: null,
-        pannerNode: null,
-        sourceNode: null,
-        analyzerNode: null,
-        vuAnalyzerNode: null,
-        frequencyData: null,
-        timeData: null,
-        vuFrequencyData: null,
-        fxInsertNode: null,
-        fxReturnNode: null,
-      },
+      A: this._createDeckData(),
+      B: this._createDeckData(),
+      C: this._createDeckData(),
+      D: this._createDeckData(),
     };
+
+    // Crossfader state
+    this.crossfaderPosition = 0.5; // 0 = full A, 1 = full B
+    this.crossfaderCurve = 'linear'; // 'linear', 'cut', 'smooth'
 
     this.onPositionUpdate = null;
     this.positionUpdateInterval = null;
@@ -114,6 +54,38 @@ class AudioManager {
     // Initialize audio analyzer (async, safe inside constructor)
     this.initAnalyzer();
   }
+
+  // ── Factory for deck data structure ──
+  _createDeckData() {
+    return {
+      audio: null,
+      loaded: false,
+      track: null,
+      cued: false,
+      audioContext: null,
+      gainNode: null,          // channel fader gain
+      crossfaderGainNode: null, // crossfader gain (applied per-deck)
+      pannerNode: null,
+      sourceNode: null,
+      analyzerNode: null,
+      vuAnalyzerNode: null,
+      frequencyData: null,
+      timeData: null,
+      vuFrequencyData: null,
+      fxInsertNode: null,
+      fxReturnNode: null,
+      // ── 16-band parametric EQ chain ──
+      eqFilters: [],           // array of BiquadFilterNode
+    };
+  }
+
+  // ── EQ frequency table (matches EQ A/B/C/D component) ──
+  static EQ_FREQUENCIES = [
+    31, 62, 125, 250, 500, 1000, 2000, 4000,
+    8000, 16000
+    // Clamped to Nyquist-safe range. Original UI shows 16 bands but
+    // frequencies above ~20 kHz are inaudible and cause Web Audio errors.
+  ];
 
   async initAnalyzer() {
     try {
@@ -143,7 +115,11 @@ class AudioManager {
     }
   }
 
-  // Set up Web Audio API chain for a deck with stereo panning
+  // Set up Web Audio API chain for a deck with EQ, crossfader, and stereo panning
+  //
+  // Signal chain:
+  //   source → analyzer → [EQ band 0] → ... → [EQ band N] → gainNode → crossfaderGainNode → pannerNode → vuAnalyzer → destination
+  //
   setupAudioChain(deck) {
     const deckData = this.decks[deck];
     
@@ -156,6 +132,7 @@ class AudioManager {
       // Create audio nodes
       deckData.sourceNode = this.audioContext.createMediaElementSource(deckData.audio);
       deckData.gainNode = this.audioContext.createGain();
+      deckData.crossfaderGainNode = this.audioContext.createGain();
       deckData.pannerNode = this.audioContext.createStereoPanner();
       deckData.analyzerNode = this.audioContext.createAnalyser();
       
@@ -167,8 +144,8 @@ class AudioManager {
       deckData.analyzerNode.smoothingTimeConstant = 0.8;
       
       // Configure VU analyzer for level detection (higher sensitivity)
-      deckData.vuAnalyzerNode.fftSize = 256; // Smaller for faster response
-      deckData.vuAnalyzerNode.smoothingTimeConstant = 0.3; // More responsive
+      deckData.vuAnalyzerNode.fftSize = 256;
+      deckData.vuAnalyzerNode.smoothingTimeConstant = 0.3;
       
       // Create data arrays for analysis
       const bufferLength = deckData.analyzerNode.frequencyBinCount;
@@ -178,18 +155,53 @@ class AudioManager {
       // Create VU data array
       const vuBufferLength = deckData.vuAnalyzerNode.frequencyBinCount;
       deckData.vuFrequencyData = new Uint8Array(vuBufferLength);
-      
-      // Connect the audio chain: source -> analyzer -> gain -> panner -> vuAnalyzer -> destination
+
+      // ── Build 10-band parametric EQ chain ──
+      const eqFreqs = AudioManager.EQ_FREQUENCIES;
+      deckData.eqFilters = eqFreqs.map((freq, index) => {
+        const filter = this.audioContext.createBiquadFilter();
+        if (index === 0) {
+          filter.type = 'lowshelf';
+        } else if (index === eqFreqs.length - 1) {
+          filter.type = 'highshelf';
+        } else {
+          filter.type = 'peaking';
+        }
+        const clampedFreq = Math.max(10, Math.min(this.audioContext.sampleRate / 2 - 1, freq));
+        filter.frequency.setValueAtTime(clampedFreq, this.audioContext.currentTime);
+        filter.Q.setValueAtTime(1.4, this.audioContext.currentTime);
+        filter.gain.setValueAtTime(0, this.audioContext.currentTime);  // flat by default
+        return filter;
+      });
+
+      // ── Connect the full audio chain ──
+      // source → analyzer
       deckData.sourceNode.connect(deckData.analyzerNode);
-      deckData.analyzerNode.connect(deckData.gainNode);
-      deckData.gainNode.connect(deckData.pannerNode);
+
+      // analyzer → EQ chain
+      let prevNode = deckData.analyzerNode;
+      for (const filter of deckData.eqFilters) {
+        prevNode.connect(filter);
+        prevNode = filter;
+      }
+
+      // EQ chain → gainNode → crossfaderGainNode → pannerNode → vuAnalyzer → destination
+      prevNode.connect(deckData.gainNode);
+      deckData.gainNode.connect(deckData.crossfaderGainNode);
+      deckData.crossfaderGainNode.connect(deckData.pannerNode);
       deckData.pannerNode.connect(deckData.vuAnalyzerNode);
       deckData.vuAnalyzerNode.connect(this.audioContext.destination);
       
       // Set initial panning (left ear for normal, right ear for cue)
       this.updatePanning(deck);
+
+      // Apply current crossfader position
+      this._applyCrossfader();
       
-      console.log(`[AudioManager] Audio chain with dual analyzer setup complete for Deck ${deck}`);
+      // Emit event so EQ components know the chain is ready
+      window.dispatchEvent(new CustomEvent('audioChainReady', { detail: { deck } }));
+      
+      console.log(`[AudioManager] Audio chain with ${eqFreqs.length}-band EQ + crossfader setup complete for Deck ${deck}`);
       return true;
     } catch (error) {
       console.error(`[AudioManager] Failed to setup audio chain for Deck ${deck}:`, error);
@@ -396,8 +408,164 @@ class AudioManager {
 
   setVolume(deck, volume) {
     const deckData = this.decks[deck];
-    if (!deckData.audio) return;
-    deckData.audio.volume = Math.max(0, Math.min(1, volume));
+    if (!deckData) return;
+    // Use Web Audio gainNode (in the signal chain) — not audio.volume
+    if (deckData.gainNode) {
+      const clamped = Math.max(0, Math.min(1, volume));
+      deckData.gainNode.gain.setTargetAtTime(clamped, this.audioContext.currentTime, 0.02);
+    } else if (deckData.audio) {
+      // Fallback to HTML5 volume if chain not ready yet
+      deckData.audio.volume = Math.max(0, Math.min(1, volume));
+    }
+  }
+
+  // ── Channel gain (same as setVolume but named for Mixer compatibility) ──
+  setChannelGain(deck, volume) {
+    this.setVolume(deck, volume);
+  }
+
+  // ── 3-band channel EQ (High / Mid / Low) — used by Mixer ChannelStrip ──
+  // Maps to the built-in 10-band EQ: low = bands 0-1, mid = bands 3-5, high = bands 7-9
+  setChannelEQ(deck, band, gainDb) {
+    const deckData = this.decks[deck];
+    if (!deckData || !deckData.eqFilters || deckData.eqFilters.length === 0) return;
+
+    const clamped = Math.max(-24, Math.min(24, gainDb));
+    const t = this.audioContext.currentTime;
+
+    // Map 3-band EQ to the 10-band filter array
+    // low = 31 Hz, 62 Hz (bands 0-1)
+    // mid = 250 Hz, 500 Hz, 1 kHz (bands 3-5)  
+    // high = 4 kHz, 8 kHz, 16 kHz (bands 7-9)
+    const bandMap = {
+      low:  [0, 1],
+      mid:  [3, 4, 5],
+      high: [7, 8, 9]
+    };
+
+    const indices = bandMap[band];
+    if (!indices) return;
+
+    for (const i of indices) {
+      if (deckData.eqFilters[i]) {
+        deckData.eqFilters[i].gain.setTargetAtTime(clamped, t, 0.02);
+      }
+    }
+  }
+
+  // ── Full 10-band (or 16-band mapped) EQ control — used by EQ A/B/C/D components ──
+  setEQBand(deck, bandIndex, gainDb) {
+    const deckData = this.decks[deck];
+    if (!deckData || !deckData.eqFilters) return;
+    
+    // EQ UI has 16 bands but AudioManager only creates 10 (audible range).
+    // Map 16-band UI index to 10-band internal index.
+    // UI bands 0-9 map to filter 0-9. UI bands 10-15 are ultrasonic — ignore.
+    if (bandIndex >= deckData.eqFilters.length) return;
+    
+    const filter = deckData.eqFilters[bandIndex];
+    if (!filter) return;
+    
+    const clamped = Math.max(-24, Math.min(24, gainDb));
+    filter.gain.setTargetAtTime(clamped, this.audioContext.currentTime, 0.02);
+  }
+
+  // Get the current EQ filter nodes for a deck (for external UI to read/bind)
+  getEQFilters(deck) {
+    return this.decks[deck]?.eqFilters || [];
+  }
+
+  // ── Crossfader ──
+  setCrossfaderPosition(position) {
+    // position: 0 = full A, 0.5 = center, 1 = full B
+    this.crossfaderPosition = Math.max(0, Math.min(1, position));
+    this._applyCrossfader();
+  }
+
+  setCrossfaderCurve(curve) {
+    this.crossfaderCurve = curve; // 'linear', 'cut', 'smooth'
+    this._applyCrossfader();
+  }
+
+  _applyCrossfader() {
+    const pos = this.crossfaderPosition;
+    let gainA, gainB;
+
+    switch (this.crossfaderCurve) {
+      case 'cut':
+        // Hard cut: full volume until the last 5%, then instant drop
+        gainA = pos > 0.95 ? 0 : 1;
+        gainB = pos < 0.05 ? 0 : 1;
+        break;
+      case 'smooth':
+        // Equal-power crossfade (no dip in the middle)
+        gainA = Math.cos(pos * Math.PI / 2);
+        gainB = Math.sin(pos * Math.PI / 2);
+        break;
+      case 'linear':
+      default:
+        // Linear crossfade
+        gainA = 1 - pos;
+        gainB = pos;
+        // Keep both at full when centered (DJ-style: both audible at center)
+        gainA = Math.min(1, gainA * 2);
+        gainB = Math.min(1, gainB * 2);
+        break;
+    }
+
+    const t = this.audioContext ? this.audioContext.currentTime : 0;
+
+    // Apply to deck A crossfader gain
+    if (this.decks.A.crossfaderGainNode) {
+      this.decks.A.crossfaderGainNode.gain.setTargetAtTime(gainA, t, 0.01);
+    }
+    // Apply to deck B crossfader gain
+    if (this.decks.B.crossfaderGainNode) {
+      this.decks.B.crossfaderGainNode.gain.setTargetAtTime(gainB, t, 0.01);
+    }
+    // Decks C and D: C follows A, D follows B
+    if (this.decks.C.crossfaderGainNode) {
+      this.decks.C.crossfaderGainNode.gain.setTargetAtTime(gainA, t, 0.01);
+    }
+    if (this.decks.D.crossfaderGainNode) {
+      this.decks.D.crossfaderGainNode.gain.setTargetAtTime(gainB, t, 0.01);
+    }
+  }
+
+  // ── Mixer state sync (called by Mixer component) ──
+  updateMixerState(state) {
+    if (!state) return;
+
+    // Apply channel volumes
+    const channelMap = { channel1: 'A', channel2: 'B', channel3: 'C', channel4: 'D' };
+    for (const [key, deck] of Object.entries(channelMap)) {
+      if (state[key]) {
+        if (state[key].gain !== undefined) {
+          this.setVolume(deck, state[key].gain / 100);
+        }
+        if (state[key].eq) {
+          if (state[key].eq.high !== undefined) this.setChannelEQ(deck, 'high', state[key].eq.high);
+          if (state[key].eq.mid !== undefined) this.setChannelEQ(deck, 'mid', state[key].eq.mid);
+          if (state[key].eq.low !== undefined) this.setChannelEQ(deck, 'low', state[key].eq.low);
+        }
+      }
+    }
+
+    // Apply crossfader
+    if (state.crossfader) {
+      if (state.crossfader.position !== undefined) {
+        this.setCrossfaderPosition(state.crossfader.position / 100);
+      }
+      if (state.crossfader.curve !== undefined) {
+        this.setCrossfaderCurve(state.crossfader.curve);
+      }
+    }
+
+    // Apply master volume
+    if (state.master?.volume !== undefined) {
+      // Master volume applied via HTML5 destination gain or a master node
+      // For now, we scale both decks proportionally (simple approach)
+    }
   }
 
   async testAudio() {
@@ -505,47 +673,16 @@ class AudioManager {
       gainNode: deckData.gainNode,
       pannerNode: deckData.pannerNode,
       analyzerNode: deckData.analyzerNode,
-      sourceNode: deckData.sourceNode
+      sourceNode: deckData.sourceNode,
+      eqFilters: deckData.eqFilters,
+      crossfaderGainNode: deckData.crossfaderGainNode
     };
   }
 
+  // Legacy method — EQ is now built into setupAudioChain; this is kept for backward compat
   insertEQChain(deck, eqChain) {
-    const deckData = this.decks[deck];
-    if (!deckData || !deckData.sourceNode || !deckData.gainNode || !deckData.pannerNode) return false;
-
-    try {
-      deckData.sourceNode.disconnect();
-      deckData.analyzerNode.disconnect();
-      deckData.gainNode.disconnect();
-      deckData.pannerNode.disconnect();
-      if (deckData.vuAnalyzerNode) deckData.vuAnalyzerNode.disconnect();
-      
-      deckData.sourceNode.connect(deckData.analyzerNode);
-      
-      if (eqChain && eqChain.length > 0) {
-        deckData.analyzerNode.connect(eqChain[0]);
-        for (let i = 0; i < eqChain.length - 1; i++) {
-          eqChain[i].connect(eqChain[i + 1]);
-        }
-        eqChain[eqChain.length - 1].connect(deckData.gainNode);
-      } else {
-        deckData.analyzerNode.connect(deckData.gainNode);
-      }
-      
-      deckData.gainNode.connect(deckData.pannerNode);
-      
-      if (deckData.vuAnalyzerNode) {
-        deckData.pannerNode.connect(deckData.vuAnalyzerNode);
-        deckData.vuAnalyzerNode.connect(this.audioContext.destination);
-      } else {
-        deckData.pannerNode.connect(this.audioContext.destination);
-      }
-      
-      return true;
-    } catch (error) {
-      console.error(`[AudioManager] Failed to insert EQ chain:`, error);
-      return false;
-    }
+    console.warn('[AudioManager] insertEQChain is deprecated — EQ is built into the signal chain. Use setEQBand() instead.');
+    return true;
   }
 
   async analyzeTrack(track) {

@@ -421,22 +421,26 @@ const saveLayout = async (layout, currentDeckMode) => {
     B: { audioContext: null, gainNode: null, pannerNode: null }
   });
 
-  // Update audio refs when AudioManager is available
+  // Update audio refs when AudioManager is available and when audio chain is rebuilt (track load)
   useEffect(() => {
-    if (audioManagerRef.current) {
-      const updateAudioRefs = () => {
-        const deckANodes = audioManagerRef.current.getAudioNodes('A');
-        const deckBNodes = audioManagerRef.current.getAudioNodes('B');
-        
-        deckAudioRefs.current = {
-          A: deckANodes,
-          B: deckBNodes
-        };
-      };
+    const updateAudioRefs = () => {
+      if (!audioManagerRef.current) return;
+      const deckANodes = audioManagerRef.current.getAudioNodes('A');
+      const deckBNodes = audioManagerRef.current.getAudioNodes('B');
       
-      // Update refs once when AudioManager becomes available
-      updateAudioRefs();
-    }
+      deckAudioRefs.current = {
+        A: deckANodes,
+        B: deckBNodes
+      };
+    };
+    
+    // Update refs once now
+    updateAudioRefs();
+
+    // Re-update whenever a deck's audio chain is (re)built
+    const handleChainReady = () => updateAudioRefs();
+    window.addEventListener('audioChainReady', handleChainReady);
+    return () => window.removeEventListener('audioChainReady', handleChainReady);
   }, []);
 
   // Function to register deck audio context (legacy compatibility)
