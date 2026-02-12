@@ -190,7 +190,7 @@
   height: auto !important;
 }
 
-.track-row {
+.library-b-widget .track-row {
   display: flex !important;
   flex-direction: column !important;
   justify-content: center;
@@ -204,24 +204,24 @@
   margin-bottom: 1px;
   transition: all 0.2s ease;
   min-height: 44px;
-  max-height: none;
-  height: auto;
+  max-height: none !important;
+  height: auto !important;
   overflow: visible;
 }
 
-.track-row:hover {
+.library-b-widget .track-row:hover {
   background: #1a1a1a;
   border-color: rgba(255, 255, 255, 0.4);
 }
 
-.track-row.selected {
+.library-b-widget .track-row.selected {
   background: #000000;
   border: 2px solid #2196f3;
   box-shadow: 0 0 8px rgba(33, 150, 243, 0.3);
 }
 
-.track-filename {
-  display: block;
+.library-b-widget .track-filename {
+  display: block !important;
   width: 100%;
   min-height: 1.3em;
   overflow: hidden;
@@ -233,9 +233,11 @@
   letter-spacing: 0.3px;
   line-height: 1.3;
   flex-shrink: 0;
+  position: relative;
+  z-index: 1;
 }
 
-.track-metadata {
+.library-b-widget .track-metadata {
   display: flex !important;
   flex-direction: row !important;
   gap: 8px;
@@ -248,7 +250,7 @@
   flex-shrink: 0;
 }
 
-.track-metadata span {
+.library-b-widget .track-metadata span {
   white-space: nowrap;
   padding: 2px 6px;
   border-radius: 4px;
@@ -256,19 +258,19 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.track-metadata span:nth-child(1) {
+.library-b-widget .track-metadata span:nth-child(1) {
   background: rgba(59, 130, 246, 0.15);
   border-color: rgba(59, 130, 246, 0.4);
   color: #93c5fd;
 }
 
-.track-metadata span:nth-child(2) {
+.library-b-widget .track-metadata span:nth-child(2) {
   background: rgba(34, 197, 94, 0.15);
   border-color: rgba(34, 197, 94, 0.4);
   color: #86efac;
 }
 
-.track-metadata span:nth-child(3) {
+.library-b-widget .track-metadata span:nth-child(3) {
   background: rgba(255, 107, 53, 0.15);
   border-color: rgba(255, 107, 53, 0.4);
   color: #ffa07a;
