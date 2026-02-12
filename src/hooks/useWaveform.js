@@ -3,7 +3,7 @@
  * NGKsPlayer
  *
  * Module: useWaveform.js
- * Purpose: TODO – describe responsibility
+ * Purpose: Real-time frequency spectrum analyzer with 3 visualisation modes
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -13,10 +13,15 @@
  */
 // src/hooks/useWaveform.js
 
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 /**
  * useWaveform — real-time audio visualiser for the single-track NowPlaying view.
+ *
+ * Three Frequency Spectrum Analyzers:
+ *   1. Line   — time-domain oscilloscope waveform
+ *   2. Bars   — frequency spectrum with per-bin bars, 3-zone colours, peak dots
+ *   3. Circle — circular radial frequency visualizer
  *
  * Signature matches what NowPlaying.jsx destructures:
  *   const { waveformCanvasRef, analyzerRef, waveformType, setWaveformType } = useWaveform(
@@ -24,37 +29,26 @@ import { useEffect, useRef, useState, useCallback } from 'react';
  *     setBeatPulse, setPeakRotation, setDebugValues, useEssentiaBeats
  *   );
  */
-const useWaveform = (
-  audioRef,
-  isPlaying,
-  beatPulseEnabledRef,
-  beatConfig = {},
-  setBeatPulse = () => {},
-  setPeakRotation = () => {},
-  setDebugValues = () => {},
-  useEssentiaBeats = false
-) => {
+export function useWaveform(audioRef, isPlaying, beatPulseEnabledRef, beatDetectionConfig, setBeatPulse, setPeakRotation, setDebugValues, useEssentiaBeats) {
+  const [waveformType, setWaveformType] = useState('line'); // 'line', 'bars', 'circle', 'none'
+
   const waveformCanvasRef = useRef(null);
+  const audioContextRef = useRef(null);
   const analyzerRef = useRef(null);
   const animationFrameRef = useRef(null);
-  const sourceNodeRef = useRef(null);
-  const audioContextRef = useRef(null);
-  const isMounted = useRef(true);
-  const beatHistoryRef = useRef([]);
-  const lastBeatTimeRef = useRef(0);
-  const peakHoldsRef = useRef([]);   // peak dot positions per bar
-
-  const [waveformType, setWaveformType] = useState('bars');
-
-  useEffect(() => {
-    isMounted.current = true;
-    return () => {
-      isMounted.current = false;
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-    };
-  }, []);
+  const essentiaSourceNodeRef = useRef(null);
+  const peakDotsRef = useRef([]);
+  const beatDetectionRef = useRef({
+    lastBeat: 0,
+    threshold: 165,
+    bassHistory: [],
+    midHistory: [],
+    highHistory: [],
+    lastPeak: 0,
+    adaptiveThreshold: 165,
+    beatStrength: 0,
+    debugCounter: 0
+  });
 
   // ── Connect analyser to the <audio> element's existing Web Audio chain ──
   // NowPlaying already calls createMediaElementSource and stores nodes on the
@@ -62,310 +56,335 @@ const useWaveform = (
   // We MUST NOT call createMediaElementSource again (throws InvalidStateError).
   // Instead, tap the existing gain node with a passive analyser branch.
   useEffect(() => {
-    const audio = audioRef?.current;
-    if (!audio) return;
-
-    // Already connected
-    if (analyzerRef.current) return;
-
-    const tryConnect = () => {
-      // Use the AudioContext NowPlaying already created
-      const ctx = audio.__ngksMainAudioContext || audioContextRef.current;
-      const gainNode = audio.__ngksMainGainNode;
-      const sourceNode = audio.__ngksMainSourceNode;
-
-      if (!ctx || !gainNode) {
-        // Chain not ready yet — retry shortly
-        return false;
-      }
+    const setupWaveform = async () => {
+      if (!audioRef.current || !waveformCanvasRef.current) return;
 
       try {
-        audioContextRef.current = ctx;
+        if (!audioContextRef.current) {
+          const audio = audioRef.current;
 
-        const analyser = ctx.createAnalyser();
-        analyser.fftSize = 1024;
-        analyser.smoothingTimeConstant = 0.65;
-        analyser.minDecibels = -100;
-        analyser.maxDecibels = -10;
+          // Try to use the existing NowPlaying audio chain first
+          const existingCtx = audio.__ngksMainAudioContext;
+          const existingGain = audio.__ngksMainGainNode;
 
-        // Passive tap: gainNode → analyser (analyser not routed to destination)
-        gainNode.connect(analyser);
+          if (existingCtx && existingGain) {
+            // Tap into existing chain — no duplicate createMediaElementSource
+            audioContextRef.current = existingCtx;
+            analyzerRef.current = existingCtx.createAnalyser();
+            analyzerRef.current.fftSize = 2048;
+            analyzerRef.current.smoothingTimeConstant = 0.6;
 
-        analyzerRef.current = analyser;
-        sourceNodeRef.current = sourceNode;
-        return true;
+            // Passive tap: gainNode → analyser (analyser not routed to destination)
+            existingGain.connect(analyzerRef.current);
+            essentiaSourceNodeRef.current = audio.__ngksMainSourceNode;
+          } else {
+            // Fallback: chain not ready yet — retry shortly
+            const retryInterval = setInterval(() => {
+              const ctx2 = audio.__ngksMainAudioContext;
+              const gain2 = audio.__ngksMainGainNode;
+              if (ctx2 && gain2) {
+                clearInterval(retryInterval);
+                audioContextRef.current = ctx2;
+                analyzerRef.current = ctx2.createAnalyser();
+                analyzerRef.current.fftSize = 2048;
+                analyzerRef.current.smoothingTimeConstant = 0.6;
+                gain2.connect(analyzerRef.current);
+                essentiaSourceNodeRef.current = audio.__ngksMainSourceNode;
+                drawWaveform();
+              }
+            }, 200);
+            return;
+          }
+        }
+
+        // Cancel previous animation loop
+        if (animationFrameRef.current) {
+          cancelAnimationFrame(animationFrameRef.current);
+        }
+
+        // Start animation loop
+        drawWaveform();
       } catch (err) {
-        console.error('[useWaveform] analyser connection failed:', err);
-        return false;
+        console.warn('[Waveform] Setup failed:', err);
       }
     };
 
-    // The audio chain may be set up after this effect runs, so retry a few times
-    if (!tryConnect()) {
-      const retryInterval = setInterval(() => {
-        if (tryConnect() || !isMounted.current) {
-          clearInterval(retryInterval);
-        }
-      }, 200);
-
-      return () => clearInterval(retryInterval);
-    }
-  }, [audioRef]);
-
-  // ── Simple beat detection from frequency data ──
-  const detectBeat = useCallback((freqData) => {
-    if (!beatPulseEnabledRef?.current) return;
-
-    const config = beatConfig || {};
-    const threshold = config.threshold ?? 1.5;
-    const gate = config.gate ?? 200;
-    const minimum = config.minimum ?? 0.3;
-
-    // Sum low-frequency bins (bass)
-    let bass = 0;
-    const bassEnd = Math.min(10, freqData.length);
-    for (let i = 0; i < bassEnd; i++) {
-      bass += freqData[i] / 255;
-    }
-    bass /= bassEnd;
-
-    // History average
-    const history = beatHistoryRef.current;
-    history.push(bass);
-    if (history.length > 30) history.shift();
-    const avg = history.reduce((a, b) => a + b, 0) / history.length;
-
-    const now = performance.now();
-    const isBeat = bass > avg * threshold && bass > minimum && (now - lastBeatTimeRef.current) > gate;
-
-    if (isBeat) {
-      lastBeatTimeRef.current = now;
-      try { setBeatPulse(true); } catch (_) {}
-      setTimeout(() => {
-        try { setBeatPulse(false); } catch (_) {}
-      }, 120);
-    }
-
-    try {
-      setDebugValues(prev => ({
-        ...prev,
-        bass: bass.toFixed(3),
-        avg: avg.toFixed(3),
-        isBeat,
-      }));
-    } catch (_) {}
-  }, [beatPulseEnabledRef, beatConfig, setBeatPulse, setDebugValues]);
-
-  // ── Animation loop ──
-  useEffect(() => {
-    if (!isPlaying || !analyzerRef.current) {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-        animationFrameRef.current = null;
-      }
-      // Draw idle state
-      drawIdle();
-      return;
-    }
-
-    // Resume context if suspended (Chromium autoplay policy)
-    if (audioContextRef.current?.state === 'suspended') {
-      audioContextRef.current.resume();
-    }
-
-    const analyser = analyzerRef.current;
-    const freqData = new Uint8Array(analyser.frequencyBinCount);
-    const timeData = new Uint8Array(analyser.frequencyBinCount);
-
-    const draw = () => {
-      if (!isMounted.current) return;
+    const drawWaveform = () => {
+      if (!waveformCanvasRef.current || !analyzerRef.current) return;
 
       const canvas = waveformCanvasRef.current;
-      if (!canvas) {
-        animationFrameRef.current = requestAnimationFrame(draw);
-        return;
-      }
-
-      const rect = canvas.getBoundingClientRect();
-      const w = Math.floor(rect.width);
-      const h = Math.floor(rect.height);
-
-      if (canvas.width !== w || canvas.height !== h) {
-        canvas.width = w;
-        canvas.height = h;
-      }
-
       const ctx = canvas.getContext('2d');
-      const mid = h / 2;
+      const analyzer = analyzerRef.current;
 
-      analyser.getByteFrequencyData(freqData);
-      analyser.getByteTimeDomainData(timeData);
+      const bufferLength = analyzer.frequencyBinCount;
+      const dataArray = new Uint8Array(bufferLength);
+      const frequencyData = new Uint8Array(bufferLength);
 
-      // Beat detection
-      detectBeat(freqData);
+      const draw = () => {
+        animationFrameRef.current = requestAnimationFrame(draw);
 
-      // Clear
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.85)';
-      ctx.fillRect(0, 0, w, h);
+        // Set canvas size to match container
+        const rect = canvas.getBoundingClientRect();
+        if (canvas.width !== rect.width || canvas.height !== rect.height) {
+          canvas.width = rect.width;
+          canvas.height = rect.height;
+        }
 
-      if (waveformType === 'bars') {
-        drawBars(ctx, freqData, w, h, mid);
-      } else if (waveformType === 'line') {
-        drawLine(ctx, timeData, w, h, mid);
-      } else if (waveformType === 'circle') {
-        drawCircle(ctx, freqData, w, h, mid);
-      }
+        const width = canvas.width;
+        const height = canvas.height;
 
-      animationFrameRef.current = requestAnimationFrame(draw);
+        // Clear with dark background
+        ctx.fillStyle = 'rgb(31, 41, 55)'; // gray-800
+        ctx.fillRect(0, 0, width, height);
+
+        // Only draw waveform if playing
+        if (!isPlaying || waveformType === 'none') {
+          return;
+        }
+
+        analyzer.getByteTimeDomainData(dataArray);
+        analyzer.getByteFrequencyData(frequencyData);
+
+        // Beat detection with multi-frequency analysis
+        const bassEnd = Math.floor(bufferLength * 0.1);
+        const midStart = bassEnd;
+        const midEnd = Math.floor(bufferLength * 0.4);
+        const highStart = midEnd;
+
+        let bassSum = 0, midSum = 0, highSum = 0;
+
+        for (let i = 0; i < bassEnd; i++) {
+          bassSum += frequencyData[i];
+        }
+        for (let i = midStart; i < midEnd; i++) {
+          midSum += frequencyData[i];
+        }
+        for (let i = highStart; i < bufferLength; i++) {
+          highSum += frequencyData[i];
+        }
+
+        const bassAverage = bassSum / bassEnd;
+        const midAverage = midSum / (midEnd - midStart);
+        const highAverage = highSum / (bufferLength - highStart);
+
+        if (!beatDetectionRef.current.bassHistory) {
+          beatDetectionRef.current.bassHistory = [];
+          beatDetectionRef.current.midHistory = [];
+          beatDetectionRef.current.highHistory = [];
+        }
+
+        beatDetectionRef.current.bassHistory.push(bassAverage);
+        beatDetectionRef.current.midHistory.push(midAverage);
+        beatDetectionRef.current.highHistory.push(highAverage);
+
+        if (beatDetectionRef.current.bassHistory.length > (beatDetectionConfig?.beatHistoryLength || 30)) {
+          beatDetectionRef.current.bassHistory.shift();
+          beatDetectionRef.current.midHistory.shift();
+          beatDetectionRef.current.highHistory.shift();
+        }
+
+        const avgBass = beatDetectionRef.current.bassHistory.reduce((a, b) => a + b, 0) / beatDetectionRef.current.bassHistory.length;
+
+        const threshold = beatDetectionConfig?.beatThresholdRef?.current ?? 1.5;
+        const minimum = beatDetectionConfig?.beatMinRef?.current ?? 80;
+        const gate = beatDetectionConfig?.beatGateRef?.current ?? 200;
+
+        const bassSpike = bassAverage > avgBass * threshold;
+        const aboveMin = bassAverage > minimum;
+
+        const now = Date.now();
+        const timeSinceLastBeat = now - beatDetectionRef.current.lastBeat;
+
+        // Update debug display every 10 frames
+        beatDetectionRef.current.debugCounter++;
+        if (beatDetectionRef.current.debugCounter % 10 === 0) {
+          setDebugValues({
+            bass: Math.round(bassAverage),
+            avgBass: Math.round(avgBass),
+            spike: bassSpike,
+            min: aboveMin,
+            gate: timeSinceLastBeat > gate
+          });
+        }
+
+        // Skip custom beat detection if Essentia is enabled
+        if (!useEssentiaBeats && beatPulseEnabledRef?.current && bassSpike && aboveMin && timeSinceLastBeat > gate) {
+          beatDetectionRef.current.lastBeat = now;
+          beatDetectionRef.current.beatStrength = Math.min((bassAverage / avgBass), 2);
+
+          setBeatPulse(true);
+          setTimeout(() => setBeatPulse(false), 150);
+
+          // Detect SUPER PEAK beats
+          if (bassAverage > avgBass * 1.6 && timeSinceLastBeat > 1500) {
+            beatDetectionRef.current.lastPeak = now;
+            setPeakRotation(true);
+            setTimeout(() => setPeakRotation(false), 1500);
+          }
+        }
+
+        // ── Theme colour helpers ──
+        const getThemeColor = (varName) => {
+          return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+        };
+
+        const getDynamicColor = () => {
+          const waveformColor = getThemeColor('--waveform-line') || '#fc6323';
+          return waveformColor;
+        };
+
+        // ══════════════════════════════════════════════
+        //  DRAW: LINE — time-domain oscilloscope
+        // ══════════════════════════════════════════════
+        if (waveformType === 'line') {
+          ctx.lineWidth = 2;
+          ctx.strokeStyle = getDynamicColor();
+          ctx.beginPath();
+
+          const sliceWidth = width / bufferLength;
+          let x = 0;
+
+          for (let i = 0; i < bufferLength; i++) {
+            const v = dataArray[i] / 128.0;
+            const y = (v * height) / 2;
+
+            if (i === 0) {
+              ctx.moveTo(x, y);
+            } else {
+              ctx.lineTo(x, y);
+            }
+
+            x += sliceWidth;
+          }
+
+          ctx.lineTo(width, height / 2);
+          ctx.stroke();
+
+        // ══════════════════════════════════════════════
+        //  DRAW: BARS — frequency spectrum analyser
+        // ══════════════════════════════════════════════
+        } else if (waveformType === 'bars') {
+          const barWidth = (width / bufferLength) * 2.5;
+          let x = 0;
+
+          const bassColor = getThemeColor('--accent-primary') || '#fc6323';
+          const midColor = getThemeColor('--accent-secondary') || '#a03c88';
+          const highColor = getThemeColor('--accent-success') || '#00ff9f';
+          const peakColor = getThemeColor('--waveform-line') || '#ffffff';
+
+          if (peakDotsRef.current.length !== bufferLength) {
+            peakDotsRef.current = Array(bufferLength).fill(null).map(() => ({
+              height: 0,
+              timestamp: now
+            }));
+          }
+
+          for (let i = 0; i < bufferLength; i++) {
+            const barHeight = (frequencyData[i] / 255) * height * 0.85;
+            const intensity = frequencyData[i] / 255;
+
+            let barColor;
+            if (i < bufferLength * 0.15) {
+              barColor = bassColor;
+              ctx.globalAlpha = 0.8 + (intensity * 0.2);
+            } else if (i < bufferLength * 0.5) {
+              barColor = midColor;
+              ctx.globalAlpha = 0.7 + (intensity * 0.3);
+            } else {
+              barColor = highColor;
+              ctx.globalAlpha = 0.6 + (intensity * 0.4);
+            }
+
+            ctx.fillStyle = barColor;
+            ctx.fillRect(x, height - barHeight, barWidth, barHeight);
+
+            // ── Peak dots — hold at peak for 2s then slowly fall ──
+            const peak = peakDotsRef.current[i];
+            if (barHeight > peak.height) {
+              peak.height = barHeight;
+              peak.timestamp = now;
+            } else {
+              const timeSincePeak = now - peak.timestamp;
+              const fallDelay = 2000;
+              if (timeSincePeak > fallDelay) {
+                const fallSpeed = 0.5;
+                peak.height = Math.max(barHeight, peak.height - fallSpeed);
+              }
+            }
+
+            if (peak.height > 5) {
+              const dotY = height - peak.height;
+              const dotSize = 3;
+
+              ctx.globalAlpha = 1;
+              ctx.fillStyle = peakColor;
+              ctx.fillRect(x, dotY - dotSize, barWidth, dotSize);
+            }
+
+            x += barWidth + 1;
+          }
+          ctx.globalAlpha = 1;
+
+        // ══════════════════════════════════════════════
+        //  DRAW: CIRCLE — circular radial frequency
+        // ══════════════════════════════════════════════
+        } else if (waveformType === 'circle') {
+          ctx.lineWidth = 2;
+          ctx.strokeStyle = getDynamicColor();
+          ctx.beginPath();
+
+          const centerX = width / 2;
+          const centerY = height / 2;
+          const radius = Math.min(width, height) * 0.3;
+
+          for (let i = 0; i < bufferLength; i++) {
+            const angle = (i / bufferLength) * Math.PI * 2;
+            const amplitude = (dataArray[i] / 128.0 - 1) * radius * 0.6;
+            const px = centerX + Math.cos(angle) * (radius + amplitude);
+            const py = centerY + Math.sin(angle) * (radius + amplitude);
+
+            if (i === 0) {
+              ctx.moveTo(px, py);
+            } else {
+              ctx.lineTo(px, py);
+            }
+          }
+
+          ctx.closePath();
+          ctx.stroke();
+        }
+      };
+
+      draw();
     };
 
-    draw();
+    setupWaveform();
 
     return () => {
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
-        animationFrameRef.current = null;
       }
     };
-  }, [isPlaying, waveformType, detectBeat]);
+  }, [waveformType, isPlaying, beatPulseEnabledRef, beatDetectionConfig, setBeatPulse, setPeakRotation, setDebugValues, useEssentiaBeats, audioRef]);
 
-  // ── Drawing helpers ──
-  function drawIdle() {
-    const canvas = waveformCanvasRef.current;
-    if (!canvas) return;
-    const rect = canvas.getBoundingClientRect();
-    const w = Math.floor(rect.width);
-    const h = Math.floor(rect.height);
-    if (w > 0 && h > 0) {
-      canvas.width = w;
-      canvas.height = h;
-      const ctx = canvas.getContext('2d');
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.9)';
-      ctx.fillRect(0, 0, w, h);
-      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
-      ctx.beginPath();
-      ctx.moveTo(0, h / 2);
-      ctx.lineTo(w, h / 2);
-      ctx.stroke();
-    }
-  }
-
-  function drawBars(ctx, freqData, w, h, mid) {
-    const binCount = freqData.length;
-    const numBars = Math.min(128, Math.floor(w / 4));
-    const gap = 1;
-    const peaks = peakHoldsRef.current;
-    const now = performance.now();
-
-    // Ensure peaks array is sized with {height, timestamp} objects
-    if (peaks.length !== numBars) {
-      peakHoldsRef.current = Array.from({ length: numBars }, () => ({ height: 0, timestamp: 0 }));
-      peaks.length = 0;
-      peaks.push(...peakHoldsRef.current);
-    }
-
-    const holdTime = 2000;   // hold at peak for 2 seconds before falling
-    const fallSpeed = 0.5;   // pixels per frame after hold expires
-
-    for (let bar = 0; bar < numBars; bar++) {
-      const x = Math.floor((bar / numBars) * w);
-      const nextX = Math.floor(((bar + 1) / numBars) * w);
-      const bw = nextX - x - gap;
-
-      const lowBin = Math.floor(Math.pow(bar / numBars, 2) * binCount);
-      const highBin = Math.floor(Math.pow((bar + 1) / numBars, 2) * binCount);
-
-      let sum = 0;
-      const count = Math.max(1, highBin - lowBin);
-      for (let b = lowBin; b < highBin && b < binCount; b++) {
-        sum += freqData[b];
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
       }
-      const val = (sum / count) / 255;
-      const barH = val * h * 0.95;
-
-      // --- Update peak hold (time-based) ---
-      const peak = peaks[bar];
-      if (barH >= peak.height) {
-        peak.height = barH;
-        peak.timestamp = now;
-      } else {
-        const elapsed = now - peak.timestamp;
-        if (elapsed > holdTime) {
-          peak.height = Math.max(barH, peak.height - fallSpeed);
-        }
-      }
-
-      // --- Draw bar ---
-      if (barH > 1) {
-        const barGrad = ctx.createLinearGradient(x, h, x, h - barH);
-        barGrad.addColorStop(0, 'rgb(0, 200, 0)');
-        barGrad.addColorStop(0.5, 'rgb(200, 200, 0)');
-        barGrad.addColorStop(0.8, 'rgb(255, 140, 0)');
-        barGrad.addColorStop(1, 'rgb(255, 30, 0)');
-        ctx.fillStyle = barGrad;
-        ctx.fillRect(x, h - barH, Math.max(bw, 1), barH);
-      }
-
-      // --- Draw peak dot ---
-      if (peak.height > 2) {
-        const peakY = h - peak.height;
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(x, peakY - 3, Math.max(bw, 1), 3);
-      }
-    }
-  }
-
-  function drawLine(ctx, timeData, w, h, mid) {
-    ctx.beginPath();
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = 'rgba(0, 212, 255, 0.8)';
-    const sliceWidth = w / timeData.length;
-    let x = 0;
-    for (let i = 0; i < timeData.length; i++) {
-      const v = timeData[i] / 128.0;
-      const y = v * mid;
-      if (i === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-      x += sliceWidth;
-    }
-    ctx.stroke();
-  }
-
-  function drawCircle(ctx, freqData, w, h, mid) {
-    const cx = w / 2;
-    const cy = h / 2;
-    const radius = Math.min(w, h) * 0.3;
-    const binCount = freqData.length;
-
-    ctx.beginPath();
-    for (let i = 0; i < binCount; i++) {
-      const val = freqData[i] / 255;
-      const angle = (i / binCount) * Math.PI * 2 - Math.PI / 2;
-      const r = radius + val * radius * 0.8;
-      const x = cx + Math.cos(angle) * r;
-      const y = cy + Math.sin(angle) * r;
-      if (i === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    }
-    ctx.closePath();
-    ctx.strokeStyle = 'rgba(0, 212, 255, 0.7)';
-    ctx.lineWidth = 2;
-    ctx.stroke();
-
-    // Inner glow
-    const grad = ctx.createRadialGradient(cx, cy, radius * 0.5, cx, cy, radius);
-    grad.addColorStop(0, 'rgba(0, 212, 255, 0.06)');
-    grad.addColorStop(1, 'rgba(0, 212, 255, 0)');
-    ctx.fillStyle = grad;
-    ctx.fill();
-  }
+      // Don't close the audio context — it belongs to NowPlaying
+    };
+  }, []);
 
   return {
-    waveformCanvasRef,
-    analyzerRef,
     waveformType,
     setWaveformType,
+    waveformCanvasRef,
+    audioContextRef,
+    analyzerRef,
+    essentiaSourceNodeRef
   };
-};
+}
 
 export default useWaveform;
