@@ -78,7 +78,7 @@ const StatusIcons = memo(({ track }) => {
 StatusIcons.displayName = 'StatusIcons';
 
 // ─── Mini Waveform (smooth canvas envelope) ──────────────────────────────
-const WAVEFORM_H = 18;  // must match CSS .track-row-bottom height
+const WAVEFORM_H = 28;  // must match CSS .track-row-bottom height
 
 const MiniWaveform = memo(({ track }) => {
   const canvasRef = useRef(null);
