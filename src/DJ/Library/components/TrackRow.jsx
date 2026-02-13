@@ -13,7 +13,7 @@
  */
 import React, { memo, useState, useCallback, useRef, useEffect } from 'react';
 import { formatKeyDisplay } from '../utils/keyConverter.js';
-import { generateWaveformThumbnail, hasWaveformThumbnail } from '../utils/generateWaveformThumbnail.js';
+import { generateWaveformThumbnail, hasWaveformThumbnail, toImageSrc } from '../utils/generateWaveformThumbnail.js';
 
 // ─── BPM Confidence Dot ──────────────────────────────────────────────────
 const BpmDot = memo(({ confidence, locked }) => {
@@ -95,25 +95,33 @@ function generateWaveform(seed, len = 28) {
 }
 
 const MiniWaveform = memo(({ src, trackId, track }) => {
-  const [generatedSrc, setGeneratedSrc] = useState(null);
+  const [dataUrl, setDataUrl] = useState(null);
   const attemptedRef = useRef(false);
 
-  // Auto-generate waveform thumbnail if none exists
+  // Auto-generate waveform if none exists
   useEffect(() => {
-    if (src || generatedSrc || attemptedRef.current) return;
-    if (!track || hasWaveformThumbnail(track)) return;
+    // Already have a valid src from props (existing thumbnail on disk)
+    if (src) return;
+    // Already generated this session
+    if (dataUrl || attemptedRef.current) return;
+    // Need a valid track with a file path
+    if (!track?.id || !(track.filePath || track.path)) return;
+
     attemptedRef.current = true;
 
-    generateWaveformThumbnail(track).then((savedPath) => {
-      if (savedPath) setGeneratedSrc(savedPath);
+    generateWaveformThumbnail(track).then((url) => {
+      if (url) setDataUrl(url);
     });
-  }, [src, generatedSrc, track]);
+  }, [src, dataUrl, track]);
 
-  const imgSrc = src || generatedSrc;
-  if (imgSrc) {
-    return <img className="mini-waveform" src={imgSrc} alt="" draggable={false} />;
+  // Resolve the image source: prefer data URL from generator, then convert disk path
+  const resolvedSrc = dataUrl || toImageSrc(src);
+
+  if (resolvedSrc) {
+    return <img className="mini-waveform" src={resolvedSrc} alt="" draggable={false} />;
   }
-  // Fallback: show text placeholder while generating (or if generation fails)
+
+  // Fallback: text placeholder while generating (or if no file path)
   const pattern = generateWaveform(seedHash(String(trackId || 'x')));
   return (
     <span className="mini-waveform placeholder" title="Generating waveform...">

@@ -3,13 +3,13 @@
  * NGKsPlayer
  *
  * Module: generateWaveformThumbnail.js
- * Purpose: Generate a mini waveform PNG from audio file via IPC + OffscreenCanvas
+ * Purpose: Generate mini waveform data-URL from audio file via IPC + canvas
  *
  * Pipeline:
- *   1. audio:loadSegment IPC → get decoded PCM (Float32Array)
- *   2. Draw min/max waveform onto OffscreenCanvas
- *   3. Export as data URL (image/png)
- *   4. library:saveThumbnail IPC → persist to disk + update DB
+ *   1. audio:loadSegment IPC → decoded PCM (Float32Array)
+ *   2. Draw min/max waveform onto a regular <canvas> element
+ *   3. canvas.toDataURL() → base64 PNG data URL
+ *   4. Return data URL directly for <img> display (no disk I/O required)
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -18,37 +18,32 @@
  * Owner: NGKsSystems
  */
 
-// ── In-flight deduplication ──────────────────────────────────────────────
-const inflight = new Map();          // trackId → Promise<string|null>
-const generated = new Set();         // trackIds already done this session
+// ── Caches ───────────────────────────────────────────────────────────────
+const cache    = new Map();   // trackId → data URL string
+const inflight = new Map();   // trackId → Promise<string|null>
 
 // ── Configuration ────────────────────────────────────────────────────────
 const CANVAS_W       = 280;          // pixels wide
 const CANVAS_H       = 24;           // pixels tall
-const SAMPLE_RATE    = 8000;         // low-res decode (fast)
+const SAMPLE_RATE    = 4000;         // low-res decode (small IPC payload, fast)
 const WAVEFORM_COLOR = '#8bb8ff';    // soft blue waveform bars
-const BG_COLOR       = 'transparent';
 
 /**
- * Render PCM samples (Float32Array) to a data URL via OffscreenCanvas.
- * Adapted from ProAudioClipper/SimpleWaveform.jsx drawing algorithm.
+ * Render PCM samples onto a regular canvas and return a data URL (PNG).
+ * Uses the same min/max-per-pixel algorithm as SimpleWaveform.jsx.
  */
-function renderWaveform(samples, width = CANVAS_W, height = CANVAS_H) {
-  const canvas = new OffscreenCanvas(width, height);
-  const ctx    = canvas.getContext('2d');
-
-  // Background
-  if (BG_COLOR !== 'transparent') {
-    ctx.fillStyle = BG_COLOR;
-    ctx.fillRect(0, 0, width, height);
-  }
+function renderToDataUrl(samples, width = CANVAS_W, height = CANVAS_H) {
+  const canvas  = document.createElement('canvas');
+  canvas.width  = width;
+  canvas.height = height;
+  const ctx = canvas.getContext('2d');
 
   const len = samples.length;
   if (len === 0) return null;
 
   const samplesPerPx = len / width;
 
-  ctx.fillStyle = WAVEFORM_COLOR;
+  ctx.fillStyle   = WAVEFORM_COLOR;
   ctx.globalAlpha = 0.85;
 
   for (let x = 0; x < width; x++) {
@@ -71,27 +66,40 @@ function renderWaveform(samples, width = CANVAS_W, height = CANVAS_H) {
     ctx.fillRect(x, height - maxY, 1, barH);
   }
 
-  return canvas;
+  return canvas.toDataURL('image/png');
 }
 
 /**
- * Generate a waveform thumbnail for a track.
+ * Convert an absolute file path to a loadable src for <img>.
+ * Uses the app's registered ngksplayer:// file protocol.
+ */
+export function toImageSrc(absPath) {
+  if (!absPath) return null;
+  if (absPath.startsWith('data:')) return absPath;                 // already a data URL
+  if (absPath.startsWith('ngksplayer://')) return absPath;         // already converted
+  if (absPath.startsWith('http')) return absPath;                  // remote URL
+  return 'ngksplayer://' + absPath.replace(/\\/g, '/');            // Windows path → protocol
+}
+
+/**
+ * Generate a waveform data URL for a track.
  *
- * @param {object} track   – must have `id`, `filePath` (or `path`), and `duration`
- * @returns {Promise<string|null>}  saved file path, or null on failure
+ * @param {object} track   – must have `id` and `filePath`
+ * @returns {Promise<string|null>}  base64 PNG data URL, or null on failure
  */
 export async function generateWaveformThumbnail(track) {
-  const trackId  = track.id;
-  const filePath = track.filePath || track.path;
-  const duration = Number(track.duration) || 0;
+  const trackId  = track?.id;
+  const filePath = track?.filePath || track?.path;
 
   if (!trackId || !filePath) return null;
-  if (generated.has(trackId))  return track.thumbnailPath || null;
+
+  // Return from memory cache
+  if (cache.has(trackId)) return cache.get(trackId);
 
   // De-dupe concurrent calls for same track
   if (inflight.has(trackId)) return inflight.get(trackId);
 
-  const promise = _generate(trackId, filePath, duration);
+  const promise = _generate(trackId, filePath, Number(track.duration) || 0);
   inflight.set(trackId, promise);
 
   try {
@@ -105,12 +113,12 @@ async function _generate(trackId, filePath, duration) {
   try {
     const api = window.api;
     if (!api?.invoke) {
-      console.warn('[waveform] No window.api.invoke — skipping thumbnail generation');
+      console.warn('[waveform] No window.api.invoke — cannot generate');
       return null;
     }
 
-    // 1. Decode entire track at low sample rate
-    const segDuration = duration > 0 ? duration : 300; // fallback 5 min max
+    // 1. Decode full track at low sample rate (small payload)
+    const segDuration = duration > 0 ? duration : 300; // 5 min fallback
     const result = await api.invoke('audio:loadSegment', {
       filePath,
       start: 0,
@@ -123,37 +131,17 @@ async function _generate(trackId, filePath, duration) {
       return null;
     }
 
-    // channelData comes as plain Array from IPC — convert to Float32Array
+    // channelData comes as plain Array from IPC — convert
     const samples = new Float32Array(result.channelData[0]);
 
-    // 2. Render to OffscreenCanvas
-    const canvas = renderWaveform(samples);
-    if (!canvas) return null;
+    // 2. Render to canvas → data URL
+    const dataUrl = renderToDataUrl(samples);
+    if (!dataUrl) return null;
 
-    // 3. Export as PNG data URL
-    const blob    = await canvas.convertToBlob({ type: 'image/png' });
-    const reader  = new FileReader();
-    const dataUrl = await new Promise((resolve, reject) => {
-      reader.onloadend = () => resolve(reader.result);
-      reader.onerror   = reject;
-      reader.readAsDataURL(blob);
-    });
-
-    // 4. Save via IPC → disk + DB
-    const saved = await api.invoke('library:saveThumbnail', {
-      trackId,
-      dataUrl,
-      hash: null,
-    });
-
-    if (saved?.ok) {
-      generated.add(trackId);
-      console.log('[waveform] ✓ Generated thumbnail for', filePath);
-      return saved.path;
-    }
-
-    console.warn('[waveform] saveThumbnail failed:', saved?.error);
-    return null;
+    // 3. Cache in memory
+    cache.set(trackId, dataUrl);
+    console.log('[waveform] ✓ Generated waveform for', filePath);
+    return dataUrl;
   } catch (err) {
     console.error('[waveform] generation failed for', filePath, err);
     return null;
@@ -161,16 +149,18 @@ async function _generate(trackId, filePath, duration) {
 }
 
 /**
- * Check if a track already has a valid thumbnail.
+ * Check if a track already has a usable waveform (cached or on disk).
  */
 export function hasWaveformThumbnail(track) {
-  return !!(track.thumbnailPath || track.waveformPreview);
+  if (!track) return false;
+  if (cache.has(track.id)) return true;
+  return !!(track.thumbnailPath);
 }
 
 /**
- * Reset the session cache (e.g. on library reload).
+ * Reset the session caches (e.g. on library reload).
  */
 export function resetWaveformCache() {
-  generated.clear();
+  cache.clear();
   inflight.clear();
 }
