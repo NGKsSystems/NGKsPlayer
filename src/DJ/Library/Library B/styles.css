@@ -183,9 +183,9 @@
 .library-b-widget .track-row {
   display: flex !important;
   flex-direction: column !important;
-  justify-content: center;
-  gap: 3px;
-  padding: 6px 10px;
+  justify-content: flex-start;
+  gap: 2px;
+  padding: 5px 10px;
   font-size: 11px;
   cursor: pointer;
   background: #000000;
@@ -193,17 +193,16 @@
   border-radius: 6px;
   margin-bottom: 1px;
   transition: background 0.15s ease, border-color 0.15s ease;
-  min-height: 60px;
-  max-height: none !important;
-  height: auto !important;
-  overflow: visible;
+  height: 68px;
+  box-sizing: border-box;
+  overflow: hidden;
   position: relative;
 }
 
 .library-b-widget .track-row.compact {
-  min-height: 36px;
+  height: 40px;
   padding: 3px 10px;
-  gap: 2px;
+  gap: 1px;
   border-radius: 4px;
 }
 
@@ -224,7 +223,9 @@
   align-items: center;
   gap: 6px;
   width: 100%;
+  flex: 0 0 auto;
   min-height: 0;
+  overflow: hidden;
 }
 
 /* ── Row 2: metadata badges + energy ─────────────────────── */
@@ -233,6 +234,8 @@
   align-items: center;
   gap: 6px;
   width: 100%;
+  flex: 0 0 auto;
+  overflow: hidden;
 }
 .library-b-widget .track-row.compact .track-row-mid {
   gap: 4px;
@@ -310,9 +313,11 @@
 
 /* ── Row 3: mini waveform strip ──────────────────────────── */
 .library-b-widget .track-row-bottom {
-  display: flex;
-  align-items: center;
+  display: block;
   width: 100%;
+  flex: 0 0 18px;
+  height: 18px;
+  overflow: hidden;
 }
 .library-b-widget .track-row.compact .track-row-bottom {
   display: none;

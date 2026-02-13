@@ -78,6 +78,8 @@ const StatusIcons = memo(({ track }) => {
 StatusIcons.displayName = 'StatusIcons';
 
 // ─── Mini Waveform (smooth canvas envelope) ──────────────────────────────
+const WAVEFORM_H = 18;  // must match CSS .track-row-bottom height
+
 const MiniWaveform = memo(({ track }) => {
   const canvasRef = useRef(null);
   const drawnIdRef = useRef(null);
@@ -85,26 +87,24 @@ const MiniWaveform = memo(({ track }) => {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas || !track) return;
-    // Skip redraw if same track already drawn
     if (drawnIdRef.current === track.id) return;
 
     const data = parseTrajectory(track);
-    if (data) {
-      // Set canvas internal resolution to match its display size
-      const rect = canvas.getBoundingClientRect();
-      const dpr = window.devicePixelRatio || 1;
-      canvas.width  = Math.round(rect.width * dpr);
-      canvas.height = Math.round(rect.height * dpr);
-      drawWaveform(canvas, data);
-      drawnIdRef.current = track.id;
-    }
+    if (!data) return;
+
+    // Use the actual rendered width; height is fixed by CSS
+    const dpr = window.devicePixelRatio || 1;
+    const w = canvas.offsetWidth || canvas.parentElement?.offsetWidth || 280;
+    canvas.width  = Math.round(w * dpr);
+    canvas.height = Math.round(WAVEFORM_H * dpr);
+    drawWaveform(canvas, data);
+    drawnIdRef.current = track.id;
   }, [track]);
 
   return (
     <canvas
       ref={canvasRef}
       className="mini-waveform"
-      style={{ width: '100%', height: '100%' }}
     />
   );
 });
