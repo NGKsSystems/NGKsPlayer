@@ -11,9 +11,9 @@
  *
  * Owner: NGKsSystems
  */
-import React, { memo, useState, useCallback, useRef } from 'react';
+import React, { memo, useState, useCallback, useRef, useEffect } from 'react';
 import { formatKeyDisplay } from '../utils/keyConverter.js';
-import { getWaveformDataUrl } from '../utils/generateWaveformThumbnail.js';
+import { parseTrajectory, drawWaveform } from '../utils/generateWaveformThumbnail.js';
 
 // ─── BPM Confidence Dot ──────────────────────────────────────────────────
 const BpmDot = memo(({ confidence, locked }) => {
@@ -77,37 +77,35 @@ const StatusIcons = memo(({ track }) => {
 });
 StatusIcons.displayName = 'StatusIcons';
 
-// ─── Mini Waveform ───────────────────────────────────────────────────────
-const WAVE_CHARS = ['▁','▂','▃','▄','▅','▆','▇','█'];
-function seedHash(str) {
-  let h = 0;
-  for (let i = 0; i < str.length; i++) h = ((h << 5) - h + str.charCodeAt(i)) | 0;
-  return Math.abs(h);
-}
-function generateWaveform(seed, len = 28) {
-  let s = seed;
-  const bars = [];
-  for (let i = 0; i < len; i++) {
-    s = (s * 16807 + 12345) & 0x7fffffff;
-    bars.push(WAVE_CHARS[s % WAVE_CHARS.length]);
-  }
-  return bars.join('');
-}
+// ─── Mini Waveform (smooth canvas envelope) ──────────────────────────────
+const MiniWaveform = memo(({ track }) => {
+  const canvasRef = useRef(null);
+  const drawnIdRef = useRef(null);
 
-const MiniWaveform = memo(({ track, trackId }) => {
-  // Try to render from existing energyTrajectory data (instant, synchronous)
-  const dataUrl = getWaveformDataUrl(track);
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas || !track) return;
+    // Skip redraw if same track already drawn
+    if (drawnIdRef.current === track.id) return;
 
-  if (dataUrl) {
-    return <img className="mini-waveform" src={dataUrl} alt="" draggable={false} />;
-  }
+    const data = parseTrajectory(track);
+    if (data) {
+      // Set canvas internal resolution to match its display size
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width  = Math.round(rect.width * dpr);
+      canvas.height = Math.round(rect.height * dpr);
+      drawWaveform(canvas, data);
+      drawnIdRef.current = track.id;
+    }
+  }, [track]);
 
-  // Fallback: text placeholder for tracks without analysis data
-  const pattern = generateWaveform(seedHash(String(trackId || 'x')));
   return (
-    <span className="mini-waveform placeholder" title="Run analysis to generate waveform">
-      <span className="mini-waveform-bars">{pattern}</span>
-    </span>
+    <canvas
+      ref={canvasRef}
+      className="mini-waveform"
+      style={{ width: '100%', height: '100%' }}
+    />
   );
 });
 MiniWaveform.displayName = 'MiniWaveform';
@@ -187,7 +185,7 @@ const TrackRow = memo(({
 
       {/* Row 3: Mini waveform strip */}
       <div className="track-row-bottom">
-        <MiniWaveform track={track} trackId={track.id || track.title} />
+        <MiniWaveform track={track} />
       </div>
 
       {/* Hover actions (absolute, no layout shift) */}

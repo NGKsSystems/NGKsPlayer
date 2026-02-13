@@ -1,0 +1,155 @@
+=== TEST LOG ===
+npm warn Unknown project config "shamefully-hoist". This will stop working in the next major version of npm.
+npm warn Unknown project config "node-linker". This will stop working in the next major version of npm.
+npm warn Unknown project config "enable-pre-post-scripts". This will stop working in the next major version of npm.
+PASS src/tests/components/PianoRollMIDIEditor.test.jsx (34.534 s)
+PASS src/tests/audio/audioProcessing.test.js
+  ΓùÅ Console
+
+    console.warn
+      Advanced codec export failed for UNSUPPORTED, falling back to WAV: Error: Unsupported export format: UNSUPPORTED
+          at AdvancedAudioCodecs.exportAudio (C:\Users\suppo\Desktop\NGKsSystems\NGKsPlayer\src\audio\AdvancedAudioCodecs.js:572:13)
+          at exportAudio (C:\Users\suppo\Desktop\NGKsSystems\NGKsPlayer\src\Clipper\utils\audioExtractor.js:41:32)
+          at Object.<anonymous> (C:\Users\suppo\Desktop\NGKsSystems\NGKsPlayer\src\tests\audio\audioProcessing.test.js:159:42)
+          at Promise.finally.completed (C:\Users\suppo\Desktop\NGKsSystems\NGKsPlayer\node_modules\jest-circus\build\jestAdapterInit.js:1557:28)
+          at new Promise (<anonymous>)
+          at callAsyncCircusFn (C:\Users\suppo\Desktop\NGKsSystems\NGKsPlayer\node_modules\jest-circus\build\jestAdapterInit.js:1497:10)
+          at _callCircusTest (C:\Users\suppo\Desktop\NGKsSystems\NGKsPlayer\node_modules\jest-circus\build\jestAdapterInit.js:1007:40)
+          at _runTest (C:\Users\suppo\Desktop\NGKsSystems\NGKsPlayer\node_modules\jest-circus\build\jestAdapterInit.js:947:3)
+          at C:\Users\suppo\Desktop\NGKsSystems\NGKsPlayer\node_modules\jest-circus\build\jestAdapterInit.js:849:7
+          at _runTestsForDescribeBlock (C:\Users\suppo\Desktop\NGKsSystems\NGKsPlayer\node_modules\jest-circus\build\jestAdapterInit.js:862:11)
+          at _runTestsForDescribeBlock (C:\Users\suppo\Desktop\NGKsSystems\NGKsPlayer\node_modules\jest-circus\build\jestAdapterInit.js:857:11)
+          at _runTestsForDescribeBlock (C:\Users\suppo\Desktop\NGKsSystems\NGKsPlayer\node_modules\jest-circus\build\jestAdapterInit.js:857:11)
+          at run (C:\Users\suppo\Desktop\NGKsSystems\NGKsPlayer\node_modules\jest-circus\build\jestAdapterInit.js:761:3)
+          at runAndTransformResultsToJestFormat (C:\Users\suppo\Desktop\NGKsSystems\NGKsPlayer\node_modules\jest-circus\build\jestAdapterInit.js:1918:21)
+          at jestAdapter (C:\Users\suppo\Desktop\NGKsSystems\NGKsPlayer\node_modules\jest-circus\build\runner.js:101:19)
+          at runTestInternal (C:\Users\suppo\Desktop\NGKsSystems\NGKsPlayer\node_modules\jest-runner\build\index.js:275:16)
+          at runTest (C:\Users\suppo\Desktop\NGKsSystems\NGKsPlayer\node_modules\jest-runner\build\index.js:343:7)
+
+      41 |     return AdvancedAudioCodecs.exportAudio(audioBuffer, formatUpper, options);
+      42 |   } catch (error) {
+    > 43 |     console.warn(`Advanced codec export failed for ${format}, falling back to WAV:`, error);
+         |             ^
+      44 |     return generateWAV(audioBuffer, options.sampleRate);
+      45 |   }
+      46 | };
+
+      at warn (src/Clipper/utils/audioExtractor.js:43:13)
+      at Object.<anonymous> (src/tests/audio/audioProcessing.test.js:159:42)
+
+PASS src/tests/audio/AdvancedAudioCodecs.test.js
+PASS src/tests/utils/randomizer.test.js
+PASS src/tests/audio/simplified-codecs.test.js
+PASS src/tests/audio/debug-bwf.test.js
+  ΓùÅ Console
+
+    console.log
+      Audio buffer: {
+        sampleRate: 48000,
+        channels: 1,
+        length: 5,
+        channelData: Float32Array(5) [
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612
+        ]
+      }
+
+      at Object.log (src/tests/audio/debug-bwf.test.js:27:13)
+
+    console.log
+      Data calculations: {
+        bitDepth: 16,
+        numberOfChannels: 1,
+        numberOfSamples: 5,
+        bytesPerSample: 2,
+        dataLength: 10
+      }
+
+      at Object.log (src/tests/audio/debug-bwf.test.js:41:13)
+
+    console.log
+      Buffer size calculation: {
+        riffHeaderSize: 12,
+        bextChunkHeaderSize: 8,
+        bextDataSize: 602,
+        fmtChunkSize: 24,
+        dataChunkHeaderSize: 8,
+        dataLength: 10,
+        totalSize: 664
+      }
+
+      at Object.log (src/tests/audio/debug-bwf.test.js:58:13)
+
+    console.log
+      BWF generation successful: Blob {}
+
+      at Object.log (src/tests/audio/debug-bwf.test.js:71:15)
+
+PASS src/tests/audio/bwf-minimal.test.js
+  ΓùÅ Console
+
+    console.log
+      After RIFF header: 12
+
+      at Object.log (src/tests/audio/bwf-minimal.test.js:39:13)
+
+    console.log
+      After bext header: 20
+
+      at Object.log (src/tests/audio/bwf-minimal.test.js:43:13)
+
+    console.log
+      Calculated bext fields:
+
+      at Object.log (src/tests/audio/bwf-minimal.test.js:59:13)
+
+    console.log
+      Description: 256, Originator: 32, OriginatorRef: 32
+
+      at Object.log (src/tests/audio/bwf-minimal.test.js:60:13)
+
+    console.log
+      Date: 10, Time: 8, TimeRef: 8, Version: 2
+
+      at Object.log (src/tests/audio/bwf-minimal.test.js:61:13)
+
+    console.log
+      UMID: 64, Loudness: 10, Reserved: 180, CodingHistory: 256
+
+      at Object.log (src/tests/audio/bwf-minimal.test.js:62:13)
+
+    console.log
+      Total bext data: 858 bytes
+
+      at Object.log (src/tests/audio/bwf-minimal.test.js:63:13)
+
+    console.log
+      After bext data: 878
+
+      at Object.log (src/tests/audio/bwf-minimal.test.js:68:13)
+
+    console.log
+      After fmt chunk: 902
+
+      at Object.log (src/tests/audio/bwf-minimal.test.js:72:13)
+
+    console.log
+      After data header: 910
+
+      at Object.log (src/tests/audio/bwf-minimal.test.js:76:13)
+
+    console.log
+      After audio data (total): 914
+
+      at Object.log (src/tests/audio/bwf-minimal.test.js:80:13)
+
+PASS src/tests/audio/simple-aiff.test.js
+
+Test Suites: 8 passed, 8 total
+Tests:       93 passed, 93 total
+Snapshots:   0 total
+Time:        68.945 s
+Ran all test suites.
