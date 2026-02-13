@@ -3,13 +3,11 @@
  * NGKsPlayer
  *
  * Module: generateWaveformThumbnail.js
- * Purpose: Generate mini waveform data-URL from audio file via IPC + canvas
+ * Purpose: Render mini waveform from existing energyTrajectory data (no IPC needed)
  *
- * Pipeline:
- *   1. audio:loadSegment IPC → decoded PCM (Float32Array)
- *   2. Draw min/max waveform onto a regular <canvas> element
- *   3. canvas.toDataURL() → base64 PNG data URL
- *   4. Return data URL directly for <img> display (no disk I/O required)
+ * Tracks already have energyTrajectory stored in the DB from deep analysis —
+ * an array of ~2000 normalized (0–1) energy values. This module renders that
+ * data directly to a canvas, producing unique per-track waveforms instantly.
  *
  * Design Rules:
  * - Modular, reusable, no duplicated logic
@@ -18,149 +16,115 @@
  * Owner: NGKsSystems
  */
 
-// ── Caches ───────────────────────────────────────────────────────────────
-const cache    = new Map();   // trackId → data URL string
-const inflight = new Map();   // trackId → Promise<string|null>
+// ── Cache ────────────────────────────────────────────────────────────────
+const cache = new Map();   // trackId → data URL string
 
 // ── Configuration ────────────────────────────────────────────────────────
-const CANVAS_W       = 280;          // pixels wide
-const CANVAS_H       = 24;           // pixels tall
-const SAMPLE_RATE    = 4000;         // low-res decode (small IPC payload, fast)
-const WAVEFORM_COLOR = '#8bb8ff';    // soft blue waveform bars
+const CANVAS_W = 280;
+const CANVAS_H = 24;
+
+// Color gradient stops (low energy → high energy)
+const COLOR_LOW  = [59, 130, 246];   // blue
+const COLOR_MID  = [168, 85, 247];   // purple
+const COLOR_HIGH = [239, 68, 68];    // red
+
+function lerpColor(a, b, t) {
+  return `rgb(${Math.round(a[0] + (b[0] - a[0]) * t)},${Math.round(a[1] + (b[1] - a[1]) * t)},${Math.round(a[2] + (b[2] - a[2]) * t)})`;
+}
 
 /**
- * Render PCM samples onto a regular canvas and return a data URL (PNG).
- * Uses the same min/max-per-pixel algorithm as SimpleWaveform.jsx.
+ * Render energyTrajectory data to a canvas data URL.
+ * Each pixel column draws a vertical bar whose height = energy value.
+ * Color varies from blue (low) → purple (mid) → red (high).
  */
-function renderToDataUrl(samples, width = CANVAS_W, height = CANVAS_H) {
+function renderTrajectory(trajectory, width = CANVAS_W, height = CANVAS_H) {
+  if (!trajectory || trajectory.length === 0) return null;
+
   const canvas  = document.createElement('canvas');
   canvas.width  = width;
   canvas.height = height;
   const ctx = canvas.getContext('2d');
 
-  const len = samples.length;
-  if (len === 0) return null;
+  // Normalize values — handle both 0-1 and 0-100 ranges
+  let vals = trajectory.map(v => (typeof v === 'number' ? v : Number(v) || 0));
+  const maxVal = Math.max(...vals, 0.001);
+  if (maxVal > 1.5) vals = vals.map(v => v / maxVal); // normalize 0-100 → 0-1
 
-  const samplesPerPx = len / width;
-
-  ctx.fillStyle   = WAVEFORM_COLOR;
-  ctx.globalAlpha = 0.85;
+  const samplesPerPx = vals.length / width;
 
   for (let x = 0; x < width; x++) {
     const start = Math.floor(x * samplesPerPx);
-    const end   = Math.floor((x + 1) * samplesPerPx);
+    const end   = Math.min(Math.floor((x + 1) * samplesPerPx), vals.length);
 
-    let min =  1;
-    let max = -1;
-    for (let i = start; i < end && i < len; i++) {
-      const s = samples[i];
-      if (s < min) min = s;
-      if (s > max) max = s;
+    // Average energy for this pixel column
+    let sum = 0;
+    let count = 0;
+    for (let i = start; i < end; i++) {
+      sum += vals[i];
+      count++;
     }
+    const energy = count > 0 ? sum / count : 0;
+    const clamped = Math.max(0, Math.min(1, energy));
 
-    // Map [-1,1] → [0, height]
-    const minY = ((min + 1) / 2) * height;
-    const maxY = ((max + 1) / 2) * height;
-    const barH = Math.max(1, maxY - minY);
+    // Bar height from bottom
+    const barH = Math.max(1, Math.round(clamped * height));
 
-    ctx.fillRect(x, height - maxY, 1, barH);
+    // Color based on energy level
+    const color = clamped < 0.5
+      ? lerpColor(COLOR_LOW, COLOR_MID, clamped * 2)
+      : lerpColor(COLOR_MID, COLOR_HIGH, (clamped - 0.5) * 2);
+
+    ctx.fillStyle = color;
+    ctx.globalAlpha = 0.7 + clamped * 0.3; // brighter at higher energy
+    ctx.fillRect(x, height - barH, 1, barH);
   }
 
   return canvas.toDataURL('image/png');
 }
 
 /**
- * Convert an absolute file path to a loadable src for <img>.
- * Uses the app's registered ngksplayer:// file protocol.
- */
-export function toImageSrc(absPath) {
-  if (!absPath) return null;
-  if (absPath.startsWith('data:')) return absPath;                 // already a data URL
-  if (absPath.startsWith('ngksplayer://')) return absPath;         // already converted
-  if (absPath.startsWith('http')) return absPath;                  // remote URL
-  return 'ngksplayer://' + absPath.replace(/\\/g, '/');            // Windows path → protocol
-}
-
-/**
- * Generate a waveform data URL for a track.
+ * Get a waveform data URL for a track using its existing energyTrajectory.
+ * Returns instantly from cache, or renders synchronously from trajectory data.
+ * No IPC calls, no ffmpeg, no async — just canvas drawing.
  *
- * @param {object} track   – must have `id` and `filePath`
- * @returns {Promise<string|null>}  base64 PNG data URL, or null on failure
+ * @param {object} track  – must have `id` and `energyTrajectory` (array of 0-1 floats)
+ * @returns {string|null}  data URL, or null if no trajectory data
  */
-export async function generateWaveformThumbnail(track) {
-  const trackId  = track?.id;
-  const filePath = track?.filePath || track?.path;
+export function getWaveformDataUrl(track) {
+  if (!track?.id) return null;
 
-  if (!trackId || !filePath) return null;
+  // Return from cache
+  if (cache.has(track.id)) return cache.get(track.id);
 
-  // Return from memory cache
-  if (cache.has(trackId)) return cache.get(trackId);
-
-  // De-dupe concurrent calls for same track
-  if (inflight.has(trackId)) return inflight.get(trackId);
-
-  const promise = _generate(trackId, filePath, Number(track.duration) || 0);
-  inflight.set(trackId, promise);
-
-  try {
-    return await promise;
-  } finally {
-    inflight.delete(trackId);
+  // Parse trajectory if needed (may come as JSON string from DB)
+  let trajectory = track.energyTrajectory;
+  if (typeof trajectory === 'string') {
+    try { trajectory = JSON.parse(trajectory); } catch { return null; }
   }
-}
+  if (!Array.isArray(trajectory) || trajectory.length === 0) return null;
 
-async function _generate(trackId, filePath, duration) {
-  try {
-    const api = window.api;
-    if (!api?.invoke) {
-      console.warn('[waveform] No window.api.invoke — cannot generate');
-      return null;
-    }
-
-    // 1. Decode full track at low sample rate (small payload)
-    const segDuration = duration > 0 ? duration : 300; // 5 min fallback
-    const result = await api.invoke('audio:loadSegment', {
-      filePath,
-      start: 0,
-      duration: segDuration,
-      sampleRate: SAMPLE_RATE,
-    });
-
-    if (!result?.channelData?.[0]?.length) {
-      console.warn('[waveform] No PCM data for', filePath);
-      return null;
-    }
-
-    // channelData comes as plain Array from IPC — convert
-    const samples = new Float32Array(result.channelData[0]);
-
-    // 2. Render to canvas → data URL
-    const dataUrl = renderToDataUrl(samples);
-    if (!dataUrl) return null;
-
-    // 3. Cache in memory
-    cache.set(trackId, dataUrl);
-    console.log('[waveform] ✓ Generated waveform for', filePath);
-    return dataUrl;
-  } catch (err) {
-    console.error('[waveform] generation failed for', filePath, err);
-    return null;
-  }
+  // Render synchronously
+  const dataUrl = renderTrajectory(trajectory);
+  if (dataUrl) cache.set(track.id, dataUrl);
+  return dataUrl;
 }
 
 /**
- * Check if a track already has a usable waveform (cached or on disk).
+ * Check if a track has trajectory data we can render.
  */
-export function hasWaveformThumbnail(track) {
+export function hasWaveformData(track) {
   if (!track) return false;
   if (cache.has(track.id)) return true;
-  return !!(track.thumbnailPath);
+  const traj = track.energyTrajectory;
+  if (typeof traj === 'string') {
+    try { return JSON.parse(traj).length > 0; } catch { return false; }
+  }
+  return Array.isArray(traj) && traj.length > 0;
 }
 
 /**
- * Reset the session caches (e.g. on library reload).
+ * Reset the cache (e.g. on library reload).
  */
 export function resetWaveformCache() {
   cache.clear();
-  inflight.clear();
 }

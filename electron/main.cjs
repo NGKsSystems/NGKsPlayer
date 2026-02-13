@@ -1303,17 +1303,19 @@ register('library:getTracks', (_evt, filter = {}) => {
            gainRecommendation,
            analyzed,
            lastPlayed,
-           thumbnailPath
+           thumbnailPath,
+           energyTrajectory
       FROM ${TABLE}
       ${where}
       ORDER BY ${orderBy}
   `;
   const tracks = db.prepare(sql).all(...args);
   
-  // Add derived filename field for each track
+  // Add derived filename field for each track and parse JSON fields
   return tracks.map(track => ({
     ...track,
-    filename: track.filePath ? require('path').basename(track.filePath) : null
+    filename: track.filePath ? require('path').basename(track.filePath) : null,
+    energyTrajectory: track.energyTrajectory ? JSON.parse(track.energyTrajectory) : null,
   }));
 });
 

@@ -11,9 +11,9 @@
  *
  * Owner: NGKsSystems
  */
-import React, { memo, useState, useCallback, useRef, useEffect } from 'react';
+import React, { memo, useState, useCallback, useRef } from 'react';
 import { formatKeyDisplay } from '../utils/keyConverter.js';
-import { generateWaveformThumbnail, hasWaveformThumbnail, toImageSrc } from '../utils/generateWaveformThumbnail.js';
+import { getWaveformDataUrl } from '../utils/generateWaveformThumbnail.js';
 
 // ─── BPM Confidence Dot ──────────────────────────────────────────────────
 const BpmDot = memo(({ confidence, locked }) => {
@@ -94,37 +94,18 @@ function generateWaveform(seed, len = 28) {
   return bars.join('');
 }
 
-const MiniWaveform = memo(({ src, trackId, track }) => {
-  const [dataUrl, setDataUrl] = useState(null);
-  const attemptedRef = useRef(false);
+const MiniWaveform = memo(({ track, trackId }) => {
+  // Try to render from existing energyTrajectory data (instant, synchronous)
+  const dataUrl = getWaveformDataUrl(track);
 
-  // Auto-generate waveform if none exists
-  useEffect(() => {
-    // Already have a valid src from props (existing thumbnail on disk)
-    if (src) return;
-    // Already generated this session
-    if (dataUrl || attemptedRef.current) return;
-    // Need a valid track with a file path
-    if (!track?.id || !(track.filePath || track.path)) return;
-
-    attemptedRef.current = true;
-
-    generateWaveformThumbnail(track).then((url) => {
-      if (url) setDataUrl(url);
-    });
-  }, [src, dataUrl, track]);
-
-  // Resolve the image source: prefer data URL from generator, then convert disk path
-  const resolvedSrc = dataUrl || toImageSrc(src);
-
-  if (resolvedSrc) {
-    return <img className="mini-waveform" src={resolvedSrc} alt="" draggable={false} />;
+  if (dataUrl) {
+    return <img className="mini-waveform" src={dataUrl} alt="" draggable={false} />;
   }
 
-  // Fallback: text placeholder while generating (or if no file path)
+  // Fallback: text placeholder for tracks without analysis data
   const pattern = generateWaveform(seedHash(String(trackId || 'x')));
   return (
-    <span className="mini-waveform placeholder" title="Generating waveform...">
+    <span className="mini-waveform placeholder" title="Run analysis to generate waveform">
       <span className="mini-waveform-bars">{pattern}</span>
     </span>
   );
@@ -206,7 +187,7 @@ const TrackRow = memo(({
 
       {/* Row 3: Mini waveform strip */}
       <div className="track-row-bottom">
-        <MiniWaveform src={track.waveformPreview || track.thumbnailPath} trackId={track.id || track.title} track={track} />
+        <MiniWaveform track={track} trackId={track.id || track.title} />
       </div>
 
       {/* Hover actions (absolute, no layout shift) */}
